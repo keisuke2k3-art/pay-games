@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ページが見つかりません | PAY games</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%230D9AA8' stroke-width='8'/><circle cx='36' cy='36' r='8' fill='%230D9AA8'/></svg>">
+<script>
+  // GitHub Pages では、どの深さのURLでもこのページが表示されるため、
+  // サイトの入口(https://ユーザー名.github.io/リポジトリ名/)を計算して共通ファイルを読み込む
+  (function () {
+    var seg = location.pathname.split("/").filter(Boolean);
+    var base = /github\.io$/.test(location.hostname) && seg.length && seg[0] !== "games" && !/\./.test(seg[0]) ? "/" + seg[0] + "/" : "/";
+    window.PAY_BASE = base;
+    document.write('<link rel="stylesheet" href="' + base + 'site.css">' +
+      '<script src="' + base + 'games.js"><\/script><script src="' + base + 'site.js"><\/script>');
+  })();
+</script>
+<style>
+:root { --air: #F4F7F8; --ink: #0B2530; --sub: #5F737B; --btn: #08737E;
+  --pay-bg: #063F4C; --pay-fg: #EAF6F7; --pay-line: rgba(255,255,255,.18); --pay-accent: #08737E;
+  --pay-bar-bg: rgba(244, 247, 248, .86); --pay-bar-fg: var(--ink); --pay-bar-bg-solid: var(--air); }
+body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; color: #fff;
+  background: linear-gradient(var(--air) 0 72px, #2BA6B4 73px, #11818F 34%, #0A6676 70%, #063F4C);
+  font: 400 15px/1.8 "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif; }
+main { flex: 1; display: grid; align-content: center; justify-items: center; gap: 18px; padding: 120px 20px 80px; text-align: center; }
+h1 { margin: 0; font-size: clamp(26px, 5vw, 40px); line-height: 1.3; color: #fff; text-shadow: 0 2px 12px rgba(3,38,48,.35); }
+main p { margin: 0; max-width: 30em; text-shadow: 0 1px 6px rgba(3,38,48,.5); }
+.bubble { width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; font: 800 44px/1 "Archivo", sans-serif; color: #fff;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(255,255,255,.05) 45%, rgba(255,255,255,.35) 92%, rgba(255,255,255,.7));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); animation: float 4s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-14px); } }
+.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 10px; background: #fff; color: var(--ink); font-weight: 700; text-decoration: none; }
+.list { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; padding: 0; list-style: none; }
+.list a { display: inline-block; padding: 6px 14px; border-radius: 999px; background: rgba(3,38,48,.45); color: #fff; font-size: 13px; text-decoration: none; }
+.list a:hover { background: rgba(3,38,48,.7); }
+@media (prefers-reduced-motion: reduce) { .bubble { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="bubble" aria-hidden="true">404</div>
+  <h1><span lang="ja">このページは、水の底に沈んだようです。</span><span lang="en">This page has sunk to the bottom of the tank.</span></h1>
+  <p><span lang="ja">URLが変わったか、ページがなくなった可能性があります。トップか、下の作品から探してください。</span><span lang="en">The address may have changed, or the page is gone. Try the home page, or pick a game below.</span></p>
+  <a class="btn" id="home" href="/"><span lang="ja">トップへ戻る</span><span lang="en">Back to home</span></a>
+  <ul class="list" id="list"></ul>
+</main>
+<script>
+  (function () {
+    var B = window.PAY_BASE || "/", P = window.PAY;
+    document.getElementById("home").href = B;
+    if (!P) return;
+    document.getElementById("list").innerHTML = P.games.map(function (g) {
+      return '<li><a href="' + B + "games/" + P.esc(g.slug) + '/">' + P.bi(g.short || g.title) + "</a></li>";
+    }).join("");
+  })();
+</script>
+</body>
+</html>

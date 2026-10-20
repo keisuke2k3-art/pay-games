@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FROGBIT SWEEPER(浮き草無限すくい) | PAY</title>
+<meta name="description" content="水槽に爆発的に増える浮き草を網ですくい続ける、8-bitレトロなアクアリウム・アクション。ブラウザで無料プレイ。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FROGBIT SWEEPER(浮き草無限すくい)">
+<meta property="og:description" content="すくっても、すくっても、また生えてくる。/ Sweep and sweep, and it just keeps growing back.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzI4OTc3NzMwLmpwZw==/original/vAJVb1.jpg">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/frogbit-sweeper/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/frogbit-sweeper/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --water: #10394A;
+  --water-2: #174C5E;
+  --leaf: #5BBF3A;
+  --leaf-dark: #2E7D32;
+  --leaf-hi: #A6E36E;
+  --text: #F2F2E8;
+  --gold: #FFD447;
+  --red: #E8483B;
+
+  --pay-bg: var(--water);
+  --pay-fg: var(--text);
+  --pay-line: rgba(242, 242, 232, .16);
+  --pay-accent: var(--gold);
+  --pay-accent-fg: #10241F;
+  --pay-bar-bg: rgba(16, 57, 74, .85);
+  --pay-bar-fg: var(--text);
+  --pay-bar-bg-solid: var(--water);
+}
+body {
+  background: var(--water); color: var(--text);
+  font: 400 16px/1.9 "DotGothic16", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.ps { font-family: "Press Start 2P", "DotGothic16", monospace; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+/* ドット枠 */
+.px {
+  background: var(--water-2);
+  box-shadow:
+    0 -4px 0 0 var(--text), 0 4px 0 0 var(--text), -4px 0 0 0 var(--text), 4px 0 0 0 var(--text),
+    0 0 0 4px var(--water), 8px 8px 0 4px rgba(0, 0, 0, .3);
+}
+
+/* ---------- ヒーロー(遊べる水面) ---------- */
+.hero { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: var(--water); }
+#pond { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; touch-action: none; cursor: none; }
+.hud {
+  position: absolute; left: 0; right: 0; top: calc(56px + env(safe-area-inset-top, 0px));
+  display: flex; justify-content: center; gap: 12px 32px; flex-wrap: wrap; padding: 0 16px;
+  font-size: clamp(10px, 1.4vw, 14px); color: var(--text); text-shadow: 2px 2px 0 #000; pointer-events: none;
+}
+.hud b { color: var(--gold); font-weight: 400; }
+.title-box {
+  position: absolute; left: 50%; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  width: min(92%, 640px); padding: 28px 28px 24px; text-align: center;
+}
+.title-box h1 { margin: 0; font-size: clamp(22px, 4.6vw, 44px); line-height: 1.3; color: var(--leaf-hi); text-shadow: 4px 4px 0 var(--leaf-dark); }
+.title-box .jp { display: block; margin-top: 10px; font-size: clamp(16px, 2.2vw, 22px); color: var(--text); text-shadow: none; }
+.title-box p { margin: 14px 0 20px; font-size: 15px; }
+.btn {
+  display: inline-block; background: var(--gold); color: #1B1B1B; text-decoration: none;
+  font: 400 clamp(12px, 1.6vw, 16px)/1 "Press Start 2P", monospace; padding: 16px 22px;
+  box-shadow: 0 -4px 0 0 #1B1B1B, 0 4px 0 0 #1B1B1B, -4px 0 0 0 #1B1B1B, 4px 0 0 0 #1B1B1B, 4px 8px 0 0 #1B1B1B;
+}
+.btn:hover { background: #FFE47A; }
+.btn:active { transform: translateY(4px); box-shadow: 0 -4px 0 0 #1B1B1B, 0 4px 0 0 #1B1B1B, -4px 0 0 0 #1B1B1B, 4px 0 0 0 #1B1B1B; }
+.blink { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- 本文 ---------- */
+section h2 { font-family: "Press Start 2P", monospace; font-size: clamp(14px, 2vw, 20px); color: var(--gold); margin: 0 0 28px; line-height: 1.6; }
+section h2 small { display: block; margin-top: 8px; font: 400 16px/1.4 "DotGothic16", sans-serif; color: var(--text); }
+.story { padding: 112px 0 96px; }
+.story blockquote { margin: 0 0 40px; font-size: clamp(24px, 4vw, 44px); line-height: 1.5; color: var(--leaf-hi); }
+.story blockquote span[lang="en"] { font-size: .6em; }
+.story .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
+.story p { margin: 0 0 16px; }
+.over { display: inline-block; color: var(--red); }
+
+.feat { padding: 32px 0 96px; }
+.feat .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.feat article { padding: 24px; }
+.feat h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.5; color: var(--leaf-hi); }
+.feat p { margin: 0; font-size: 15px; }
+.meter { display: flex; align-items: flex-end; gap: 4px; height: 72px; margin: 4px 0 16px; }
+.meter i { flex: 1; background: var(--leaf); }
+.meter i:last-child { background: var(--red); }
+.meter-l { display: flex; justify-content: space-between; font-size: 10px; margin-top: -10px; margin-bottom: 12px; }
+.friends { list-style: none; margin: 4px 0 16px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; font-size: 14px; }
+.friends li::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 8px; background: var(--c); vertical-align: 0; }
+
+.shots { padding: 0 0 96px; }
+.shots .row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.shots a { display: block; padding: 6px; }
+.shots img { display: block; width: 100%; aspect-ratio: 347 / 500; object-fit: cover; image-rendering: pixelated; background: var(--water); }
+
+.spec { padding: 0 0 96px; }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.spec .box { padding: 24px; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+dt, dd { margin: 0; padding: 10px 0; border-bottom: 2px dashed rgba(242, 242, 232, .25); }
+dt { color: var(--gold); padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { font-size: 14px; }
+
+@media (max-width: 860px) {
+  .story .cols, .feat .grid, .spec .row { grid-template-columns: 1fr; }
+  .shots .row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
+</style>
+</head>
+<body data-game="frogbit-sweeper">
+
+<main>
+  <section class="hero" aria-label="浮き草すくいのお試し">
+    <canvas id="pond" aria-label="浮き草がどんどん増える水面。ドラッグで網を動かしてすくえます。"></canvas>
+    <div class="hud ps" aria-hidden="true">
+      <span>SCORE <b id="h-score">0</b></span>
+      <span>SPEED <b id="h-speed">x1</b></span>
+      <span>COVER <b id="h-cover">0%</b></span>
+    </div>
+    <div class="title-box px">
+      <h1 class="ps">FROGBIT<br>SWEEPER<span class="jp" lang="ja">浮き草無限すくい - 8-Bit Edition -</span></h1>
+      <p><span lang="ja">なぞって浮き草をすくってみよう。<span class="blink">▶</span></span><span lang="en">Swipe across the water to scoop up the frogbit. <span class="blink">▶</span></span></p>
+      <a class="btn" href="https://pay-k.itch.io/frogbit-sweeper">PLAY FREE</a>
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="wrap">
+      <blockquote><span lang="ja">「すくっても、すくっても、<br>また生えてくる——」</span><span lang="en">"No matter how much you sweep,<br>it just keeps growing back..."</span></blockquote>
+      <div class="cols">
+        <p><span lang="ja">『浮き草無限すくい』は、水槽で爆発的に繁殖する浮き草(アマゾンフロッグピット)を、網でひたすらすくい続ける8-bitレトロスタイルのカジュアル・アクションです。</span><span lang="en">Frogbit Sweeper is a retro 8-bit casual arcade game where you sweep rapidly multiplying Amazon frogbit off an aquarium's surface with a net.</span></p>
+        <p><span lang="ja">時間とともに繁殖速度(SPEED)は加速度的に上昇。すくった跡から新しい芽が出る「反撃システム」もあり、油断するとあっという間に水面が覆われます。光が届かなくなる<span class="over">「水面封鎖(GAME OVER)」</span>の前に、どれだけすくえるか。</span><span lang="en">Growth speeds up the longer you last, and "revenge sprouts" pop up right where you just swept. How much can you clear before the surface is sealed and the light is gone <span class="over">(GAME OVER)</span>?</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <h2>FEATURES<small><span lang="ja">ゲームの特徴</span><span lang="en">What's inside</span></small></h2>
+      <div class="grid">
+        <article class="px">
+          <h3><span lang="ja">爽快&amp;パニックな無限すくい</span><span lang="en">Fast-paced, frantic sweeping</span></h3>
+          <p><span lang="ja">マウスやタップで網をドラッグするだけ。コンボをつないで高得点を目指そう。</span><span lang="en">Just drag your net with a mouse or finger. Chain combos for big scores.</span></p>
+        </article>
+        <article class="px">
+          <h3><span lang="ja">最大64倍まで加速</span><span lang="en">Up to x64 speed</span></h3>
+          <div class="meter" aria-hidden="true"><i style="height:6%"></i><i style="height:10%"></i><i style="height:18%"></i><i style="height:30%"></i><i style="height:48%"></i><i style="height:72%"></i><i style="height:100%"></i></div>
+          <div class="meter-l ps" aria-hidden="true"><span>x1</span><span>x64</span></div>
+          <p><span lang="ja">経過時間とともに倍率は最大64倍(MAX SPEED)まで跳ね上がる。緑の波を押し返せ。</span><span lang="en">The growth rate climbs to x64 MAX SPEED. Hold back the green wave.</span></p>
+        </article>
+        <article class="px">
+          <h3><span lang="ja">水槽の仲間たちを解放</span><span lang="en">Unlock aquarium friends</span></h3>
+          <ul class="friends">
+            <li style="--c:#4FA8FF"><span lang="ja">青い小魚</span><span lang="en">Blue minnow</span></li>
+            <li style="--c:#E8483B"><span lang="ja">赤い魚</span><span lang="en">Red fish</span></li>
+            <li style="--c:#B08850"><span lang="ja">底モノ</span><span lang="en">Bottom dweller</span></li>
+            <li style="--c:#FFE066"><span lang="ja">黄色の群れ</span><span lang="en">Yellow school</span></li>
+            <li style="--c:#8E9AAF"><span lang="ja">ヌシ</span><span lang="en">The Boss</span></li>
+            <li style="--c:#FFD447"><span lang="ja">金色の個体</span><span lang="en">Golden variant</span></li>
+          </ul>
+          <p><span lang="ja">累計スコアで登場。激レアな「金色の個体」も。</span><span lang="en">Unlocked by your total score, including an ultra-rare golden one.</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="shots">
+    <div class="wrap">
+      <h2>SCREENSHOTS<small><span lang="ja">ゲーム画面</span><span lang="en">In-game</span></small></h2>
+      <div class="row">
+        <a class="px" href="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2NC5wbmc=/original/SWZMmL.png"><img src="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2NC5wbmc=/347x500/lG%2F4YX.png" alt="スクリーンショット1" loading="lazy"></a>
+        <a class="px" href="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2NS5wbmc=/original/0HEeUH.png"><img src="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2NS5wbmc=/347x500/eCRjkH.png" alt="スクリーンショット2" loading="lazy"></a>
+        <a class="px" href="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2Ni5wbmc=/original/o5nI%2Fk.png"><img src="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2Ni5wbmc=/347x500/6AjTbL.png" alt="スクリーンショット3" loading="lazy"></a>
+        <a class="px" href="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2Ny5wbmc=/original/76%2B5zp.png"><img src="https://img.itch.zone/aW1hZ2UvNDg1MDkwNS8yODk3NzI2Ny5wbmc=/347x500/zP5cAo.png" alt="スクリーンショット4" loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div class="box px">
+        <h2>INFO<small><span lang="ja">作品情報</span><span lang="en">Game info</span></small></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">8-bit カジュアル・アクション</span><span lang="en">8-bit casual arcade</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">マウス / タッチでドラッグ</span><span lang="en">Drag with mouse or touch</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">状態</span><span lang="en">Status</span></dt><dd><span lang="ja">プロトタイプ</span><span lang="en">Prototype</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.08.01</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="box px embed">
+        <h2>PLAY<small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></small></h2>
+        <iframe src="https://itch.io/embed/4850905?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で公開中。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ヒーロー:増え続ける浮き草を網ですくうミニデモ */
+(function () {
+  "use strict";
+  var CONFIG = { cell: 8, scale: 4, stepMs: 8000, maxMul: 64, baseGrowMs: 300, revenge: 0.18, sealAt: 0.82, net: 1.6 };
+  var C = { water: "#10394A", ripple: "#174C5E", leaf: "#5BBF3A", dark: "#2E7D32", hi: "#A6E36E", root: "#C9D8C0", net: "#F2F2E8" };
+  var LEAF = ["..DDDD..", ".DLLLLD.", "DLLHLLLD", "DLLLLLLD", "DLLL.LLD", "DLLLLLLD", ".DLLLLD.", "..DDDD.."];
+  var SPROUT = ["........", "........", "...DD...", "..DLLD..", "..DLLD..", "...DD...", "........", "........"];
+
+  var cv = document.getElementById("pond"), g = cv.getContext("2d");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hScore = document.getElementById("h-score"), hSpeed = document.getElementById("h-speed"), hCover = document.getElementById("h-cover");
+  var state = { cols: 0, rows: 0, grid: null, count: 0, score: 0, mul: 1, t0: 0, acc: 0, sealed: 0, ptr: null, fish: [], pending: [] };
+
+  function resize() {
+    var px = CONFIG.cell * CONFIG.scale;
+    cv.width = Math.ceil(cv.clientWidth / CONFIG.scale);
+    cv.height = Math.ceil(cv.clientHeight / CONFIG.scale);
+    state.cols = Math.ceil(cv.clientWidth / px);
+    state.rows = Math.ceil(cv.clientHeight / px);
+    reset();
+  }
+  function reset() {
+    state.grid = new Uint8Array(state.cols * state.rows);     // 0:なし 1:芽 2:葉
+    state.list = []; state.count = 0; state.score = 0; state.mul = 1; state.t0 = performance.now(); state.acc = 0; state.sealed = 0; state.pending = [];
+    for (var i = 0; i < 10; i++) put(rnd(state.cols), rnd(state.rows), 2);
+    state.fish = [{ x: 0, y: state.rows * .55, v: .9, c: "#4FA8FF" }, { x: state.cols * .6, y: state.rows * .3, v: -.6, c: "#E8483B" }];
+  }
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function idx(x, y) { return y * state.cols + x; }
+  function put(x, y, v) {
+    if (x < 0 || y < 0 || x >= state.cols || y >= state.rows) return;
+    var k = idx(x, y);
+    if (!state.grid[k]) { state.count++; state.list.push(k); }
+    state.grid[k] = Math.max(state.grid[k], v);
+  }
+  function pick() {
+    // 生きている葉/芽をランダムに1つ(消えたものは掃除しながら)
+    while (state.list.length) {
+      var j = rnd(state.list.length), k = state.list[j];
+      if (state.grid[k]) return k;
+      state.list[j] = state.list[state.list.length - 1]; state.list.pop();
+    }
+    return -1;
+  }
+  function grow() {
+    // 芽は葉に育ち、葉はとなりに芽を出す
+    var k = pick();
+    if (k < 0) { put(rnd(state.cols), rnd(state.rows), 1); return; }
+    if (state.grid[k] === 1) state.grid[k] = 2;
+    var a = pick();
+    if (a >= 0 && state.grid[a] === 2) put(a % state.cols + rnd(3) - 1, ((a / state.cols) | 0) + rnd(3) - 1, 1);
+  }
+  function sweep(px, py) {
+    var s = CONFIG.cell * CONFIG.scale, cx = px / s, cy = py / s, r = CONFIG.net, got = 0;
+    for (var y = Math.floor(cy - r); y <= cy + r; y++) for (var x = Math.floor(cx - r); x <= cx + r; x++) {
+      if (x < 0 || y < 0 || x >= state.cols || y >= state.rows) continue;
+      if ((x + .5 - cx) * (x + .5 - cx) + (y + .5 - cy) * (y + .5 - cy) > r * r) continue;
+      var k = idx(x, y);
+      if (state.grid[k]) {
+        state.grid[k] = 0; state.count--; got++;
+        if (Math.random() < CONFIG.revenge) state.pending.push({ at: performance.now() + 700, x: x, y: y });
+      }
+    }
+    if (got) state.score += got * 10 * state.mul;
+  }
+
+  function blit(spr, ox, oy) {
+    for (var y = 0; y < 8; y++) for (var x = 0; x < 8; x++) {
+      var ch = spr[y][x]; if (ch === ".") continue;
+      g.fillStyle = ch === "D" ? C.dark : ch === "H" ? C.hi : C.leaf;
+      g.fillRect(ox + x, oy + y, 1, 1);
+    }
+  }
+  function draw(now) {
+    var W = cv.width, H = cv.height, s = CONFIG.cell;
+    g.fillStyle = C.water; g.fillRect(0, 0, W, H);
+    g.fillStyle = C.ripple;
+    for (var r = 0; r < 14; r++) {
+      var ry = (r * 37 + now * .004) % H, rx = (r * 91) % W;
+      g.fillRect(rx | 0, ry | 0, 10, 1);
+    }
+    // 葉の下を泳ぐ魚
+    state.fish.forEach(function (f) {
+      g.fillStyle = f.c;
+      var fx = (f.x * s) | 0, fy = (f.y * s) | 0;
+      g.fillRect(fx, fy, 6, 3); g.fillRect(fx + (f.v > 0 ? -2 : 6), fy - 1, 2, 5);
+    });
+    for (var k = 0; k < state.grid.length; k++) {
+      var v = state.grid[k]; if (!v) continue;
+      blit(v === 2 ? LEAF : SPROUT, (k % state.cols) * s, ((k / state.cols) | 0) * s);
+    }
+    if (state.ptr) {
+      var nx = state.ptr.x / CONFIG.scale, ny = state.ptr.y / CONFIG.scale, nr = CONFIG.net * s;
+      g.strokeStyle = C.net; g.lineWidth = 1;
+      g.beginPath(); g.arc(nx | 0, ny | 0, nr | 0, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = "rgba(242,242,232,.12)"; g.fill();
+    }
+    if (state.sealed) {
+      g.fillStyle = "rgba(0,0,0,.45)"; g.fillRect(0, 0, W, H);
+    }
+  }
+  function hud(cover) {
+    hScore.textContent = state.score;
+    hSpeed.textContent = state.sealed ? "SEALED" : "x" + state.mul;
+    hCover.textContent = Math.round(cover * 100) + "%";
+  }
+
+  var last = 0;
+  function loop(now) {
+    var dt = Math.min(100, now - (last || now)); last = now;
+    if (!document.hidden) {
+      if (state.sealed) {
+        if (now - state.sealed > 2600) reset();
+      } else {
+        state.mul = Math.min(CONFIG.maxMul, Math.pow(2, Math.floor((now - state.t0) / CONFIG.stepMs)));
+        state.acc += dt;
+        var every = CONFIG.baseGrowMs / state.mul;
+        while (state.acc > every) { state.acc -= every; grow(); }
+        for (var i = state.pending.length - 1; i >= 0; i--) {
+          if (now >= state.pending[i].at) { put(state.pending[i].x, state.pending[i].y, 1); state.pending.splice(i, 1); }
+        }
+        state.fish.forEach(function (f) { f.x += f.v * dt / 1000 * 2; if (f.x > state.cols + 2) f.x = -2; if (f.x < -2) f.x = state.cols + 2; });
+        if (state.count / state.grid.length >= CONFIG.sealAt) state.sealed = now;
+      }
+      draw(now);
+      hud(state.count / state.grid.length);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function pos(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  cv.addEventListener("pointermove", function (e) {
+    state.ptr = pos(e);
+    if (e.pointerType === "mouse" || e.buttons) sweep(state.ptr.x, state.ptr.y);
+  });
+  cv.addEventListener("pointerdown", function (e) { state.ptr = pos(e); sweep(state.ptr.x, state.ptr.y); });
+  cv.addEventListener("pointerleave", function () { state.ptr = null; });
+
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(resize, 150); });
+  resize();
+
+  if (reduce) {
+    // 動きを減らす設定:葉を散らした静止画だけ描く
+    for (var i = 0; i < state.grid.length * .35; i++) put(rnd(state.cols), rnd(state.rows), 2);
+    draw(0); hud(state.count / state.grid.length);
+  } else {
+    requestAnimationFrame(loop);
+  }
+})();
+</script>
+</body>
+</html>

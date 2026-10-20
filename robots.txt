@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://keisuke2k3-art.github.io/pay-games/sitemap.xml

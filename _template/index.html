@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--
+  =========================================================
+  新作ページのテンプレート
+  ---------------------------------------------------------
+  1. この _template フォルダを games/ の下にコピーし、フォルダ名を
+     作品のスラッグ(英小文字とハイフン。例: arowana-high-jump)に変える
+  2. 「★」の付いた箇所を書き換える(検索して順番に埋めればOK)
+  3. games.js の先頭に1件追加する(slug はフォルダ名と同じにする)
+  4. 色は下の :root の5色を変えるだけで全体が切り替わる
+  5. 世界観に合わせてヒーローを作り込みたくなったら、既存4作のページを参考に
+  =========================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>★作品名 | PAY</title>
+<meta name="description" content="★作品の説明(120字くらい)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="★作品名">
+<meta property="og:description" content="★キャッチコピー">
+<meta property="og:image" content="★カバー画像のURL(itch.io の original 画像など)">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- ★見出しフォントを変えたい場合はここと --display を変更 -->
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  /* ★この5色で作品の雰囲気を決める */
+  --bg: #0F2F3A;        /* 背景 */
+  --surface: #17414F;   /* 枠・カード */
+  --text: #EAF4F4;      /* 文字 */
+  --sub: #A9C6CC;       /* 補足の文字 */
+  --accent: #F2B544;    /* ボタン・強調 */
+  --display: "Zen Maru Gothic", "Zen Kaku Gothic New", sans-serif;
+
+  --pay-bg: var(--bg);
+  --pay-fg: var(--text);
+  --pay-line: color-mix(in srgb, var(--text) 18%, transparent);
+  --pay-accent: var(--accent);
+  --pay-bar-bg: color-mix(in srgb, var(--bg) 86%, transparent);
+  --pay-bar-fg: var(--text);
+  --pay-bar-bg-solid: var(--bg);
+}
+body { background: var(--bg); color: var(--text); font: 400 16px/1.85 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-family: var(--display); }
+
+.hero {
+  min-height: 100svh; max-width: 1200px; margin: 0 auto;
+  padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 64px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: center;
+}
+.hero h1 { margin: 0; font-size: clamp(36px, 5.6vw, 72px); line-height: 1.15; font-weight: 900; }
+.hero .sub { margin: 16px 0 0; color: var(--sub); font-size: clamp(16px, 1.8vw, 20px); }
+.hero .catch { margin: 28px 0 36px; font-size: clamp(18px, 2vw, 22px); font-weight: 700; }
+.hero img { display: block; width: 100%; aspect-ratio: 630 / 500; object-fit: cover; border-radius: 10px; background: var(--surface); }
+.btn {
+  display: inline-block; background: var(--accent); color: var(--bg); text-decoration: none;
+  font: 900 18px/1 var(--display); padding: 18px 30px; border-radius: 999px;
+}
+.btn:hover { filter: brightness(1.08); }
+
+section h2 { font-size: clamp(24px, 3vw, 36px); margin: 0 0 28px; }
+.about, .feat, .shots, .spec { padding: 0 0 96px; }
+.about p { max-width: 38em; margin: 0 0 16px; font-size: 17px; }
+.feat ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.feat li { background: var(--surface); border-radius: 12px; padding: 24px; }
+.feat h3 { margin: 0 0 8px; font-size: 19px; }
+.feat p { margin: 0; color: var(--sub); }
+.shots .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.shots img { display: block; width: 100%; border-radius: 10px; background: var(--surface); }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+dt, dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--pay-line); }
+dt { color: var(--accent); padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; border-radius: 8px; }
+.embed p { font-size: 14px; color: var(--sub); }
+
+@media (max-width: 860px) {
+  .hero, .spec .row { grid-template-columns: 1fr; }
+  .hero { min-height: 0; }
+}
+</style>
+</head>
+<!-- ★data-game はフォルダ名(= games.js の slug)と同じにする -->
+<body data-game="★slug">
+
+<main>
+  <section class="hero">
+    <div>
+      <h1><span lang="ja">★作品名</span><span lang="en">★Title</span></h1>
+      <p class="sub"><span lang="ja">★ジャンル / サブタイトル</span><span lang="en">★Genre / subtitle</span></p>
+      <p class="catch"><span lang="ja">★キャッチコピー</span><span lang="en">★Catchphrase</span></p>
+      <!-- ★無料の作品は「無料で遊ぶ」、有料の作品は「ブラウザで遊ぶ」などに -->
+      <a class="btn" href="★itch.io の作品URL"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+    </div>
+    <img src="★カバー画像のURL" alt="★作品名のタイトル画像" width="630" height="500">
+  </section>
+
+  <section class="about">
+    <div class="wrap">
+      <h2><span lang="ja">ゲーム概要</span><span lang="en">Overview</span></h2>
+      <p><span lang="ja">★どんなゲームか(1〜3段落)</span><span lang="en">★What the game is about</span></p>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <h2><span lang="ja">ゲームの特徴</span><span lang="en">Features</span></h2>
+      <ul>
+        <li><h3><span lang="ja">★特徴1</span><span lang="en">★Feature 1</span></h3><p><span lang="ja">★説明</span><span lang="en">★Description</span></p></li>
+        <li><h3><span lang="ja">★特徴2</span><span lang="en">★Feature 2</span></h3><p><span lang="ja">★説明</span><span lang="en">★Description</span></p></li>
+        <li><h3><span lang="ja">★特徴3</span><span lang="en">★Feature 3</span></h3><p><span lang="ja">★説明</span><span lang="en">★Description</span></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="shots">
+    <div class="wrap">
+      <h2><span lang="ja">スクリーンショット</span><span lang="en">Screenshots</span></h2>
+      <div class="row">
+        <!-- ★画像の数だけ増減してOK -->
+        <img src="★スクショ1のURL" alt="スクリーンショット1" loading="lazy">
+        <img src="★スクショ2のURL" alt="スクリーンショット2" loading="lazy">
+        <img src="★スクショ3のURL" alt="スクリーンショット3" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div>
+        <h2><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">★</span><span lang="en">★</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">★</span><span lang="en">★</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>★2026.00.00</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <!-- ★ 00000 を itch.io の作品ID(作品ページの Embed から確認)に -->
+        <iframe src="https://itch.io/embed/00000?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で公開中。ダウンロード不要です。</span><span lang="en">Free on itch.io. No download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

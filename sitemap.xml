@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 新作ページを足したら <url> を1つ増やします。 -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/</loc></url>
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/games/the-silent-press/</loc></url>
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/games/160cm/</loc></url>
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/games/fish-match/</loc></url>
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/games/frogbit-sweeper/</loc></url>
+  <url><loc>https://keisuke2k3-art.github.io/pay-games/games/project-genesis/</loc></url>
+</urlset>

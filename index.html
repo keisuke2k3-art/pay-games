@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PAY games — 水の中から、ゲームが浮かんでくる。</title>
+<meta name="description" content="個人ゲーム開発者 PAY のブラウザゲーム公式サイト。全5作品がブラウザですぐ無料で遊べます(新作『沈黙の輪転機 The Silent Press』は体験版が無料、製品版 $4.99)。泡の中の作品をつかまえて遊べる水槽のトップページ。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PAY games">
+<meta property="og:title" content="PAY games">
+<meta property="og:description" content="水の中から、ゲームが浮かんでくる。/ Games bubble up from the water.">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/">
+<meta property="og:image" content="https://keisuke2k3-art.github.io/pay-games/og.png">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%230D9AA8' stroke-width='8'/><circle cx='36' cy='36' r='8' fill='%230D9AA8'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="games.js"></script>
+<script src="site.js"></script>
+<style>
+:root {
+  --air: #F4F7F8;        /* 水面より上の空気 */
+  --ink: #0B2530;
+  --sub: #5F737B;
+  --line: rgba(11, 37, 48, .12);
+  --water: #0D9AA8;      /* 水 */
+  --deep: #064E5E;
+  --latin: "Archivo", "Zen Kaku Gothic New", sans-serif;
+
+  --pay-bg: var(--air);
+  --pay-fg: var(--ink);
+  --pay-line: var(--line);
+  --pay-accent: #08737E;  /* ボタン・バッジ(白文字でも読める濃さ) */
+  --btn: #08737E;
+  --pay-bar-bg: rgba(244, 247, 248, .82);
+  --pay-bar-fg: var(--ink);
+  --pay-bar-bg-solid: var(--air);
+}
+/* 日本語は文節で改行する(対応ブラウザのみ) */
+.copy, .catch, .row .t, .about__t, .toast { word-break: auto-phrase; }
+body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif; -webkit-font-smoothing: antialiased; }
+.pay-bar__home { font-family: var(--latin); }
+
+/* ---------- ヒーロー:水槽 ---------- */
+.hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+/* 左端は下の作品一覧とそろえる */
+.hero { --edge: max(clamp(20px, 4vw, 56px), calc((100% - 1120px) / 2 + clamp(20px, 4vw, 56px))); }
+.copy { position: absolute; z-index: 2; left: var(--edge); top: calc(48px + clamp(20px, 5vh, 56px)); width: min(660px, calc(100% - 40px)); pointer-events: none; }
+.copy h1 { margin: 0; font: 700 clamp(30px, 3.3vw, 50px)/1.18 "Zen Kaku Gothic New", sans-serif; letter-spacing: -.015em; }
+.copy .lead { margin: 12px 0 0; color: var(--sub); font-size: 15px; line-height: 1.7; }
+.pitch { margin: 20px 0 0; font-size: 14px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+.pitch b { font-weight: 700; }
+.pitch .badge { margin-right: 8px; vertical-align: 1px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--btn); color: #fff; font: 800 10.5px/1.4 var(--latin); letter-spacing: .06em; }
+.cta { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; pointer-events: auto; }
+.note { margin: 10px 0 0; font-size: 12px; color: var(--sub); pointer-events: auto; }
+.feat {
+  display: inline-flex; align-items: center; gap: 14px; padding: 7px 20px 7px 7px; border-radius: 10px;
+  background: var(--ink); color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(11, 37, 48, .2);
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.feat:hover { transform: translateY(-2px); background: #123744; box-shadow: 0 14px 30px rgba(11, 37, 48, .26); }
+.feat img { flex: none; width: 76px; height: 60px; object-fit: cover; border-radius: 6px; background: #22424D; }
+.feat > span { display: grid; gap: 2px; line-height: 1.35; }
+.feat small { font-size: 12px; color: rgba(255, 255, 255, .72); }
+.feat b { font-size: 17px; white-space: nowrap; }
+.feat i { font-style: normal; font-size: 11.5px; color: #8FE3EA; }
+.feat b::after { content: ""; display: inline-block; margin-left: 10px; border-left: 8px solid #6FD8E0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; vertical-align: 1px; }
+.buy {
+  display: inline-grid; align-content: center; justify-items: center; gap: 2px; min-height: 74px; padding: 0 20px; border-radius: 10px; border: 1.5px solid rgba(11, 37, 48, .25);
+  color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 700; line-height: 1.3; background: rgba(255,255,255,.7);
+}
+.buy small { font: 700 15px/1.2 var(--latin); color: var(--ink); }
+.buy em { font-style: normal; font-size: 11px; font-weight: 400; color: var(--sub); }
+.buy:hover { border-color: var(--ink); }
+.more { color: var(--ink); font-size: 14px; font-weight: 700; text-underline-offset: 4px; }
+.tip {
+  position: absolute; z-index: 3; pointer-events: none; min-width: 200px; max-width: 260px; padding: 12px 14px 13px;
+  background: #fff; color: var(--ink); border-radius: 12px; box-shadow: 0 10px 30px rgba(11, 37, 48, .16);
+  opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s;
+}
+.tip.on { opacity: 1; transform: none; }
+.tip b { display: block; font-size: 15px; line-height: 1.45; }
+.tip span { display: block; margin-top: 2px; font-size: 12px; color: var(--sub); }
+.tip i { display: block; margin-top: 8px; font-style: normal; font-size: 12px; font-weight: 700; color: var(--water); }
+
+/* つかまえた作品のカード */
+.catch {
+  position: absolute; z-index: 4; right: clamp(16px, 4vw, 56px); top: 76px; width: 320px;
+  background: #fff; color: var(--ink); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(6, 40, 50, .3);
+  opacity: 0; transform: translateY(14px) scale(.96); pointer-events: none;
+  transition: opacity .2s, transform .3s cubic-bezier(.2, 1.4, .4, 1);
+}
+.catch.on { opacity: 1; transform: none; pointer-events: auto; }
+.catch__img { display: block; width: 100%; aspect-ratio: 630 / 500; object-fit: cover; background: #E3ECEE; }
+.catch__shots { display: flex; gap: 6px; margin-top: 10px; }
+.catch__shots:empty { display: none; }
+.catch__shots figure { flex: 1 1 0; margin: 0; }
+.catch__shots img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: #E3ECEE; }
+.catch__shots figcaption { margin-top: 3px; font-size: 10.5px; line-height: 1.4; color: var(--sub); }
+.catch__b { padding: 16px 18px 18px; }
+.catch__g { margin: 0; font-size: 12px; color: var(--sub); }
+.catch h2 { margin: 3px 0 0; font-size: 19px; line-height: 1.35; text-wrap: balance; }
+.catch h2 small, .row .t .en { display: block; margin-top: 1px; font: 600 12px/1.4 var(--latin); color: var(--sub); }
+.catch__t { margin: 6px 0 0; font-size: 13.5px; line-height: 1.65; color: #33474F; text-wrap: pretty; }
+.catch__p { margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: var(--sub); text-wrap: pretty; }
+.catch__p .pts { margin: 0 0 8px; }
+.catch__more { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 700; color: var(--ink); text-underline-offset: 3px; }
+.catch__btns .btn--sub:empty { display: none; }
+.catch__btns { display: flex; gap: 8px; margin-top: 14px; }
+.btn {
+  flex: 1 1 auto; display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: 0 14px;
+  border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background .15s, border-color .15s;
+}
+.btn--main { background: var(--btn); color: #fff; }
+.btn--main:hover { background: #065F68; }
+.btn small { margin-left: 8px; font: 600 12px/1 var(--latin); opacity: .75; }
+.btn--sub { border: 1.5px solid rgba(11, 37, 48, .2); color: var(--ink); }
+.btn--sub:hover { border-color: var(--ink); }
+.scrim { position: absolute; inset: 0; z-index: 3; background: rgba(3, 30, 40, .45); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.toast {
+  position: absolute; z-index: 5; left: 50%; top: 70px; transform: translate(-50%, -10px); width: min(440px, calc(100% - 32px));
+  padding: 14px 18px; border-radius: 14px; background: var(--ink); color: #fff; font-size: 14px; line-height: 1.6; text-align: center;
+  box-shadow: 0 16px 40px rgba(3, 30, 40, .3); opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s;
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast a { color: #8FE3EA; font-weight: 700; }
+.catch__x {
+  position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .92); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+/* つかまえた数(図鑑) */
+.dex {
+  position: absolute; z-index: 2; right: var(--edge); bottom: 18px;
+  display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 8px 0 14px; border-radius: 999px;
+  background: rgba(3, 38, 48, .55); color: #fff; font-size: 12px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.dex ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 5px; }
+.dex li { width: 24px; height: 24px; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.55); overflow: hidden; }
+.dex li.got { border: 2px solid #fff; }
+.dex li img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dex__done { font-weight: 700; }
+
+.scroll {
+  position: absolute; z-index: 2; left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; border-radius: 999px;
+  background: #fff; color: var(--ink); font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(3, 38, 48, .25);
+}
+/* キーボードで水槽の作品を選ぶボタン(Tabで移動したときだけ見える) */
+.keys { position: absolute; z-index: 4; left: var(--edge); top: calc(var(--level, 60%) + 12px); margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; max-width: calc(100% - 40px); }
+.keys button { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; padding: 0; }
+.keys button:focus { position: static; width: auto; height: auto; clip-path: none; padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--ink); font: 700 13px/1 "Zen Kaku Gothic New", sans-serif; }
+.scroll::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.scroll:hover { background: #E9F6F7; }
+.motion {
+  position: absolute; z-index: 2; left: var(--edge); bottom: 18px;
+  appearance: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 36px;
+  padding: 0 14px 0 12px; border-radius: 999px; border: 0;
+  background: rgba(3, 38, 48, .55); color: #fff; font: 500 12px/1 "Zen Kaku Gothic New", sans-serif;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.motion:hover { background: rgba(3, 38, 48, .75); }
+.motion i { width: 10px; height: 10px; display: block; border-left: 3px solid #fff; border-right: 3px solid #fff; }
+.motion[aria-pressed="true"] i { border: 0; width: 0; height: 0; border-left: 9px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.motion .on, .motion[aria-pressed="true"] .off { display: none; }
+.motion[aria-pressed="true"] .on { display: inline; }
+
+/* ---------- 作品一覧 ---------- */
+.works { background: #fff; position: relative; }
+.works__in { max-width: 1120px; margin: 0 auto; padding: 72px clamp(20px, 4vw, 56px) 72px; }
+.works__hd { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.works h2 { margin: 0; font: 700 clamp(26px, 3vw, 34px)/1.2 "Zen Kaku Gothic New", sans-serif; }
+.works__hd a { color: var(--sub); font-size: 14px; }
+.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.row__main { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: 26px; align-items: center; color: inherit; text-decoration: none; }
+.row img { display: block; width: 136px; aspect-ratio: 630 / 500; object-fit: cover; border-radius: 10px; background: #E3ECEE; transition: transform .3s; }
+.row__main:hover img { transform: scale(1.04); }
+.row .t { font-size: 18px; font-weight: 700; line-height: 1.45; line-break: strict; }
+.row .t small { display: block; margin-top: 4px; font-size: 13.5px; font-weight: 400; color: #3F535B; }
+.row .t em .y { margin-left: 14px; font-family: var(--latin); }
+.row .t em { display: block; margin-top: 6px; font-style: normal; font-size: 12px; font-weight: 400; color: var(--sub); }
+.row .new { display: inline-block; margin-left: 10px; padding: 1px 8px; border-radius: 999px; background: var(--water); color: #fff; font-size: 11px; font-weight: 700; vertical-align: 3px; }
+.row__main:hover .t { color: #0A7F8B; }
+.row__cta { display: grid; justify-items: end; gap: 6px; }
+.row__cta .btn { min-width: 168px; }
+.row__cta .btn--sub { background: #fff; }
+.row__p { font-size: 12px; color: var(--sub); }
+.row__buy { font-size: 13px; font-weight: 700; color: var(--ink); text-underline-offset: 3px; }
+/* 新作の行は大きく */
+.row--feat { padding: 28px 0; }
+.row--feat .row__main { grid-template-columns: 240px minmax(0, 1fr); }
+.row--feat img { width: 240px; }
+.row--feat .t { font-size: 21px; }
+.pts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.row .tag { display: inline-block; margin-left: 10px; padding: 1px 8px; border-radius: 999px; border: 1px solid rgba(11,37,48,.25); font-size: 11px; font-weight: 500; color: var(--sub); vertical-align: 3px; }
+.row .shots { display: flex; gap: 8px; margin-top: 12px; }
+.row .shots img { width: 112px; height: 63px; object-fit: cover; border-radius: 6px; }
+.pts span { padding: 2px 9px; border-radius: 999px; background: var(--air); font-size: 12px; font-weight: 500; color: #33474F; }
+.works::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -22px; height: 24px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 14 Q30 2 60 14 T120 14 V24 H0Z' fill='%23fff'/%3E%3C/svg%3E") repeat-x;
+  background-size: 120px 24px;
+}
+
+.about { margin-top: 56px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 28px; align-items: center; padding: 28px 32px; border-radius: 18px; background: var(--air); }
+.about__name { margin: 0; font: 800 28px/1 var(--latin); }
+.about__t { margin: 0; font-size: 14px; line-height: 1.8; color: #3F535B; max-width: 40em; }
+.about__btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.about__btns .btn { flex: none; padding: 0 18px; }
+
+@media (max-width: 760px) {
+  .about { grid-template-columns: 1fr; padding: 22px; margin-top: 48px; }
+  .copy { top: calc(48px + 20px); }
+  .copy h1 { font-size: min(8vw, 40px); }
+  .copy .lead { font-size: 13.5px; margin-top: 8px; }
+  .pitch { margin-top: 14px; font-size: 13px; }
+  .cta { margin-top: 10px; gap: 10px 12px; }
+  .note { font-size: 11.5px; }
+  .hero.catching .scrim { opacity: 1; pointer-events: auto; }
+  .feat { padding-right: 16px; gap: 12px; }
+  .feat img { width: 64px; height: 50px; }
+  .feat b { font-size: 15px; }
+  .more { font-size: 13px; }
+  .catch { left: 10px; right: 10px; top: auto; bottom: 10px; width: auto; max-height: calc(100% - 70px); overflow-y: auto; border-radius: 18px; transition-delay: 0s; }
+  .catch.on { transition-delay: .3s; }
+  .catch__img { max-height: 30svh; }
+  .catch__b { padding: 12px 14px 14px; }
+  .catch h2 { font-size: 16px; padding-right: 30px; }
+  .catch__t { font-size: 12.5px; }
+  .catch__btns { gap: 8px; }
+  .btn { min-height: 40px; font-size: 13px; }
+  .dex { right: 14px; bottom: 22px; padding: 7px 12px; }
+  .dex ol { display: none; }
+  .dex > span { font-size: 0; display: inline-flex; align-items: center; gap: 6px; }
+  .dex > span::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #fff; background: radial-gradient(circle at 35% 35%, #fff 0 18%, transparent 22%); }
+  .dex > span::after { content: attr(data-n); font: 700 12px/1 "Zen Kaku Gothic New", sans-serif; }
+
+  .feat { flex: 1 1 100%; }
+  .buy { flex: 1 1 auto; grid-auto-flow: column; gap: 8px; align-items: baseline; min-height: 44px; padding: 0 14px; }
+  .buy em { display: none; }
+  .more { display: inline; }
+  .motion .off span, .motion .on span { display: none; }
+  .motion { padding: 9px 11px; }
+  .scroll { bottom: 16px; font-size: 12px; padding: 8px 14px; }
+  .row { grid-template-columns: 1fr; gap: 14px; }
+  .row__main, .row--feat .row__main { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .row img, .row--feat img { width: 104px; }
+  .row .t, .row--feat .t { font-size: 16px; }
+  .row .shots img { width: 96px; height: 54px; }
+  .row .t em .y { display: block; margin: 2px 0 0; }
+  .row__main, .row--feat .row__main { grid-template-columns: 88px minmax(0, 1fr); }
+  .row img, .row--feat img { width: 88px; }
+  .pts { gap: 4px; }
+  .pts span { font-size: 11px; padding: 1px 7px; }
+  .row__cta { justify-items: stretch; text-align: center; }
+  .row__cta .btn { min-width: 0; width: 100%; }
+  .about__btns .btn { flex: 1 1 auto; }
+}
+</style>
+</head>
+<body>
+<main>
+  <section class="hero" aria-labelledby="hero-t">
+    <canvas id="tank" aria-label="水槽。作品の入った泡が浮かんできて、水面で割れて飛び出します。作品をクリックすると、その作品のカードが開きます。下の作品一覧からも選べます。"></canvas>
+    <div class="copy">
+      <h1 id="hero-t"><span lang="ja">水の中から、<br>ゲームが浮かんでくる。</span><span lang="en">Games bubble up<br>from the water.</span></h1>
+      <p class="lead" id="lead"></p>
+      <div id="feature"></div>
+    </div>
+    <div class="catch" id="catch" role="dialog" aria-labelledby="catch-t" aria-hidden="true">
+      <button class="catch__x" id="catch-x" type="button" aria-label="閉じる">&times;</button>
+      <img class="catch__img" id="catch-img" alt="">
+      <div class="catch__b">
+        <div class="catch__shots" id="catch-shots"></div>
+        <p class="catch__g" id="catch-g"></p>
+        <h2 id="catch-t"></h2>
+        <p class="catch__t" id="catch-tag"></p>
+        <p class="catch__p" id="catch-p"></p>
+        <div class="catch__btns"><a class="btn btn--main" id="catch-play" rel="noopener"></a><a class="btn btn--sub" id="catch-buy" rel="noopener"></a></div>
+        <a class="catch__more" id="catch-page"></a>
+      </div>
+    </div>
+    <div class="dex" id="dex"></div>
+    <div class="scrim" id="scrim"></div>
+    <div class="toast" id="toast" role="status"></div>
+    <div class="tip" id="tip" aria-hidden="true"></div>
+    <button class="motion" id="motion" type="button" aria-pressed="false"><i aria-hidden="true"></i><span class="off"><span lang="ja">動きを止める</span><span lang="en">Pause</span></span><span class="on"><span lang="ja">動かす</span><span lang="en">Play</span></span></button>
+    <a class="scroll" href="#works" id="scroll"></a>
+    <ul class="keys" id="keys" aria-label="水槽の作品"></ul>
+  </section>
+
+  <section class="works" id="works" aria-labelledby="works-t">
+    <div class="works__in">
+      <div class="works__hd">
+        <h2 id="works-t"><span lang="ja">作品</span><span lang="en">Games</span></h2>
+        <a id="itch-all" href="#" rel="noopener"><span lang="ja">itch.io のページ</span><span lang="en">PAY on itch.io</span></a>
+      </div>
+      <ul class="list" id="list"></ul>
+      <div class="about">
+        <p class="about__name">PAY</p>
+        <p class="about__t"><span lang="ja">水槽を観察する目で作る、ブラウザゲーム。アクアリウムを題材にした小さなゲームと、物語のあるゲームを、ひとりで作っています。新作の知らせは X で。</span><span lang="en">Browser games made with an aquarist's eye. I make small aquarium games and story-driven ones, all on my own. New releases are announced on X.</span></p>
+        <div class="about__btns"><a class="btn btn--sub" id="about-x" rel="noopener"></a><a class="btn btn--sub" id="about-itch" rel="noopener"></a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var P = window.PAY, G = P.games, bi = P.bi, esc = P.esc;
+  // OSの「アニメーションを減らす」設定がオンでも水槽は動かす(サイトの主役のため)。
+  // 動きが苦手な人のために、ヒーロー左下の「動きを止める」ボタンでいつでも止められる。
+  var touchy = window.matchMedia("(pointer: coarse)").matches;      // 指で操作する端末なら「タップ」と書く
+  var paused = false, needDraw = true, copyBox = { right: 0, bottom: 0 };
+  var DPR = Math.min(2, window.devicePixelRatio || 1);
+  function T(o) { return o ? (o[P.lang()] || o.ja) : ""; }
+  function page(g) { return "games/" + g.slug + "/"; }
+
+  /* ---------- 作品一覧・ヒーローのボタン・図鑑 ---------- */
+  function isFree(g) { return g.price && /^(無料|Free)$/.test(g.price.ja); }
+  function playLabel(g) { return g.featured && g.featured.play ? g.featured.play : isFree(g) ? { ja: "無料で遊ぶ", en: "Play free" } : { ja: "ブラウザで遊ぶ", en: "Play in browser" }; }
+  function tagsHtml(g) {
+    var t = (g.featured && g.featured.points) || g.tags || [];
+    if (isFree(g)) t = [{ ja: "無料・ブラウザで遊べる", en: "Free in your browser" }].concat(t);
+    return t.length ? '<span class="pts">' + t.map(function (p) { return "<span>" + bi(p) + "</span>"; }).join("") + "</span>" : "";
+  }
+  function fallbackImg(im, gm) { im.addEventListener("error", function () { if (gm && !im.dataset.fb) { im.dataset.fb = "1"; im.src = artOf(gm).toDataURL(); } }); }
+  function renderList() {
+    document.getElementById("itch-all").href = P.profile.itch;
+    var ax = document.getElementById("about-x"); ax.href = P.profile.x; ax.innerHTML = bi({ ja: "X で " + P.profile.xHandle + " をフォロー", en: "Follow " + P.profile.xHandle + " on X" });
+    var ai = document.getElementById("about-itch"); ai.href = P.profile.itch; ai.innerHTML = bi({ ja: "itch.io でフォロー", en: "Follow on itch.io" });
+    document.getElementById("list").innerHTML = G.map(function (g) {
+      var f = g.featured;
+      return '<li class="row' + (f ? " row--feat" : "") + '"><a class="row__main" href="' + esc(page(g)) + '">' +
+        '<img data-art="' + esc(g.slug) + '" src="' + esc(g.cover) + '" alt="" width="630" height="500" loading="lazy">' +
+        '<span class="t">' + (f ? '<span class="badge">NEW</span><br>' : "") + titleHtml(g, "en") +
+        (g.status && /プロトタイプ|Prototype/.test(g.status.ja + g.status.en) ? '<span class="tag">' + bi(g.status) + "</span>" : "") +
+        "<small>" + bi(g.tagline) + "</small><em>" + bi(g.genre) + '<span class="y">' + esc((g.released || "").slice(0, 7).replace("-", ".")) + "</span></em>" +
+        tagsHtml(g) +
+        (f && f.shots ? '<span class="shots">' + f.shots.map(function (p) { return '<img src="' + esc(p.src) + '" alt="' + esc(T(p.cap)) + '" loading="lazy" width="112" height="63">'; }).join("") + "</span>" : "") + "</span></a>" +
+        '<div class="row__cta"><a class="btn ' + (f ? "btn--main" : "btn--sub") + '" href="' + esc(g.itch) + '" rel="noopener">' + bi(playLabel(g)) + "</a>" +
+        (g.buy ? '<a class="row__buy" href="' + esc(g.buy) + '" rel="noopener">' + bi({ ja: "製品版を買う", en: "Buy the full game" }) + (f && f.priceShort ? " " + bi(f.priceShort) : "") + "</a>" : "") +
+        "</div></li>";
+    }).join("");
+    // プレイ画面が読めないときは、その画像ごと隠す
+    document.querySelectorAll("#list .shots img").forEach(function (im) { im.addEventListener("error", function () { im.remove(); }); });
+    document.querySelectorAll("#list img[data-art]").forEach(function (im) {
+      fallbackImg(im, G.filter(function (x) { return x.slug === im.getAttribute("data-art"); })[0]);
+    });
+  }
+  function renderLead() {
+    document.getElementById("lead").innerHTML = bi({
+      ja: "個人ゲーム開発者 PAY の全" + G.length + "作品。どれもブラウザですぐ、無料で遊べます(新作は体験版)。",
+      en: "All " + G.length + " games by indie developer PAY. Play every one free in your browser (the newest as a free demo)."
+    });
+  }
+  // 題名を「和題」と「(英題)」の2段に分ける
+  function titleHtml(g, enClass) {
+    var t = T(g.title), m = /^(.*?)[(（](.+)[)）]$/.exec(t);
+    var wb = function (x) { return esc(x).replace(/\/\//g, "//<wbr>").replace(/(\w)-(\w)/g, "$1\u2011$2"); };
+    return m ? wb(m[1]) + '<small class="' + enClass + '">' + wb(m[2]) + "</small>" : wb(t);
+  }
+  function renderKeys() {
+    document.getElementById("keys").innerHTML = G.map(function (g, i) {
+      return '<li><button type="button" data-i="' + i + '">' + bi({ ja: "『" + T(g.short) + "』を見る", en: "View " + T(g.short) }) + "</button></li>";
+    }).join("");
+  }
+  function renderScroll() {
+    document.getElementById("scroll").innerHTML = bi({ ja: "全" + G.length + "作品を一覧で見る", en: "See all " + G.length + " games" });
+  }
+  function renderCta() {
+    var F = P.featured, box = document.getElementById("feature");
+    if (!F) { box.innerHTML = '<div class="cta"><a class="more" href="#works">' + bi({ ja: "作品一覧を見る", en: "See all games" }) + "</a></div>"; return; }
+    var f = F.featured;
+    box.innerHTML =
+      '<p class="pitch"><b>' + bi({ ja: "新作『" + F.short.ja + "』", en: "New: " + F.short.en + "." }) + "</b> " + bi(F.tagline) + "</p>" +
+      '<div class="cta"><a class="feat" href="' + esc(F.itch) + '" rel="noopener"><img src="' + esc(F.cover) + '" alt="" width="76" height="60">' +
+      "<span><small>" + bi(F.genre) + "</small><b>" + bi(f.play) + "</b>" + (f.playNote ? "<i>" + bi(f.playNote) + "</i>" : "") + "</span></a>" +
+      (F.buy ? '<a class="buy" href="' + esc(F.buy) + '" rel="noopener">' + bi({ ja: "製品版を買う", en: "Buy the full game" }) + (f.priceShort ? "<small>" + bi(f.priceShort) + "</small>" : "") + "<em>itch.io</em></a>" : "") +
+      '<a class="more" href="' + esc(page(F)) + '">' + bi({ ja: "どんなゲーム?", en: "What's it about?" }) + "</a></div>";
+    fallbackImg(box.querySelector("img"), F);
+  }
+  // つかまえた作品を覚えておく(このブラウザだけ)
+  var caught = {};
+  try { JSON.parse(localStorage.getItem("pay-caught") || "[]").forEach(function (k) { caught[k] = 1; }); } catch (e) {}
+  function caughtCount() { return G.filter(function (g) { return caught[g.slug]; }).length; }
+  function renderDex() {
+    var n = caughtCount(), all = n === G.length;
+    document.getElementById("dex").innerHTML =
+      (all ? '<span class="dex__done" data-n="' + T({ ja: "図鑑 ", en: "Dex " }) + n + " / " + G.length + ' ★">' + bi({ ja: "ぜんぶ見つけた!", en: "You found them all!" }) + "</span>"
+           : '<span data-n="' + T({ ja: "図鑑 ", en: "Dex " }) + n + " / " + G.length + '">' + bi(n ? { ja: "つかまえた作品", en: "Caught" } : { ja: G.length + "作品をつかまえてみよう", en: "Caught" }) + " " + n + " / " + G.length + "</span>") +
+      '<ol aria-hidden="true">' + G.map(function (g) {
+        return '<li class="' + (caught[g.slug] ? "got" : "") + '">' + (caught[g.slug] ? '<img src="' + esc(g.cover) + '" alt="">' : "") + "</li>";
+      }).join("") + "</ol>";
+  }
+
+  /* =========================================================
+     作品アイコン(カバー画像が読めないときの代わり。作品ごとに描き分け)
+     ========================================================= */
+  var ARTS = {};
+  function artOf(gm) {
+    if (ARTS[gm.slug]) return ARTS[gm.slug];
+    var c = document.createElement("canvas"); c.width = c.height = 160;
+    var x = c.getContext("2d"), i;
+    function rr(a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+    function fishShape(cx, cy, L, col) {
+      x.fillStyle = col; x.beginPath(); x.moveTo(cx + L / 2, cy);
+      x.quadraticCurveTo(cx, cy - L * .36, cx - L * .3, cy - L * .06); x.lineTo(cx - L * .52, cy - L * .26); x.lineTo(cx - L * .44, cy);
+      x.lineTo(cx - L * .52, cy + L * .26); x.lineTo(cx - L * .3, cy + L * .06); x.quadraticCurveTo(cx, cy + L * .36, cx + L / 2, cy); x.fill();
+    }
+    switch (gm.slug) {
+      case "the-silent-press":
+        x.fillStyle = "#2B2520"; x.fillRect(0, 0, 160, 160);
+        x.save(); x.translate(82, 84); x.rotate(-.14);
+        x.fillStyle = "#EFE7D6"; x.fillRect(-46, -56, 92, 112);
+        x.fillStyle = "#1D1A16"; x.fillRect(-38, -48, 76, 9); x.fillRect(-38, -34, 76, 2);
+        x.fillStyle = "#9E2B25"; x.fillRect(-38, -26, 40, 32);
+        x.fillStyle = "#8C8577"; for (i = 0; i < 4; i++) x.fillRect(8, -26 + i * 8, 30, 3);
+        for (i = 0; i < 4; i++) x.fillRect(-38, 14 + i * 9, 76 - (i % 2) * 18, 3);
+        x.restore(); break;
+      case "160cm":
+        x.fillStyle = "#BFD9C9"; x.fillRect(0, 0, 160, 160);
+        x.fillStyle = "#46A9C8"; x.fillRect(34, 70, 92, 56); x.strokeStyle = "#2B1D18"; x.lineWidth = 4; x.strokeRect(34, 70, 92, 56);
+        x.save(); x.beginPath(); x.moveTo(28, 64); x.lineTo(132, 64); x.lineTo(134, 108);
+        for (i = 0; i < 6; i++) x.quadraticCurveTo(126 - i * 18, 100, 117 - i * 18, 110);
+        x.lineTo(26, 106); x.closePath(); x.clip();
+        x.fillStyle = "#fff"; x.fillRect(20, 60, 120, 60); x.fillStyle = "rgba(200,52,59,.6)";
+        for (i = 0; i < 12; i++) { x.fillRect(20 + i * 12, 60, 6, 60); x.fillRect(20, 60 + i * 12, 120, 6); }
+        x.restore();
+        x.fillStyle = "#F4D35E"; x.beginPath(); x.moveTo(72, 64); x.quadraticCurveTo(66, 46, 76, 36); x.lineTo(86, 36); x.quadraticCurveTo(96, 46, 90, 64); x.fill();
+        x.fillStyle = "#C8343B"; x.beginPath(); x.arc(76, 30, 6, 0, 7); x.fill(); x.fillStyle = "#fff"; x.beginPath(); x.arc(88, 28, 6, 0, 7); x.fill();
+        break;
+      case "fish-match":
+        x.fillStyle = "#FF4F7B"; x.fillRect(0, 0, 160, 160);
+        fishShape(76, 88, 86, "#fff");
+        x.fillStyle = "#FF4F7B"; x.beginPath(); x.arc(100, 82, 4.5, 0, 7); x.fill();
+        x.fillStyle = "#fff"; x.beginPath(); x.moveTo(118, 54);
+        x.bezierCurveTo(118, 44, 104, 42, 104, 52); x.bezierCurveTo(104, 60, 118, 66, 118, 70); x.bezierCurveTo(118, 66, 132, 60, 132, 52); x.bezierCurveTo(132, 42, 118, 44, 118, 54); x.fill();
+        break;
+      case "frogbit-sweeper":
+        var gr = x.createLinearGradient(0, 0, 0, 160); gr.addColorStop(0, "#1C5A6E"); gr.addColorStop(1, "#0C2E3A"); x.fillStyle = gr; x.fillRect(0, 0, 160, 160);
+        x.strokeStyle = "rgba(201,216,192,.55)"; x.lineWidth = 2;
+        [[50, 62], [88, 52], [118, 74], [72, 92]].forEach(function (p) { x.beginPath(); x.moveTo(p[0], p[1]); x.lineTo(p[0] + 4, p[1] + 50); x.stroke(); });
+        [[50, 62, 22], [88, 52, 26], [118, 74, 18], [72, 92, 16]].forEach(function (p) {
+          x.fillStyle = "#2E7D32"; x.beginPath(); x.arc(p[0], p[1], p[2], 0, 7); x.fill();
+          x.fillStyle = "#5BBF3A"; x.beginPath(); x.arc(p[0], p[1], p[2] - 4, 0, 7); x.fill();
+          x.fillStyle = "#A6E36E"; x.beginPath(); x.arc(p[0] - p[2] * .3, p[1] - p[2] * .3, p[2] * .25, 0, 7); x.fill();
+          x.strokeStyle = "#2E7D32"; x.lineWidth = 2; x.beginPath(); x.moveTo(p[0], p[1]); x.lineTo(p[0] + p[2] - 3, p[1]); x.stroke();
+        });
+        break;
+      case "project-genesis":
+        x.fillStyle = "#13232C"; x.fillRect(0, 0, 160, 160);
+        x.fillStyle = "#1F6F78"; rr(36, 44, 88, 76, 12); x.fill();
+        x.strokeStyle = "#7FD6D0"; x.lineWidth = 4; rr(36, 44, 88, 76, 12); x.stroke();
+        fishShape(78, 92, 30, "#F2A93B");
+        x.save(); x.translate(80, 76); x.rotate(-.42);
+        x.fillStyle = "#F2C230"; x.fillRect(-80, -9, 160, 18); x.fillStyle = "#1C1C1C";
+        for (i = -80; i < 80; i += 16) { x.beginPath(); x.moveTo(i, -9); x.lineTo(i + 8, -9); x.lineTo(i + 2, 9); x.lineTo(i - 6, 9); x.fill(); }
+        x.restore(); break;
+      case "secret":
+        var sg = x.createRadialGradient(80, 70, 10, 80, 80, 110); sg.addColorStop(0, "#1C5A6E"); sg.addColorStop(1, "#06222B"); x.fillStyle = sg; x.fillRect(0, 0, 160, 160);
+        x.fillStyle = "rgba(255,255,255,.12)"; [[40, 120, 6], [118, 46, 4], [128, 112, 8], [30, 50, 3]].forEach(function (p) { x.beginPath(); x.arc(p[0], p[1], p[2], 0, 7); x.fill(); });
+        x.fillStyle = "#FFD45C"; x.font = "800 96px Archivo, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("?", 80, 86);
+        break;
+      default:
+        x.fillStyle = gm.accent || "#0D9AA8"; x.fillRect(0, 0, 160, 160);
+        fishShape(80, 82, 84, "#fff");
+    }
+    ARTS[gm.slug] = c;
+    return c;
+  }
+
+  /* =========================================================
+     水槽:水面のばね、作品の泡、小さな泡、しぶき
+     ========================================================= */
+  var cv = document.getElementById("tank"), g = cv.getContext("2d"), tip = document.getElementById("tip");
+  var W, H, level, SP = 10, n, hs, vs, small = false;
+  var fx = [];
+  var works = [], bubs = [], floats = [], drops = [], rings = [], shards = [], motes = [];
+  var ptr = null, lastPtr = null, ptrV = 0, grab = null, hover = null, spawnT = 0, streamT = 0, stoneT = [0, 0];
+  var GRAV = 1400, TAU = Math.PI * 2;
+
+  function surf(x) {
+    var f = Math.max(0, Math.min(n - 1.001, x / SP)), i = Math.floor(f), k = f - i;
+    return level + hs[i] * (1 - k) + hs[i + 1] * k;
+  }
+  function kick(x, w, v) {
+    var a = Math.max(0, Math.round((x - w / 2) / SP)), b = Math.min(n - 1, Math.round((x + w / 2) / SP));
+    for (var i = a; i <= b; i++) vs[i] += v * (1 - Math.abs(i * SP - x) / (w / 2 + SP) * .6);
+  }
+  function size() {
+    W = cv.clientWidth; H = cv.clientHeight; small = W < 760;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); g.setTransform(DPR, 0, 0, DPR, 0, 0); RAY = null;
+    // 水面はコピーのすぐ下。画面が低いときも作品が泳ぐ水の深さを確保する
+    var cb = document.querySelector(".copy").getBoundingClientRect(), hb = cv.getBoundingClientRect();
+    copyBox = { right: cb.right - hb.left, bottom: cb.bottom - hb.top };
+    level = Math.min(H * .64, Math.max(H * (small ? .44 : .46), cb.bottom - hb.top + (small ? 44 : 64)));
+    cv.parentNode.style.setProperty("--level", Math.round(level) + "px");
+    n = Math.ceil(W / SP) + 2; hs = new Float32Array(n); vs = new Float32Array(n);
+    var r0 = small ? 26 : 46;
+    works.forEach(function (w) { w.r = w.g.featured ? r0 * 1.25 : r0; w.R = w.r * 1.32; w.x = Math.max(w.R, Math.min(W - w.R, w.x)); });
+    makeMotes();
+  }
+
+  /* ---------- 泡の絵(一度だけ描いて、拡大縮小して使う) ---------- */
+  var BUB = null;
+  function bubbleSprite() {
+    var r = 64, s = r * 2 + 4, c = document.createElement("canvas"); c.width = c.height = s;
+    var x = c.getContext("2d"), o = s / 2;
+    // 中はほぼ透明。縁で光が全反射して明るく見える
+    var gr = x.createRadialGradient(o, o + r * .3, 0, o, o, r);
+    gr.addColorStop(0, "rgba(255,255,255,.14)"); gr.addColorStop(.55, "rgba(255,255,255,.03)"); gr.addColorStop(.8, "rgba(230,250,255,.1)");
+    gr.addColorStop(.91, "rgba(235,252,255,.45)"); gr.addColorStop(.975, "rgba(255,255,255,.95)"); gr.addColorStop(1, "rgba(255,255,255,.2)");
+    x.fillStyle = gr; x.beginPath(); x.arc(o, o, r, 0, TAU); x.fill();
+    // 縁の内側の、屈折でできる暗い輪
+    x.strokeStyle = "rgba(0,45,55,.16)"; x.lineWidth = r * .05; x.beginPath(); x.arc(o, o, r * .85, 0, TAU); x.stroke();
+    // 水面の光が映る窓
+    x.save(); x.translate(o - r * .36, o - r * .42); x.rotate(-.75); x.scale(r * .3, r * .15);
+    var hl = x.createRadialGradient(0, 0, 0, 0, 0, 1); hl.addColorStop(0, "rgba(255,255,255,.98)"); hl.addColorStop(.6, "rgba(255,255,255,.75)"); hl.addColorStop(1, "rgba(255,255,255,0)");
+    x.fillStyle = hl; x.beginPath(); x.arc(0, 0, 1, 0, TAU); x.fill(); x.restore();
+    x.fillStyle = "rgba(255,255,255,.9)"; x.beginPath(); x.arc(o - r * .12, o - r * .62, r * .05, 0, TAU); x.fill();
+    // 下側に集まる光(三日月)
+    x.lineCap = "round"; x.strokeStyle = "rgba(255,255,255,.5)"; x.lineWidth = r * .09;
+    x.beginPath(); x.arc(o, o, r * .72, Math.PI * .18, Math.PI * .62); x.stroke();
+    x.strokeStyle = "rgba(255,255,255,.22)"; x.lineWidth = r * .16; x.beginPath(); x.arc(o, o, r * .66, Math.PI * .12, Math.PI * .7); x.stroke();
+    return c;
+  }
+  function drawBub(x, y, rx, ry, rot, alpha) {
+    g.globalAlpha = alpha;
+    if (rot) {
+      var cs = Math.cos(rot), sn = Math.sin(rot);
+      g.setTransform(cs * DPR, sn * DPR, -sn * DPR, cs * DPR, x * DPR, y * DPR);
+      g.drawImage(BUB, -rx * 1.03, -ry * 1.03, rx * 2.06, ry * 2.06);
+      g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    } else g.drawImage(BUB, x - rx * 1.03, y - ry * 1.03, rx * 2.06, ry * 2.06);
+    g.globalAlpha = 1;
+  }
+
+  /* ---------- 作品の泡 ---------- */
+  function makeWork(gm) {
+    var img = new Image(); img.decoding = "async";
+    var w = { g: gm, img: img, ok: false, x: 0, y: 0, vx: 0, vy: 0, ang: 0, av: 0, state: "rise", t: 0, wrap: 1, ph: Math.random() * 6.28, r: 40, R: 52, label: 0, dome: 0, wob: 0, wobV: 0 };
+    img.onload = function () { w.ok = true; };
+    if (gm.cover || gm.icon) img.src = gm.icon || gm.cover;
+    return w;
+  }
+  function place(w, i, count) {
+    // それぞれの持ち場(横の位置)。新作はいちばん目立つ中央〜右寄りに
+    var order = [], fi = Math.min(count - 1, Math.round(count * (small ? .5 : .62) - .5));
+    for (var j = 0; j < count; j++) order.push(j);
+    var slots = order.filter(function (j) { return j !== fi; });
+    var slot = w.g.featured ? fi : slots[works.filter(function (x) { return !x.g.featured; }).indexOf(w)];
+    w.lane = W * ((slot + .5) / count);
+    w.x = w.lane + (Math.random() - .5) * W * .04;
+    w.y = H - w.R - 80 - (i % 2) * (H - level) * .2;
+    if (w.g.featured) w.y = level + w.R + 30;           // 新作は最初にすぐ浮かんでくる
+    w.state = "rise"; w.wrap = 1; w.vx = 0; w.vy = 0;
+  }
+  function burst(w) {
+    var s = surf(w.x);
+    rings.push({ x: w.x, y: s, r: w.R, life: .45, max: .45 });
+    // 膜が細かいしずくになって飛び散る
+    for (var k = 0; k < 22; k++) {
+      var a = -Math.PI / 2 + (k / 21 - .5) * 2.8 + (Math.random() - .5) * .2, sp = 120 + Math.random() * 260;
+      shards.push({ x: w.x + Math.cos(a) * w.R, y: w.y + Math.sin(a) * w.R * .8, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 120, r: .8 + Math.random() * 1.4, life: .35 + Math.random() * .25 });
+    }
+    for (k = 0; k < 12; k++) {
+      var b = -Math.PI / 2 + (Math.random() - .5) * 2, v = 160 + Math.random() * 300;
+      drops.push({ x: w.x + Math.cos(b) * w.R * .5, y: s - 2, vx: Math.cos(b) * v, vy: Math.sin(b) * v, r: 1.3 + Math.random() * 2.4 });
+    }
+    kick(w.x, w.R * 2.4, -280);
+    themed(w, s);
+    // 飛び出す高さは、見出しや説明文にかからない範囲に
+    var overCopy = w.x < copyBox.right + w.r, room = overCopy ? level - copyBox.bottom - w.r - 30 : level - 60 - w.r - 30;
+    room = Math.max(40, room) * (.55 + Math.random() * .45);
+    w.state = "fly"; w.vy = -Math.sqrt(2 * GRAV * room); w.vx = (Math.random() - .5) * 160; w.av = (Math.random() - .5) * 4;
+    w.label = 1.8; w.dome = 0;
+  }
+  // 作品ごとの小さな演出(games.js の fx)
+  function themed(w, s) {
+    var kind = w.g.fx, i, n = { press: 7, cloth: 5, match: 6, frogbit: 5, sealed: 9 }[kind] || 0;
+    for (i = 0; i < n; i++) {
+      var a = -Math.PI / 2 + (Math.random() - .5) * 1.8, v = (w.x < copyBox.right + 40 ? 120 : 200) + Math.random() * 200;
+      var p = { k: kind, x: w.x + (Math.random() - .5) * w.r, y: s - 4, vx: Math.cos(a) * v, vy: Math.sin(a) * v, rot: Math.random() * 6, vr: (Math.random() - .5) * 10, life: 2.4 + Math.random(), sz: .8 + Math.random() * .5, c: Math.random() < .5 };
+      if (kind === "frogbit") { p.vy *= .6; p.vx *= .5; p.life = 7 + Math.random() * 4; }
+      if (kind === "sealed") { p.life = .5 + Math.random() * .4; p.vx *= 1.2; }
+      if (kind === "match") p.life = 1.4 + Math.random() * .6;
+      fx.push(p);
+    }
+  }
+  function stepFx(dt) {
+    for (var i = fx.length - 1; i >= 0; i--) {
+      var p = fx[i], s = surf(p.x); p.life -= dt;
+      if (p.k === "press" || p.k === "cloth") {           // ひらひら舞って水面に落ちる
+        p.vy += 420 * dt; p.vx *= (1 - dt * 1.6); p.vy = Math.min(p.vy, 70); p.x += (p.vx + Math.sin(p.life * 4 + i) * 30) * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+        if (p.y > s) { p.y = s; p.vy = 0; p.vx = 0; p.vr *= .9; p.life -= dt * 1.5; }      // 水に落ちたら早めに消える
+      } else if (p.k === "match") {                       // ハートはふわっと上へ
+        p.vy += (-40 - p.vy) * Math.min(1, dt * 2); p.vx *= (1 - dt * 2); p.x += (p.vx + Math.sin(p.life * 3 + i) * 20) * dt; p.y += p.vy * dt;
+      } else if (p.k === "frogbit") {                      // 浮き草は水面に浮かんで漂う
+        if (p.y < s) { p.vy += GRAV * dt; p.y += p.vy * dt; p.x += p.vx * dt; } else { p.y = s; p.vx *= (1 - dt * .8); p.x += (p.vx + 6) * dt; p.rot += .2 * dt; }
+      } else {                                             // 警告の火花
+        p.vy += GRAV * .6 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      }
+      // 見出し・ボタンの上には入らない
+      if (p.x < copyBox.right + 10 && p.y < copyBox.bottom + 10) { if (p.k === "match") p.life = Math.min(p.life, .25); else { p.y = copyBox.bottom + 10; p.vy = Math.max(0, p.vy); } }
+      if (p.life <= 0 || p.x < -30 || p.x > W + 30) fx.splice(i, 1);
+    }
+  }
+  function drawFx() {
+    fx.forEach(function (p) {
+      var a = Math.min(1, p.life * 1.5);
+      g.save(); g.globalAlpha = a; g.translate(p.x, p.y); g.rotate(p.rot); g.scale(p.sz, p.sz);
+      if (p.k === "press") {
+        g.fillStyle = "#EFE7D6"; g.fillRect(-7, -9, 14, 18);
+        g.fillStyle = "#1D1A16"; g.fillRect(-5, -7, 10, 2); g.fillStyle = "#9E2B25"; g.fillRect(-5, -3, 5, 4);
+        g.fillStyle = "#8C8577"; g.fillRect(1, -3, 4, 1); g.fillRect(1, -1, 4, 1); g.fillRect(-5, 3, 10, 1); g.fillRect(-5, 5, 8, 1);
+      } else if (p.k === "cloth") {
+        g.fillStyle = "#fff"; g.fillRect(-8, -8, 16, 16); g.fillStyle = "rgba(200,52,59,.75)";
+        for (var k = -8; k < 8; k += 6) { g.fillRect(k, -8, 3, 16); g.fillRect(-8, k, 16, 3); }
+      } else if (p.k === "match") {
+        g.fillStyle = "#FF4F7B"; g.beginPath(); g.moveTo(0, 5);
+        g.bezierCurveTo(-9, -1, -5, -9, 0, -4); g.bezierCurveTo(5, -9, 9, -1, 0, 5); g.fill();
+      } else if (p.k === "frogbit") {
+        g.fillStyle = "#3E9A34"; g.beginPath(); g.ellipse(0, 0, 8, 3.5, 0, 0, TAU); g.fill();
+        g.fillStyle = "#7ED957"; g.beginPath(); g.ellipse(-1, -1, 6, 2.2, 0, 0, TAU); g.fill();
+      } else {
+        g.fillStyle = p.c ? "#F2C230" : "#F2A93B"; g.beginPath(); g.moveTo(0, -5); g.lineTo(4, 4); g.lineTo(-4, 4); g.closePath(); g.fill();
+      }
+      g.restore();
+    });
+  }
+  function stepWork(w, dt) {
+    var s = surf(w.x), slow = w === hover ? .18 : 1;
+    w.t += dt;
+    // 泡のふるえ(ばね)。浮かぶ速さで少しつぶれる
+    w.wobV += (-w.wob * 90 - w.wobV * 3.2) * dt; w.wob += w.wobV * dt;
+    if (w.state === "held") return;
+    if (w.state === "caught") {
+      var sp = catchSpot(w), k = Math.min(1, dt * 5), wasUnder = w.y > s;
+      w.x += (sp.x - w.x) * k; w.y += (sp.y + Math.sin(w.t * 2.2) * 4 - w.y) * k; w.ang *= (1 - dt * 4);
+      if (wasUnder && w.y <= surf(w.x)) {                 // 水から引き上げたしぶき
+        kick(w.x, w.R * 2, -320);
+        for (var q = 0; q < 14; q++) drops.push({ x: w.x + (Math.random() - .5) * w.r * 1.6, y: s - 2, vx: (Math.random() - .5) * 220, vy: -120 - Math.random() * 300, r: 1.3 + Math.random() * 2.2 });
+      }
+      return;
+    }
+    if (w.state === "rise") {
+      if (w.dome > 0) {                                  // 水面を押し上げてから割れる
+        w.dome -= dt; w.vy *= (1 - dt * 10); kick(w.x, w.R * 1.6, -900 * dt);
+        if (w.dome <= 0) burst(w);
+      } else {
+        w.vy += ((-70 - w.R * .5) * slow - w.vy) * Math.min(1, dt * 2);
+        // 大きな泡はゆらゆらと左右に揺れながら上がる
+        w.vx = Math.sin(w.t * 1.25 + w.ph) * 18 + Math.sin(w.t * .43 + w.ph * 2) * 8 + ((w.lane || w.x) - w.x) * .6;
+        w.ang *= (1 - dt * 2);
+        if (Math.random() < dt * .8) w.wobV += (Math.random() - .5) * 1.2;
+        if (w.y - w.R * .72 <= s) { w.dome = .16; w.wobV -= 2; }
+      }
+    } else if (w.state === "fly") {
+      w.vy += GRAV * dt;
+      w.ang += w.av * dt;
+      if (w.y + w.r * .3 > s && w.vy > 0) {
+        kick(w.x, w.r * 2.2, Math.min(900, w.vy) * .5);
+        for (var k = 0; k < 10; k++) drops.push({ x: w.x + (Math.random() - .5) * w.r, y: s - 2, vx: (Math.random() - .5) * 280, vy: -80 - Math.random() * 280, r: 1.3 + Math.random() * 2 });
+        rings.push({ x: w.x, y: s, r: w.r * .8, life: .4, max: .4 });
+        for (k = 0; k < 10; k++) spawnBubble(w.x + (Math.random() - .5) * w.r, s + 6 + Math.random() * w.r, 1.5 + Math.random() * 4, 1);
+        w.state = "sink"; w.vy *= .25; w.vx *= .4; w.t = 0; w.sinkT = w.g.featured ? 1.2 + Math.random() * .8 : 2.5 + Math.random() * 4.5;
+      }
+    } else if (w.state === "sink") {
+      w.vy += (75 * slow - w.vy) * Math.min(1, dt * 1.6);
+      w.vx *= (1 - dt * 1.5); w.vx += ((w.lane || w.x) - w.x) * .8 * dt;
+      w.ang *= (1 - dt * 1.2);
+      if (w.t > (w.sinkT || 2.4) || w.y > H - w.R - (small ? 76 : 70)) { w.state = "rise"; w.wrap = 0; w.t = 0; w.wobV += 3; }
+    }
+    if (w.wrap < 1) w.wrap = Math.min(1, w.wrap + dt * 1.6);
+    w.x += w.vx * dt; w.y += w.vy * dt;
+    if (w.x < w.R) { w.x = w.R; w.vx = Math.abs(w.vx) * .6; }
+    if (w.x > W - w.R) { w.x = W - w.R; w.vx = -Math.abs(w.vx) * .6; }
+    var floor = H - w.R - (small ? 70 : 64);                // 下の操作ボタンの帯にはかからない
+    if (w.y > floor) { w.y = floor; if (w.vy > 0) w.vy = 0; }
+    if (w.y < -H) { w.y = -H; w.vy = 0; }
+    if (w.label > 0) w.label -= dt;
+  }
+  function separate(dt) {
+    for (var i = 0; i < works.length; i++) for (var j = i + 1; j < works.length; j++) {
+      var a = works[i], b = works[j];
+      if (a.state === "held" || b.state === "held" || a.state === "fly" || b.state === "fly" || a.state === "caught" || b.state === "caught") continue;
+      var dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, m = a.R + b.R + 6 - d;
+      if (m > 0) { var k = m * .5 * Math.min(1, dt * 8); a.x -= dx / d * k; a.y -= dy / d * k; b.x += dx / d * k; b.y += dy / d * k; a.wobV -= .3; b.wobV -= .3; }
+    }
+  }
+
+  /* ---------- 小さな泡 ---------- */
+  // 大きさで動きが変わる:細かい泡はまっすぐゆっくり、中くらいはジグザグ、大きいものは形がゆれる
+  function spawnBubble(x, y, r, z) {
+    var zig = r > 2.2 ? Math.min(1, (r - 2.2) / 3) : 0;
+    bubs.push({ x: x, y: y, x0: x, r: r, z: z == null ? (Math.random() < .35 ? .4 : 1) : z,
+      vy: 26 + Math.min(r, 9) * 13 + Math.random() * 14, ph: Math.random() * TAU, zf: 5 + Math.random() * 3,
+      za: zig * r * (1.2 + Math.random()), wob: Math.random() * TAU, t: 0, px: 0 });
+  }
+  function stepBubbles(dt, t) {
+    var i, b;
+    spawnT -= dt;
+    if (spawnT <= 0) {
+      spawnT = .06 + Math.random() * .08;
+      var rr = Math.random() < .82 ? 1 + Math.pow(Math.random(), 1.6) * 3.2 : 3.5 + Math.pow(Math.random(), 2) * 9;
+      spawnBubble(Math.random() * W, H + 10, rr);
+    }
+    // エアストーンから立ちのぼる泡の列(2か所)
+    for (var s = 0; s < 2; s++) {
+      stoneT[s] -= dt;
+      if (stoneT[s] <= 0) { stoneT[s] = .07 + Math.random() * .1; spawnBubble(W * (s ? .86 : .14) + (Math.random() - .5) * 10, H + 6, 1.2 + Math.random() * 2.8, s ? 1 : .4); }
+    }
+    if (ptr && !grab && ptr.y > surf(ptr.x) + 8 && ptrV > 30) {
+      streamT -= dt;
+      if (streamT <= 0) { streamT = .05; spawnBubble(ptr.x + (Math.random() - .5) * 8, ptr.y, 1.5 + Math.random() * 3.5, 1); }
+    }
+    for (i = bubs.length - 1; i >= 0; i--) {
+      b = bubs[i]; b.t += dt;
+      var drift = Math.sin(t * .2 + b.y * .004) * 6;
+      b.y -= b.vy * dt * (b.t < .3 ? b.t / .3 * .7 + .3 : 1);
+      b.x0 += drift * dt;
+      // 指のまわりは水の流れでよける
+      if (ptr) {
+        var dx = b.x - ptr.x, dy = b.y - ptr.y, d = Math.hypot(dx, dy);
+        if (d < 50 && d > 0) b.x0 += dx / d * (50 - d) * 3 * dt;
+      }
+      b.x = b.x0 + Math.sin(b.t * b.zf + b.ph) * b.za;
+      var top = surf(b.x);
+      if (b.y - b.r <= top) {
+        bubs.splice(i, 1);
+        if (b.z < 1) continue;
+        // 水面にしばらく浮いてから割れる
+        floats.push({ x: b.x, r: b.r, life: .2 + Math.random() * (b.r > 3 ? 1.6 : .7), vx: (Math.random() - .5) * 8 });
+        kick(b.x, 16, -b.r * 5);
+      }
+    }
+    for (i = floats.length - 1; i >= 0; i--) {
+      var f = floats[i]; f.life -= dt; f.x += f.vx * dt;
+      if (f.life <= 0) {
+        floats.splice(i, 1);
+        rings.push({ x: f.x, y: surf(f.x), r: f.r * 1.2, life: .3, max: .3 });
+        if (f.r > 2.5) drops.push({ x: f.x, y: surf(f.x) - f.r, vx: (Math.random() - .5) * 40, vy: -60 - f.r * 26, r: .9 + f.r * .14 });
+        kick(f.x, 14, f.r * 3);
+      }
+    }
+  }
+  function drawBubbles(layer) {
+    for (var i = 0; i < bubs.length; i++) {
+      var b = bubs[i];
+      if ((b.z < 1) !== (layer === 0)) continue;
+      var r = b.r * (b.z < 1 ? .75 : 1);
+      // 大きい泡ほど、上下につぶれて形がふるえる
+      var obl = r > 3 ? Math.min(.2, (r - 3) * .025) : 0, wv = r > 4 ? Math.sin(b.t * 13 + b.wob) * .06 : 0;
+      var tilt = b.za ? Math.cos(b.t * b.zf + b.ph) * b.za * b.zf / b.vy * .35 : 0;
+      drawBub(b.x, b.y, r * (1 + obl + wv), r * (1 - obl - wv), tilt, b.z < 1 ? .45 : .95);
+    }
+  }
+
+  /* ---------- 水中に漂う細かい粒 ---------- */
+  function makeMotes() {
+    motes = [];
+    var cnt = small ? 40 : 80;
+    for (var i = 0; i < cnt; i++) motes.push({ x: Math.random() * W, y: level + Math.random() * (H - level), z: Math.random(), ph: Math.random() * TAU, r: .5 + Math.random() * 1.3 });
+  }
+
+  function step(dt, t) {
+    var i;
+    for (i = 0; i < n; i++) { vs[i] += (-hs[i] * 70 - vs[i] * 2.4) * dt; hs[i] += vs[i] * dt; }
+    for (var pass = 0; pass < 3; pass++) for (i = 0; i < n; i++) {
+      if (i > 0) vs[i - 1] += (hs[i] - hs[i - 1]) * 14 * dt;
+      if (i < n - 1) vs[i + 1] += (hs[i] - hs[i + 1]) * 14 * dt;
+    }
+    // 風のない水面でも、ごくわずかにさざ波
+    vs[Math.floor(Math.random() * n)] += (Math.random() - .5) * 30;
+    stepBubbles(dt, t);
+    for (i = 0; i < works.length; i++) stepWork(works[i], dt);
+    separate(dt);
+    for (i = drops.length - 1; i >= 0; i--) {
+      var d = drops[i]; d.vy += GRAV * dt; d.x += d.vx * dt; d.y += d.vy * dt;
+      if (d.vy > 0 && d.y > surf(d.x)) { kick(d.x, 12, d.vy * .05); if (d.r > 2) rings.push({ x: d.x, y: surf(d.x), r: d.r * 2.2, life: .25, max: .25 }); drops.splice(i, 1); }
+      else if (d.x < -20 || d.x > W + 20) drops.splice(i, 1);
+    }
+    stepFx(dt);
+    for (i = shards.length - 1; i >= 0; i--) {
+      var p = shards[i]; p.life -= dt; p.vy += GRAV * .5 * dt; p.vx *= (1 - dt * 2); p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.life <= 0) shards.splice(i, 1);
+    }
+    for (i = rings.length - 1; i >= 0; i--) { rings[i].life -= dt; if (rings[i].life <= 0) rings.splice(i, 1); }
+    for (i = 0; i < motes.length; i++) {
+      var m = motes[i];
+      m.x += (Math.sin(t * .3 + m.ph) * 4 + 3) * (.4 + m.z) * dt; m.y += Math.cos(t * .23 + m.ph * 2) * 3 * dt;
+      if (m.x > W + 4) m.x = -4;
+    }
+    ptrV *= Math.max(0, 1 - dt * 5);
+  }
+
+  /* ---------- 描画 ---------- */
+  function drawIcon(w, under) {
+    var r = w.r;
+    g.save(); g.translate(w.x, w.y); g.rotate(w.ang);
+    if (!under) { g.shadowColor = "rgba(6, 40, 50, .28)"; g.shadowBlur = 16; g.shadowOffsetY = 8; }
+    g.fillStyle = "#fff"; g.beginPath(); g.arc(0, 0, r + 3, 0, TAU); g.fill();
+    g.shadowColor = "transparent";
+    g.save(); g.beginPath(); g.arc(0, 0, r, 0, TAU); g.clip();
+    if (w.ok) {
+      // games.js の crop:[中心x, 中心y, 大きさ](画像に対する割合)で、見せたい部分を丸く切り抜く
+      var iw = w.img.naturalWidth, ih = w.img.naturalHeight, c = w.g.crop || [.5, .5, 1], s = Math.min(iw, ih) * c[2];
+      var sx = Math.max(0, Math.min(iw - s, iw * c[0] - s / 2)), sy = Math.max(0, Math.min(ih - s, ih * c[1] - s / 2));
+      g.drawImage(w.img, sx, sy, s, s, -r, -r, r * 2, r * 2);
+    } else {
+      g.drawImage(artOf(w.g), -r, -r, r * 2, r * 2);
+    }
+    if (under) { g.fillStyle = "rgba(13, 154, 168, .16)"; g.fillRect(-r, -r, r * 2, r * 2); }
+    g.restore();
+    if (w.g.featured) {
+      var by = under && w.state === "rise" ? -w.R * (.6 + .4 * w.wrap) - 8 : -r - 13;
+      g.fillStyle = "#0D9AA8"; pill(-23, by - 10, 46, 20); g.fill();
+      g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = "800 11px Archivo, sans-serif"; g.fillText("NEW", 0, by + .5);
+    }
+    g.restore();
+  }
+  function drawShell(w) {
+    var k = w.wrap; if (k <= .02) return;
+    var R = w.R * (.6 + .4 * k), sq = Math.max(-.12, Math.min(.12, w.wob * .08)) + Math.min(.05, Math.abs(w.vy) / 2400);
+    var dome = w.dome > 0 ? (1 - w.dome / .16) * .12 : 0;
+    drawBub(w.x, w.y, R * (1 + sq + dome), R * (1 - sq - dome * .5), w.vx * .004, k);
+  }
+  function pill(x, y, w, h) {
+    g.beginPath();
+    if (g.roundRect) g.roundRect(x, y, w, h, h / 2); else g.rect(x, y, w, h);
+  }
+  function drawLabel(w, alpha, above) {
+    var txt = T(w.g.short) || T(w.g.title);
+    var fs = small ? 11 : 13, ph = small ? 20 : 24;
+    g.font = "700 " + fs + "px 'Zen Kaku Gothic New', sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+    var y = above ? w.y - w.r - (w.g.featured ? 34 : 20) : w.y + (w.state === "rise" ? w.R : w.r + 4) + (small ? 12 : 16);
+    var inAir = y < surf(w.x);
+    var tw = g.measureText(txt).width + (small ? 14 : 18);
+    var x = Math.max(tw / 2 + 4, Math.min(W - tw / 2 - 4, w.x));
+    g.globalAlpha = alpha;
+    g.fillStyle = inAir ? "rgba(255,255,255,.96)" : "rgba(3, 38, 48, .78)";
+    pill(x - tw / 2, y - ph / 2, tw, ph); g.fill();
+    g.fillStyle = inAir ? "#0B2530" : "#fff"; g.fillText(txt, x, y + 1);
+    g.globalAlpha = 1;
+  }
+  function waterPath() {
+    g.beginPath(); g.moveTo(0, H);
+    for (var i = 0; i < n; i++) g.lineTo(i * SP, level + hs[i]);
+    g.lineTo(W, H); g.closePath();
+  }
+  var RAY = null, frame = 0;
+  function drawRays(t) {
+    var q = 4, rw = Math.ceil(W / q), rh = Math.ceil((H - level + 6) / q);
+    if (!RAY) RAY = document.createElement("canvas");
+    if (RAY.width !== rw || RAY.height !== rh) { RAY.width = rw; RAY.height = rh; }
+    var x = RAY.getContext("2d"), h = rh, i;
+    x.clearRect(0, 0, rw, rh);
+    for (i = 0; i < 7; i++) {
+      var lx = (W * (i / 6) * 1.1 - W * .05 + Math.sin(t * .11 + i * 2.1) * 50) / q, lw = (30 + 50 * (.5 + .5 * Math.sin(t * .17 + i * 1.3))) / q;
+      var la = .05 + .05 * (.5 + .5 * Math.sin(t * .37 + i * 1.9)), sk = -h * .45;
+      var lgd = x.createLinearGradient(0, 0, 0, h);
+      lgd.addColorStop(0, "rgba(220,255,250," + la.toFixed(3) + ")"); lgd.addColorStop(1, "rgba(220,255,250,0)");
+      x.fillStyle = lgd; x.beginPath();
+      x.moveTo(lx, 0); x.lineTo(lx + lw, 0); x.lineTo(lx + lw * 1.8 + sk, h); x.lineTo(lx - lw * .4 + sk, h); x.closePath(); x.fill();
+    }
+  }
+  function draw(t) {
+    var i;
+    frame++;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.clearRect(0, 0, W, H);
+    // 水
+    var gr = g.createLinearGradient(0, level - 20, 0, H);
+    gr.addColorStop(0, "#5CC4CD"); gr.addColorStop(.14, "#2BA6B4"); gr.addColorStop(.5, "#11818F"); gr.addColorStop(1, "#063F4C");
+    g.fillStyle = gr; waterPath(); g.fill();
+    g.save(); waterPath(); g.clip();
+    // 水面から差しこむ光の筋(ゆっくり揺れる。小さな画面に描いて引き伸ばす)
+    if (!RAY || frame % 4 === 0) drawRays(t);
+    g.globalCompositeOperation = "screen";
+    g.drawImage(RAY, 0, level - 6, W, H - level + 6);
+    g.globalCompositeOperation = "source-over";
+    // 奥の泡・漂う粒
+    drawBubbles(0);
+    for (i = 0; i < motes.length; i++) {
+      var m = motes[i];
+      g.fillStyle = "rgba(225,250,245," + (.08 + m.z * .22).toFixed(3) + ")";
+      g.beginPath(); g.arc(m.x, m.y, m.r * (.5 + m.z * .6), 0, TAU); g.fill();
+    }
+    // 手前の泡
+    drawBubbles(1);
+    // 水面の裏側に映るきらめき
+    var sh = g.createLinearGradient(0, level - 8, 0, level + 34);
+    sh.addColorStop(0, "rgba(255,255,255,.34)"); sh.addColorStop(.4, "rgba(255,255,255,.08)"); sh.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = sh; g.fillRect(0, level - 20, W, 60);
+    g.globalCompositeOperation = "screen";
+    for (i = 0; i < W; i += 23) {
+      var sv = Math.sin(i * .07 + t * 1.6) + Math.sin(i * .031 - t * 1.1);
+      if (sv > 1.1) { g.fillStyle = "rgba(255,255,255," + ((sv - 1.1) * .35).toFixed(3) + ")"; g.fillRect(i, surf(i) + 3, 14, 1.6); }
+    }
+    g.globalCompositeOperation = "source-over";
+    g.restore();
+    // 水中の作品(泡に包まれている、または沈んでいる)
+    var under = works.filter(function (w) { return w.state !== "fly" && w.state !== "held" && w.state !== "caught" && w.y > surf(w.x); });
+    var above = works.filter(function (w) { return under.indexOf(w) < 0; });
+    // スマホは名札が重ならないよう、いちばん水面に近い泡と新作だけに名前を出す
+    var topRiser = under.filter(function (w) { return w.state === "rise" && !w.g.featured; }).sort(function (a, b) { return a.y - b.y; })[0];
+    under.forEach(function (w) {
+      drawIcon(w, true);
+      if (w.state === "rise") drawShell(w);
+      if (w.state !== "caught" && (!small || w === topRiser || w.g.featured)) drawLabel(w, 1, false);
+    });
+    // 初めての人へのヒント:まだ1つもつかまえていなければ、新作の泡に「押してね」の輪を出す
+    if (!caughtCount() && !caughtW) {
+      var hw = works.filter(function (w) { return w.g.featured && (w.state === "rise" || w.state === "sink") && w.y > surf(w.x); })[0];
+      if (hw) {
+        var pk = (t * .9) % 1;
+        g.strokeStyle = "rgba(255,255,255," + (.7 * (1 - pk)).toFixed(3) + ")"; g.lineWidth = 2;
+        g.beginPath(); g.arc(hw.x, hw.y, hw.R + 6 + pk * 22, 0, TAU); g.stroke();
+        var ht = T(touchy ? { ja: "タップして中を見る", en: "Tap to look inside" } : { ja: "クリックして中を見る", en: "Click to look inside" });
+        g.font = "700 12px 'Zen Kaku Gothic New', sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+        var hwid = g.measureText(ht).width + 20, hx = Math.max(hwid / 2 + 6, Math.min(W - hwid / 2 - 6, hw.x)), hy = hw.y - hw.R - 46;
+        if (hy - 14 < surf(hx)) hy = hw.y + hw.R + 46;      // 上に余裕がなければ名札の下に
+        g.fillStyle = "#FFD45C"; pill(hx - hwid / 2, hy - 12, hwid, 24); g.fill();
+        g.fillStyle = "#0B2530"; g.fillText(ht, hx, hy + 1);
+      }
+    }
+    // 水面の線
+    g.strokeStyle = "rgba(255,255,255,.95)"; g.lineWidth = 1.8; g.beginPath();
+    for (i = 0; i < n; i++) i ? g.lineTo(i * SP, level + hs[i]) : g.moveTo(0, level + hs[0]);
+    g.stroke();
+    g.strokeStyle = "rgba(13,154,168,.25)"; g.lineWidth = 5; g.stroke();
+    // 水面に浮かぶ泡(半球)
+    floats.forEach(function (f) {
+      var y = surf(f.x), r = f.r * 1.1;
+      g.save(); g.beginPath(); g.rect(f.x - r * 2, y - r * 2, r * 4, r * 2 + .5); g.clip();
+      drawBub(f.x, y + r * .25, r * 1.05, r * .95, 0, .95);
+      g.restore();
+    });
+    // 割れた輪
+    rings.forEach(function (r) {
+      var k = 1 - r.life / r.max;
+      g.strokeStyle = "rgba(255,255,255," + Math.max(0, (1 - k) * .9).toFixed(3) + ")"; g.lineWidth = 1.4;
+      g.beginPath(); g.ellipse(r.x, r.y, r.r * (1 + k * 1.1), r.r * (1 + k * 1.1) * .3, 0, 0, TAU); g.stroke();
+    });
+    // しぶきと泡の膜のかけら
+    drops.forEach(function (d) {
+      g.fillStyle = "rgba(92,196,205,.9)"; g.beginPath(); g.ellipse(d.x, d.y, d.r * .9, d.r * 1.15, Math.atan2(d.vy, d.vx) + Math.PI / 2, 0, TAU); g.fill();
+      g.fillStyle = "rgba(255,255,255,.8)"; g.beginPath(); g.arc(d.x - d.r * .3, d.y - d.r * .3, d.r * .3, 0, TAU); g.fill();
+    });
+    drawFx();
+    shards.forEach(function (p) { g.fillStyle = "rgba(255,255,255," + Math.min(1, p.life * 3).toFixed(3) + ")"; g.beginPath(); g.arc(p.x, p.y, p.r, 0, TAU); g.fill(); });
+    // 空中の作品
+    above.forEach(function (w) {
+      drawIcon(w, false);
+      // 名前は上に出す。ただし見出しやボタンにかかるときは下に出す
+      var hitsCopy = w.x - 60 < copyBox.right && w.y - w.r - 46 < copyBox.bottom;
+      if (w.state !== "caught") drawLabel(w, 1, !hitsCopy);
+    });
+  }
+
+  /* ---------- 操作 ---------- */
+  function local(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() }; }
+  function hit(p) {
+    for (var i = works.length - 1; i >= 0; i--) { var w = works[i], rr = (w.state === "rise" ? w.R : w.r + 4) + (small ? 10 : 4); if (Math.hypot(p.x - w.x, p.y - w.y) < rr) return w; }
+    return null;
+  }
+  function showTip(w) {
+    if (!w) { tip.classList.remove("on"); return; }
+    tip.innerHTML = "<b>" + esc(T(w.g.title)) + "</b><span>" + esc(T(w.g.genre)) + (w.g.price ? " / " + esc(T(w.g.price)) : "") + "</span><i>" + esc(T({ ja: "クリックでつかまえて、中を見る", en: "Click to catch it and look inside" })) + "</i>";
+    var x = Math.min(W - 270, Math.max(10, w.x + w.R + 12)), y = Math.max(70, Math.min(H - 120, w.y - 40));
+    tip.style.left = x + "px"; tip.style.top = y + "px"; tip.classList.add("on");
+  }
+  /* ---------- つかまえた作品のカード ---------- */
+  var card = document.getElementById("catch"), hero = cv.parentNode, caughtW = null;
+  document.getElementById("scrim").addEventListener("click", function () { releaseCatch(); });
+  // つかまえた作品は、カードの画像の位置まで引き上げられてカードの裏に入る(カードの画像に変わって見える)
+  function catchSpot(w) {
+    var r = document.getElementById("catch-img").getBoundingClientRect(), h = cv.getBoundingClientRect();
+    return { x: r.left - h.left + r.width / 2, y: r.top - h.top + r.height / 2 };
+  }
+  function openCatch(w) {
+    if (caughtW && caughtW !== w) releaseCatch(true);
+    caughtW = w; w.state = "caught"; w.wrap = 1; w.dome = 0; w.t = 0; w.vx = w.vy = 0;
+    var gm = w.g, img = document.getElementById("catch-img");
+    img.dataset.fb = ""; if (gm.secret) img.src = artOf(gm).toDataURL(); else { img.src = gm.cover; fallbackImg(img, gm); }
+    document.getElementById("catch-g").innerHTML = bi(gm.genre);
+    document.getElementById("catch-t").innerHTML = titleHtml(gm, "");
+    document.getElementById("catch-tag").innerHTML = bi(gm.tagline);
+    document.getElementById("catch-shots").innerHTML = gm.featured && gm.featured.shots ? gm.featured.shots.map(function (p) {
+      return '<figure><img src="' + esc(p.src) + '" alt=""><figcaption>' + bi(p.cap) + "</figcaption></figure>"; }).join("") : "";
+    document.querySelectorAll("#catch-shots img").forEach(function (im) { im.addEventListener("error", function () { var f = im.closest("figure"); if (f) f.remove(); }); });
+    document.getElementById("catch-p").innerHTML = gm.secret ? "" : (gm.secret ? "" : tagsHtml(gm)) + (gm.featured && gm.featured.demo ? bi(gm.featured.demo) : bi({ ja: "itch.io のページが開き、ブラウザでそのまま遊べます。", en: "Opens on itch.io and plays right in your browser." }));
+    var play = document.getElementById("catch-play"), buy = document.getElementById("catch-buy"), pg = document.getElementById("catch-page");
+    play.href = gm.secret ? P.profile.x : gm.itch; play.innerHTML = bi(gm.secret ? { ja: "X でフォローする", en: "Follow on X" } : playLabel(gm));
+    if (gm.buy) { buy.href = gm.buy; buy.innerHTML = bi({ ja: "製品版", en: "Full game" }) + (gm.featured && gm.featured.priceShort ? "<small>" + bi(gm.featured.priceShort) + "</small>" : ""); } else { buy.removeAttribute("href"); buy.innerHTML = ""; }
+    pg.href = gm.secret ? P.profile.itch : page(gm); pg.innerHTML = bi(gm.secret ? { ja: "itch.io の PAY のページ", en: "PAY on itch.io" } : { ja: "作品ページでくわしく見る", en: "See the game page" });
+    card.classList.add("on"); card.setAttribute("aria-hidden", "false"); hero.classList.add("catching");
+    hover = null; showTip(null); needDraw = true;
+    setTimeout(function () { if (caughtW === w && !touchy) play.focus({ preventScroll: true }); }, 350);
+    if (gm.secret) return;
+    var first = !caught[gm.slug];
+    caught[gm.slug] = 1;
+    try { localStorage.setItem("pay-caught", JSON.stringify(Object.keys(caught))); } catch (e) {}
+    renderDex();
+    if (first && caughtCount() === G.length) celebrate();
+  }
+  function releaseCatch(keepCard) {
+    if (caughtW) { var w = caughtW; caughtW = null; w.state = "fly"; w.vy = -80; w.vx = (Math.random() - .5) * 140; w.av = (Math.random() - .5) * 3; w.t = 0; }
+    if (!keepCard) { card.classList.remove("on"); card.setAttribute("aria-hidden", "true"); hero.classList.remove("catching"); }
+    needDraw = true;
+  }
+  // 全部つかまえたごほうび:6つ目の「まだ水の底」の泡が浮かんでくる
+  var SECRET = { slug: "secret", secret: true, short: { ja: "?", en: "?" },
+    title: { ja: "まだ水の底", en: "Still at the bottom" }, genre: { ja: "次の作品", en: "The next game" },
+    tagline: { ja: "次の作品は、いま水の底で育っています。浮かんでくる日は X でお知らせします。", en: "The next game is still growing at the bottom of the tank. Watch X for the day it surfaces." } };
+  function addSecret() {
+    if (works.some(function (w) { return w.g.secret; })) return;
+    var w = makeWork(SECRET); w.r = small ? 26 : 40; w.R = w.r * 1.32; w.lane = W * (small ? .5 : .82);
+    w.x = w.lane; w.y = H - w.R - 80; w.state = "rise"; w.wrap = 0;
+    works.push(w);
+  }
+  function celebrate() {
+    setTimeout(addSecret, 900);
+    var tt = document.getElementById("toast");
+    tt.innerHTML = bi({ ja: G.length + "作品ぜんぶ見つけました。新作の知らせは ", en: "You found all " + G.length + " games! Watch for the next one on " }) +
+      '<a href="' + esc(P.profile.x) + '" rel="noopener">X ' + esc(P.profile.xHandle) + "</a>" + bi({ ja: " で。", en: "." });
+    tt.classList.add("on"); setTimeout(function () { tt.classList.remove("on"); }, 7000);
+    for (var i = 0; i < 70; i++) spawnBubble(Math.random() * W, H + Math.random() * 120, 2 + Math.random() * 7, 1);
+    for (var x = 0; x < W; x += 60) kick(x, 60, -120 - Math.random() * 120);
+  }
+  document.getElementById("catch-x").addEventListener("click", function () { releaseCatch(); });
+  document.getElementById("keys").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var w = works[+b.getAttribute("data-i")]; if (w) { openCatch(w); var x = document.getElementById("catch-x"); setTimeout(function () { x.focus(); }, 50); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card.classList.contains("on")) releaseCatch(); });
+
+  var NET = 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2732%27 height=%2732%27%3E%3Cpath d=%27M19 19 L30 30%27 stroke=%27%230B2530%27 stroke-width=%273.5%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%2711%27 cy=%2711%27 r=%279%27 fill=%27rgba(255,255,255,.55)%27 stroke=%27%230B2530%27 stroke-width=%272.5%27/%3E%3Cpath d=%27M5 8h12M4 12h14M6 16h10M8 4v14M12 3v16M16 5v12%27 stroke=%27%230B2530%27 stroke-width=%27.8%27 opacity=%27.6%27/%3E%3C/svg%3E") 11 11, pointer';
+  cv.addEventListener("pointermove", function (e) {
+    var p = local(e);
+    if (ptr) { var dtp = Math.max(1, p.t - ptr.t) / 1000, v = Math.hypot(p.x - ptr.x, p.y - ptr.y) / dtp; ptrV = ptrV * .6 + v * .4; }
+    ptr = p;
+    if (grab) { grab.px = p.x; grab.py = p.y; grab.moved = Math.max(grab.moved, Math.hypot(p.x - grab.sx, p.y - grab.sy)); return; }
+    var h = e.pointerType === "mouse" ? hit(p) : null;
+    if (h !== hover) { hover = h; showTip(h); cv.style.cursor = h ? NET : "default"; }
+    // 水面をなでると波が立ち、水面の泡は割れる
+    if (lastPtr && Math.abs(p.y - surf(p.x)) < 40) kick(p.x, 36, (p.y - lastPtr.y) * 5);
+    for (var i = floats.length - 1; i >= 0; i--) if (Math.abs(floats[i].x - p.x) < floats[i].r + 8 && Math.abs(p.y - surf(p.x)) < 24) floats[i].life = 0;
+    lastPtr = p;
+  });
+  // スマホ:作品に触れたときだけスクロールを止める(水の部分はふつうにスクロールできる)
+  cv.addEventListener("touchstart", function (e) {
+    var t = e.touches[0], r = cv.getBoundingClientRect();
+    if (t && hit({ x: t.clientX - r.left, y: t.clientY - r.top })) e.preventDefault();
+  }, { passive: false });
+  cv.addEventListener("pointercancel", function () {
+    if (grab) { var w = grab.w; w.state = w.y < surf(w.x) ? "fly" : "sink"; w.t = 0; grab = null; }
+    ptr = null; lastPtr = null;
+  });
+  cv.addEventListener("pointerleave", function () { ptr = null; lastPtr = null; ptrV = 0; if (!grab) { hover = null; showTip(null); } });
+  cv.addEventListener("pointerdown", function (e) {
+    var p = local(e), w = hit(p);
+    if (paused) { if (w) openCatch(w); else if (caughtW) releaseCatch(); return; }     // 止めているときも、押せばカードが開く
+    ptr = p;
+    if (!w) {
+      if (card.classList.contains("on")) releaseCatch();
+      if (p.y > surf(p.x)) {
+        for (var k = 0; k < 16; k++) spawnBubble(p.x + (Math.random() - .5) * 30, p.y + (Math.random() - .5) * 20, 1.5 + Math.random() * 6, 1);
+      }
+      else kick(p.x, 40, 120);
+      return;
+    }
+    if (w === caughtW) { caughtW = null; card.classList.remove("on"); card.setAttribute("aria-hidden", "true"); hero.classList.remove("catching"); }
+    grab = { w: w, px: p.x, py: p.y, sx: p.x, sy: p.y, ox: p.x - w.x, oy: p.y - w.y, moved: 0, t: performance.now() };
+    w.state = "held"; w.wrap = 1; w.label = 0; w.dome = 0;
+    cv.setPointerCapture(e.pointerId); showTip(null); cv.style.cursor = "grabbing";
+  });
+  cv.addEventListener("pointerup", function () {
+    if (!grab) return;
+    var w = grab.w, quick = performance.now() - grab.t < 300;
+    if (grab.moved < 8 && quick) { grab = null; cv.style.cursor = "pointer"; openCatch(w); return; }
+    w.state = w.y < surf(w.x) ? "fly" : "sink"; w.t = 0; w.av = w.vx * .004;
+    if (w.state === "fly") w.label = 1.2;
+    grab = null; cv.style.cursor = "default";
+  });
+  function updateGrab(dt) {
+    if (!grab) return;
+    var w = grab.w, nx = grab.px - grab.ox, ny = grab.py - grab.oy;
+    w.vx = (nx - w.x) / Math.max(dt, .001); w.vy = (ny - w.y) / Math.max(dt, .001);
+    var before = w.y > surf(w.x);
+    w.x = nx; w.y = ny; w.ang *= .85;
+    var after = w.y > surf(w.x);
+    if (before !== after) kick(w.x, w.r * 2, Math.max(-500, Math.min(500, w.vy)) * .4);
+  }
+
+  /* ---------- 起動 ---------- */
+  function boot() {
+    renderList();
+    renderLead();
+    renderCta();
+    renderScroll();
+    renderKeys();
+    renderDex();
+    BUB = bubbleSprite();
+    works = G.map(makeWork);
+    size();
+    works.forEach(function (w, i) { place(w, i, works.length); });
+    if (caughtCount() === G.length) addSecret();          // 前に全部つかまえた人には、最初から6つ目の泡がいる
+    var rt;
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { var oW = W; size(); if (Math.abs(oW - W) > 1) works.forEach(function (w, i) { if (w.state !== "fly") place(w, i, works.length); }); }, 160); });
+    document.addEventListener("paylang", function () { showTip(hover); document.getElementById("catch-x").setAttribute("aria-label", T({ ja: "閉じる", en: "Close" })); cv.setAttribute("aria-label", T({ ja: "水槽。作品の入った泡が浮かんできて、水面で割れて飛び出します。作品をクリックすると、その作品のカードが開きます。", en: "An aquarium. Bubbles carrying games rise, pop at the surface and fly out. Click a game to open its card." })); renderLead(); renderCta(); renderScroll(); renderKeys(); renderDex(); if (caughtW) { var w = caughtW; caughtW = null; openCatch(w); } needDraw = true; });
+    document.dispatchEvent(new CustomEvent("paylang"));     // いまの言語で読み上げ用ラベルなどをそろえる
+
+    // 「動きを止める」ボタン(選んだ状態はこのブラウザに覚えておく)
+    var btn = document.getElementById("motion"); needDraw = true;
+    function setPaused(v) {
+      paused = v; btn.setAttribute("aria-pressed", String(v)); needDraw = true;
+      try { localStorage.setItem("pay-motion", v ? "off" : "on"); } catch (e) {}
+    }
+    try { paused = localStorage.getItem("pay-motion") === "off"; } catch (e) {}
+    btn.setAttribute("aria-pressed", String(paused));
+    btn.addEventListener("click", function () { setPaused(!paused); });
+    works.forEach(function (w) { w.img.addEventListener("load", function () { needDraw = true; }); });
+    window.addEventListener("resize", function () { needDraw = true; });
+    var last = performance.now(), visible = true;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(cv);
+    function loop(now) {
+      var dt = Math.min(.033, (now - last) / 1000); last = now;
+      if (visible && !document.hidden) {
+        if (!paused) { updateGrab(dt); step(dt, now / 1000); draw(now / 1000); }
+        else if (needDraw && W) { draw(now / 1000); needDraw = false; }
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
+</body>
+</html>

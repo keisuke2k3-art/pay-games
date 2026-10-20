@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PROJECT GENESIS//One-Shot-Setup | PAY</title>
+<meta name="description" content="設計は一度きり。100日間、介入不可。初期設計だけで水槽生態系の生存を賭ける、SFディストピア・アクアリウム・シミュレーション。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PROJECT GENESIS//One-Shot-Setup">
+<meta property="og:description" content="One design. 100 days. Zero intervention.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzI4MTM2MjU4LnBuZw==/original/CkwFu9.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/project-genesis/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/project-genesis/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --steel: #13232C;     /* 封印区画の鋼板 */
+  --steel-2: #1A303B;
+  --grid: #24414B;
+  --cyan: #7FD6D0;      /* 計測光 */
+  --amber: #F2A93B;     /* 警告 */
+  --red: #C2453A;       /* 崩壊 */
+  --text: #D8E4E3;
+
+  --pay-bg: var(--steel);
+  --pay-fg: var(--text);
+  --pay-line: rgba(127, 214, 208, .18);
+  --pay-accent: var(--amber);
+  --pay-accent-fg: #13232C;
+  --pay-bar-bg: rgba(19, 35, 44, .88);
+  --pay-bar-fg: var(--text);
+  --pay-bar-bg-solid: var(--steel);
+}
+body {
+  background: var(--steel); color: var(--text);
+  font: 400 16px/1.85 "BIZ UDPGothic", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.cp { font-family: "Chakra Petch", "BIZ UDPGothic", sans-serif; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+/* 走査線 */
+.scan { position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .14) 0 1px, transparent 1px 3px); }
+
+/* ---------- ヒーロー ---------- */
+.hero {
+  min-height: 100svh; max-width: 1200px; margin: 0 auto;
+  padding: calc(96px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) 72px max(20px, env(safe-area-inset-left, 0px));
+  display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 48px; align-items: center;
+}
+.hero h1 { margin: 0; font-weight: 700; line-height: 1; letter-spacing: .01em; }
+.hero h1 .a { display: block; font-size: clamp(44px, 6.6vw, 84px); color: var(--text); }
+.hero h1 .b { display: block; margin-top: 14px; font-size: clamp(18px, 2.4vw, 28px); font-weight: 400; color: var(--cyan); }
+.motto { margin: 36px 0 0; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.5; font-weight: 700; }
+.motto [lang="ja"] + [lang="ja"] { display: block; }
+.motto-en { display: block; margin-top: 6px; font-size: 15px; color: var(--cyan); font-weight: 400; }
+.cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 40px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+  background: var(--amber); color: #1A1206; font: 700 18px/1 "Chakra Petch", sans-serif; letter-spacing: .06em;
+  padding: 18px 28px; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.btn:hover { background: #F7C06A; }
+.lang-note { font-size: 14px; color: var(--cyan); }
+
+/* 計測コンソール */
+.console {
+  position: relative; background: var(--steel-2); border: 1px solid var(--grid);
+  padding: 20px 22px 18px;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+.c-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.c-label { font-size: 12px; color: var(--cyan); letter-spacing: .08em; }
+.day { font: 700 clamp(48px, 6vw, 72px)/1 "Chakra Petch", sans-serif; font-variant-numeric: tabular-nums; }
+.day small { font-size: .32em; color: var(--cyan); margin-right: 8px; font-weight: 400; }
+.status { text-align: right; font: 600 15px/1.3 "Chakra Petch", sans-serif; color: var(--cyan); }
+.status.warn { color: var(--amber); }
+.status.dead { color: var(--red); }
+.chart { margin-top: 14px; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+.chart svg { display: block; width: 100%; height: auto; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font: 400 13px/1 "Chakra Petch", sans-serif; }
+.legend i { display: inline-block; width: 18px; height: 3px; margin-right: 6px; vertical-align: middle; }
+.vit { margin-top: 16px; }
+.vit-bar { height: 10px; background: var(--grid); margin-top: 6px; }
+.vit-bar b { display: block; height: 100%; width: 100%; background: var(--cyan); transition: width .2s linear, background .3s; }
+.sealed {
+  position: absolute; right: 22px; top: 44%; transform: rotate(-8deg);
+  border: 3px solid var(--red); color: var(--red); padding: 4px 12px;
+  font: 700 22px/1 "Chakra Petch", sans-serif; letter-spacing: .14em; opacity: .85;
+}
+
+/* ---------- 本文 ---------- */
+section h2 { margin: 0 0 32px; font: 700 clamp(26px, 3.4vw, 40px)/1.2 "Chakra Petch", "BIZ UDPGothic", sans-serif; }
+section h2 small { display: block; margin-top: 8px; font: 400 15px/1.4 "BIZ UDPGothic", sans-serif; color: var(--cyan); }
+
+.rule { padding: 112px 0; border-top: 1px solid var(--grid); }
+.rule .cols { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
+.rule .big { margin: 0; font-size: clamp(28px, 4vw, 46px); line-height: 1.4; font-weight: 700; }
+.rule .big em { font-style: normal; color: var(--amber); }
+.rule p { margin: 0 0 18px; max-width: 34em; }
+
+.phases { padding: 0 0 112px; }
+.phases ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; background: var(--grid); border: 1px solid var(--grid); }
+.phases li { background: var(--steel); padding: 28px 24px 32px; }
+.phases .no { display: block; font: 700 14px/1 "Chakra Petch", sans-serif; color: var(--amber); letter-spacing: .1em; }
+.phases h3 { margin: 12px 0 14px; font: 700 22px/1.25 "Chakra Petch", sans-serif; }
+.phases h3 small { display: block; margin-top: 6px; font: 700 16px/1.4 "BIZ UDPGothic", sans-serif; color: var(--cyan); }
+.phases p { margin: 0; font-size: 15px; }
+.chem { display: inline-block; padding: 0 6px; margin: 0 2px; border: 1px solid var(--grid); font: 600 13px/1.6 "Chakra Petch", sans-serif; }
+
+.media { padding: 0 0 112px; }
+.media .row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.video { position: relative; aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--grid); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.media img { display: block; width: 100%; border: 1px solid var(--grid); background: var(--steel-2); aspect-ratio: 347 / 500; object-fit: cover; }
+.media figcaption { margin-top: 8px; font-size: 13px; color: var(--cyan); }
+.media figure { margin: 0; }
+
+.spec { padding: 0 0 112px; }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+dt, dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--grid); }
+dt { color: var(--cyan); padding-right: 28px; font-family: "Chakra Petch", "BIZ UDPGothic", sans-serif; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { border: 1px solid var(--grid); padding: 0 8px; font-size: 13px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { font-size: 14px; color: var(--cyan); }
+
+@media (max-width: 900px) {
+  .hero, .rule .cols, .media .row, .spec .row { grid-template-columns: 1fr; }
+  .phases ol { grid-template-columns: 1fr; }
+  .media img { max-width: 360px; }
+}
+@media (prefers-reduced-motion: reduce) { .vit-bar b { transition: none; } }
+</style>
+</head>
+<body data-game="project-genesis">
+<div class="scan" aria-hidden="true"></div>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1 class="cp"><span class="a">PROJECT<br>GENESIS</span><span class="b">//One-Shot-Setup</span></h1>
+      <p class="motto">
+        <span lang="ja">設計は一度きり。<br>100日間、介入不可。</span>
+        <span lang="en">One design. 100 days.<br>Zero intervention.</span>
+        <span class="motto-en cp" lang="ja">One design. 100 days. Zero intervention.</span>
+      </p>
+      <div class="cta">
+        <a class="btn" href="https://pay-k.itch.io/projectgenesis-one-shot-setup"><span lang="ja">無料で実験を開始</span><span lang="en">Start the experiment for free</span></a>
+        <span class="lang-note"><span lang="ja">日本語 / English(ゲーム内で切替)</span><span lang="en">English / Japanese (switch in-game)</span></span>
+      </div>
+    </div>
+
+    <div class="console" role="img" aria-label="封印された水槽の100日間の水質ログ(デモ)">
+      <div class="c-top">
+        <div>
+          <div class="c-label cp">BATCH <span id="batch">#0001</span> / OBSERVATION</div>
+          <div class="day"><small>DAY</small><span id="day">000</span></div>
+        </div>
+        <div class="status" id="status">STABLE</div>
+      </div>
+      <div class="sealed" aria-hidden="true">SEALED</div>
+      <div class="chart">
+        <svg viewBox="0 0 400 170" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="#24414B" stroke-width="1">
+            <line x1="0" y1="42" x2="400" y2="42"/><line x1="0" y1="85" x2="400" y2="85"/><line x1="0" y1="128" x2="400" y2="128"/>
+            <line x1="100" y1="0" x2="100" y2="170"/><line x1="200" y1="0" x2="200" y2="170"/><line x1="300" y1="0" x2="300" y2="170"/>
+          </g>
+          <polyline id="l-nh3" fill="none" stroke="#F2A93B" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+          <polyline id="l-no2" fill="none" stroke="#C2453A" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+          <polyline id="l-no3" fill="none" stroke="#7FD6D0" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+      <div class="legend cp"><span><i style="background:#F2A93B"></i>NH3</span><span><i style="background:#C2453A"></i>NO2</span><span><i style="background:#7FD6D0"></i>NO3</span></div>
+      <div class="vit">
+        <div class="c-label cp">VITALITY <span id="vit-n">100</span>%</div>
+        <div class="vit-bar"><b id="vit"></b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rule">
+    <div class="wrap cols">
+      <p class="big"><span lang="ja">ルールその一。<br>チャンスは<br><em>初期設計</em>の一度きり。</span><span lang="en">Rule number one:<br>you only get <em>one shot</em>.</span></p>
+      <div>
+        <p><span lang="ja">『PROJECT GENESIS//One-Shot-Setup』は、計画力を限界まで試すハードコアな水槽生態系シミュレーションです。</span><span lang="en">PROJECT GENESIS//One-Shot-Setup is a hardcore aquatic ecosystem simulation that tests your planning skills to the limit.</span></p>
+        <p><span lang="ja">限られたコストの中で、生体・水草・底床を慎重に選び、「SEAL」を押す。封印したあとは一切手出しできません。あとは自分の計算が正しかったことを祈るだけ。毎日が、生態系崩壊との静かな戦いです。</span><span lang="en">Balance your budget across lifeforms, flora and substrate, then hit SEAL. Once sealed, you can't intervene. All that's left is hoping your math was right. Every day is a silent war against ecological collapse.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="phases">
+    <div class="wrap">
+      <h2>PROTOCOL<small><span lang="ja">実験の手順</span><span lang="en">How to play</span></small></h2>
+      <ol>
+        <li>
+          <span class="no">PHASE 01</span>
+          <h3>INITIAL SETUP<small lang="ja">初期設計</small></h3>
+          <p><span lang="ja">コスト予算の範囲で、魚(ネオンテトラ、アロワナ、エンゼルフィッシュ)と水草を慎重に選ぶ。</span><span lang="en">Carefully pick fish (neon tetras, arowanas, angelfish) and plants within your budget.</span></p>
+        </li>
+        <li>
+          <span class="no">PHASE 02</span>
+          <h3>AUTO-OBSERVATION<small lang="ja">自動観測</small></h3>
+          <p><span lang="ja">ハッチを封印。100日間、生命力と水質(<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>)の推移を見守る。</span><span lang="en">Seal the hatch. Monitor vitality and water chemistry (<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>) over 100 simulated days.</span></p>
+        </li>
+        <li>
+          <span class="no">PHASE 03</span>
+          <h3>DATA COLLECTION<small lang="ja">データ回収</small></h3>
+          <p><span lang="ja">失敗を分析するか、成功を祝うか。次の生体バッチに備えよう。</span><span lang="en">Analyze your failure or celebrate your success, then prepare the next biological batch.</span></p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="media">
+    <div class="wrap">
+      <h2>RECORD<small><span lang="ja">映像記録</span><span lang="en">Footage</span></small></h2>
+      <div class="row">
+        <div class="video">
+          <iframe src="https://www.youtube-nocookie.com/embed/LRzGO-yboTU" title="PROJECT GENESIS//One-Shot-Setup trailer" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <figure>
+          <a href="https://img.itch.zone/aW1hZ2UvNDcyMTAzNi8yODk3OTg0NS5wbmc=/original/QwJIg7.png"><img src="https://img.itch.zone/aW1hZ2UvNDcyMTAzNi8yODk3OTg0NS5wbmc=/347x500/bxV7B3.png" alt="ゲーム画面" loading="lazy"></a>
+          <figcaption><span lang="ja">ゲーム画面</span><span lang="en">In-game screenshot</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div>
+        <h2>SPEC<small><span lang="ja">作品情報</span><span lang="en">Game info</span></small></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">シミュレーション / ストラテジー</span><span lang="en">Simulation / Strategy</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">英語 / 日本語</span><span lang="en">English / Japanese</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">タグ</span><span lang="en">Tags</span></dt><dd class="tags"><span>Sci-fi</span><span>Dystopian</span><span>Dark</span><span>Atmospheric</span><span>Pixel Art</span><span>Aquarium</span></dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2>ACCESS<small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></small></h2>
+        <iframe src="https://itch.io/embed/4721036?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で公開中。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ヒーロー:封印水槽の100日ログ(演出用の擬似データ。実際のゲームの計算式ではありません) */
+(function () {
+  "use strict";
+  var CONFIG = { msPerDay: 70, holdMs: 2600, W: 400, H: 170 };
+  var $ = function (id) { return document.getElementById(id); };
+  var L = { nh3: $("l-nh3"), no2: $("l-no2"), no3: $("l-no3") };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var state = { batch: 1, day: 0, collapse: 0, pts: { nh3: [], no2: [], no3: [] }, vit: 100, t: 0, hold: 0 };
+
+  function bump(d, c, w) { return Math.exp(-((d - c) * (d - c)) / (2 * w * w)); }
+  function sample(d) {
+    var j = function () { return (Math.random() - .5) * .04; };
+    var crash = state.collapse && d > state.collapse ? Math.min(1, (d - state.collapse) / 12) : 0;
+    return {
+      nh3: Math.min(1, bump(d, 14, 6) * .85 + .05 + crash * .9 + j()),
+      no2: Math.min(1, bump(d, 30, 9) * .75 + .04 + crash * .6 + j()),
+      no3: Math.min(1, (1 - Math.exp(-d / 38)) * .6 + .04 + j())
+    };
+  }
+  function newBatch() {
+    state.day = 0; state.vit = 100; state.hold = 0;
+    state.collapse = Math.random() < .5 ? 45 + Math.floor(Math.random() * 30) : 0;
+    state.pts = { nh3: [], no2: [], no3: [] };
+    $("batch").textContent = "#" + String(state.batch).padStart(4, "0");
+  }
+  function render() {
+    for (var k in L) L[k].setAttribute("points", state.pts[k].join(" "));
+    $("day").textContent = String(state.day).padStart(3, "0");
+    $("vit-n").textContent = Math.round(state.vit);
+    var vb = $("vit"); vb.style.width = state.vit + "%";
+    vb.style.background = state.vit < 30 ? "#C2453A" : state.vit < 80 ? "#F2A93B" : "#7FD6D0";
+    var st = $("status");
+    if (state.vit <= 0) { st.textContent = "ECOSYSTEM COLLAPSED"; st.className = "status dead"; }
+    else if (state.day >= 100) { st.textContent = "BATCH SURVIVED"; st.className = "status"; }
+    else if (state.vit < 80) { st.textContent = "WARNING"; st.className = "status warn"; }
+    else { st.textContent = "STABLE"; st.className = "status"; }
+  }
+  function tick() {
+    var d = state.day, s = sample(d), x = (d / 100 * CONFIG.W).toFixed(1);
+    for (var k in s) state.pts[k].push(x + "," + ((1 - s[k]) * (CONFIG.H - 10) + 5).toFixed(1));
+    var stress = s.nh3 * 1.4 + s.no2 * 1.2;
+    state.vit = Math.max(0, Math.min(100, state.vit - (stress > 1 ? (stress - 1) * 5 : 0) + (stress < .45 ? .25 : 0)));
+    state.day++;
+  }
+  function frame(now) {
+    if (!document.hidden) {
+      if (state.hold) {
+        if (now - state.hold > CONFIG.holdMs) { state.batch++; newBatch(); }
+      } else if (now - state.t > CONFIG.msPerDay) {
+        state.t = now; tick(); render();
+        if (state.day > 100 || state.vit <= 0) { state.day = Math.min(state.day, 100); render(); state.hold = now; }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  newBatch();
+  if (reduce) { while (state.day <= 100 && state.vit > 0) tick(); state.day = Math.min(state.day, 100); render(); }
+  else requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

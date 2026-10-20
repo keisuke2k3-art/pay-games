@@ -1,0 +1,140 @@
+/* =========================================================
+   PAY GAMES — 共通スタイル (site.css)
+   上部バー / ほかの作品 / フッター / 言語切替だけを担当。
+   色は各ページの :root で上書きできる:
+     --pay-bg  --pay-fg  --pay-line  --pay-accent  --pay-bar-bg
+   ========================================================= */
+:root {
+  --pay-bg: #ffffff;
+  --pay-fg: #1a1a1a;
+  --pay-line: rgba(0, 0, 0, .18);
+  --pay-accent: #2a7fa8;
+  --pay-bar-bg: rgba(255, 255, 255, .82);
+  --pay-bar-fg: #1a1a1a;
+}
+
+/* 日本語は文節で改行する(対応ブラウザのみ) */
+html[data-lang="ja"] body { word-break: auto-phrase; }
+
+html[data-lang="ja"] body [lang="en"],
+html[data-lang="en"] body [lang="ja"] { display: none !important; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px)); }
+body { margin: 0; }
+img { max-width: 100%; height: auto; }
+:focus-visible { outline: 3px solid var(--pay-accent); outline-offset: 3px; }
+
+/* ---------- 上部バー ---------- */
+.pay-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  height: calc(48px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+  background: var(--pay-bar-bg); color: var(--pay-bar-fg);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font: 600 14px/1 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.pay-bar__home { flex: none; color: inherit; text-decoration: none; font-weight: 900; font-size: 17px; letter-spacing: .02em; }
+.pay-bar__home span { font-weight: 500; opacity: .7; }
+.pay-bar__news {
+  flex: 1 1 auto; min-width: 0; display: flex; justify-content: center; align-items: center; gap: 8px;
+  color: inherit; text-decoration: none; font-size: 13px; white-space: nowrap;
+}
+.pay-bar__news b {
+  flex: none; background: var(--pay-accent); color: var(--pay-bar-bg-solid, #fff);
+  font-size: 11px; letter-spacing: .08em; padding: 4px 7px; border-radius: 3px;
+}
+.pay-bar__news-t { overflow: hidden; text-overflow: ellipsis; }
+.pay-bar__news-p { flex: none; color: var(--pay-accent); font-weight: 700; }
+@media (max-width: 420px) { .pay-bar__news-p { display: none; } }
+.pay-bar__news:hover .pay-bar__news-t { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 420px) { .pay-bar__home span { display: none; } }
+.pay-bar__lang { flex: none; display: flex; border: 1px solid color-mix(in srgb, currentColor 30%, transparent); border-radius: 999px; overflow: hidden; }
+.pay-bar__lang button {
+  appearance: none; border: 0; background: transparent; color: inherit; cursor: pointer;
+  font: inherit; font-size: 13px; min-height: 32px; min-width: 52px; padding: 0 12px; white-space: nowrap;
+}
+.pay-bar__lang button { opacity: .6; }
+.pay-bar__lang button[aria-pressed="true"] { opacity: 1; font-weight: 800; background: color-mix(in srgb, var(--pay-bar-fg) 10%, transparent); }
+
+/* ---------- ほかの作品 ---------- */
+.pay-more {
+  background: var(--pay-bg); color: var(--pay-fg);
+  padding: 64px max(20px, env(safe-area-inset-left, 0px)) 40px;
+  border-top: 1px solid var(--pay-line);
+  font-family: "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.pay-more__head { max-width: 1080px; margin: 0 auto 20px; font-size: 20px; }
+.pay-more__list {
+  list-style: none; margin: 0 auto; padding: 0; max-width: 1080px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 24px 16px;
+}
+.pay-more__list a { display: block; color: inherit; text-decoration: none; }
+.pay-more__list img {
+  display: block; width: 100%; aspect-ratio: 630 / 500; object-fit: cover;
+  border-radius: 6px; background: var(--pay-line);
+}
+.pay-more__list b { display: block; margin-top: 10px; font-size: 15px; line-height: 1.4; }
+.pay-more__badge {
+  display: inline-block; margin-top: 10px; padding: 2px 7px; border-radius: 3px;
+  background: var(--pay-accent); color: var(--pay-bg); font: 700 11px/1.4 sans-serif; font-style: normal; letter-spacing: .08em;
+}
+.pay-more__badge + b { margin-top: 4px; }
+.pay-more__list small { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; opacity: .72; }
+.pay-more__list a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+
+.pay-more__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.pay-more__tags > span { padding: 1px 7px; border-radius: 999px; border: 1px solid var(--pay-line); font-size: 11px; line-height: 1.6; opacity: .85; }
+
+/* ---------- 作品ページ:遊ぶ目安 ---------- */
+.pay-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; font: 500 12px/1.6 "Zen Kaku Gothic New", "Noto Sans JP", sans-serif; }
+.pay-meta > span { padding: 2px 10px; border-radius: 999px; border: 1px solid currentColor; opacity: .8; }
+
+/* ---------- 作品ページ:スクロール後の「遊ぶ」帯 ---------- */
+.pay-dock {
+  position: fixed; z-index: 90; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%);
+  width: min(720px, calc(100% - 20px)); display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 8px;
+  border-radius: 16px; background: var(--pay-bar-bg); color: var(--pay-bar-fg);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .25), 0 0 0 1px var(--pay-line);
+  font-family: "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif;
+  transition: transform .35s cubic-bezier(.2, 1.2, .4, 1); pointer-events: none;
+}
+.pay-dock.on { transform: translate(-50%, 0); pointer-events: auto; }
+.pay-dock img { flex: none; width: 64px; height: 51px; object-fit: cover; border-radius: 8px; }
+.pay-dock__t { flex: 1 1 auto; min-width: 0; display: grid; gap: 2px; line-height: 1.35; }
+.pay-dock__t b { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pay-dock__t small { font-size: 12px; opacity: .8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pay-dock__t i { display: inline-block; width: 3px; height: 3px; margin: 0 7px; border-radius: 50%; background: currentColor; vertical-align: 3px; }
+.pay-dock__btns { flex: none; display: flex; gap: 6px; }
+.pay-dock__play, .pay-dock__buy {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.pay-dock__play { background: var(--pay-accent); color: var(--pay-accent-fg, #fff); }
+.pay-dock__buy { border: 1.5px solid var(--pay-line); color: inherit; }
+.pay-dock__play:hover, .pay-dock__buy:hover { filter: brightness(1.08); }
+@media (max-width: 560px) {
+  .pay-dock { gap: 10px; border-radius: 14px; }
+  .pay-dock img { width: 48px; height: 38px; }
+  .pay-dock__t b { font-size: 13px; }
+  .pay-dock__t small { font-size: 11px; }
+  .pay-dock__buy { display: none; }
+  .pay-dock__play { padding: 0 14px; font-size: 13px; }
+}
+
+/* ---------- フッター ---------- */
+.pay-foot {
+  background: var(--pay-bg); color: var(--pay-fg);
+  padding: 28px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--pay-line);
+  text-align: center; font: 14px/1.6 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.pay-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; }
+.pay-foot a { color: inherit; display: inline-block; padding: 8px 0; }
+.pay-foot p { margin: 8px 0 0; opacity: .6; font-size: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

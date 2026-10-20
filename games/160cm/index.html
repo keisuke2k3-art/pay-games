@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>布1枚で60cm水槽をサイドテーブルだと言い張るゲーム | PAY</title>
+<meta name="description" content="家族に隠れて水槽を自室へ運ぶ、だるまさんがころんだ系ブラウザゲーム。ブラウザですぐ遊べます。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="布1枚で60cm水槽をサイドテーブルだと言い張るゲーム">
+<meta property="og:description" content="家族に隠れて水槽を持ち込むアクアリストあるある">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzMwMTE4Njg5LnBuZw==/original/E5rYqR.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/160cm/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/160cm/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪑</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --wall: #BFD9C9;      /* 昭和の団地っぽいミントの壁 */
+  --wall-deep: #9CC3AE;
+  --red: #C8343B;       /* ギンガムチェックの赤 */
+  --wood: #7A4A2A;
+  --ink: #2B1D18;
+  --water: #46A9C8;
+  --white: #FFFFFF;
+
+  --pay-bg: var(--wall);
+  --pay-fg: var(--ink);
+  --pay-line: rgba(43, 29, 24, .2);
+  --pay-accent: var(--red);
+  --pay-bar-bg: rgba(191, 217, 201, .86);
+  --pay-bar-fg: var(--ink);
+  --pay-bar-bg-solid: var(--wall);
+}
+body {
+  background: var(--wall); color: var(--ink);
+  font: 400 16px/1.8 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.pop { font-family: "Mochiy Pop One", "Zen Kaku Gothic New", sans-serif; font-weight: 400; }
+
+/* ---------- ヒーロー ---------- */
+.hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; }
+.hero__in {
+  flex: 1; width: 100%; max-width: 1240px; margin: 0 auto;
+  padding: calc(80px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px));
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px 40px; align-items: end;
+}
+.hero__copy { align-self: center; padding-bottom: 40px; }
+.title { margin: 0 0 20px; font-size: clamp(30px, 5vw, 62px); line-height: 1.22; letter-spacing: -.01em; }
+.title > span > span { display: block; }
+.title .s { font-size: .56em; }
+.title .big { font-size: 1.3em; color: var(--red); line-height: 1.1; }
+.title .big i { font-style: normal; color: var(--ink); font-size: .55em; }
+.title [lang="en"] { font-size: .8em; }
+.lead { margin: 0 0 32px; font-size: 18px; font-weight: 700; max-width: 26em; }
+
+.floor {
+  display: flex; justify-content: flex-end; align-items: center; gap: 8px 16px; flex-wrap: wrap;
+  min-height: 76px; padding: 12px max(20px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  background: repeating-linear-gradient(90deg, var(--wood) 0 118px, #6A3F23 118px 120px);
+  color: var(--white);
+}
+.floor small { font-size: 13px; }
+.floor .inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
+
+.stage { position: relative; align-self: end; padding-top: 64px; }
+.stage svg { display: block; width: 100%; height: auto; overflow: visible; }
+#cloth { transition: transform .38s cubic-bezier(.2, .8, .3, 1.2); transform-box: view-box; }
+.lifted #cloth { transform: translate(0, -118px) rotate(-6deg); }
+#eyes { transition: opacity .15s; opacity: 0; }
+.watch #eyes, .caught #eyes { opacity: 1; }
+#lid { transition: transform .25s ease-out; transform-box: fill-box; transform-origin: left center; }
+.watch #lid, .caught #lid { transform: scaleX(.55); }
+
+.call {
+  position: absolute; right: 2%; top: 0;
+  background: var(--white); border: 3px solid var(--ink); border-radius: 18px;
+  padding: 8px 14px; font-size: clamp(14px, 1.6vw, 18px); line-height: 1.4; white-space: nowrap;
+}
+.call::after { content: ""; position: absolute; right: 26px; bottom: -12px; width: 18px; height: 18px; background: var(--white);
+  border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); transform: rotate(45deg); }
+.watch .call { background: var(--red); color: var(--white); }
+.watch .call::after { background: var(--red); }
+.caught .call { background: var(--ink); color: var(--white); }
+.caught .call::after { background: var(--ink); }
+
+.btn-peek {
+  appearance: none; border: 3px solid var(--ink); background: var(--white); color: var(--ink);
+  font: inherit; font-weight: 900; font-size: 16px; border-radius: 999px; padding: 8px 22px; min-height: 48px;
+  cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none;
+  box-shadow: 0 4px 0 var(--ink);
+}
+.btn-peek:active, .lifted-btn { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink) !important; }
+
+.play {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red); color: var(--white); text-decoration: none;
+  font-family: "Mochiy Pop One", sans-serif; font-size: 20px;
+  padding: 16px 30px; border-radius: 999px; border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink);
+}
+.play:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+.play:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+
+/* ---------- 本文 ---------- */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.gingham {
+  background-color: var(--white);
+  background-image:
+    linear-gradient(90deg, rgba(200, 52, 59, .55) 50%, transparent 50%),
+    linear-gradient(rgba(200, 52, 59, .55) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+.intro { padding: 96px 0; }
+.note {
+  background: var(--white); border: 3px solid var(--ink); border-radius: 4px;
+  max-width: 640px; margin: 0 auto; padding: 40px 36px; text-align: center;
+  box-shadow: 8px 8px 0 var(--ink); transform: rotate(-1.2deg);
+}
+.note p { margin: 0; font-size: clamp(20px, 2.6vw, 28px); line-height: 1.6; }
+.note p + p { margin-top: 12px; font-size: 17px; font-family: "Zen Kaku Gothic New", sans-serif; font-weight: 700; }
+
+.how { padding: 96px 0 40px; }
+.how h2, .shot h2, .spec h2 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 32px; }
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.key { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
+.cap {
+  min-width: 96px; height: 96px; padding: 0 16px; display: grid; place-items: center;
+  background: var(--white); border: 3px solid var(--ink); border-radius: 14px;
+  box-shadow: 0 8px 0 var(--ink); font-family: "Mochiy Pop One", sans-serif; font-size: 34px;
+}
+.cap.wide { min-width: 180px; font-size: 22px; }
+.key h3 { margin: 0 0 4px; font-size: 20px; }
+.key p { margin: 0; }
+.key .tap { display: block; font-size: 14px; opacity: .75; }
+
+.shot { padding: 64px 0 96px; }
+.frame {
+  margin: 0 auto; max-width: 720px; padding: 18px; background: var(--wood);
+  border-radius: 4px; box-shadow: inset 0 0 0 6px #5E361C, 0 18px 30px rgba(43, 29, 24, .25);
+}
+.frame img { display: block; width: 100%; aspect-ratio: 630 / 500; object-fit: cover; background: var(--wall-deep); }
+
+.spec { padding: 0 0 96px; }
+.spec-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; border-top: 2px solid var(--ink); }
+dt, dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--pay-line); }
+dt { font-weight: 900; padding-right: 24px; }
+.embed { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 16px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { margin: 12px 0 0; font-size: 14px; }
+
+@media (max-width: 820px) {
+  .hero__in { grid-template-columns: 1fr; }
+  .hero__copy { padding-bottom: 0; }
+  .stage { padding-top: 56px; }
+  .floor .inner { justify-content: center; text-align: center; }
+  .keys, .spec-grid { grid-template-columns: 1fr; }
+  .key { grid-template-columns: 1fr; gap: 12px; }
+  .cap, .cap.wide { justify-self: start; height: 72px; min-width: 72px; font-size: 26px; }
+  .cap.wide { min-width: 140px; font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cloth, #lid { transition: none; }
+}
+</style>
+</head>
+<body data-game="160cm">
+
+<main>
+  <section class="hero" id="hero">
+   <div class="hero__in">
+    <div class="hero__copy">
+      <h1 class="title pop">
+        <span lang="ja"><span class="s">布1枚で</span><span class="big">60cm水槽<i>を</i></span><span class="s">サイドテーブルだと</span><span>言い張るゲーム</span></span>
+        <span lang="en"><span class="s">One cloth.</span><span class="big">One 60cm tank.</span><span>One very convincing side table.</span></span>
+      </h1>
+      <p class="lead"><span lang="ja">家族に隠れて水槽を持ち込む、アクアリストあるある。</span><span lang="en">Sneak a fish tank past your family. Every aquarist has been there.</span></p>
+      <a class="play" href="https://pay-k.itch.io/160cm"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="call pop" id="call" aria-live="polite">だ・る・ま・さ・ん・が…</div>
+      <svg viewBox="0 0 420 340" role="img" aria-labelledby="stage-t">
+        <title id="stage-t">布をかけた60cm水槽。ぱっと見はサイドテーブル。</title>
+        <defs>
+          <pattern id="gh" width="20" height="20" patternUnits="userSpaceOnUse">
+            <rect width="20" height="20" fill="#fff"/>
+            <rect width="10" height="20" fill="#C8343B" opacity=".55"/>
+            <rect width="20" height="10" fill="#C8343B" opacity=".55"/>
+          </pattern>
+          <clipPath id="tankclip"><rect x="40" y="150" width="250" height="140" rx="3"/></clipPath>
+        </defs>
+
+        <!-- ドア(家族) -->
+        <g transform="translate(320 70)">
+          <rect x="0" y="0" width="96" height="250" fill="#3A2A22" stroke="#2B1D18" stroke-width="4"/>
+          <rect id="lid" x="0" y="0" width="96" height="250" fill="#D8CBB0" stroke="#2B1D18" stroke-width="4"/>
+          <circle cx="16" cy="130" r="6" fill="#2B1D18"/>
+          <g id="eyes">
+            <circle cx="70" cy="92" r="9" fill="#fff" stroke="#2B1D18" stroke-width="3"/>
+            <circle cx="66" cy="93" r="4" fill="#2B1D18"/>
+            <circle cx="70" cy="118" r="9" fill="#fff" stroke="#2B1D18" stroke-width="3"/>
+            <circle cx="66" cy="119" r="4" fill="#2B1D18"/>
+          </g>
+        </g>
+
+        <!-- 水槽 -->
+        <g clip-path="url(#tankclip)">
+          <rect x="40" y="150" width="250" height="140" fill="#46A9C8"/>
+          <rect x="40" y="150" width="250" height="18" fill="#7CC6DC"/>
+          <path d="M40 270 Q120 255 200 268 T290 262 V290 H40Z" fill="#8B6B44"/>
+          <path d="M70 270 C64 230 82 210 74 180 M86 272 C92 240 80 220 92 196 M240 268 C232 236 252 214 244 190" stroke="#2E8B57" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <g fill="#FFB347" stroke="#2B1D18" stroke-width="2.5">
+            <path d="M140 205 q18 -14 36 0 q-18 14 -36 0z M176 205 l12 -9 v18z"/>
+            <path d="M200 238 q14 -11 28 0 q-14 11 -28 0z M228 238 l9 -7 v14z" fill="#E8483B"/>
+          </g>
+        </g>
+        <rect x="40" y="150" width="250" height="140" rx="3" fill="none" stroke="#2B1D18" stroke-width="4"/>
+        <rect x="32" y="290" width="266" height="12" fill="#2B1D18"/>
+
+        <!-- 布 -->
+        <g id="cloth">
+          <path d="M22 140 Q165 120 308 140 L314 304 Q290 296 268 308 Q244 296 220 308 Q196 296 172 308 Q148 296 124 308 Q100 296 76 308 Q52 296 22 306 Z"
+                fill="url(#gh)" stroke="#2B1D18" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M22 140 Q165 120 308 140 Q300 156 165 154 Q30 156 22 140Z" fill="#fff" opacity=".35"/>
+          <!-- 偽装用の花瓶 -->
+          <g transform="translate(150 70)">
+            <path d="M8 66 Q0 40 14 24 H30 Q44 40 36 66 Z" fill="#F4D35E" stroke="#2B1D18" stroke-width="4"/>
+            <path d="M22 24 C20 6 10 -4 2 -2 M22 24 C26 4 38 -6 46 0" stroke="#2E8B57" stroke-width="4" fill="none"/>
+            <circle cx="2" cy="-4" r="8" fill="#C8343B" stroke="#2B1D18" stroke-width="3"/>
+            <circle cx="46" cy="-2" r="8" fill="#fff" stroke="#2B1D18" stroke-width="3"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+   </div>
+   <div class="floor">
+     <div class="inner">
+       <button type="button" class="btn-peek" id="peek">
+         <span lang="ja">押してる間、布をめくる</span><span lang="en">Hold to lift the cloth</span>
+       </button>
+       <small><span lang="ja">「ころんだ!」の瞬間にめくるとバレます。</span><span lang="en">Lift it on "RED LIGHT!" and you're busted.</span></small>
+     </div>
+   </div>
+  </section>
+
+  <section class="intro gingham">
+    <div class="wrap">
+      <div class="note pop">
+        <p><span lang="ja">超シンプルな「だるまさんがころんだ」です。</span><span lang="en">It's a dead-simple game of Red Light, Green Light.</span></p>
+        <p><span lang="ja">家族に隠れて、水槽を自室まで運んでください。</span><span lang="en">Carry your tank to your room without your family noticing.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <h2 class="pop"><span lang="ja">操作はふたつだけ</span><span lang="en">Two controls. That's it.</span></h2>
+      <div class="keys">
+        <div class="key">
+          <div class="cap" aria-hidden="true">→</div>
+          <div>
+            <h3><span lang="ja">連打で前進</span><span lang="en">Mash to move</span></h3>
+            <p><span lang="ja">水槽を抱えて前へ。背景が流れ、自室のドアが近づきます。</span><span lang="en">Carry the tank forward. The hallway scrolls by and your door gets closer.</span></p>
+            <span class="tap"><span lang="ja">右矢印キー / 画面タップ</span><span lang="en">Right arrow key / tap the screen</span></span>
+          </div>
+        </div>
+        <div class="key">
+          <div class="cap wide" aria-hidden="true">Space</div>
+          <div>
+            <h3><span lang="ja">長押しで偽装</span><span lang="en">Hold to disguise</span></h3>
+            <p><span lang="ja">押している間だけ「サイドテーブル偽装モード」。そのあいだは動けません。</span><span lang="en">While held, you're in Side Table Mode. You can't move, but you're just furniture now.</span></p>
+            <span class="tap"><span lang="ja">スペースキー(長押し)</span><span lang="en">Space bar (hold)</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shot">
+    <div class="wrap">
+      <h2 class="pop"><span lang="ja">ゲーム画面</span><span lang="en">Screenshot</span></h2>
+      <div class="frame">
+        <img src="https://img.itch.zone/aW1nLzMwMTE4Njg5LnBuZw==/original/E5rYqR.png" alt="ゲームのタイトル画像" width="630" height="500" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap spec-grid">
+      <div>
+        <h2 class="pop"><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt>
+          <dd><span lang="ja">アクション(ミニゲーム)</span><span lang="en">Action (minigame)</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt>
+          <dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt>
+          <dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt>
+          <dd>2026.09.20</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt>
+          <dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div>
+        <h2 class="pop"><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <div class="embed">
+          <iframe src="https://itch.io/embed/5030538?linkback=true" title="itch.io" loading="lazy"></iframe>
+          <p><span lang="ja">itch.io で公開中。ダウンロード不要で、ブラウザですぐ遊べます。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ヒーローの小芝居:だるまさんがころんだ */
+(function () {
+  "use strict";
+  var stage = document.getElementById("stage");
+  var call = document.getElementById("call");
+  var btn = document.getElementById("peek");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var TEXT = {
+    ja: { safe: "だ・る・ま・さ・ん・が…", watch: "ころんだ!", caught: "……それ、水槽だよね?", ok: "(ただのサイドテーブルね)" },
+    en: { safe: "Green light… green light…", watch: "RED LIGHT!", caught: "…Is that a fish tank?", ok: "(Just a side table. Okay.)" }
+  };
+  var phase = "safe", lifted = false, timer = 0;
+
+  function t(k) { return TEXT[(window.PAY && PAY.lang()) || "ja"][k]; }
+  function render() {
+    stage.classList.toggle("watch", phase === "watch");
+    stage.classList.toggle("caught", phase === "caught");
+    stage.classList.toggle("lifted", lifted);
+    btn.classList.toggle("lifted-btn", lifted);
+    call.textContent = t(phase);
+  }
+  function next(p, ms) { clearTimeout(timer); phase = p; render(); timer = setTimeout(step, ms); }
+  function step() {
+    if (phase === "safe") next("watch", 1500);
+    else if (phase === "watch") next(lifted ? "caught" : "ok", lifted ? 2200 : 900);
+    else next("safe", 2600 + Math.random() * 1600);
+  }
+  function lift(v) {
+    lifted = v;
+    if (v && phase === "watch") next("caught", 2200);
+    else render();
+  }
+
+  btn.addEventListener("pointerdown", function (e) { e.preventDefault(); btn.setPointerCapture(e.pointerId); lift(true); });
+  btn.addEventListener("pointerup", function () { lift(false); });
+  btn.addEventListener("pointercancel", function () { lift(false); });
+  btn.addEventListener("keydown", function (e) { if ((e.key === " " || e.key === "Enter") && !e.repeat) { e.preventDefault(); lift(true); } });
+  btn.addEventListener("keyup", function (e) { if (e.key === " " || e.key === "Enter") lift(false); });
+  btn.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  document.addEventListener("paylang", render);
+
+  render();
+  if (!reduce) timer = setTimeout(step, 2400);
+})();
+</script>
+</body>
+</html>

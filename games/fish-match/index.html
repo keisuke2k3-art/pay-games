@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>フィッシュマッチ 〜水槽の相方、募集中〜 | Fish Match | PAY</title>
+<meta name="description" content="スワイプひとつで水槽の命運が決まる、アクアリウム・マッチングシミュレーター。日本語/英語対応、ブラウザで無料プレイ。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="フィッシュマッチ 〜水槽の相方、募集中〜">
+<meta property="og:description" content="この魚、うちの水槽に入れて大丈夫……? / Is this fish really safe for your tank...?">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzI5NDczNTU2LmpwZw==/original/rMSu1c.jpg">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/fish-match/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/fish-match/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --tank: #0E3B52;      /* 夜の水槽 */
+  --tank-2: #145270;
+  --pink: #FF4F7B;      /* マッチングアプリのピンク */
+  --yes: #3DDC97;
+  --no: #E63946;
+  --flag: #FFD23F;
+  --card: #FFFFFF;
+  --ink: #10222C;
+
+  --pay-bg: var(--tank);
+  --pay-fg: #EAF6FA;
+  --pay-line: rgba(234, 246, 250, .18);
+  --pay-accent: var(--flag);
+  --pay-accent-fg: #0E2B3D;
+  --pay-bar-bg: rgba(14, 59, 82, .8);
+  --pay-bar-fg: #EAF6FA;
+  --pay-bar-bg-solid: var(--tank);
+}
+body {
+  background: var(--tank); color: #EAF6FA;
+  font: 400 16px/1.8 "M PLUS Rounded 1c", "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+.dot { font-family: "DotGothic16", "M PLUS Rounded 1c", monospace; font-weight: 400; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+/* 背景の泡(ドット) */
+.bubbles { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 80%, rgba(255,255,255,.08) 0 6px, transparent 7px),
+    radial-gradient(circle at 86% 30%, rgba(255,255,255,.07) 0 10px, transparent 11px),
+    radial-gradient(circle at 70% 88%, rgba(255,255,255,.06) 0 4px, transparent 5px),
+    linear-gradient(180deg, var(--tank-2), var(--tank) 60%);
+}
+
+/* ---------- ヒーロー ---------- */
+.hero {
+  min-height: 100svh;
+  padding: calc(88px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) 64px max(20px, env(safe-area-inset-left, 0px));
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px 56px; align-items: center;
+  max-width: 1160px; margin: 0 auto;
+}
+.logo { margin: 0; line-height: 1; }
+.logo .jp { display: block; white-space: nowrap; font-size: clamp(38px, 6.2vw, 80px); color: var(--pink); letter-spacing: .02em;
+  text-shadow: 4px 4px 0 #8C1E3E; }
+.logo .en { display: block; margin-top: 12px; font-size: clamp(16px, 2vw, 22px); color: #EAF6FA; letter-spacing: .14em; }
+.sub { margin: 20px 0 0; font-size: clamp(18px, 2.2vw, 24px); }
+.q { margin: 28px 0 36px; font-size: clamp(17px, 1.8vw, 20px); font-weight: 700; max-width: 24em; }
+.play {
+  display: inline-block; background: var(--pink); color: #fff; text-decoration: none;
+  font: 400 22px/1 "DotGothic16", sans-serif; padding: 18px 34px; border-radius: 999px;
+  box-shadow: 0 6px 0 #8C1E3E;
+}
+.play:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #8C1E3E; }
+.play:active { transform: translateY(4px); box-shadow: 0 2px 0 #8C1E3E; }
+.badge { display: inline-block; margin-left: 16px; font-size: 14px; opacity: .8; vertical-align: middle; }
+
+/* スマホ枠とカード */
+.phone {
+  width: min(100%, 340px); margin: 0 auto; padding: 14px; border-radius: 40px;
+  background: #0A2433; box-shadow: 0 0 0 3px #2B6584, 0 30px 60px rgba(0, 0, 0, .35);
+}
+.screen { border-radius: 28px; background: #F4F7F9; color: var(--ink); padding: 14px 14px 18px; overflow: hidden; }
+.app-head { display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 0 4px 10px; }
+.app-head b { color: var(--pink); font-size: 18px; }
+.slots { display: flex; gap: 4px; }
+.slots i { width: 14px; height: 14px; border-radius: 3px; background: #D5DEE3; }
+.slots i.on { background: var(--yes); }
+
+.deck { position: relative; height: 380px; }
+.card {
+  position: absolute; inset: 0; background: var(--card); border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(16, 34, 44, .18); overflow: hidden;
+  touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab;
+  will-change: transform;
+}
+.card.back { transform: scale(.94) translateY(12px); filter: brightness(.96); }
+.card.drag { cursor: grabbing; transition: none; }
+.card.fly { transition: transform .32s ease-in, opacity .32s ease-in; }
+.card.settle { transition: transform .22s ease-out; }
+.card canvas { display: block; width: 100%; height: 176px; image-rendering: pixelated; background: #46A9C8; }
+.card .info { padding: 12px 16px; }
+.card h3 { margin: 0; font-size: 22px; }
+.card h3 small { font-size: 14px; color: #5A6E78; margin-left: 6px; }
+.tag { display: block; margin-top: 8px; padding: 6px 10px; border-radius: 10px; font-size: 14px; line-height: 1.5; }
+.tag.good { background: #E4F8EE; }
+.tag.bad { background: #FFF4CC; }
+.tag b { font-weight: 800; margin-right: 4px; }
+.stamp {
+  position: absolute; top: 18px; padding: 4px 12px; border: 4px solid; border-radius: 8px;
+  font: 400 26px/1 "DotGothic16", sans-serif; opacity: 0; transform: rotate(-12deg);
+}
+.stamp.y { left: 16px; color: var(--yes); }
+.stamp.n { right: 16px; color: var(--no); transform: rotate(12deg); }
+
+.result { position: absolute; inset: 0; border-radius: 18px; background: var(--ink); color: #EAF6FA;
+  display: grid; place-content: center; text-align: center; padding: 20px; gap: 10px; }
+.result[hidden] { display: none; }
+.result .lv { font-size: 34px; color: var(--flag); }
+.result p { margin: 0; font-size: 15px; }
+.result button { justify-self: center; }
+
+.acts { display: flex; justify-content: center; gap: 28px; margin-top: 16px; }
+.acts button {
+  appearance: none; width: 64px; height: 64px; border-radius: 50%; border: 0; cursor: pointer;
+  background: #fff; box-shadow: 0 4px 12px rgba(16, 34, 44, .18); font-size: 28px; line-height: 1;
+}
+.acts .n { color: var(--no); } .acts .y { color: var(--yes); }
+.acts button:active { transform: scale(.92); }
+.hint { text-align: center; font-size: 12px; color: #5A6E78; margin: 10px 0 0; }
+.again { appearance: none; border: 2px solid #EAF6FA; background: transparent; color: inherit; border-radius: 999px; padding: 8px 18px; font: inherit; cursor: pointer; min-height: 44px; }
+
+/* ---------- 本文 ---------- */
+section h2 { font-size: clamp(26px, 3.4vw, 40px); margin: 0 0 28px; color: var(--flag); }
+.about { padding: 96px 0; background: #F4F7F9; color: var(--ink); }
+.about h2 { color: var(--pink); }
+.about .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.about p { margin: 0 0 16px; font-size: 17px; }
+.swipes { display: grid; gap: 16px; }
+.swipe { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; background: #fff; border-radius: 16px; padding: 16px 20px; box-shadow: 0 4px 14px rgba(16, 34, 44, .08); }
+.swipe .ic { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 30px; color: #fff; }
+.swipe.y .ic { background: var(--yes); } .swipe.n .ic { background: var(--no); }
+.swipe h3 { margin: 0; font-size: 18px; }
+.swipe p { margin: 0; font-size: 15px; }
+.flags { margin-top: 28px; padding: 20px 24px; border-radius: 16px; background: var(--ink); color: #EAF6FA; }
+.flags p { margin: 0; font-size: 15px; }
+.flags ul { margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.flags li { background: var(--no); border-radius: 999px; padding: 4px 14px; font-size: 14px; font-weight: 700; }
+.ending { margin-top: 28px; font-size: 18px; font-weight: 800; }
+
+.feat { padding: 96px 0; }
+.feat ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.feat li { border: 2px solid rgba(234, 246, 250, .25); border-radius: 18px; padding: 24px; }
+.feat h3 { margin: 0 0 8px; font-size: 20px; color: #fff; }
+.feat p { margin: 0; color: #C7DDE6; }
+.feat .big { font-size: 40px; color: var(--pink); line-height: 1; display: block; margin-bottom: 8px; }
+
+.shots { padding: 0 0 96px; }
+.shots .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.shots img { display: block; width: 100%; border-radius: 14px; background: var(--tank-2); aspect-ratio: 4 / 3; object-fit: cover; }
+.shots a { display: block; }
+
+.ctrl { padding: 0 0 96px; }
+.ctrl .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.ctrl .box { background: var(--tank-2); border-radius: 18px; padding: 24px; }
+.ctrl h3 { margin: 0 0 6px; font-size: 18px; }
+.ctrl p { margin: 0; color: #C7DDE6; }
+
+.spec { padding: 0 0 96px; }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+dt, dd { margin: 0; padding: 12px 0; border-bottom: 1px solid rgba(234, 246, 250, .18); }
+dt { color: var(--flag); padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; border-radius: 10px; }
+.embed p { font-size: 14px; color: #C7DDE6; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; min-height: 0; padding-bottom: 72px; }
+  .about .cols, .feat ul, .ctrl .row, .spec .row { grid-template-columns: 1fr; }
+  .shots .row { grid-template-columns: 1fr; }
+  .badge { display: block; margin: 14px 0 0; }
+}
+</style>
+</head>
+<body data-game="fish-match">
+<div class="bubbles" aria-hidden="true"></div>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1 class="logo dot">
+        <span class="jp" lang="ja">フィッシュマッチ</span>
+        <span class="jp" lang="en">Fish Match</span>
+        <span class="en" lang="ja">FISH MATCH</span>
+      </h1>
+      <p class="sub dot"><span lang="ja">〜水槽の相方、募集中〜</span><span lang="en">Looking for a Tankmate</span></p>
+      <p class="q"><span lang="ja">「この魚、うちの水槽に入れて大丈夫……?」<br>スワイプひとつで命運が決まる、アクアリウム・マッチングシミュレーター。</span><span lang="en">"Is this fish safe to put in my tank...?"<br>An aquarium matchmaking sim where a single swipe decides your tank's fate.</span></p>
+      <a class="play" href="https://pay-k.itch.io/fish-match"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+      <span class="badge"><span lang="ja">日本語・英語対応</span><span lang="en">Japanese &amp; English</span></span>
+    </div>
+
+    <div class="phone" aria-label="スワイプのお試しデモ">
+      <div class="screen">
+        <div class="app-head">
+          <b class="dot">Fish Match</b>
+          <span class="slots" id="slots" aria-label="水槽の定員"><i></i><i></i><i></i></span>
+        </div>
+        <div class="deck" id="deck">
+          <div class="result" id="result" hidden aria-live="polite">
+            <span class="dot" id="r-head"></span>
+            <span class="lv dot" id="r-lv"></span>
+            <p id="r-text"></p>
+            <button type="button" class="again" id="again"><span lang="ja">もう一度</span><span lang="en">Try again</span></button>
+          </div>
+        </div>
+        <div class="acts">
+          <button type="button" class="n" id="btn-no" aria-label="お断り(左スワイプ)">✕</button>
+          <button type="button" class="y" id="btn-yes" aria-label="お迎え(右スワイプ)">◯</button>
+        </div>
+        <p class="hint"><span lang="ja">お試しデモ:カードを左右にドラッグ / ← → キー</span><span lang="en">Try it: drag the card or use the ← → keys</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap cols">
+      <div>
+        <h2 class="dot"><span lang="ja">ゲーム概要</span><span lang="en">Overview</span></h2>
+        <p><span lang="ja">あなたはひとつの水槽のオーナー。同居相手(タンクメイト)を求めて、クセの強い魚や水生生物たちが次々とプロフィールを流してきます。</span><span lang="en">You own a single fish tank. Quirky fish and aquatic creatures keep popping up on your feed, looking for a tankmate to live with.</span></p>
+        <div class="flags">
+          <p><span lang="ja">でも気をつけて。可愛い顔して、とんでもない地雷(レッドフラグ)を隠し持っているヤツも……!?</span><span lang="en">But watch out: some of those cute faces are hiding major red flags...</span></p>
+          <ul>
+            <li><span lang="ja">他の魚のヒレをかじる</span><span lang="en">Nips other fish's fins</span></li>
+            <li><span lang="ja">夜中に大暴れする</span><span lang="en">Goes wild at night</span></li>
+            <li><span lang="ja">爆発的に増殖する</span><span lang="en">Multiplies exponentially</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="swipes">
+        <div class="swipe y"><span class="ic" aria-hidden="true">◯</span><div><h3><span lang="ja">右スワイプでお迎え</span><span lang="en">Swipe right to adopt</span></h3><p><span lang="ja">気に入ったら水槽へご招待。</span><span lang="en">Like what you see? Welcome to the tank.</span></p></div></div>
+        <div class="swipe n"><span class="ic" aria-hidden="true">✕</span><div><h3><span lang="ja">左スワイプでごめんなさい</span><span lang="en">Swipe left to pass</span></h3><p><span lang="ja">地雷の気配がしたら、そっとお断り。</span><span lang="en">Sense a red flag? Politely decline.</span></p></div></div>
+        <p class="ending"><span lang="ja">定員が埋まったとき、あなたの水槽は「癒しのオアシス」か、それとも「水という名の戦場」か。</span><span lang="en">When the tank fills up, will it be a peaceful oasis... or a war zone with water?</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <h2 class="dot"><span lang="ja">ゲームの特徴</span><span lang="en">Features</span></h2>
+      <ul>
+        <li><h3><span lang="ja">スワイプ操作</span><span lang="en">Swipe controls</span></h3><p><span lang="ja">直感的に「いいね」と「お断り」をさばいていく爽快感。</span><span lang="en">Like or pass on instinct, with fast, satisfying swipes.</span></p></li>
+        <li><span class="big dot">80+</span><h3><span lang="ja">種類以上のドット絵</span><span lang="en">pixel art sprites</span></h3><p><span lang="ja">ネオンテトラからピラニア、ウーパールーパー、水草まで。</span><span lang="en">From neon tetras and piranhas to axolotls and aquatic plants.</span></p></li>
+        <li><h3><span lang="ja">無数のプロフィール</span><span lang="en">Endless profiles</span></h3><p><span lang="ja">アピールポイントと気になるところの組み合わせで、毎回ちがう出会い。</span><span lang="en">Mixed-and-matched selling points and red flags make every encounter different.</span></p></li>
+        <li><h3><span lang="ja">カオス度判定</span><span lang="en">Chaos score</span></h3><p><span lang="ja">相性しだいで水槽にアクシデントが発生。称号と図鑑のコンプリートを目指そう。</span><span lang="en">Bad chemistry means chaos in the tank. Collect every title and complete the encyclopedia.</span></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="shots">
+    <div class="wrap">
+      <h2 class="dot"><span lang="ja">スクリーンショット</span><span lang="en">Screenshots</span></h2>
+      <div class="row">
+        <a href="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU1OS5wbmc=/original/%2FAgnB9.png"><img src="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU1OS5wbmc=/347x500/w9aFpJ.png" alt="スクリーンショット1" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU2MS5wbmc=/original/kxBn1x.png"><img src="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU2MS5wbmc=/347x500/FJrK7u.png" alt="スクリーンショット2" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU2MC5wbmc=/original/bJ%2FOe1.png"><img src="https://img.itch.zone/aW1hZ2UvNDkyODA0Mi8yOTQ3MzU2MC5wbmc=/347x500/YYKkI3.png" alt="スクリーンショット3" loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ctrl">
+    <div class="wrap">
+      <h2 class="dot"><span lang="ja">操作方法</span><span lang="en">Controls</span></h2>
+      <div class="row">
+        <div class="box"><h3><span lang="ja">PC(ブラウザ)</span><span lang="en">PC (browser)</span></h3><p><span lang="ja">マウスドラッグ / 矢印キー(← →)/ ボタンクリック</span><span lang="en">Mouse drag / arrow keys (← →) / button clicks</span></p></div>
+        <div class="box"><h3><span lang="ja">スマートフォン</span><span lang="en">Smartphone</span></h3><p><span lang="ja">左右フリック / スワイプ / ボタンタップ</span><span lang="en">Flick or swipe left/right, or tap the buttons</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div>
+        <h2 class="dot"><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">マッチングシミュレーター / カジュアル</span><span lang="en">Matchmaking sim / casual</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(PC / スマートフォン)</span><span lang="en">Browser (PC / smartphone)</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語</span><span lang="en">Japanese / English</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.08.23</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2 class="dot"><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <iframe src="https://itch.io/embed/4928042?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で公開中。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ヒーローのお試しスワイプ(デモ用の架空プロフィール) */
+(function () {
+  "use strict";
+
+  /* ---- ドット絵(14x8) ---- */
+  var FISH = [
+    "..............",
+    "......AAAA....",
+    "....AAAAAAAA.T",
+    "..AAAAAAAAAATT",
+    ".AEABBBBBBBATT",
+    ".AAAAAAAAAAATT",
+    "..CCCCCCCCCC.T",
+    "....CCCCCC...."
+  ];
+  var AXO = [
+    "..............",
+    "G.G...........",
+    ".GPPPPP.......",
+    "GPEPPPPPPPPP..",
+    ".PPPPPPPPPPPPP",
+    "G.PPPPPPPPP.PP",
+    "...P..P..P....",
+    ".............."
+  ];
+  var PROFILES = [
+    { sprite: FISH, pal: { A: "#2B6CB0", B: "#4FD1FF", C: "#E63946", T: "#BFE3EE", E: "#111" }, risk: 0,
+      name: { ja: "ネオンテトラ", en: "Neon Tetra" }, size: "3cm",
+      good: { ja: "群れるとキラキラ映えます", en: "Sparkles in a school" },
+      bad: { ja: "大きい魚の口にちょうど入るサイズ", en: "Fits perfectly in a big fish's mouth" } },
+    { sprite: FISH, pal: { A: "#7A8A99", B: "#8E9DAB", C: "#E2554A", T: "#5E6B78", E: "#111" }, risk: 2,
+      name: { ja: "ピラニア", en: "Piranha" }, size: "20cm",
+      good: { ja: "見た目より臆病です", en: "Shyer than I look" },
+      bad: { ja: "他の魚のヒレをかじる", en: "Nips other fish's fins" } },
+    { sprite: AXO, pal: { G: "#FF7AA8", P: "#FFC4D6", E: "#222" }, risk: 1,
+      name: { ja: "ウーパールーパー", en: "Axolotl" }, size: "22cm",
+      good: { ja: "いつでも笑顔", en: "Always smiling" },
+      bad: { ja: "小さい魚は食べ物だと思ってる", en: "Thinks small fish are snacks" } },
+    { sprite: FISH, pal: { A: "#F2C14E", B: "#F7D774", C: "#FFF1C1", T: "#FF6B9A", E: "#111" }, risk: 1,
+      name: { ja: "グッピー", en: "Guppy" }, size: "4cm",
+      good: { ja: "丈夫で飼いやすい", en: "Tough and easygoing" },
+      bad: { ja: "爆発的に増殖する", en: "Multiplies exponentially" } }
+  ];
+  var CAP = 3;
+
+  var deck = document.getElementById("deck");
+  var slots = document.querySelectorAll("#slots i");
+  var result = document.getElementById("result");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var state = { i: 0, adopted: [], busy: false };
+
+  function L() { return (window.PAY && PAY.lang()) || "ja"; }
+  function bi(o) { return window.PAY ? PAY.bi(o) : o.ja; }
+
+  function draw(canvas, p) {
+    var W = 56, H = 44; canvas.width = W; canvas.height = H;
+    var g = canvas.getContext("2d");
+    g.fillStyle = "#46A9C8"; g.fillRect(0, 0, W, H);
+    g.fillStyle = "#3B93B0"; g.fillRect(0, 36, W, 8);
+    g.fillStyle = "#2E8B57"; g.fillRect(4, 22, 2, 14); g.fillRect(6, 26, 2, 10); g.fillRect(50, 18, 2, 18);
+    var s = 3, ox = Math.round((W - 14 * s) / 2), oy = 6;
+    for (var y = 0; y < p.sprite.length; y++) for (var x = 0; x < 14; x++) {
+      var c = p.pal[p.sprite[y][x]];
+      if (c) { g.fillStyle = c; g.fillRect(ox + x * s, oy + y * s, s, s); }
+    }
+  }
+
+  function makeCard(p) {
+    var el = document.createElement("article");
+    el.className = "card";
+    el.innerHTML =
+      '<canvas width="56" height="44" aria-hidden="true"></canvas>' +
+      '<span class="stamp y" aria-hidden="true">LIKE</span><span class="stamp n" aria-hidden="true">NOPE</span>' +
+      '<div class="info"><h3 class="dot">' + bi(p.name) + "<small>" + p.size + "</small></h3>" +
+      '<span class="tag good"><b><span lang="ja">アピール</span><span lang="en">Appeal</span></b>' + bi(p.good) + "</span>" +
+      '<span class="tag bad"><b><span lang="ja">気になるところ</span><span lang="en">Red flag?</span></b>' + bi(p.bad) + "</span></div>";
+    draw(el.querySelector("canvas"), p);
+    return el;
+  }
+
+  function render() {
+    var old = deck.querySelectorAll(".card");
+    for (var k = 0; k < old.length; k++) old[k].remove();
+    for (var j = 0; j < slots.length; j++) slots[j].className = j < state.adopted.length ? "on" : "";
+    var done = state.adopted.length >= CAP || state.i >= PROFILES.length;
+    result.hidden = !done;
+    if (done) { showResult(); return; }
+    if (state.i + 1 < PROFILES.length) {
+      var back = makeCard(PROFILES[state.i + 1]); back.classList.add("back"); back.setAttribute("aria-hidden", "true");
+      deck.insertBefore(back, result);
+    }
+    var top = makeCard(PROFILES[state.i]);
+    deck.insertBefore(top, result);
+    bindDrag(top);
+  }
+
+  function showResult() {
+    var risk = state.adopted.reduce(function (a, p) { return a + p.risk; }, 0);
+    var ja = L() === "ja";
+    var head = ja ? "水槽が決まりました" : "Your tank is set";
+    var lv, txt;
+    if (state.adopted.length === 0) { lv = ja ? "カオス度 0" : "Chaos 0"; txt = ja ? "……誰もいない水槽。静かすぎる。" : "...An empty tank. Too quiet."; }
+    else if (risk <= 1) { lv = ja ? "カオス度 低" : "Chaos: Low"; txt = ja ? "癒しのオアシスになりました。たぶん。" : "A peaceful oasis. Probably."; }
+    else if (risk <= 2) { lv = ja ? "カオス度 中" : "Chaos: Mid"; txt = ja ? "朝になると、誰かのヒレが短い。" : "Every morning, someone's fins are shorter."; }
+    else { lv = ja ? "カオス度 高" : "Chaos: High"; txt = ja ? "水という名の戦場です。" : "A battlefield with water."; }
+    document.getElementById("r-head").textContent = head;
+    document.getElementById("r-lv").textContent = lv;
+    document.getElementById("r-text").textContent = txt + (ja ? "(本編はもっと荒れます)" : " (The full game gets wilder.)");
+  }
+
+  function decide(yes) {
+    if (state.busy) return;
+    var card = deck.querySelector(".card:not(.back)");
+    if (!card) return;
+    state.busy = true;
+    if (yes) state.adopted.push(PROFILES[state.i]);
+    var dx = (yes ? 1 : -1) * (deck.offsetWidth + 120);
+    card.querySelector(yes ? ".stamp.y" : ".stamp.n").style.opacity = 1;
+    if (reduce) { finish(); return; }
+    card.classList.add("fly");
+    card.style.transform = "translateX(" + dx + "px) rotate(" + (yes ? 18 : -18) + "deg)";
+    card.style.opacity = 0;
+    setTimeout(finish, 320);
+    function finish() { state.i++; state.busy = false; render(); }
+  }
+
+  function bindDrag(card) {
+    var sx = 0, dx = 0, id = null;
+    var sy = card.querySelector(".stamp.y"), sn = card.querySelector(".stamp.n");
+    card.addEventListener("pointerdown", function (e) {
+      if (state.busy) return;
+      id = e.pointerId; sx = e.clientX; dx = 0;
+      card.setPointerCapture(id); card.classList.add("drag"); card.classList.remove("settle");
+    });
+    card.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== id) return;
+      dx = e.clientX - sx;
+      card.style.transform = "translateX(" + dx + "px) rotate(" + dx / 14 + "deg)";
+      sy.style.opacity = Math.max(0, Math.min(1, dx / 90));
+      sn.style.opacity = Math.max(0, Math.min(1, -dx / 90));
+    });
+    function end(e) {
+      if (e.pointerId !== id) return;
+      id = null; card.classList.remove("drag");
+      if (Math.abs(dx) > 90) { decide(dx > 0); return; }
+      card.classList.add("settle"); card.style.transform = ""; sy.style.opacity = 0; sn.style.opacity = 0;
+    }
+    card.addEventListener("pointerup", end);
+    card.addEventListener("pointercancel", end);
+  }
+
+  document.getElementById("btn-yes").addEventListener("click", function () { decide(true); });
+  document.getElementById("btn-no").addEventListener("click", function () { decide(false); });
+  document.getElementById("again").addEventListener("click", function () { state = { i: 0, adopted: [], busy: false }; render(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.target.closest && e.target.closest("input, textarea, select")) return;
+    var r = deck.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;           // デモが画面内のときだけ
+    if (e.key === "ArrowRight") { e.preventDefault(); decide(true); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); decide(false); }
+  });
+  document.addEventListener("paylang", function () { if (!result.hidden) showResult(); });
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render); else render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>沈黙の輪転機 The Silent Press | 紙面を組む物語パズル | PAY</title>
+<meta name="description" content="一行も嘘を書かずに、読者に結論を出させる。写真を切り取り、事実の札を紙面に並べて世論を動かす、動物寓話の物語パズル。体験版はブラウザで無料、製品版 $4.99。日本語/英語対応。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="沈黙の輪転機 The Silent Press">
+<meta property="og:description" content="一行も嘘を書かずに、読者に結論を出させる。/ Never print a single lie. Let the readers reach the verdict.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzMxMDA2OTkyLnBuZw==/original/MfExsu.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/the-silent-press/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/the-silent-press/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Shippori+Mincho:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --paper: #EFE7D6;     /* 古い新聞の紙 */
+  --paper-2: #E4D9C2;
+  --ink: #1D1A16;       /* 活字のインク */
+  --ink-2: #4A433A;
+  --red: #9E2B25;       /* 二色刷りの赤 */
+  --serif: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --display: "Playfair Display", "Shippori Mincho", serif;
+
+  --pay-bg: var(--paper);
+  --pay-fg: var(--ink);
+  --pay-line: rgba(29, 26, 22, .22);
+  --pay-accent: var(--red);
+  --pay-bar-bg: rgba(239, 231, 214, .9);
+  --pay-bar-fg: var(--ink);
+  --pay-bar-bg-solid: var(--paper);
+}
+body {
+  background: var(--paper); color: var(--ink);
+  font: 400 16px/1.95 var(--serif);
+  /* 紙のざらつき */
+  background-image:
+    radial-gradient(rgba(29, 26, 22, .035) 1px, transparent 1px),
+    radial-gradient(rgba(29, 26, 22, .025) 1px, transparent 1px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.rule2 { border: 0; border-top: 4px double var(--ink); margin: 0; }
+.rule1 { border: 0; border-top: 1px solid var(--ink); margin: 0; }
+.en-d { font-family: var(--display); }
+
+/* ---------- 題字(マストヘッド) ---------- */
+.mast { padding: calc(72px + env(safe-area-inset-top, 0px)) 0 0; }
+.mast__meta {
+  display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap;
+  padding: 8px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  font-size: 13px; letter-spacing: .04em;
+}
+.mast__meta .price { color: var(--red); font-weight: 800; }
+.mast h1 { margin: 0; padding: 14px 0 6px; text-align: center; line-height: 1; }
+.mast__en { display: block; font: 900 clamp(46px, 9.6vw, 128px)/.95 var(--display); letter-spacing: -.01em; }
+.mast__jp { display: block; margin-top: 12px; font: 800 clamp(18px, 2.6vw, 30px)/1.2 var(--serif); letter-spacing: .5em; text-indent: .5em; }
+.mast__motto { margin: 0 0 4px; padding-bottom: 10px; text-align: center; font: italic 700 clamp(13px, 1.5vw, 16px)/1.5 var(--display); color: var(--ink-2); }
+
+/* ---------- 一面(ヒーロー) ---------- */
+.front { padding: 32px 0 80px; }
+.front .row { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 40px; align-items: start; }
+.lead { border-right: 1px solid var(--pay-line); padding-right: 40px; }
+.kicker { display: inline-block; margin: 0 0 14px; padding: 2px 10px; background: var(--red); color: var(--paper); font-size: 13px; font-weight: 800; letter-spacing: .1em; }
+.headline { margin: 0; font: 800 clamp(26px, 3.2vw, 42px)/1.35 var(--serif); letter-spacing: .01em; }
+.headline .ln { display: block; white-space: nowrap; }
+.headline [lang="en"] { font: 900 clamp(30px, 3.6vw, 46px)/1.15 var(--display); }
+.deck { margin: 20px 0 0; font-size: 17px; }
+.acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 24px;
+  font: 800 17px/1.2 var(--serif); text-decoration: none; text-align: center;
+  border: 2px solid var(--ink); transition: background .15s, color .15s;
+}
+.btn-demo { background: var(--ink); color: var(--paper); }
+.btn-demo:hover { background: var(--red); border-color: var(--red); }
+.btn-buy { background: transparent; color: var(--ink); }
+.btn-buy:hover { background: var(--ink); color: var(--paper); }
+.btn small { display: block; font-size: 12px; font-weight: 600; opacity: .8; }
+.btn span[lang] { display: block; }
+.note { margin: 14px 0 0; font-size: 14px; color: var(--ink-2); }
+
+/* ---------- 切り取りデモ ---------- */
+.demo { margin: 0; }
+.demo__label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+.demo__label b { font-size: 14px; letter-spacing: .08em; }
+.photo { position: relative; background: var(--paper-2); border: 1px solid var(--ink); padding: 8px; box-shadow: 6px 6px 0 rgba(29, 26, 22, .18); }
+.photo svg { display: block; width: 100%; height: auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+#crop-frame { cursor: move; }
+#crop-frame:focus { outline: none; }
+#crop-frame:focus-visible #crop-line { stroke: var(--red); stroke-width: 4; }
+#crop-handle { cursor: nwse-resize; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.presets button {
+  appearance: none; border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  font: 600 14px/1 var(--serif); padding: 0 14px; min-height: 40px; cursor: pointer;
+}
+.presets button:hover { background: var(--paper-2); }
+.presets button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.proof { margin-top: 16px; background: #F6F0E2; border: 1px solid var(--ink); }
+.proof__hd { display: flex; justify-content: space-between; padding: 6px 12px; border-bottom: 1px solid var(--ink); font-size: 12px; letter-spacing: .08em; }
+.proof__hd span:last-child { font-family: var(--display); font-style: italic; }
+.proof__headline { margin: 0; padding: 12px 14px 4px; font: 800 clamp(20px, 2.4vw, 26px)/1.35 var(--serif); min-height: 2.8em; }
+.proof__reader { margin: 0; padding: 0 14px 10px; font-size: 15px; color: var(--ink-2); }
+.gauge { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 14px 12px; border-top: 1px dashed var(--pay-line); font-size: 13px; }
+.gauge__bar { position: relative; height: 10px; background: linear-gradient(90deg, #8FA38A, #D9C9A0 50%, var(--red)); border: 1px solid var(--ink); }
+.gauge__pin { position: absolute; top: -6px; width: 4px; height: 20px; margin-left: -2px; background: var(--ink); left: 20%; transition: left .3s ease-out; }
+.demo__cap { margin: 10px 0 0; font-size: 13px; color: var(--ink-2); }
+
+/* ---------- 本文の共通 ---------- */
+.sec { padding: 0 0 96px; }
+.sec__hd { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 0; margin-bottom: 28px; border-top: 4px double var(--ink); border-bottom: 1px solid var(--ink); }
+.sec__hd h2 { margin: 0; font: 800 clamp(22px, 2.8vw, 30px)/1.3 var(--serif); }
+.sec__hd span { font: italic 700 15px/1 var(--display); color: var(--ink-2); }
+
+/* 物語(社説風・段組) */
+.story .cols { columns: 2 22em; column-gap: 48px; column-rule: 1px solid var(--pay-line); }
+.story p { margin: 0 0 16px; font-size: 17px; break-inside: avoid; }
+.story p:first-child::first-letter { float: left; font: 800 3.4em/1 var(--serif); margin: 4px 10px 0 0; color: var(--red); }
+.story p:first-child [lang="en"]::first-letter { float: left; font: 900 3.4em/.9 var(--display); margin: 4px 10px 0 0; color: var(--red); }
+.story .pull { margin: 8px 0 16px; padding: 14px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 21px; font-weight: 800; line-height: 1.6; text-align: center; }
+
+/* 一面のつくり方 */
+.steps ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--ink); }
+.steps li { padding: 4px 24px 8px; border-right: 1px solid var(--ink); }
+.steps .no { display: block; font: 900 52px/1 var(--display); color: var(--red); }
+.steps h3 { margin: 10px 0 8px; font-size: 21px; font-weight: 800; }
+.steps p { margin: 0; }
+.rules { margin-top: 36px; background: var(--ink); color: var(--paper); padding: 24px 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.rules h3 { margin: 0 0 6px; font-size: 17px; font-weight: 800; color: #F2C9A6; }
+.rules p { margin: 0; font-size: 15px; line-height: 1.8; }
+
+/* 統計欄 */
+.figs dl { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.figs div { padding: 20px 16px; text-align: center; border-right: 1px solid var(--pay-line); }
+.figs div:last-child { border-right: 0; }
+.figs dt { font-size: 14px; color: var(--ink-2); }
+.figs dd { margin: 4px 0 0; font: 900 clamp(34px, 4.6vw, 56px)/1.1 var(--display); }
+.figs dd small { font: 800 16px/1 var(--serif); margin-left: 4px; }
+.figs .sub { margin: 14px 0 0; font-size: 15px; text-align: center; }
+
+/* 写真部 */
+.video { position: relative; aspect-ratio: 16 / 9; background: var(--ink); border: 1px solid var(--ink); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
+.shots figure { margin: 0; }
+.shots a { display: block; border: 1px solid var(--ink); padding: 6px; background: var(--paper-2); }
+.shots img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; filter: sepia(.15); }
+.shots figcaption { margin-top: 6px; font-size: 13px; color: var(--ink-2); }
+
+/* 編集後記 */
+.editor .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+.editor p { margin: 0 0 16px; }
+.quote { margin: 0 0 24px; padding: 20px 24px; background: var(--paper-2); border-left: 6px solid var(--red); }
+.quote p { margin: 0 0 10px; font-size: 18px; font-weight: 800; }
+.quote p:last-child { margin: 0; font-weight: 400; font-size: 16px; }
+.editor .sign { text-align: right; font-weight: 800; }
+.editor a { color: var(--red); }
+
+/* 作品情報と購入 */
+.info .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+dl.spec { margin: 0; display: grid; grid-template-columns: max-content 1fr; border-top: 2px solid var(--ink); }
+dl.spec dt, dl.spec dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--pay-line); }
+dl.spec dt { font-weight: 800; padding-right: 24px; }
+.buy { border: 2px solid var(--ink); padding: 24px; background: #F6F0E2; }
+.buy h3 { margin: 0 0 4px; font-size: 22px; font-weight: 800; }
+.buy .price { margin: 0 0 18px; font: 900 40px/1.1 var(--display); color: var(--red); }
+.buy .price small { font: 600 15px/1 var(--serif); color: var(--ink); margin-left: 8px; }
+.buy .acts { margin-top: 0; }
+.buy .acts .btn { flex: 1 1 200px; }
+.buy iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; margin-top: 20px; }
+.buy p { margin: 12px 0 0; font-size: 14px; color: var(--ink-2); }
+
+@media (max-width: 900px) {
+  .front .row, .editor .cols, .info .row { grid-template-columns: 1fr; }
+  .lead { border-right: 0; padding-right: 0; }
+  .steps ol, .rules { grid-template-columns: 1fr; }
+  .steps ol { border-left: 0; }
+  .steps li { border-right: 0; border-bottom: 1px solid var(--ink); padding: 16px 0; }
+  .figs dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .figs div:nth-child(2) { border-right: 0; }
+  .figs div:nth-child(-n+2) { border-bottom: 1px solid var(--pay-line); }
+}
+@media (max-width: 560px) {
+  .mast__meta .opt { display: none; }
+  .shots { grid-template-columns: 1fr; }
+  .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .gauge__pin { transition: none; } }
+</style>
+</head>
+<body data-game="the-silent-press">
+
+<main>
+  <!-- 題字 -->
+  <header class="mast">
+    <div class="wrap">
+      <div class="mast__meta">
+        <span class="en-d">Vol. I &mdash; No. 1</span>
+        <span class="opt"><span lang="ja">2026年10月18日 発行</span><span lang="en">Published 18 October 2026</span></span>
+        <span class="opt"><span lang="ja">日本語 / English</span><span lang="en">English / Japanese</span></span>
+        <span class="price"><span lang="ja">体験版 無料 / 製品版 $4.99</span><span lang="en">Free demo / Full game $4.99</span></span>
+      </div>
+      <h1><span class="mast__en">The Silent Press</span><span class="mast__jp">沈黙の輪転機</span></h1>
+      <p class="mast__motto">Every line is true. The layout is what lies.</p>
+      <hr class="rule2">
+    </div>
+  </header>
+
+  <!-- 一面 -->
+  <section class="front">
+    <div class="wrap row">
+      <div class="lead">
+        <p class="kicker"><span lang="ja">紙面を組む物語パズル</span><span lang="en">A front-page layout puzzle</span></p>
+        <h2 class="headline"><span lang="ja"><span class="ln">一行も嘘を書かずに、</span><span class="ln">読者に結論を出させる。</span></span><span lang="en">Never print a single lie.<br>Let the readers reach the verdict.</span></h2>
+        <p class="deck"><span lang="ja">あなたはPR会社の代表、狐のフォックス。写真を切り取り、事実の札を紙面に並べる。どの写真の隣に、どの記事を置くか。それだけで、読者は勝手に結論を出す。</span><span lang="en">You are Fox, head of a PR firm. Crop the photo. Arrange the fact cards on the front page. Which story goes next to which picture &mdash; that's all it takes. Readers draw their own conclusions.</span></p>
+        <div class="acts">
+          <a class="btn btn-demo" href="https://pay-k.itch.io/the-silent-press"><span><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span><small><span lang="ja">ブラウザ・ダウンロード不要</span><span lang="en">Plays in your browser, no download</span></small></span></a>
+          <a class="btn btn-buy" href="https://pay-k.itch.io/the-silent-press/purchase"><span><span lang="ja">製品版を買う</span><span lang="en">Buy the full game</span><small>$4.99 &middot; itch.io</small></span></a>
+        </div>
+        <p class="note"><span lang="ja">体験版はチュートリアルと序章を遊べます。製品版は全10章、結末は31種類。</span><span lang="en">The demo covers the tutorial and prologue. The full game has 10 chapters and 31 endings.</span></p>
+      </div>
+
+      <!-- 切り取りデモ -->
+      <figure class="demo">
+        <div class="demo__label">
+          <b><span lang="ja">試しに、切り取ってみてください</span><span lang="en">Try cropping it yourself</span></b>
+          <span><span lang="ja">枠をドラッグ / 右下の角で大きさを変更</span><span lang="en">Drag the frame; resize from the bottom-right corner</span></span>
+        </div>
+        <div class="photo">
+          <svg id="photo" viewBox="0 0 480 320" role="group" aria-labelledby="photo-t">
+            <title id="photo-t">第3管区の境界フェンスで撮られた一枚の写真。熊の兵士が、鉄条網の向こうのウサギの子にパンを差し出している。</title>
+            <defs>
+              <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="6" stroke="#1D1A16" stroke-width="1.4" opacity=".55"/>
+              </pattern>
+              <pattern id="hatch-l" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#1D1A16" stroke-width=".8" opacity=".35"/>
+              </pattern>
+              <pattern id="sky" width="480" height="5" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="2.5" x2="480" y2="2.5" stroke="#1D1A16" stroke-width=".6" opacity=".22"/>
+              </pattern>
+              <g id="barb"><path d="M-4 -4 L4 4 M-4 4 L4 -4" stroke="#1D1A16" stroke-width="1.6"/></g>
+            </defs>
+
+            <!-- 空と地面 -->
+            <rect width="480" height="320" fill="#E8DCC3"/>
+            <rect width="480" height="250" fill="url(#sky)"/>
+            <path d="M0 250 Q120 238 240 252 T480 246 V320 H0Z" fill="#CDBB95"/>
+            <path d="M0 250 Q120 238 240 252 T480 246 V320 H0Z" fill="url(#hatch-l)"/>
+            <path d="M0 268 L480 262 M0 288 L480 284" stroke="#1D1A16" stroke-width=".8" opacity=".3"/>
+            <!-- 遠くの見張り塔 -->
+            <g opacity=".55">
+              <path d="M418 250 L428 150 L452 150 L462 250" fill="none" stroke="#1D1A16" stroke-width="2"/>
+              <rect x="420" y="132" width="40" height="20" fill="#1D1A16"/>
+              <path d="M416 132 L440 118 L464 132Z" fill="#1D1A16"/>
+            </g>
+
+            <!-- ウサギの子(柵の向こう) -->
+            <g id="rabbit">
+              <path d="M288 156 C280 112 286 92 296 90 C306 92 304 120 300 156Z" fill="#F4EEDF" stroke="#1D1A16" stroke-width="2.5"/>
+              <path d="M312 156 C314 114 324 96 334 100 C342 106 332 128 322 158Z" fill="#F4EEDF" stroke="#1D1A16" stroke-width="2.5"/>
+              <path d="M292 116 C290 104 293 98 296 98" stroke="#9E2B25" stroke-width="2" fill="none"/>
+              <ellipse cx="310" cy="236" rx="34" ry="52" fill="#F4EEDF" stroke="#1D1A16" stroke-width="2.5"/>
+              <path d="M290 250 C296 274 324 278 330 250" fill="url(#hatch)"/>
+              <circle cx="306" cy="176" r="28" fill="#F4EEDF" stroke="#1D1A16" stroke-width="2.5"/>
+              <circle cx="295" cy="172" r="4.5" fill="#1D1A16"/>
+              <path d="M284 186 q4 4 9 0" stroke="#1D1A16" stroke-width="2" fill="none"/>
+              <!-- 柵へ伸ばす前足 -->
+              <path d="M286 214 C272 210 260 204 250 196" stroke="#1D1A16" stroke-width="11" stroke-linecap="round" fill="none"/>
+              <path d="M286 214 C272 210 260 204 250 196" stroke="#F4EEDF" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+            </g>
+
+            <!-- 熊の兵士 -->
+            <g id="soldier">
+              <path d="M58 300 C46 236 58 170 112 158 C160 150 182 196 178 300Z" fill="#6E6656" stroke="#1D1A16" stroke-width="2.5"/>
+              <path d="M58 300 C46 236 58 170 112 158 C160 150 182 196 178 300Z" fill="url(#hatch)"/>
+              <path d="M112 162 L118 300" stroke="#1D1A16" stroke-width="1.5" opacity=".6"/>
+              <circle cx="104" cy="196" r="3" fill="#1D1A16"/><circle cx="106" cy="226" r="3" fill="#1D1A16"/><circle cx="108" cy="256" r="3" fill="#1D1A16"/>
+              <!-- 頭 -->
+              <circle cx="74" cy="92" r="11" fill="#6E6656" stroke="#1D1A16" stroke-width="2.5"/>
+              <circle cx="132" cy="92" r="11" fill="#6E6656" stroke="#1D1A16" stroke-width="2.5"/>
+              <circle cx="103" cy="118" r="38" fill="#7D7462" stroke="#1D1A16" stroke-width="2.5"/>
+              <ellipse cx="122" cy="132" rx="18" ry="13" fill="#D9C9A0" stroke="#1D1A16" stroke-width="2"/>
+              <circle cx="136" cy="128" r="4.5" fill="#1D1A16"/>
+              <circle cx="116" cy="110" r="3.5" fill="#1D1A16"/>
+              <!-- 軍帽 -->
+              <path d="M66 96 C66 70 140 68 142 94Z" fill="#3B362E" stroke="#1D1A16" stroke-width="2.5"/>
+              <rect x="66" y="90" width="76" height="8" fill="#9E2B25" stroke="#1D1A16" stroke-width="2"/>
+              <path d="M128 98 L156 102 L128 104Z" fill="#1D1A16"/>
+              <!-- 差し出す腕 -->
+              <path d="M150 200 C170 194 186 190 200 188" stroke="#1D1A16" stroke-width="20" stroke-linecap="round" fill="none"/>
+              <path d="M150 200 C170 194 186 190 200 188" stroke="#6E6656" stroke-width="15" stroke-linecap="round" fill="none"/>
+            </g>
+
+            <!-- パン -->
+            <g id="bread">
+              <ellipse cx="212" cy="186" rx="17" ry="11" fill="#C9A46A" stroke="#1D1A16" stroke-width="2.5"/>
+              <path d="M202 182 q5 -4 8 0 M210 180 q5 -4 8 0" stroke="#1D1A16" stroke-width="1.6" fill="none"/>
+            </g>
+
+            <!-- 鉄条網の柵 -->
+            <g id="fence">
+              <rect x="228" y="108" width="9" height="150" fill="#3B362E" stroke="#1D1A16" stroke-width="2"/>
+              <rect x="356" y="104" width="9" height="152" fill="#3B362E" stroke="#1D1A16" stroke-width="2"/>
+              <rect x="472" y="100" width="9" height="152" fill="#3B362E" stroke="#1D1A16" stroke-width="2"/>
+              <g stroke="#1D1A16" stroke-width="1.6">
+                <path d="M222 126 Q290 132 360 122 T480 118"/>
+                <path d="M222 160 Q290 166 360 156 T480 152"/>
+                <path d="M222 198 Q290 204 360 194 T480 190"/>
+                <path d="M222 232 Q290 238 360 228 T480 224"/>
+              </g>
+              <g>
+                <use href="#barb" x="252" y="128"/><use href="#barb" x="300" y="128"/><use href="#barb" x="336" y="124"/><use href="#barb" x="396" y="120"/><use href="#barb" x="444" y="118"/>
+                <use href="#barb" x="262" y="162"/><use href="#barb" x="318" y="162"/><use href="#barb" x="388" y="155"/><use href="#barb" x="438" y="152"/>
+                <use href="#barb" x="270" y="200"/><use href="#barb" x="326" y="200"/><use href="#barb" x="380" y="193"/><use href="#barb" x="452" y="190"/>
+                <use href="#barb" x="248" y="234"/><use href="#barb" x="306" y="236"/><use href="#barb" x="400" y="227"/>
+              </g>
+            </g>
+
+            <!-- 切り取り枠(外側を暗くする) -->
+            <path id="crop-shade" fill="#1D1A16" fill-opacity=".62" fill-rule="evenodd" d=""/>
+            <g id="crop-frame" tabindex="0" role="slider" aria-roledescription="切り取り枠">
+              <rect id="crop-hit" fill="transparent"/>
+              <rect id="crop-line" fill="none" stroke="#F6F0E2" stroke-width="3" stroke-dasharray="10 6"/>
+            </g>
+            <rect id="crop-handle" width="26" height="26" fill="#9E2B25" stroke="#F6F0E2" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="presets" role="group" aria-label="切り取りの例">
+          <button type="button" data-preset="all"><span lang="ja">写真の全体</span><span lang="en">Full photo</span></button>
+          <button type="button" data-preset="child"><span lang="ja">柵の向こうの子だけ</span><span lang="en">Just the child</span></button>
+          <button type="button" data-preset="face"><span lang="ja">兵士と子(パンを外す)</span><span lang="en">Soldier &amp; child, no bread</span></button>
+        </div>
+        <div class="proof" aria-live="polite">
+          <div class="proof__hd"><span><span lang="ja">明日の一面・見出し</span><span lang="en">Tomorrow's front page</span></span><span>The Proof</span></div>
+          <p class="proof__headline" id="out-head"></p>
+          <p class="proof__reader" id="out-reader"></p>
+          <div class="gauge">
+            <span><span lang="ja">安心</span><span lang="en">Calm</span></span>
+            <div class="gauge__bar" aria-hidden="true"><i class="gauge__pin" id="out-pin"></i></div>
+            <span><span lang="ja">怒り</span><span lang="en">Outrage</span></span>
+          </div>
+        </div>
+        <figcaption class="demo__cap"><span lang="ja">写真は1枚。見出しも、すべて事実です。変わったのは、切り取り方だけ。(このデモはサイト用の演出で、本編の写真や判定とは別物です)</span><span lang="en">One photograph. Every headline is true. Only the crop changed. (This demo was made for the site; the photos and scoring in the actual game are different.)</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 物語 -->
+  <section class="sec story">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">物語</span><span lang="en">The Story</span></h2><span>Editorial</span></div>
+      <div class="cols">
+        <p><span lang="ja">動物たちの大陸。帝国と自治領のあいだで、新聞が世論を動かしている。</span><span lang="en">A continent of animals, caught between an Empire and a Dominion &mdash; and the newspapers that steer them both.</span></p>
+        <p><span lang="ja">あなたはPR会社「ロビー&amp;ローゼン社」の代表、狐のフォックス。依頼人は、それぞれ世間に信じてほしいことを持っている。あなたの仕事は、依頼人のために明日の朝刊の一面を組むこと。</span><span lang="en">You are Fox, head of the PR firm Robby &amp; Rosen. Every client has something they want the public to believe. Your job is to lay out tomorrow's front page for them.</span></p>
+        <p class="pull"><span lang="ja">書いてあるのは事実だけ。<br>けれど、並べ方が嘘をつく。</span><span lang="en">Every line is true.<br>The layout is what lies.</span></p>
+        <p><span lang="ja">各章は、史実の報道写真の「まわりの話」を下敷きにした寓話。実在の人名や地名は出てこない。登場するのは、みな動物だ。</span><span lang="en">Each chapter is a fable built on the story behind a real press photograph. No real names or places appear. Everyone is an animal.</span></p>
+        <p><span lang="ja">第6章と第7章では、どちらの陣営につくかで依頼人も目的も変わる。そして章のあいだには、登場人物たちの素顔をのぞく幕間が8話。</span><span lang="en">In chapters 6 and 7, the side you choose changes your client and your goal. Between chapters, eight short interludes show who these characters really are.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 一面のつくり方 -->
+  <section class="sec steps">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">一面のつくり方</span><span lang="en">How a Front Page Is Made</span></h2><span>How to play</span></div>
+      <ol>
+        <li><span class="no">1</span><h3><span lang="ja">写真を切り取る</span><span lang="en">Crop the photograph</span></h3><p><span lang="ja">枠の中に何を残し、何を外すか。同じ写真でも、伝わる意味が変わる。</span><span lang="en">What stays in the frame, and what falls outside it. The same photo can say very different things.</span></p></li>
+        <li><span class="no">2</span><h3><span lang="ja">札を並べる</span><span lang="en">Place the cards</span></h3><p><span lang="ja">事実の札を3×3の紙面に置く。どの写真の隣に、どの記事を置くか。</span><span lang="en">Arrange the fact cards on a 3&times;3 grid. You decide which story goes next to which picture.</span></p></li>
+        <li><span class="no">3</span><h3><span lang="ja">輪転機を回す</span><span lang="en">Run the press</span></h3><p><span lang="ja">翌朝、ほかの新聞が「読者がどう読んだか」を教えてくれる。</span><span lang="en">The next morning, the other papers tell you what your readers concluded.</span></p></li>
+      </ol>
+      <div class="rules">
+        <div><h3><span lang="ja">札はすべて事実</span><span lang="en">Every card is true</span></h3><p><span lang="ja">形容詞も、嘘も書けない。使えるのは写真の枠と、札の置き場所だけ。</span><span lang="en">No adjectives, no lies. All you control is the crop and where each card goes.</span></p></div>
+        <div><h3><span lang="ja">近すぎると、手の内が見える</span><span lang="en">Too close gives you away</span></h3><p><span lang="ja">隣り合わせは誘導だと見抜かれる。一マス空ければ、読者は自分でつなぐ。</span><span lang="en">Put them side by side and readers see the spin. Leave a square between them, and readers connect the dots themselves.</span></p></div>
+        <div><h3><span lang="ja">切り落としたものは、消えない</span><span lang="en">What you cut does not disappear</span></h3><p><span lang="ja">外したものは引き出しへ。そのいくつかは後で、別の誰かの手で刷られて戻ってくる。</span><span lang="en">It goes into a drawer. Some of it comes back later, printed by someone else.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 統計欄 -->
+  <section class="sec figs">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">本紙のボリューム</span><span lang="en">By the Numbers</span></h2><span>Figures</span></div>
+      <dl>
+        <div><dt><span lang="ja">章</span><span lang="en">Chapters</span></dt><dd>10</dd></div>
+        <div><dt><span lang="ja">結末</span><span lang="en">Endings</span></dt><dd>31</dd></div>
+        <div><dt><span lang="ja">幕間</span><span lang="en">Interludes</span></dt><dd>8</dd></div>
+        <div><dt><span lang="ja">一周</span><span lang="en">Per playthrough</span></dt><dd><span lang="ja">約1<small>時間</small></span><span lang="en">~1<small>hr</small></span></dd></div>
+      </dl>
+      <p class="sub"><span lang="ja">全10章(チュートリアル・序章・第1〜7章・終章)。すべての結末を見るまで約2時間。</span><span lang="en">10 chapters: tutorial, prologue, chapters 1&ndash;7 and a finale. About 2 hours to see every ending.</span></p>
+    </div>
+  </section>
+
+  <!-- 写真部 -->
+  <section class="sec media">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">映像と紙面</span><span lang="en">Trailer &amp; Screenshots</span></h2><span>Photo desk</span></div>
+      <div class="video">
+        <iframe src="https://www.youtube-nocookie.com/embed/Kyg1xOMNx1c" title="The Silent Press trailer" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="shots">
+        <figure><a href="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwMS5wbmc=/original/Kwtfjd.png"><img src="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwMS5wbmc=/original/Kwtfjd.png" alt="主人公の机。写真と事実の札が並ぶ編集画面" loading="lazy"></a><figcaption><span lang="ja">机の上で、明日の一面を組む</span><span lang="en">Laying out tomorrow's front page</span></figcaption></figure>
+        <figure><a href="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwMy5wbmc=/original/SmZqx6.png"><img src="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwMy5wbmc=/original/SmZqx6.png" alt="刷り上がった新聞の一面" loading="lazy"></a><figcaption><span lang="ja">刷り上がった朝刊</span><span lang="en">The morning edition</span></figcaption></figure>
+        <figure><a href="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwOS5wbmc=/original/vEq6gd.png"><img src="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAwOS5wbmc=/original/vEq6gd.png" alt="写真を切り取る画面" loading="lazy"></a><figcaption><span lang="ja">写真の枠を決める</span><span lang="en">Choosing the frame</span></figcaption></figure>
+        <figure><a href="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAxNS5wbmc=/original/qAOu2H.png"><img src="https://img.itch.zone/aW1hZ2UvNTE3NzU1OS8zMTAwNzAxNS5wbmc=/original/qAOu2H.png" alt="依頼人との会話の場面" loading="lazy"></a><figcaption><span lang="ja">依頼人たちとの会話</span><span lang="en">Talking with clients</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 編集後記 -->
+  <section class="sec editor">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">編集後記:作者のひとこと</span><span lang="en">From the Editor</span></h2><span>Afterword</span></div>
+      <div class="cols">
+        <div>
+          <div class="quote">
+            <p><span lang="ja">「第3管区の境界フェンスに、有刺鉄線が追加された」<br>「大燻蒸の追悼式典が、来月その近くで開かれる」</span><span lang="en">"Barbed wire has been added to the border fence in District Three."<br>"The memorial for the Great Purge will be held near District Three next month."</span></p>
+            <p><span lang="ja">どちらも正しい文です。どちらにも、虐殺のことは一言も書いてありません。でも紙面に並べると、その先は読者が勝手に書いてくれます。</span><span lang="en">Two true sentences. Neither says anything about a massacre. Put them side by side on a front page, and readers will write that part themselves.</span></p>
+          </div>
+          <p><span lang="ja">このゲームは、それだけでできています。嘘は一行も書かない。決めるのは、何の隣に何を置くかだけです。</span><span lang="en">That is the whole game. You never print a lie. You only decide what sits next to what.</span></p>
+          <p><span lang="ja">ふだんは水槽を観察する目でゲームを作っていますが、今回観察したのは、人が見出しをどう読むか、でした。</span><span lang="en">I usually make games the way I watch my aquarium: closely. This time, what I watched was how people read headlines.</span></p>
+        </div>
+        <div>
+          <p><span lang="ja">各章は、有名な報道写真の「まわりの話」を借りています。興味があったのは写真そのものより、枠のすぐ外にあったもの、そして撮った人たちのその後でした。</span><span lang="en">Each chapter borrows the story behind a famous press photograph. What interested me was less the photograph itself than what was just outside the frame, and what happened to the people who took it.</span></p>
+          <p><span lang="ja">文章をたくさん読んでもらうゲームです。体験版で迷った所があれば、どこだったか教えてもらえると本当に助かります。</span><span lang="en">There's a lot of reading in this game. If you get lost anywhere in the demo, I'd really love to know where.</span></p>
+          <p><span lang="ja">そして、遊んでくれた方へ。後から「書いてあることは正しかった」と分かった見出しに、信じ込まされたことはありますか? そういう話を集めています。</span><span lang="en">And a question for anyone who plays it: have you ever been misled by a headline that turned out to be technically true? I'm collecting those stories.</span></p>
+          <p class="sign">PAY</p>
+          <p><a href="https://pay-k.itch.io/the-silent-press/devlog/1714120/why-i-made-a-game-where-you-never-print-a-single-lie"><span lang="ja">開発ログの全文を読む(itch.io)</span><span lang="en">Read the full devlog on itch.io</span></a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 作品情報と購入 -->
+  <section class="sec info" id="buy">
+    <div class="wrap">
+      <div class="sec__hd"><h2><span lang="ja">作品情報</span><span lang="en">Game Info</span></h2><span>Colophon</span></div>
+      <div class="row">
+        <dl class="spec">
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">紙面を組む物語パズル</span><span lang="en">Narrative front-page layout puzzle</span></dd>
+          <dt><span lang="ja">体験版</span><span lang="en">Demo</span></dt><dd><span lang="ja">チュートリアルと序章(ブラウザで無料)</span><span lang="en">Tutorial and prologue (free, in browser)</span></dd>
+          <dt><span lang="ja">製品版</span><span lang="en">Full game</span></dt><dd><span lang="ja">全10章・結末31種・幕間8話</span><span lang="en">10 chapters, 31 endings, 8 interludes</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">$4.99(itch.io)</span><span lang="en">$4.99 (itch.io)</span></dd>
+          <dt><span lang="ja">製品版の形式</span><span lang="en">Full game formats</span></dt><dd><span lang="ja">Windows版 / ブラウザ版(Windows・Mac・Linux)</span><span lang="en">Windows download / browser version (Windows, Mac, Linux)</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">PC(マウス)/ スマホ横持ち(タッチ)</span><span lang="en">PC (mouse) / phone in landscape (touch)</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語(いつでも切り替え可)</span><span lang="en">English / Japanese (switch any time)</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.10.18</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small><span lang="ja">(AI Assisted:画像・音・コード・テキスト)</span><span lang="en">(AI assisted: graphics, sound, code, text)</span></small></dd>
+        </dl>
+        <div class="buy">
+          <h3><span lang="ja">まずは体験版から</span><span lang="en">Start with the free demo</span></h3>
+          <p class="price">$4.99<small><span lang="ja">製品版</span><span lang="en">full game</span></small></p>
+          <div class="acts">
+            <a class="btn btn-demo" href="https://pay-k.itch.io/the-silent-press"><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span></a>
+            <a class="btn btn-buy" href="https://pay-k.itch.io/the-silent-press/purchase"><span lang="ja">製品版を買う</span><span lang="en">Buy the full game</span></a>
+          </div>
+          <iframe src="https://itch.io/embed/5177559?linkback=true" title="The Silent Press on itch.io" loading="lazy"></iframe>
+          <p><span lang="ja">体験版のセーブデータは製品版に引き継がれません。購入と配信は itch.io で行っています。</span><span lang="en">Demo saves don't carry over to the full game. Purchases and downloads are handled by itch.io.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* 一面の切り取りデモ:枠に何が入っているかで、見出しと読者の反応が変わる(サイト用の演出) */
+(function () {
+  "use strict";
+  var W = 480, H = 320, MIN_W = 110, MIN_H = 90;
+  // 被写体の範囲(SVG座標)。兵士と子は「顔」が写っているかで判定する
+  var SUBJ = {
+    soldier: { x: 62, y: 66, w: 96, h: 92 },
+    rabbit:  { x: 276, y: 88, w: 62, h: 118 },
+    bread:   { x: 194, y: 174, w: 36, h: 24 },
+    fence:   { x: 222, y: 112, w: 258, h: 130 }
+  };
+  var PRESETS = {
+    all:   { x: 10, y: 10, w: 460, h: 300 },
+    child: { x: 240, y: 84, w: 160, h: 210 },
+    face:  { x: 40, y: 56, w: 330, h: 116 }
+  };
+  // 見出しと読者の反応(すべて写真に写っている事実だけ)
+  var OUT = {
+    ration:  { pin: 18, ja: ["第3管区の兵士、柵越しに子へパン", "「帝国の兵も、悪い人ばかりじゃないのね」"], en: ["District Three soldier hands bread to a child through the fence", "\u201CSo not all Empire soldiers are cruel.\u201D"] },
+    threat:  { pin: 86, ja: ["兵士、鉄条網の子に顔を寄せる", "「子どもにまで凄むのか。許せない」"], en: ["Soldier leans in toward a child behind barbed wire", "\u201CThreatening a child? This cannot stand.\u201D"] },
+    caged:   { pin: 72, ja: ["鉄条網の向こうの子ども", "「なぜ子どもが柵の中にいるんだ?」"], en: ["A child behind the barbed wire", "\u201CWhy is a child behind that fence?\u201D"] },
+    guard:   { pin: 52, ja: ["第3管区、境界の警備を強化", "「物々しいな。何が起きているんだ」"], en: ["District Three tightens border security", "\u201CThat looks serious. What is going on?\u201D"] },
+    soldier: { pin: 24, ja: ["帝国兵の素顔", "「普通の若者に見えるけれど」"], en: ["The face of an Empire soldier", "\u201CHe looks like an ordinary young man.\u201D"] },
+    child:   { pin: 40, ja: ["第3管区の子ども", "「この子は、どこの子だろう」"], en: ["A child of District Three", "\u201CI wonder whose child that is.\u201D"] },
+    wire:    { pin: 60, ja: ["境界フェンスに有刺鉄線", "「何かが始まろうとしている」"], en: ["Barbed wire on the border fence", "\u201CSomething is about to begin.\u201D"] },
+    bread:   { pin: 30, ja: ["一切れのパン", "「……何の写真?」"], en: ["A piece of bread", "\u201C...What am I looking at?\u201D"] },
+    none:    { pin: 50, ja: ["(読者には何の写真か分からない)", "「空と地面しか写っていない」"], en: ["(Readers can't tell what this is)", "\u201CIt's just sky and dirt.\u201D"] }
+  };
+
+  var svg = document.getElementById("photo");
+  var shade = document.getElementById("crop-shade");
+  var frame = document.getElementById("crop-frame");
+  var hit = document.getElementById("crop-hit");
+  var line = document.getElementById("crop-line");
+  var handle = document.getElementById("crop-handle");
+  var outHead = document.getElementById("out-head");
+  var outReader = document.getElementById("out-reader");
+  var pin = document.getElementById("out-pin");
+  var presetBtns = document.querySelectorAll("[data-preset]");
+  var crop = { x: 10, y: 10, w: 460, h: 300 };
+  var drag = null, raf = 0, current = "";
+
+  function L() { return (window.PAY && PAY.lang()) || "ja"; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function inside(r) {          // 被写体の何割が枠に入っているか
+    var ix = Math.max(0, Math.min(r.x + r.w, crop.x + crop.w) - Math.max(r.x, crop.x));
+    var iy = Math.max(0, Math.min(r.y + r.h, crop.y + crop.h) - Math.max(r.y, crop.y));
+    return (ix * iy) / (r.w * r.h);
+  }
+  function judge() {
+    var S = inside(SUBJ.soldier) >= .6, R = inside(SUBJ.rabbit) >= .6, B = inside(SUBJ.bread) >= .6, F = inside(SUBJ.fence) >= .25;
+    if (R && S) return B ? "ration" : "threat";
+    if (R) return F ? "caged" : "child";
+    if (S) return F ? "guard" : "soldier";
+    if (B) return "bread";
+    if (F) return "wire";
+    return "none";
+  }
+  function draw() {
+    raf = 0;
+    var x = crop.x, y = crop.y, w = crop.w, h = crop.h;
+    shade.setAttribute("d", "M0 0H" + W + "V" + H + "H0Z M" + x + " " + y + "V" + (y + h) + "H" + (x + w) + "V" + y + "Z");
+    hit.setAttribute("x", x); hit.setAttribute("y", y); hit.setAttribute("width", w); hit.setAttribute("height", h);
+    line.setAttribute("x", x); line.setAttribute("y", y); line.setAttribute("width", w); line.setAttribute("height", h);
+    handle.setAttribute("x", x + w - 13); handle.setAttribute("y", y + h - 13);
+    var k = judge();
+    if (k !== current) { current = k; render(); }
+  }
+  function render() {
+    var o = OUT[current], t = o[L()] || o.ja;
+    outHead.textContent = t[0];
+    outReader.textContent = t[1];
+    pin.style.left = o.pin + "%";
+    frame.setAttribute("aria-valuetext", t[0]);
+  }
+  function schedule() { if (!raf) raf = requestAnimationFrame(draw); }
+  function pressed(name) {
+    for (var i = 0; i < presetBtns.length; i++) presetBtns[i].setAttribute("aria-pressed", String(presetBtns[i].getAttribute("data-preset") === name));
+  }
+
+  function pt(e) {              // 画面座標 → SVG座標
+    var m = svg.getScreenCTM();
+    if (!m) return { x: 0, y: 0 };
+    var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    p = p.matrixTransform(m.inverse());
+    return { x: p.x, y: p.y };
+  }
+  function start(mode) {
+    return function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var p = pt(e);
+      drag = { mode: mode, id: e.pointerId, px: p.x, py: p.y, c: { x: crop.x, y: crop.y, w: crop.w, h: crop.h } };
+      svg.setPointerCapture(e.pointerId);
+      pressed("");
+    };
+  }
+  frame.addEventListener("pointerdown", start("move"));
+  handle.addEventListener("pointerdown", start("size"));
+  svg.addEventListener("pointermove", function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var p = pt(e), dx = p.x - drag.px, dy = p.y - drag.py, c = drag.c;
+    if (drag.mode === "move") {
+      crop.x = clamp(c.x + dx, 0, W - c.w);
+      crop.y = clamp(c.y + dy, 0, H - c.h);
+    } else {
+      crop.w = clamp(c.w + dx, MIN_W, W - c.x);
+      crop.h = clamp(c.h + dy, MIN_H, H - c.y);
+    }
+    schedule();
+  });
+  function end(e) { if (drag && e.pointerId === drag.id) drag = null; }
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+
+  // キーボード:矢印で移動、Shift+矢印で大きさ
+  frame.addEventListener("keydown", function (e) {
+    var step = 10, k = e.key;
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(k) < 0) return;
+    e.preventDefault(); pressed("");
+    var dx = k === "ArrowLeft" ? -step : k === "ArrowRight" ? step : 0;
+    var dy = k === "ArrowUp" ? -step : k === "ArrowDown" ? step : 0;
+    if (e.shiftKey) {
+      crop.w = clamp(crop.w + dx, MIN_W, W - crop.x);
+      crop.h = clamp(crop.h + dy, MIN_H, H - crop.y);
+    } else {
+      crop.x = clamp(crop.x + dx, 0, W - crop.w);
+      crop.y = clamp(crop.y + dy, 0, H - crop.h);
+    }
+    schedule();
+  });
+  frame.setAttribute("aria-label", "切り取り枠。矢印キーで移動、Shift+矢印キーで大きさを変更");
+
+  for (var i = 0; i < presetBtns.length; i++) {
+    presetBtns[i].addEventListener("click", function () {
+      var name = this.getAttribute("data-preset"), p = PRESETS[name];
+      crop = { x: p.x, y: p.y, w: p.w, h: p.h };
+      pressed(name); schedule();
+    });
+  }
+  document.addEventListener("paylang", function () { if (current) render(); });
+
+  pressed("all");
+  draw();
+})();
+</script>
+</body>
+</html>
