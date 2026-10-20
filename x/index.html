@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  X のポスト専用の入口(https://keisuke2k3-art.github.io/pay-games/x)
+  開くとすぐトップへ移動し、「X のポストから来た」と Google アナリティクスに記録される。
+  ?to=作品のフォルダ名 を付けると、その作品ページへ(例:…/pay-games/x?to=the-silent-press)
+-->
+<title>PAY games — 水の中から、ゲームが浮かんでくる。</title>
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PAY games">
+<meta property="og:title" content="PAY games">
+<meta property="og:description" content="水の中から、ゲームが浮かんでくる。ブラウザですぐ遊べる、個人開発の5作品。">
+<meta property="og:image" content="https://keisuke2k3-art.github.io/pay-games/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/">
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search), to = (q.get("to") || "").replace(/[^a-z0-9-]/g, "");
+    var path = to ? "games/" + to + "/" : "", base = location.pathname.replace(/x\/?(index\.html)?$/, "");
+    location.replace(base + path + "?utm_source=x&utm_medium=post" + (q.get("c") ? "&utm_campaign=" + encodeURIComponent(q.get("c")) : ""));
+  })();
+</script>
+<meta http-equiv="refresh" content="1; url=../?utm_source=x&amp;utm_medium=post">
+</head>
+<body style="font-family:sans-serif;padding:40px;text-align:center">
+<p><a href="../?utm_source=x&amp;utm_medium=post">PAY games へ移動します…</a></p>
+</body>
+</html>
