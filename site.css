@@ -134,6 +134,7 @@ img { max-width: 100%; height: auto; }
 .pay-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; }
 .pay-foot a { color: inherit; display: inline-block; padding: 8px 0; }
 .pay-foot p { margin: 8px 0 0; opacity: .6; font-size: 12px; }
+.pay-foot .pay-foot__note { max-width: 40em; margin: 6px auto 0; font-size: 11px; line-height: 1.6; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }

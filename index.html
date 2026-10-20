@@ -1013,7 +1013,8 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
     caught[gm.slug] = 1;
     try { localStorage.setItem("pay-caught", JSON.stringify(Object.keys(caught))); } catch (e) {}
     renderDex();
-    if (first && caughtCount() === G.length) celebrate();
+    if (P.track) P.track("catch_game", { game: gm.slug, first: first ? 1 : 0 });
+    if (first && caughtCount() === G.length) { celebrate(); if (P.track) P.track("catch_all"); }
   }
   function releaseCatch(keepCard) {
     if (caughtW) { var w = caughtW; caughtW = null; w.state = "fly"; w.vy = -80; w.vx = (Math.random() - .5) * 140; w.av = (Math.random() - .5) * 3; w.t = 0; }

@@ -15,6 +15,22 @@
   var FEATURED = GAMES.filter(function (g) { return g.featured; })[0] || null;
   var KEY = "pay-site-lang";
 
+  /* ---------- アクセス解析(Google アナリティクス) ----------
+     公開中のサイトでだけ計測する(手元で開いたときや確認用ファイルでは計測しない) */
+  var live = /github\.io$/.test(location.hostname);
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = window.gtag || gtag;
+  if (P.ga && live) {
+    var ga = document.createElement("script");
+    ga.async = true; ga.src = "https://www.googletagmanager.com/gtag/js?id=" + P.ga;
+    document.head.appendChild(ga);
+    gtag("js", new Date());
+    gtag("config", P.ga);
+  }
+  // 計測したいできごとを送る(計測していないときは何もしない)
+  function track(name, params) { if (P.ga && live) window.gtag("event", name, params || {}); }
+
   /* ---------- 言語 ---------- */
   var lang = null;
   try { lang = localStorage.getItem(KEY); } catch (e) {}
@@ -152,8 +168,21 @@
       '<a href="' + esc(P.x) + '" rel="noopener">X ' + esc(P.xHandle) + "</a>" +
       '<a href="' + esc(P.blog) + '" rel="noopener">' + esc(P.blogName) + "</a>" +
       "</nav>" +
-      "<p>© " + new Date().getFullYear() + " " + esc(P.name) + "</p>";
+      "<p>© " + new Date().getFullYear() + " " + esc(P.name) + "</p>" +
+      (P.ga ? '<p class="pay-foot__note">' + bi({ ja: "このサイトは Google アナリティクスでアクセス数を計測しています(Cookie を使います。名前などの個人情報は集めていません)。", en: "This site uses Google Analytics (with cookies) to count visits. No personal details such as names are collected." }) +
+        ' <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">' + bi({ ja: "Google のデータの使い方", en: "How Google uses data" }) + "</a></p>" : "");
     body.appendChild(foot);
+
+    // itch.io へのリンク(遊ぶ・買う)が押された回数を、作品・場所ごとに数える
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.href, g = GAMES.filter(function (x) { return href.indexOf(x.itch) === 0; })[0];
+      if (!g) return;
+      var place = a.closest(".pay-dock") ? "dock" : a.closest(".pay-more") ? "more" : a.closest(".catch") ? "card" :
+                  a.closest("#list") ? "list" : a.closest("#feature") ? "hero_top" : current ? "game_page" : "top";
+      track(/\/purchase/.test(href) ? "buy_click" : "play_click", { game: g.slug, place: place });
+    });
 
     // 作品ページ:遊ぶ目安と「遊ぶ」帯(フッターができてから。帯はフッターが見えたら隠れる)
     if (current) {
@@ -169,7 +198,7 @@
     setLang(lang);
   }
 
-  window.PAY = { root: ROOT, games: GAMES, profile: P, featured: FEATURED, bi: bi, esc: esc,
+  window.PAY = { track: track, root: ROOT, games: GAMES, profile: P, featured: FEATURED, bi: bi, esc: esc,
                  lang: function () { return lang; }, setLang: setLang };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);

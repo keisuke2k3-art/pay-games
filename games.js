@@ -143,5 +143,6 @@ window.PAY_PROFILE = {
   x: "https://twitter.com/ART_HELPS_YOU",
   xHandle: "@ART_HELPS_YOU",
   blog: "https://synth-aquarium.xblog.jp/",
-  blogName: "Synth-Aquarium"
+  blogName: "Synth-Aquarium",
+  ga: "G-YRLZTCPTSE"          // Google アナリティクスの測定 ID(サイト・ブログ・itch.io で共通)
 };
