@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>連打決裁 ポンポン・スタンパー Press &amp; Pass | 物理押印アクション | PAY</title>
+<meta name="description" content="トン、ポン、ポン、シュパッ!山積みの稟議書にハンコを押して決裁箱へはじき飛ばす、物理押印アクション。1ステージ約1分、ブラウザで無料。マウスでもスマホのタッチでも遊べます。日本語/英語対応。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="連打決裁 ポンポン・スタンパー Press &amp; Pass">
+<meta property="og:description" content="トン、ポン、ポン、シュパッ!山積みの稟議書を捌く物理押印アクション。/ A satisfying physics-based stamp-approval action game.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzMwNTI0ODE3LnBuZw==/original/6OX%2Bph.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/ponpon-stamper/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/ponpon-stamper/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23C8102E' stroke-width='9'/><text x='50' y='63' text-anchor='middle' font-size='36' font-weight='900' fill='%23C8102E'>承</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --desk: #2F3A35;      /* 事務机 */
+  --paper: #F6F1E6;     /* 稟議書の紙 */
+  --paper-2: #EBE3D2;
+  --ink: #26211D;       /* 文字 */
+  --sub: #6B6158;
+  --seal: #C8102E;      /* 朱肉 */
+  --line: rgba(38, 33, 29, .16);
+  --display: "Dela Gothic One", "Zen Kaku Gothic New", sans-serif;
+
+  --pay-bg: var(--paper);
+  --pay-fg: var(--ink);
+  --pay-line: var(--line);
+  --pay-accent: var(--seal);
+  --pay-bar-bg: rgba(246, 241, 230, .9);
+  --pay-bar-fg: var(--ink);
+  --pay-bar-bg-solid: var(--paper);
+}
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.85 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; }
+section h2 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 24px; line-height: 1.3; }
+section h2 small { display: block; font: 700 12px/1 "Zen Kaku Gothic New", sans-serif; letter-spacing: .12em; color: var(--seal); margin-bottom: 10px; }
+
+/* ---------- ヒーロー:押してみられる稟議書 ---------- */
+.hero { position: relative; overflow: hidden; background: var(--desk); color: #F6F1E6; }
+.hero::before {   /* 机の木目のような細い線 */
+  content: ""; position: absolute; inset: 0; opacity: .07; pointer-events: none;
+  background: repeating-linear-gradient(90deg, #fff 0 1px, transparent 1px 46px);
+}
+.hero__in {
+  position: relative; max-width: 1200px; margin: 0 auto; min-height: 100svh;
+  padding: calc(84px + env(safe-area-inset-top, 0px)) 20px 56px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px; align-items: center;
+}
+.hero h1 { margin: 0; font-size: clamp(38px, 5.4vw, 70px); line-height: 1.12; }
+.hero h1 .k { display: block; font: 900 clamp(15px, 1.6vw, 19px)/1.4 "Zen Kaku Gothic New", sans-serif; letter-spacing: .3em; color: #E9C9CF; margin-bottom: 10px; }
+.hero h1 .en { display: block; margin-top: 10px; font: 900 clamp(18px, 2vw, 24px)/1.2 "Zen Kaku Gothic New", sans-serif; color: #C9D2CC; letter-spacing: .02em; }
+.hero .catch { margin: 26px 0 0; font-size: clamp(17px, 1.9vw, 21px); font-weight: 700; line-height: 1.7; }
+.hero .catch em { font-style: normal; color: #FF8C9C; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 32px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 10px;
+  background: var(--seal); color: #fff; text-decoration: none; font: 400 19px/1 var(--display);
+  box-shadow: 0 6px 0 #7E0A1D; transition: transform .1s, box-shadow .1s;
+}
+.btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 #7E0A1D; }
+.btn:active { transform: translateY(6px); box-shadow: 0 0 0 #7E0A1D; }
+.hero .note { margin: 14px 0 0; font-size: 13px; color: #C9D2CC; }
+
+/* 稟議書 */
+.desk { position: relative; display: grid; justify-items: center; }
+.doc {
+  position: relative; width: min(420px, 100%); aspect-ratio: 210 / 260; padding: 26px 26px 20px;
+  background: var(--paper); color: var(--ink); border-radius: 4px; cursor: pointer; touch-action: manipulation;
+  box-shadow: 0 2px 0 #D9CFBC, 0 4px 0 #CFC4AE, 0 26px 40px rgba(0, 0, 0, .35);
+  transform: rotate(-2deg); user-select: none; -webkit-user-select: none; overflow: hidden;
+}
+.doc.out { animation: flick .45s cubic-bezier(.5, -.3, .8, .4) forwards; }
+.doc.in { animation: slidein .35s cubic-bezier(.2, 1.2, .4, 1); }
+@keyframes flick { to { transform: translate(140%, -30%) rotate(24deg); opacity: 0; } }
+@keyframes slidein { from { transform: translate(-30%, 40%) rotate(-12deg); opacity: 0; } }
+.doc__hd { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px double var(--ink); padding-bottom: 8px; }
+.doc__hd b { font: 400 22px/1.2 var(--display); }
+.doc__hd span { font-size: 11px; color: var(--sub); }
+.doc__sub { margin: 10px 0 0; font-size: 13px; font-weight: 700; }
+.doc__lines { margin-top: 12px; display: grid; gap: 9px; }
+.doc__lines i { display: block; height: 6px; border-radius: 3px; background: var(--paper-2); }
+.doc__lines i:nth-child(3n) { width: 70%; }
+.doc__lines i:nth-child(4n) { width: 86%; }
+.doc__boxes { position: absolute; left: 26px; right: 26px; bottom: 20px; display: grid; grid-template-columns: repeat(5, 1fr); border: 1.5px solid var(--ink); }
+.doc__boxes span { display: grid; place-items: center; height: 70px; border-left: 1.5px solid var(--ink); font-size: 10px; color: var(--sub); align-content: start; padding-top: 4px; }
+.doc__boxes span:first-child { border-left: 0; }
+.seal {
+  position: absolute; width: 74px; height: 74px; margin: -37px 0 0 -37px; border-radius: 50%; pointer-events: none;
+  border: 4px solid var(--seal); color: var(--seal); display: grid; place-items: center;
+  font: 400 20px/1 var(--display); opacity: .88; mix-blend-mode: multiply;
+  animation: pon .22s cubic-bezier(.3, 1.8, .5, 1);
+  -webkit-mask-image: radial-gradient(circle at 30% 40%, #000 55%, rgba(0,0,0,.75) 80%);
+          mask-image: radial-gradient(circle at 30% 40%, #000 55%, rgba(0,0,0,.75) 80%);
+}
+.seal small { display: block; font: 700 8px/1 "Zen Kaku Gothic New", sans-serif; margin-top: 2px; text-align: center; }
+@keyframes pon { from { transform: scale(1.5) rotate(var(--r)); opacity: 0; } to { transform: scale(1) rotate(var(--r)); } }
+.hud { display: flex; gap: 18px; align-items: center; margin-top: 22px; font-size: 13px; color: #C9D2CC; }
+.hud b { font: 400 26px/1 var(--display); color: #fff; margin: 0 4px; }
+.hud .tip { padding: 4px 12px; border-radius: 999px; border: 1px dashed rgba(255,255,255,.4); }
+.rank { position: absolute; top: 10px; right: 0; padding: 6px 12px; border-radius: 6px; background: #F2C230; color: var(--ink); font-weight: 900; font-size: 13px; transform: rotate(4deg); box-shadow: 0 4px 10px rgba(0,0,0,.3); opacity: 0; transition: opacity .3s; }
+.rank.on { opacity: 1; }
+
+/* ---------- 本文 ---------- */
+.about, .how, .feat, .movie, .shots, .spec { padding: 88px 0 0; }
+.spec { padding-bottom: 96px; }
+.about .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.about p { max-width: 38em; margin: 0 0 14px; font-size: 17px; }
+.about figure { margin: 0; padding: 8px; background: #fff; border-radius: 4px; transform: rotate(1.5deg); box-shadow: 0 14px 30px rgba(0,0,0,.14); }
+.about figure img { display: block; width: 100%; height: auto; aspect-ratio: 630 / 500; object-fit: cover; background: var(--paper-2); }
+.about .ton { font: 400 clamp(22px, 3vw, 32px)/1.4 var(--display); color: var(--seal); margin-bottom: 20px; }
+.how .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.how .box { background: #fff; border: 1.5px solid var(--ink); border-radius: 8px; padding: 20px 22px; }
+.how h3 { margin: 0 0 12px; font-size: 18px; }
+.how dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; font-size: 15px; }
+.how dt { font-weight: 900; }
+.how dd { margin: 0; color: var(--sub); }
+kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; border: 1.5px solid var(--ink); border-bottom-width: 3px; border-radius: 5px; background: #fff; font: 700 13px/1.4 "Zen Kaku Gothic New", sans-serif; text-align: center; }
+.feat ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.feat li { position: relative; background: #fff; border-radius: 8px; padding: 22px 22px 20px; border-top: 5px solid var(--seal); }
+.feat h3 { margin: 0 0 6px; font-size: 18px; }
+.feat p { margin: 0; color: var(--sub); font-size: 15px; }
+.days { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.days span { padding: 2px 8px; border-radius: 4px; background: var(--paper-2); font-size: 12px; font-weight: 700; }
+.days span:last-child { background: var(--seal); color: #fff; }
+.movie .frame { position: relative; max-width: 860px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 12px 30px rgba(0,0,0,.18); }
+.movie iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.shots .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.shots a { display: block; background: #fff; padding: 6px; border-radius: 6px; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.shots img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; background: var(--paper-2); }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.spec dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+.spec dt, .spec dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.spec dt { color: var(--seal); font-weight: 700; padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; border-radius: 8px; }
+.embed p { font-size: 14px; color: var(--sub); }
+
+@media (max-width: 860px) {
+  .hero__in { grid-template-columns: 1fr; min-height: 0; gap: 36px; }
+  .how .row, .shots .row, .spec .row, .about .wrap { grid-template-columns: 1fr; }
+  .doc { width: min(340px, 100%); }
+  .doc__boxes span { height: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .doc.out, .doc.in, .seal { animation: none; }
+}
+</style>
+</head>
+<body data-game="ponpon-stamper">
+
+<main>
+  <section class="hero">
+    <div class="hero__in">
+      <div>
+        <h1><span class="k"><span lang="ja">連打決裁</span><span lang="en">Rapid-fire approvals</span></span><span lang="ja">ポンポン・<br>スタンパー</span><span lang="en">Press &amp; Pass</span><span class="en" lang="ja">Press &amp; Pass</span></h1>
+        <p class="catch"><span lang="ja"><em>トン、ポン、ポン、シュパッ!</em><br>山積みの稟議書を捌く、物理押印アクション。</span><span lang="en"><em>Ton, pon, pon, swoosh!</em><br>A physics stamping game about clearing a mountain of approval forms.</span></p>
+        <div class="cta">
+          <a class="btn" href="https://pay-k.itch.io/ponpon-stamper"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+        </div>
+        <p class="note"><span lang="ja">体験版(開発中)・ブラウザで遊べます・日本語 / English</span><span lang="en">Demo (in development) · Plays in your browser · English / Japanese</span></p>
+      </div>
+      <div class="desk">
+        <span class="rank" id="rank" aria-live="polite"></span>
+        <div class="doc in" id="doc" role="button" tabindex="0" aria-label="稟議書。押すとハンコが押されます">
+          <div class="doc__hd"><b><span lang="ja">稟議書</span><span lang="en">Approval form</span></b><span id="docno">No. 0001</span></div>
+          <p class="doc__sub"><span lang="ja">件名:</span><span lang="en">Re: </span><span id="subject"></span></p>
+          <div class="doc__lines"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="doc__boxes" aria-hidden="true"><span><span lang="ja">担当</span><span lang="en">Staff</span></span><span><span lang="ja">係長</span><span lang="en">Lead</span></span><span><span lang="ja">課長</span><span lang="en">Mgr</span></span><span><span lang="ja">部長</span><span lang="en">Dir</span></span><span><span lang="ja">社長</span><span lang="en">CEO</span></span></div>
+        </div>
+        <div class="hud"><span><span lang="ja">決裁</span><span lang="en">Approved</span><b id="count">0</b><span lang="ja">件</span></span><span class="tip"><span lang="ja">紙をクリック(タップ)して押印</span><span lang="en">Click (or tap) the form to stamp it</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap">
+      <div>
+      <h2><small>OVERVIEW</small><span lang="ja">ゲーム概要</span><span lang="en">Overview</span></h2>
+      <p class="ton"><span lang="ja">押して、はじいて、次の書類。</span><span lang="en">Stamp it, flick it, next form.</span></p>
+      <p><span lang="ja">次々と流れてくる稟議書に、リズムよくハンコを押していく 2D 見下ろし型の物理アクションです。押し終えた書類は決裁箱へはじき飛ばし、朱肉が切れたら補充、5枚束ねの書類は広げてから押印。紛れ込んだ偽の請求書やゴミはシュレッダーへ。</span><span lang="en">A fast 2D top-down physics game: stamp the approval forms as they pour in, then flick the finished ones into the outbox. Refill the ink when it runs dry, fan out 5-sheet bundles before stamping, and send fake invoices and trash to the shredder.</span></p>
+      <p><span lang="ja">1日の勤務は45〜60秒。1日目の決裁部長から、5日目には社長へと出世していきます。</span><span lang="en">Each workday lasts 45 to 60 seconds. Start as Chief of Approvals on Day 1 and climb to President &amp; CEO by Day 5.</span></p>
+      </div>
+      <figure><img src="https://img.itch.zone/aW1nLzMwNTI0ODE3LnBuZw==/original/6OX%2Bph.png" alt="連打決裁 ポンポン・スタンパーのタイトル画像" width="630" height="500" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <h2><small>HOW TO PLAY</small><span lang="ja">操作方法</span><span lang="en">How to play</span></h2>
+      <div class="row">
+        <div class="box">
+          <h3><span lang="ja">パソコン(マウス・キーボード)</span><span lang="en">PC (mouse &amp; keyboard)</span></h3>
+          <dl>
+            <dt><span lang="ja">左クリック</span><span lang="en">Left click</span></dt><dd><span lang="ja">押印/左下の朱肉で補充/束の上で長押しして離すと書類が広がる</span><span lang="en">Stamp / refill at the ink pad (bottom left) / hold and release on a bundle to fan it out</span></dd>
+            <dt><span lang="ja">右クリック・</span><span lang="en">Right click / </span><kbd>Space</kbd></dt><dd><span lang="ja">偽の請求書やゴミ、空き缶をシュレッダーへはじく</span><span lang="en">Flick fake bills, trash and cans into the shredder</span></dd>
+            <dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd><span lang="ja">ハンコの切り替え(丸印/連打印/特大印)</span><span lang="en">Switch seals (Round / Rapid / Giant)</span></dd>
+            <dt><kbd>Esc</kbd> <kbd>P</kbd></dt><dd><span lang="ja">一時停止</span><span lang="en">Pause</span></dd>
+          </dl>
+        </div>
+        <div class="box">
+          <h3><span lang="ja">スマホ・タブレット(タッチ)</span><span lang="en">Phone / tablet (touch)</span></h3>
+          <dl>
+            <dt><span lang="ja">タップ</span><span lang="en">Tap</span></dt><dd><span lang="ja">押印/朱肉をタップで補充</span><span lang="en">Stamp / tap the ink pad to refill</span></dd>
+            <dt><span lang="ja">長押し</span><span lang="en">Hold</span></dt><dd><span lang="ja">衝撃波をためて、束ねた書類を広げる</span><span lang="en">Charge a shockwave to fan out bundles</span></dd>
+            <dt><span lang="ja">スワイプ</span><span lang="en">Swipe</span></dt><dd><span lang="ja">ゴミや偽の書類をシュレッダーへはじく</span><span lang="en">Flick trash and fake forms toward the shredder</span></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <h2><small>FEATURES</small><span lang="ja">ゲームの特徴</span><span lang="en">Features</span></h2>
+      <ul>
+        <li><h3><span lang="ja">3種類のハンコ</span><span lang="en">Three seals</span></h3><p><span lang="ja">丸印・連打印・特大印を、書類の山に合わせて持ち替え。</span><span lang="en">Swap between Round, Rapid and Giant seals to suit the pile in front of you.</span></p></li>
+        <li><h3><span lang="ja">朱肉は有限</span><span lang="en">Ink runs out</span></h3><p><span lang="ja">押しすぎると印影がかすれる。補充のタイミングも腕の見せどころ。</span><span lang="en">Stamp too much and the seal fades. Timing your refills is part of the skill.</span></p></li>
+        <li><h3><span lang="ja">偽の請求書に注意</span><span lang="en">Watch for fakes</span></h3><p><span lang="ja">紛れ込んだ不正書類は押さずにシュレッダーへ。うっかり承認すると……。</span><span lang="en">Fraudulent invoices go to the shredder, not the stamp. Approve one by mistake and...</span></p></li>
+        <li><h3><span lang="ja">5日間で社長へ</span><span lang="en">CEO in five days</span></h3><p><span lang="ja">1日45〜60秒の勤務を重ねて出世していく。</span><span lang="en">Short 45-60 second workdays, one promotion at a time.</span></p>
+          <div class="days" aria-hidden="true"><span>Day 1</span><span>2</span><span>3</span><span>4</span><span><span lang="ja">社長</span><span lang="en">CEO</span></span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="movie">
+    <div class="wrap">
+      <h2><small>MOVIE</small><span lang="ja">プレイ動画</span><span lang="en">Gameplay video</span></h2>
+      <div class="frame"><iframe src="https://www.youtube-nocookie.com/embed/nYD90uiWJbI" title="Press &amp; Pass gameplay" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+  </section>
+
+  <section class="shots">
+    <div class="wrap">
+      <h2><small>SCREENSHOTS</small><span lang="ja">スクリーンショット</span><span lang="en">Screenshots</span></h2>
+      <div class="row">
+        <a href="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDgyMy5wbmc=/original/xjWFSM.png"><img src="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDgyMy5wbmc=/original/xjWFSM.png" alt="ゲーム画面1" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg0NS5wbmc=/original/HfgPc2.png"><img src="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg0NS5wbmc=/original/HfgPc2.png" alt="ゲーム画面2" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg1NC5wbmc=/original/80E6fd.png"><img src="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg1NC5wbmc=/original/80E6fd.png" alt="ゲーム画面3" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg1OS5wbmc=/original/B9dbxk.png"><img src="https://img.itch.zone/aW1hZ2UvNTA5ODkwOS8zMDUyNDg1OS5wbmc=/original/B9dbxk.png" alt="ゲーム画面4" loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div>
+        <h2><small>INFO</small><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">物理押印アクション</span><span lang="en">Physics stamping action</span></dd>
+          <dt><span lang="ja">遊ぶ時間</span><span lang="en">Play time</span></dt><dd><span lang="ja">1ステージ約1分(全5日)</span><span lang="en">About 1 minute per stage (5 days)</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">マウス(キーボード併用可)/スマホ・タブレットのタッチ</span><span lang="en">Mouse (keyboard optional) / touch on phones and tablets</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語(タイトル画面で切替)</span><span lang="en">Japanese / English (switch on the title screen)</span></dd>
+          <dt><span lang="ja">状態</span><span lang="en">Status</span></dt><dd><span lang="ja">体験版(開発中)</span><span lang="en">Demo (in development)</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.10.04</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2><small>PLAY</small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <iframe src="https://itch.io/embed/5098909?linkback=true" title="Press &amp; Pass on itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で無料公開中。ブラウザでそのまま遊べます。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // ヒーローのお試し:稟議書をクリック(タップ)するとハンコが押され、5回で決裁箱へ飛んでいく
+  var doc = document.getElementById("doc"), cnt = document.getElementById("count"), rank = document.getElementById("rank");
+  var subj = document.getElementById("subject"), no = document.getElementById("docno");
+  var SUBJ = {
+    ja: ["備品(ホチキス)購入の件", "社員旅行の行き先について", "会議室のエアコン修理", "新しいハンコの導入", "コピー用紙の追加購入", "社長の椅子の買い替え", "ハンコ押しすぎ問題の対策"],
+    en: ["Buying a new stapler", "Company trip destination", "Meeting room A/C repair", "Introducing a new seal", "More copy paper", "A new chair for the CEO", "Too many stamps: a fix"]
+  };
+  var RANKS = { ja: ["", "係長に昇進!", "課長に昇進!", "部長に昇進!", "社長に就任!"], en: ["", "Promoted to Lead!", "Promoted to Manager!", "Promoted to Director!", "You're the CEO!"] };
+  var stamps = 0, total = 0, n = 1, busy = false;
+  function lang() { return (window.PAY && window.PAY.lang()) || "ja"; }
+  function setSubject() { subj.textContent = SUBJ[lang()][(n - 1) % SUBJ.ja.length]; no.textContent = "No. " + ("000" + n).slice(-4); }
+  setSubject();
+  document.addEventListener("paylang", setSubject);
+  function stamp(x, y) {
+    if (busy) return;
+    var s = document.createElement("span"), r = (Math.random() - .5) * 30;
+    s.className = "seal"; s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--r", r + "deg"); s.style.transform = "rotate(" + r + "deg)";
+    s.innerHTML = lang() === "ja" ? "承認<small>PAY</small>" : "OK<small>PAY</small>";
+    doc.appendChild(s);
+    stamps++; total++; cnt.textContent = total;
+    if (stamps >= 5) {
+      busy = true;
+      setTimeout(function () {
+        doc.classList.remove("in"); doc.classList.add("out");
+        if (window.PAY && window.PAY.track && n === 1) window.PAY.track("demo_play", { game: "ponpon-stamper" });
+        setTimeout(function () {
+          doc.querySelectorAll(".seal").forEach(function (e) { e.remove(); });
+          n++; stamps = 0; setSubject();
+          var rk = RANKS[lang()][Math.min(4, n - 1)];
+          if (rk && n <= 5) { rank.textContent = rk; rank.classList.add("on"); setTimeout(function () { rank.classList.remove("on"); }, 1400); }
+          doc.classList.remove("out"); void doc.offsetWidth; doc.classList.add("in"); busy = false;
+        }, 450);
+      }, 220);
+    }
+  }
+  doc.addEventListener("pointerdown", function (e) {
+    var b = doc.getBoundingClientRect();
+    // 回転している紙の上での位置(おおよそ)
+    stamp(e.clientX - b.left, e.clientY - b.top);
+  });
+  doc.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); stamp(doc.clientWidth * (.2 + Math.random() * .6), doc.clientHeight * (.3 + Math.random() * .4)); }
+  });
+})();
+</script>
+</body>
+</html>

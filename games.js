@@ -53,9 +53,29 @@ window.PAY_GAMES = [
     }
   },
   {
+    slug: "ponpon-stamper",
+    short: { ja: "ポンポン・スタンパー", en: "Press & Pass" },
+    fx: "stamp",
+    itch: "https://pay-k.itch.io/ponpon-stamper",
+    itchId: 5098909,
+    released: "2026-10-04",
+    status: { ja: "体験版(開発中)", en: "Demo (in development)" },
+    title: { ja: "連打決裁 ポンポン・スタンパー", en: "Press & Pass" },
+    tagline: {
+      ja: "トン、ポン、ポン、シュパッ!山積みの稟議書を捌く物理押印アクション",
+      en: "Stamp, flick, next! A physics game about clearing a mountain of paperwork."
+    },
+    genre: { ja: "物理押印アクション", en: "Physics stamping action" },
+    cover: "https://img.itch.zone/aW1nLzMwNTI0ODE3LnBuZw==/original/6OX%2Bph.png",
+    accent: "#C8102E",
+    price: { ja: "無料", en: "Free" },
+    tags: [{ ja: "1ステージ約1分", en: "About 1 min per stage" }, { ja: "PC・スマホ対応", en: "PC & mobile" }],
+    crop: [.5, .5, .8]
+  },
+  {
     slug: "160cm",                                   // games/ 以下のフォルダ名
     short: { ja: "布1枚で60cm水槽", en: "One Cloth, One Tank" },
-    fx: "cloth",                                     // 泡が割れたときに飛ぶもの(press 新聞 / cloth 布 / match ハート / frogbit 浮き草 / sealed 警告の火花)
+    fx: "cloth",                                     // 泡が割れたときに飛ぶもの(press 新聞 / stamp 押印済みの書類 / cloth 布 / match ハート / frogbit 浮き草 / sealed 警告の火花)
     itch: "https://pay-k.itch.io/160cm",
     itchId: 5030538,                                 // itch.io 埋め込みウィジェット用ID
     released: "2026-09-20",

@@ -17,6 +17,7 @@ _docs/                  公開されない資料置き場
   blog-banner.html      Seesaa ブログのサイドバーに貼るバナー
 games/
   the-silent-press/     沈黙の輪転機 The Silent Press(注目作)
+  ponpon-stamper/       連打決裁 ポンポン・スタンパー Press & Pass(体験版)
   160cm/                布1枚で60cm水槽をサイドテーブルだと言い張るゲーム
   fish-match/           フィッシュマッチ
   frogbit-sweeper/      FROGBIT SWEEPER
