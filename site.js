@@ -18,6 +18,15 @@
   /* ---------- アクセス解析(Google アナリティクス) ----------
      公開中のサイトでだけ計測する(手元で開いたときや確認用ファイルでは計測しない) */
   var live = /github\.io$/.test(location.hostname);
+  // 自分のアクセスを集計から外す:この端末で一度だけ「サイトのURL?me=1」を開く(元に戻すときは ?me=0)
+  var isMe = false;
+  try {
+    var q = /[?&]me=([01])/.exec(location.search);
+    if (q) { if (q[1] === "1") localStorage.setItem("pay-me", "1"); else localStorage.removeItem("pay-me"); }
+    isMe = localStorage.getItem("pay-me") === "1";
+  } catch (e) {}
+  // いま見ているページの作品(トップは top)。ページの表示回数を作品ごとに数えるために送る
+  var pageGame = (/\/games\/([^/]+)/.exec(location.pathname) || [, "top"])[1];
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
   window.gtag = window.gtag || gtag;
@@ -26,7 +35,9 @@
     ga.async = true; ga.src = "https://www.googletagmanager.com/gtag/js?id=" + P.ga;
     document.head.appendChild(ga);
     gtag("js", new Date());
-    gtag("config", P.ga);
+    var cfg = { game: pageGame };
+    if (isMe) cfg.traffic_type = "internal";   // GA4 の「内部トラフィック」フィルタで除外される
+    gtag("config", P.ga, cfg);
   }
   // 計測したいできごとを送る(計測していないときは何もしない)
   function track(name, params) { if (P.ga && live) window.gtag("event", name, params || {}); }
@@ -170,7 +181,8 @@
       "</nav>" +
       "<p>© " + new Date().getFullYear() + " " + esc(P.name) + "</p>" +
       (P.ga ? '<p class="pay-foot__note">' + bi({ ja: "このサイトは Google アナリティクスでアクセス数を計測しています(Cookie を使います。名前などの個人情報は集めていません)。", en: "This site uses Google Analytics (with cookies) to count visits. No personal details such as names are collected." }) +
-        ' <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">' + bi({ ja: "Google のデータの使い方", en: "How Google uses data" }) + "</a></p>" : "");
+        ' <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">' + bi({ ja: "Google のデータの使い方", en: "How Google uses data" }) + "</a></p>" : "") +
+      (isMe ? '<p class="pay-foot__note pay-foot__me">' + bi({ ja: "● この端末のアクセスは集計から外しています(PAY 用)", en: "● Visits from this device are excluded from stats (owner mode)" }) + "</p>" : "");
     body.appendChild(foot);
 
     // itch.io へのリンク(遊ぶ・買う)が押された回数を、作品・場所ごとに数える
