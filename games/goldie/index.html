@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Goldie — 異世界を時価で叩いて買い占める | 悪徳買収ストラテジー | PAY</title>
+<meta name="description" content="六つの異世界をつなぐ取引所で、借金5,000Gから企業を買い漁り、五つの悪徳商会を四十期のうちに買い潰す。競りと買収のターン制ストラテジー。企業111社、1回30〜60分、ブラウザで無料(PC・マウス操作、日本語のみ)。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Goldie — 異世界を時価で叩いて買い占める">
+<meta property="og:description" content="値札が付けば買える。敵を金貨で殴り倒す、40ターンの悪徳買収ゲーム。/ A 40-turn auction and corporate-takeover game.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzMxNjU3MDUzLnBuZw==/original/Eqipi2.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/goldie/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/goldie/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23E0AE2A' stroke='%238A6514' stroke-width='6'/><text x='50' y='66' text-anchor='middle' font-size='46' font-weight='900' font-family='serif' fill='%238A6514'>G</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --night: #17120C;     /* 取引所の闇 */
+  --night-2: #241C12;
+  --parch: #EFE4CC;     /* 版画の紙 */
+  --parch-2: #E2D3B2;
+  --ink: #2A2118;       /* 版画の墨 */
+  --sub: #6E5E48;
+  --gold: #E0AE2A;      /* 金貨 */
+  --gold-deep: #8A6514;
+  --robe: #6B2234;      /* 頭巾の裏地 */
+  --line: rgba(42, 33, 24, .2);
+  --display: "Shippori Mincho B1", "Yu Mincho", serif;
+
+  --pay-bg: var(--parch);
+  --pay-fg: var(--ink);
+  --pay-line: var(--line);
+  --pay-accent: var(--gold-deep);
+  --pay-bar-bg: rgba(23, 18, 12, .86);
+  --pay-bar-fg: var(--parch);
+  --pay-bar-bg-solid: var(--night);
+}
+body { background: var(--parch); color: var(--ink); font: 400 16px/1.85 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; }
+section h2 { font-size: clamp(26px, 3.2vw, 38px); margin: 0 0 26px; line-height: 1.3; }
+section h2 small { display: block; font: 700 12px/1 "Zen Kaku Gothic New", sans-serif; letter-spacing: .14em; color: var(--gold-deep); margin-bottom: 10px; }
+
+/* ---------- ヒーロー:競りの卓 ---------- */
+.hero { position: relative; overflow: hidden; background: var(--night); color: var(--parch); }
+.hero::before {   /* 版画のハッチング */
+  content: ""; position: absolute; inset: 0; opacity: .06; pointer-events: none;
+  background: repeating-linear-gradient(135deg, var(--parch) 0 1px, transparent 1px 7px);
+}
+.hero__in {
+  position: relative; max-width: 1200px; margin: 0 auto; min-height: 100svh;
+  padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 64px;
+  display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 48px; align-items: center;
+}
+.hero .k { display: block; font: 700 13px/1 "Zen Kaku Gothic New", sans-serif; letter-spacing: .5em; color: #B9A27A; margin-bottom: 14px; }
+.hero h1 { margin: 0; line-height: 1; }
+.hero h1 .logo {
+  display: block; font: 900 clamp(64px, 10vw, 128px)/1 "Cinzel Decorative", "Shippori Mincho B1", serif;
+  background: linear-gradient(180deg, #FFE7A0 0%, #E0AE2A 46%, #8A6514 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 3px 0 #3A2A10);
+}
+.hero h1 .jp { display: block; margin-top: 14px; font: 800 clamp(18px, 2.2vw, 26px)/1.4 var(--display); color: var(--parch); letter-spacing: .08em; }
+.hero .catch { margin: 30px 0 0; font: 600 clamp(18px, 2vw, 22px)/1.7 var(--display); }
+.hero .catch em { font-style: normal; color: var(--gold); }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 34px; }
+.btn {
+  display: inline-flex; align-items: center; min-height: 56px; padding: 0 30px; border-radius: 4px;
+  background: linear-gradient(180deg, #F2C64A, #C9961E); color: var(--night); text-decoration: none;
+  font: 800 19px/1 var(--display); letter-spacing: .06em;
+  box-shadow: 0 0 0 1px #FFE7A0 inset, 0 5px 0 #6A4E10; transition: transform .1s, box-shadow .1s;
+}
+.btn:hover { transform: translateY(2px); box-shadow: 0 0 0 1px #FFE7A0 inset, 0 3px 0 #6A4E10; }
+.btn:active { transform: translateY(5px); box-shadow: 0 0 0 1px #FFE7A0 inset, 0 0 0 #6A4E10; }
+.hero .note { margin: 14px 0 0; font-size: 13px; color: #B9A27A; }
+
+/* 競りの卓 */
+.table { position: relative; background: var(--night-2); border: 1px solid #4A3A22; border-radius: 6px; padding: 18px 18px 16px; box-shadow: 0 30px 60px rgba(0, 0, 0, .45); }
+.table::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(224, 174, 42, .28); border-radius: 3px; pointer-events: none; }
+.t-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: #B9A27A; padding: 0 4px 10px; }
+.t-head b { font: 800 18px/1 var(--display); color: var(--gold); font-variant-numeric: tabular-nums; }
+.lot { position: relative; background: var(--parch); color: var(--ink); border-radius: 3px; padding: 14px 16px; overflow: hidden; }
+.lot__name { margin: 0; font: 800 20px/1.35 var(--display); }
+.lot__desc { margin: 4px 0 0; font-size: 13px; color: var(--sub); line-height: 1.6; min-height: 3.2em; }
+.lot__meta { display: flex; gap: 16px; margin-top: 8px; font-size: 13px; }
+.lot__meta b { color: var(--gold-deep); }
+.sold {
+  position: absolute; right: 14px; top: 50%; padding: 6px 14px; border: 4px double currentColor; border-radius: 4px;
+  font: 800 22px/1 var(--display); letter-spacing: .1em; transform: translateY(-50%) rotate(-9deg) scale(1.4); opacity: 0;
+  transition: opacity .15s, transform .25s cubic-bezier(.3, 1.6, .5, 1); pointer-events: none; background: rgba(239, 228, 204, .85);
+}
+.sold.win { color: #8A2A1E; }
+.sold.lose { color: #4C4C4C; }
+.sold.on { opacity: 1; transform: translateY(-50%) rotate(-9deg) scale(1); }
+
+.arena { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: end; margin-top: 16px; min-height: 172px; }
+.side { text-align: center; }
+.side small { display: block; font-size: 12px; color: #B9A27A; }
+.side .bid { display: block; font: 800 22px/1.2 var(--display); color: var(--parch); font-variant-numeric: tabular-nums; }
+.side.top .bid { color: var(--gold); }
+.stack { position: relative; height: 112px; margin: 6px auto 6px; width: 70px; }
+.stack i {
+  position: absolute; left: 0; right: 0; height: 12px; border-radius: 50%;
+  background: linear-gradient(180deg, #FFE7A0, #E0AE2A 55%, #8A6514); box-shadow: 0 1px 0 #5A420E;
+  animation: drop .28s cubic-bezier(.5, 0, .7, 1.4) backwards;
+}
+@keyframes drop { from { transform: translateY(-60px); opacity: 0; } }
+.vs { font: 800 14px/1 var(--display); color: #6E5E48; padding-bottom: 40px; }
+.clock { height: 6px; background: #3A2E1C; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.clock b { display: block; height: 100%; width: 100%; background: var(--gold); transform-origin: left; }
+.say { min-height: 1.6em; margin: 10px 4px 0; font-size: 14px; color: var(--parch); }
+.say em { font-style: normal; color: var(--gold); }
+.acts { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.acts button {
+  appearance: none; flex: 1 1 0; min-width: 90px; min-height: 48px; border-radius: 4px; cursor: pointer;
+  font: 800 16px/1 var(--display); border: 1px solid #6A4E10; background: #3A2E1C; color: var(--parch);
+}
+.acts button.raise { background: linear-gradient(180deg, #F2C64A, #C9961E); color: var(--night); border-color: #FFE7A0; }
+.acts button:active { transform: translateY(2px); }
+.acts button:disabled { opacity: .4; cursor: default; transform: none; }
+.ledger { display: flex; justify-content: space-between; gap: 10px; margin: 12px 4px 0; font-size: 12px; color: #B9A27A; }
+.ledger b { color: var(--parch); font-variant-numeric: tabular-nums; }
+
+/* ---------- 本文 ---------- */
+.about, .rules, .count, .shots, .spec { padding: 96px 0 0; }
+.spec { padding-bottom: 104px; }
+.about .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.about p { max-width: 36em; margin: 0 0 16px; font-size: 17px; }
+.worlds { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.worlds li { padding: 4px 12px; border: 1px solid var(--ink); border-radius: 2px; font: 600 14px/1.5 var(--display); background: var(--parch-2); }
+.mission { font: 800 clamp(22px, 2.8vw, 30px)/1.55 var(--display); margin: 0 0 18px; }
+.mission em { font-style: normal; color: var(--robe); }
+.about figure { margin: 0; padding: 10px; background: #FBF6EA; border: 1px solid var(--line); box-shadow: 0 16px 34px rgba(42, 33, 24, .18); }
+.about img { display: block; width: 100%; height: auto; aspect-ratio: 630 / 500; object-fit: cover; background: var(--parch-2); }
+
+.rules ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; }
+.rules li { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 22px 0; border-top: 1px solid var(--line); }
+.rules .ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: var(--gold); font: 800 22px/1 var(--display); }
+.rules h3 { margin: 2px 0 6px; font-size: 19px; }
+.rules p { margin: 0; color: var(--sub); font-size: 15px; }
+
+.count { background: var(--night); color: var(--parch); margin-top: 96px; padding: 88px 0; }
+.count h2 small { color: var(--gold); }
+.count dl { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #4A3A22; }
+.count dl > div { padding: 22px 8px 22px 0; border-bottom: 1px solid #4A3A22; }
+.count dt { font-size: 14px; color: #B9A27A; }
+.count dd { margin: 4px 0 0; font: 800 clamp(34px, 4.6vw, 54px)/1 var(--display); color: var(--gold); }
+.count dd small { font-size: .38em; color: var(--parch); margin-left: 6px; }
+.count .fine { margin: 22px 0 0; font-size: 14px; color: #B9A27A; }
+
+.shots .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.shots a { display: block; padding: 6px; background: var(--night); border-radius: 3px; }
+.shots a:first-child { grid-column: 1 / -1; }
+.shots img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--night-2); }
+
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.spec dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+.spec dt, .spec dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.spec dt { color: var(--gold-deep); font-weight: 700; padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { font-size: 14px; color: var(--sub); }
+
+@media (max-width: 880px) {
+  .hero__in { grid-template-columns: 1fr; min-height: 0; gap: 40px; }
+  .about .wrap, .spec .row { grid-template-columns: 1fr; }
+  .count dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots .row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack i { animation: none; }
+  .sold { transition: none; }
+}
+</style>
+</head>
+<body data-game="goldie">
+
+<main>
+  <section class="hero">
+    <div class="hero__in">
+      <div>
+        <span class="k">THE WICKED</span>
+        <h1><span class="logo">Goldie</span><span class="jp">異世界を時価で叩いて買い占める</span></h1>
+        <p class="catch"><span lang="ja">値札が付けば、買える。<br><em>敵を金貨で殴り倒す</em>、40ターンの悪徳買収ゲーム。</span><span lang="en">If it has a price tag, it's for sale.<br>A 40-turn takeover game where you <em>beat rivals with gold</em>.</span></p>
+        <div class="cta">
+          <a class="btn" href="https://pay-k.itch.io/goldie"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+        </div>
+        <p class="note"><span lang="ja">スマートフォンでは遊べません。PCのブラウザで開いてください。</span><span lang="en">Not playable on phones. Open it in a PC browser. The game text is in Japanese.</span></p>
+      </div>
+
+      <div class="table" id="table">
+        <div class="t-head"><span><span lang="ja">本日の出物</span><span lang="en">Today's lot</span> No.<span id="lotno">1</span></span><span><span lang="ja">手持ち</span><span lang="en">Cash</span> <b id="cash">5,000G</b></span></div>
+        <div class="lot">
+          <p class="lot__name" id="lot-name"></p>
+          <p class="lot__desc" id="lot-desc"></p>
+          <div class="lot__meta"><span><span lang="ja">開始値</span><span lang="en">Opening</span> <b id="lot-open"></b></span><span><span lang="ja">収入</span><span lang="en">Income</span> <b id="lot-inc"></b></span></div>
+          <span class="sold" id="sold" aria-hidden="true"></span>
+        </div>
+        <div class="arena" aria-live="polite">
+          <div class="side" id="side-me"><small><span lang="ja">あなた</span><span lang="en">You</span></small><div class="stack" id="stack-me"></div><span class="bid" id="bid-me">0G</span></div>
+          <span class="vs">VS</span>
+          <div class="side" id="side-foe"><small id="foe-name"></small><div class="stack" id="stack-foe"></div><span class="bid" id="bid-foe">0G</span></div>
+        </div>
+        <div class="clock" aria-hidden="true"><b id="clock"></b></div>
+        <p class="say" id="say"></p>
+        <div class="acts">
+          <button type="button" class="raise" id="r1">+100G</button>
+          <button type="button" class="raise" id="r5">+500G</button>
+          <button type="button" id="fold"><span lang="ja">降りる</span><span lang="en">Pass</span></button>
+        </div>
+        <div class="ledger"><span><span lang="ja">買収した会社</span><span lang="en">Companies owned</span> <b id="owned">0</b></span><span><span lang="ja">毎ターン収入</span><span lang="en">Income / turn</span> <b id="income">+0G</b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap">
+      <div>
+        <h2><small>STORY</small><span lang="ja">六つの世界と、一つの取引所</span><span lang="en">Six worlds, one exchange</span></h2>
+        <ul class="worlds">
+          <li><span lang="ja">魔法の王国</span><span lang="en">A magic kingdom</span></li>
+          <li><span lang="ja">呪いの残る中世</span><span lang="en">A cursed medieval age</span></li>
+          <li><span lang="ja">電脳都市</span><span lang="en">A cyber city</span></li>
+          <li><span lang="ja">笑顔が義務の管理国家</span><span lang="en">A state where smiling is mandatory</span></li>
+          <li><span lang="ja">星間航路</span><span lang="en">Interstellar trade lanes</span></li>
+          <li><span lang="ja">時間を切り売りする宇宙の果て</span><span lang="en">The edge of space, where time is sold by the slice</span></li>
+        </ul>
+        <p><span lang="ja">六つの世界は一つの取引所でつながっていて、毎日どこかで会社が売り買いされています。あなたは看板も名前もない新参の商会。元手は、金貸しから借りた 5,000G だけ。</span><span lang="en">All six worlds share a single exchange, and somewhere, every day, a company changes hands. You're a nameless upstart trading house. Your only capital: 5,000G borrowed from a moneylender.</span></p>
+        <p class="mission"><span lang="ja">取引所を牛耳る<em>五つの悪徳商会</em>を、<br>四十期のうちに一つ残らず買い潰す。</span><span lang="en">Buy out every one of the <em>five corrupt houses</em><br>that run the exchange, within forty terms.</span></p>
+      </div>
+      <figure><img src="https://img.itch.zone/aW1nLzMxNjU3MDUzLnBuZw==/original/Eqipi2.png" alt="Goldie のタイトル画像。天秤の片側に金貨、もう片側に商人たちを載せた頭巾の男" width="630" height="500" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="rules">
+    <div class="wrap">
+      <h2><small>HOW TO PLAY</small><span lang="ja">遊び方</span><span lang="en">How to play</span></h2>
+      <ul>
+        <li><span class="ic" aria-hidden="true">買</span><div><h3><span lang="ja">出物を買い集める</span><span lang="en">Buy up the day's lots</span></h3><p><span lang="ja">「本日の出物」から企業を買い、毎ターンの収入を太らせていく。</span><span lang="en">Pick companies from Today's Lots and fatten your income every turn.</span></p></div></li>
+        <li><span class="ic" aria-hidden="true">競</span><div><h3><span lang="ja">1Gでも多く積んだほうが勝ち</span><span lang="en">Highest bid wins, by 1G if need be</span></h3><p><span lang="ja">競りは積み上げ勝負。黙っていると、敵が積み返してくる。</span><span lang="en">Auctions are a stacking contest. Stay quiet and your rival will outbid you.</span></p></div></li>
+        <li><span class="ic" aria-hidden="true">揃</span><div><h3><span lang="ja">悪徳コンボ</span><span lang="en">Wicked combos</span></h3><p><span lang="ja">同じ筋の企業をそろえると、収入が跳ね上がる。</span><span lang="en">Collect companies from the same shady trade and your income jumps.</span></p></div></li>
+        <li><span class="ic" aria-hidden="true">潰</span><div><h3><span lang="ja">本社を札束で殴る</span><span lang="en">Bludgeon their HQ with cash</span></h3><p><span lang="ja">敵の本社を競りにかけ、防衛資金を上回る額を積めば、その商会の持ち物は全部あなたのもの。</span><span lang="en">Put a rival's HQ up for auction and outbid its defense fund. Everything they own becomes yours.</span></p></div></li>
+        <li><span class="ic" aria-hidden="true">報</span><div><h3><span lang="ja">毎朝の新聞</span><span lang="en">The morning paper</span></h3><p><span lang="ja">献金の依頼、労働組合の結成、税務調査の予告。どう動くかは二択。</span><span lang="en">Donation requests, a new union, a tax audit on the way. Each one is a two-way choice.</span></p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="count">
+    <div class="wrap">
+      <h2><small>CONTENTS</small><span lang="ja">収録内容</span><span lang="en">What's inside</span></h2>
+      <dl>
+        <div><dt><span lang="ja">企業(すべて版画調の一枚絵つき)</span><span lang="en">Companies, each with an engraving</span></dt><dd>111<small><span lang="ja">社</span><span lang="en">cos.</span></small></dd></div>
+        <div><dt><span lang="ja">悪徳コンボ</span><span lang="en">Wicked combos</span></dt><dd>10<small><span lang="ja">種</span><span lang="en">kinds</span></small></dd></div>
+        <div><dt><span lang="ja">競りで使うスキル</span><span lang="en">Auction skills</span></dt><dd>8<small><span lang="ja">種</span><span lang="en">kinds</span></small></dd></div>
+        <div><dt><span lang="ja">新聞イベント</span><span lang="en">Newspaper events</span></dt><dd>16<small><span lang="ja">種</span><span lang="en">kinds</span></small></dd></div>
+        <div><dt><span lang="ja">敵の商会(順番に対戦)</span><span lang="en">Rival houses, faced in order</span></dt><dd>5<small><span lang="ja">つ</span><span lang="en">houses</span></small></dd></div>
+        <div><dt><span lang="ja">実績</span><span lang="en">Achievements</span></dt><dd>32<small><span lang="ja">個</span><span lang="en">total</span></small></dd></div>
+      </dl>
+      <p class="fine"><span lang="ja">手に入れた企業は「悪徳図鑑」にたまっていきます。途中の状態は自動で保存されるので、閉じても「つづきから」で再開できます。</span><span lang="en">Every company you acquire is filed in your Wicked Encyclopedia. Progress saves automatically, so you can close the tab and pick up where you left off.</span></p>
+    </div>
+  </section>
+
+  <section class="shots">
+    <div class="wrap">
+      <h2><small>SCREENSHOTS</small><span lang="ja">ゲーム画面</span><span lang="en">Screenshots</span></h2>
+      <div class="row">
+        <a href="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2MS5wbmc=/original/bfjnKa.png"><img src="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2MS5wbmc=/original/bfjnKa.png" alt="本日の出物から企業を選ぶ画面" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2Mi5wbmc=/original/8avk0t.png"><img src="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2Mi5wbmc=/original/8avk0t.png" alt="タイトル画面" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2My5wbmc=/original/CCrvYH.png"><img src="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2My5wbmc=/original/CCrvYH.png" alt="ゲーム画面3" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2MC5wbmc=/original/MXzKN8.png"><img src="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA2MC5wbmc=/original/MXzKN8.png" alt="ゲーム画面4" loading="lazy"></a>
+        <a href="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA3Ni5wbmc=/original/%2FFvf%2FC.png"><img src="https://img.itch.zone/aW1hZ2UvNTI3NjE4NS8zMTY1NzA3Ni5wbmc=/original/%2FFvf%2FC.png" alt="ゲーム画面5" loading="lazy"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec">
+    <div class="wrap row">
+      <div>
+        <h2><small>INFO</small><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">ストラテジー(競り・買収・ターン制)</span><span lang="en">Strategy (auction, takeover, turn-based)</span></dd>
+          <dt><span lang="ja">遊ぶ時間</span><span lang="en">Play time</span></dt><dd><span lang="ja">1回30〜60分(自動保存)</span><span lang="en">30–60 minutes a run (autosaves)</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">マウスのみ</span><span lang="en">Mouse only</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">PCのブラウザ(Chrome / Edge / Firefox)。スマートフォン非対応</span><span lang="en">PC browser (Chrome / Edge / Firefox). Not for phones</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Language</span></dt><dd><span lang="ja">日本語のみ</span><span lang="en">Japanese only</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.11.01</dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2><small>PLAY</small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <iframe src="https://itch.io/embed/5276185?linkback=true" title="Goldie on itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">itch.io で無料公開中。PCのブラウザでそのまま遊べます。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays in your PC browser, no download needed.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  /* ヒーローのお試し:1回だけの競り。黙っていると敵が積み返してくる。
+     (サイト用の演出。会社の説明・値段・敵の動きは本編とは別物です) */
+  var CONFIG = { clockMs: 4200, foeThinkMin: 650, foeThinkMax: 1300, coinG: 250, maxCoins: 9, startCash: 5000 };
+  var LOTS = [
+    { ja: "(株)マネーウォッシャー", en: "MoneyWasher Inc.", dj: "汚れたお金を、きれいなお金にして返します。", de: "We take your dirty money and hand it back clean.", open: 1200, inc: 160 },
+    { ja: "魔法具堂(株)", en: "Arcana Goods Co.", dj: "呪いつきの骨董を、呪いは伏せて売る老舗。", de: "Antique dealers who sell cursed goods. The curse is not on the label.", open: 900, inc: 120 },
+    { ja: "(株)スキャンダルストック", en: "Scandal Stock Ltd.", dj: "有名人の弱みを仕入れ、発売日まで寝かせます。", de: "We buy celebrities' secrets and hold them until release day.", open: 1500, inc: 200 },
+    { ja: "雪ダルマファイナンス(株)", en: "Snowball Finance", dj: "借りた瞬間から、利息だけが元気に育ちます。", de: "The moment you borrow, the interest starts growing. Nothing else does.", open: 1100, inc: 150 },
+    { ja: "マリオネットオプション(株)", en: "Marionette Options", dj: "自分の生活を「操る権利」を、他人に売れる証券会社。", de: "A brokerage where you can sell the right to run your own life.", open: 1400, inc: 180 }
+  ];
+  var FOES = [{ ja: "強欲の商会", en: "House of Greed" }, { ja: "傲慢の商会", en: "House of Pride" }, { ja: "嫉妬の商会", en: "House of Envy" }];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var state = { cash: CONFIG.startCash, owned: 0, income: 0, n: 0, lot: null, foe: null, me: 0, them: 0, top: "", limit: 0, end: 0, over: true, timers: [] };
+
+  function L() { return (window.PAY && window.PAY.lang()) || "ja"; }
+  function fmt(v) { return v.toLocaleString("en-US") + "G"; }
+  function later(fn, ms) { state.timers.push(setTimeout(fn, ms)); }
+  function clearLater() { state.timers.forEach(clearTimeout); state.timers = []; }
+
+  function stack(el, amount) {
+    var want = Math.min(CONFIG.maxCoins, Math.ceil(amount / CONFIG.coinG)), have = el.children.length;
+    while (have > want) { el.removeChild(el.lastChild); have--; }
+    for (; have < want; have++) {
+      var c = document.createElement("i"); c.style.bottom = (have * 11) + "px";
+      c.style.left = ((have * 7) % 5 - 2) + "px"; c.style.right = (-(have * 7) % 5 + 2) + "px";
+      el.appendChild(c);
+    }
+  }
+  function say(ja, en) { $("say").innerHTML = L() === "ja" ? ja : en; }
+
+  function render() {
+    var lot = state.lot, lj = L() === "ja";
+    $("lotno").textContent = state.n;
+    $("cash").textContent = fmt(state.cash);
+    $("lot-name").textContent = lj ? lot.ja : lot.en;
+    $("lot-desc").textContent = lj ? lot.dj : lot.de;
+    $("lot-open").textContent = fmt(lot.open);
+    $("lot-inc").textContent = "+" + fmt(lot.inc);
+    $("foe-name").textContent = lj ? state.foe.ja : state.foe.en;
+    $("bid-me").textContent = fmt(state.me);
+    $("bid-foe").textContent = fmt(state.them);
+    $("side-me").classList.toggle("top", state.top === "me");
+    $("side-foe").classList.toggle("top", state.top === "foe");
+    stack($("stack-me"), state.me); stack($("stack-foe"), state.them);
+    $("owned").textContent = state.owned;
+    $("income").textContent = "+" + fmt(state.income);
+    var high = Math.max(state.me, state.them);
+    $("r1").disabled = state.over || state.cash < high + 100;
+    $("r5").disabled = state.over || state.cash < high + 500;
+    $("fold").disabled = state.over;
+  }
+
+  function startClock() {
+    state.end = performance.now() + CONFIG.clockMs;
+    var b = $("clock"); b.style.transition = "none"; b.style.transform = "scaleX(1)"; void b.offsetWidth;
+    b.style.transition = "transform " + CONFIG.clockMs + "ms linear"; b.style.transform = "scaleX(0)";
+    later(function () { if (!state.over && performance.now() >= state.end - 30) hammer(); }, CONFIG.clockMs);
+  }
+
+  function nextLot() {
+    clearLater();
+    var lot = LOTS[state.n % LOTS.length];
+    state.n++;
+    state.lot = lot; state.foe = FOES[(state.n - 1) % FOES.length];
+    state.me = 0; state.them = lot.open; state.top = "foe"; state.over = false;
+    state.limit = Math.round(lot.open * (1.35 + Math.random() * .7) / 100) * 100;   // 敵がここまでは積む
+    $("sold").className = "sold";
+    render();
+    say("敵が<em>" + fmt(lot.open) + "</em>で札を入れた。積み返す?", "Your rival opened at <em>" + fmt(lot.open) + "</em>. Raise?");
+    startClock();
+  }
+
+  function raise(step) {
+    if (state.over) return;
+    var high = Math.max(state.me, state.them);
+    if (state.cash < high + step) return;
+    state.me = high + step; state.top = "me";
+    render();
+    say("<em>" + fmt(state.me) + "</em>を積んだ。", "You stacked <em>" + fmt(state.me) + "</em>.");
+    if (window.PAY && window.PAY.track && state.n === 1 && state.me === state.lot.open + step) window.PAY.track("demo_play", { game: "goldie" });
+    clearLater(); startClock();
+    later(foeTurn, CONFIG.foeThinkMin + Math.random() * (CONFIG.foeThinkMax - CONFIG.foeThinkMin));
+  }
+
+  function foeTurn() {
+    if (state.over || state.top !== "me") return;
+    var bid = state.me + (Math.random() < .5 ? 100 : 200);
+    if (bid <= state.limit) {
+      state.them = bid; state.top = "foe";
+      render();
+      say("敵が<em>" + fmt(bid) + "</em>に積み返してきた。", "Your rival raised to <em>" + fmt(bid) + "</em>.");
+      clearLater(); startClock();
+    } else {
+      say("敵の手が止まった。このまま槌が落ちれば……", "Your rival hesitates. If the gavel falls now...");
+    }
+  }
+
+  function hammer() {
+    if (state.over) return;
+    state.over = true;
+    var s = $("sold"), lj = L() === "ja";
+    if (state.top === "me") {
+      state.cash -= state.me; state.owned++; state.income += state.lot.inc; state.cash += state.lot.inc;
+      s.textContent = lj ? "買収成立" : "ACQUIRED"; s.className = "sold win on";
+      say("落札。<em>+" + fmt(state.lot.inc) + "</em>の収入が毎ターン入る。", "Sold to you. <em>+" + fmt(state.lot.inc) + "</em> every turn from now on.");
+    } else {
+      s.textContent = lj ? "敵が落札" : "SOLD TO RIVAL"; s.className = "sold lose on";
+      say("黙っていたら、持っていかれた。", "You stayed quiet. They took it.");
+    }
+    if (state.cash < 1500) {   // お試しなので、金が尽きたら借り直す
+      later(function () { state.cash += 5000; say("金貸しから<em>5,000G</em>を借り直した。", "You borrowed another <em>5,000G</em>."); render(); }, 900);
+    }
+    render();
+    later(nextLot, reduce ? 2600 : 2200);
+  }
+
+  function fold() {
+    if (state.over) return;
+    state.top = "foe"; clearLater(); hammer();
+  }
+
+  $("r1").addEventListener("click", function () { raise(100); });
+  $("r5").addEventListener("click", function () { raise(500); });
+  $("fold").addEventListener("click", fold);
+  document.addEventListener("paylang", function () { if (state.lot) render(); });
+
+  // 画面外のときは競りを進めない(見ていない間に落札されないように)
+  var table = $("table"), visible = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      var v = es[0].isIntersecting;
+      if (v && !visible && !state.over) { clearLater(); startClock(); }
+      if (!v && !state.over) { clearLater(); $("clock").style.transition = "none"; }
+      visible = v;
+    }).observe(table);
+  }
+
+  nextLot();
+})();
+</script>
+</body>
+</html>

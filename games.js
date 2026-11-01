@@ -14,6 +14,26 @@
    ========================================================= */
 window.PAY_GAMES = [
   {
+    slug: "goldie",
+    short: { ja: "Goldie", en: "Goldie" },
+    fx: "gold",                                      // 泡が割れると金貨が飛び散る
+    itch: "https://pay-k.itch.io/goldie",
+    itchId: 5276185,
+    released: "2026-11-01",
+    status: { ja: "公開中", en: "Released" },
+    title: { ja: "Goldie(異世界を時価で叩いて買い占める)", en: "Goldie" },
+    tagline: {
+      ja: "値札が付けば、買える。敵を金貨で殴り倒す、40ターンの悪徳買収ゲーム。",
+      en: "If it has a price tag, it's for sale. A 40-turn game of buying out the corrupt."
+    },
+    genre: { ja: "競り×悪徳買収ストラテジー", en: "Auction & takeover strategy" },
+    cover: "https://img.itch.zone/aW1nLzMxNjU3MDUzLnBuZw==/original/Eqipi2.png",
+    accent: "#C9961E",
+    price: { ja: "無料", en: "Free" },
+    tags: [{ ja: "PCのみ・マウスだけ", en: "PC only, mouse only" }, { ja: "1回30〜60分・自動保存", en: "30–60 min a run, autosaves" }, { ja: "日本語のみ", en: "Japanese only" }],
+    crop: [.72, .5, .5]
+  },
+  {
     slug: "the-silent-press",
     short: { ja: "沈黙の輪転機", en: "The Silent Press" },   // 泡の下に出す短い名前
     itch: "https://pay-k.itch.io/the-silent-press",
@@ -75,7 +95,7 @@ window.PAY_GAMES = [
   {
     slug: "160cm",                                   // games/ 以下のフォルダ名
     short: { ja: "布1枚で60cm水槽", en: "One Cloth, One Tank" },
-    fx: "cloth",                                     // 泡が割れたときに飛ぶもの(press 新聞 / stamp 押印済みの書類 / cloth 布 / match ハート / frogbit 浮き草 / sealed 警告の火花)
+    fx: "cloth",                                     // 泡が割れたときに飛ぶもの(press 新聞 / stamp 押印済みの書類 / cloth 布 / match ハート / frogbit 浮き草 / sealed 警告の火花 / gold 金貨)
     itch: "https://pay-k.itch.io/160cm",
     itchId: 5030538,                                 // itch.io 埋め込みウィジェット用ID
     released: "2026-09-20",
