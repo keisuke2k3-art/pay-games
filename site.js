@@ -175,6 +175,7 @@
     foot.innerHTML =
       '<nav aria-label="PAY">' +
       '<a href="' + ROOT + '#works">' + bi({ ja: "作品一覧", en: "All games" }) + "</a>" +
+      '<a href="' + ROOT + 'suishitsu/">' + bi({ ja: "水質スキャナ", en: "Tap Water Lab" }) + "</a>" +
       '<a href="' + esc(P.itch) + '" rel="noopener">itch.io</a>' +
       '<a href="' + esc(P.x) + '" rel="noopener">X ' + esc(P.xHandle) + "</a>" +
       '<a href="' + esc(P.blog) + '" rel="noopener">' + esc(P.blogName) + "</a>" +

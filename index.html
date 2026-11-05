@@ -175,6 +175,12 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
 
 /* ---------- 作品一覧 ---------- */
 .works { background: #fff; position: relative; }
+.tool { display: grid; gap: 4px; margin: 36px 0 0; padding: 18px 22px; border: 1px solid #d8e2e6; border-radius: 14px; text-decoration: none; color: inherit; background: linear-gradient(135deg, #f3fbfd, #fff); transition: border-color .2s, transform .2s; }
+.tool:hover { border-color: #4fb8c8; transform: translateY(-2px); }
+.tool__k { font-size: 12px; letter-spacing: .12em; color: #2a8fa0; font-weight: 700; }
+.tool__t { font-size: 17px; font-weight: 700; }
+.tool__d { font-size: 13.5px; color: var(--sub); line-height: 1.7; }
+
 .works__in { max-width: 1120px; margin: 0 auto; padding: 72px clamp(20px, 4vw, 56px) 72px; }
 .works__hd { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
 .works h2 { margin: 0; font: 700 clamp(26px, 3vw, 34px)/1.2 "Zen Kaku Gothic New", sans-serif; }
@@ -305,6 +311,11 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
         <a id="itch-all" href="#" rel="noopener"><span lang="ja">itch.io のページ</span><span lang="en">PAY on itch.io</span></a>
       </div>
       <ul class="list" id="list"></ul>
+      <a class="tool" href="suishitsu/">
+        <span class="tool__k"><span lang="ja">ツール</span><span lang="en">Tool</span></span>
+        <span class="tool__t"><span lang="ja">水質スキャナ — 住所から水道水のGH・pHを調べる</span><span lang="en">Tap Water Lab — check your tap water's GH and pH (Japan)</span></span>
+        <span class="tool__d"><span lang="ja">全国1,300以上の市区町村について、水道局が公表した水質検査結果を出典つきで表示。水合わせ・換水の参考に。</span><span lang="en">Official water-quality results from Japanese water utilities for 1,300+ municipalities, with sources. Japanese only.</span></span>
+      </a>
       <div class="about">
         <p class="about__name">PAY</p>
         <p class="about__t"><span lang="ja">水槽を観察する目で作る、ブラウザゲーム。アクアリウムを題材にした小さなゲームと、物語のあるゲームを、ひとりで作っています。新作の知らせは X で。</span><span lang="en">Browser games made with an aquarist's eye. I make small aquarium games and story-driven ones, all on my own. New releases are announced on X.</span></p>
