@@ -422,7 +422,7 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
         <button type="button" class="btn primary" id="try">入力例で試してみる</button>
       </div>
       <div class="panel em" id="em-panel" hidden></div>
-      <div class="panel todo" id="todo-panel" hidden><span class="kicker">保健室からのメモ</span><h2>今やること</h2><div id="todo"></div><div class="tools"><button type="button" class="btn" id="copy">相談メモをコピー</button><span class="hint" id="copy-msg" aria-live="polite"></span></div><textarea id="copy-area" readonly hidden style="width:100%;min-height:160px;font:inherit;font-size:.8rem"></textarea></div>
+      <div class="panel todo" id="todo-panel" hidden><span class="kicker">保健室からのメモ</span><h2>今やること</h2><div id="todo"></div><div class="tools"><button type="button" class="btn" id="copy">相談メモをコピー</button><button type="button" class="btn" id="share">この結果のリンクをコピー</button><span class="hint" id="copy-msg" aria-live="polite"></span></div><textarea id="copy-area" readonly hidden style="width:100%;min-height:160px;font:inherit;font-size:.8rem"></textarea></div>
       <div class="panel" id="cand-panel" hidden><div class="step" style="justify-content:space-between"><h2>考えられる病気</h2><span class="cite" id="cand-n"></span></div><div class="cands" id="cands"></div></div>
       <div class="panel care" id="care-panel" hidden><h2>病名がわからなくてもできること</h2><p class="hint pro-only">病名がはっきりしなくてもできる、一般的な処置と注意です。<span class="pro-only">多くは獣医療・水産の資料の記述で、家庭の水槽だけを想定したものではありません。各項目の「注意」も読んでください。</span></p><div id="care"></div></div>
       <details class="panel" id="water-panel"><summary><span>水質の判定</span><span class="cnt" id="water-sum"></span></summary><div class="alerts" id="alerts" style="margin-top:6px"></div></details>
@@ -494,7 +494,7 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
   <span>さかなの保健室 | FISH CARE LAB ・ データ確認日 <span class="num" id="checked2"></span> ・ 収録 <span id="counts"></span></span>
   <span>診断や治療を行うものではありません。薬は必ず製品の説明書に従ってください。<a href="#sources" id="to-terms">利用規約・免責</a></span>
   <span>誤りの報告は X の <a href="https://x.com/ART_HELPS_YOU" target="_blank" rel="noopener">@ART_HELPS_YOU</a> まで。水道水の水質は <a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a> で調べられます。</span>
-  <span>制作: <a href="https://keisuke2k3-art.github.io/pay-games/" target="_blank" rel="noopener">PAY games</a> ・ このサイトは Google アナリティクスでアクセス数を計測しています(Cookie を使います。名前などの個人情報は集めていません。入力した症状や水質の値は送信しません)。</span>
+  <span><a href="https://keisuke2k3-art.github.io/pay-games/hokenshitsu/d/" target="_blank" rel="noopener">病気ごとの解説ページ</a> ・ 制作: <a href="https://keisuke2k3-art.github.io/pay-games/" target="_blank" rel="noopener">PAY games</a> ・ このサイトは Google アナリティクスでアクセス数を計測しています(Cookie を使います。名前などの個人情報は集めていません。入力した症状や水質の値は送信しません)。</span>
 </div></footer>
 <div class="overlay" id="agree" hidden role="dialog" aria-modal="true" aria-labelledby="agree-h"><div class="poster">
   <svg class="masc masc-big" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg>
@@ -589,6 +589,34 @@ FIELDS.forEach(k => BLANK[k] = '');
 const EXAMPLE = Object.assign({}, BLANK, {sick:'neon_tetra', mates:['corydoras_aeneus'], signs:['white_spots','flashing'], vol:'32', temp:'25', ph:'6.8', no2:'0'});
 let S, isExample = false, open = new Set(), lastKey = '', lastRes = [], bbarWanted = false, resultsVisible = false;
 function updateBbar(){ $('#bbar').hidden = !bbarWanted || resultsVisible; }
+/* ---- share link: the entered state travels in the URL hash (#s=...). Only known keys and valid ids are accepted. ---- */
+const SITE = 'https://keisuke2k3-art.github.io/pay-games/hokenshitsu/';
+function packState(){
+  const o = {};
+  if (S.sick) o.k = S.sick;
+  for (const [k, f] of [['m','mates'],['g','signs'],['h','hist']]) if ((S[f] || []).length) o[k] = S[f];
+  for (const k of ['scope','onset']) if (S[k]) o[k] = S[k];
+  for (const k of FIELDS) if (S[k] != null && S[k] !== '') o[k] = String(S[k]);
+  if (S.vm && S.vm !== 'L') o.vm = S.vm; if (S.nu && S.nu !== 'U') o.nu = S.nu; if (S.plants) o.p = 1; if (S.uv) o.u = 1;
+  return btoa(JSON.stringify(o)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function unpackState(str){
+  try {
+    const o = JSON.parse(atob(str.replace(/-/g, '+').replace(/_/g, '/'))); if (!o || typeof o !== 'object') return null;
+    const st = JSON.parse(JSON.stringify(BLANK)); const ids = a => Array.isArray(a) ? a.filter(v => typeof v === 'string') : [];
+    if (typeof o.k === 'string' && SPEC[o.k] && !A.inverts.some(i => i.id === o.k)) st.sick = o.k;
+    st.mates = ids(o.m).filter(v => SPEC[v] && v !== st.sick); st.signs = ids(o.g).filter(v => SIGN[v]); st.hist = ids(o.h).filter(v => A.history.some(h => h.id === v));
+    if (['one','some','most'].includes(o.scope)) st.scope = o.scope; if (['sudden','week','long'].includes(o.onset)) st.onset = o.onset;
+    for (const k of FIELDS) if (typeof o[k] === 'string' && /^\d{0,5}(\.\d{0,3})?$/.test(o[k])) st[k] = o[k];
+    if (['L','D'].includes(o.vm)) st.vm = o.vm; if (['U','N','NO2'].includes(o.nu)) st.nu = o.nu; st.plants = o.p === 1; st.uv = o.u === 1;
+    return st;
+  } catch(e){ return null; }
+}
+function copyShare(){
+  const url = SITE + '#s=' + packState(); const ta = $('#copy-area');
+  const done = ok => { $('#copy-msg').textContent = ok ? 'リンクをコピーしました。開くと、同じ入力内容が表示されます。' : 'コピーできなかったので下に表示しました。選択してコピーしてください。'; if (!ok){ ta.hidden = false; ta.value = url; ta.focus(); ta.select(); } };
+  try { navigator.clipboard.writeText(url).then(() => done(true), () => done(false)); } catch(e){ done(false); }
+}
 function load(){ try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && (s.sick === '' || SPEC[s.sick])) return Object.assign({}, BLANK, s, {offlabel:{}}); } catch(e){} return null; }
 function save(){ if (isExample) return; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 
@@ -1500,6 +1528,7 @@ function init(){
     if (!seen) setTimeout(() => $('#agree-ok').focus(), 0); }
   buildForm();
   S = load() || JSON.parse(JSON.stringify(BLANK));
+  { const m = (location.hash || '').match(/^#s=([A-Za-z0-9_-]+)$/); if (m){ const st = unpackState(m[1]); if (st){ st.mode = S.mode || 'easy'; S = st; save(); } try { history.replaceState(null, '', location.pathname + location.search + '#diagnose'); } catch(e){ location.hash = '#diagnose'; } } }
   writeForm(); setExample(false); render(); route();
   const form = $('#form');
   const onEdit = () => { readForm(); if (isExample) setExample(false); render(); };
@@ -1526,7 +1555,7 @@ function init(){
   $('#results').addEventListener('input', e => { if (e.target.classList.contains('bath-in')){ const id = e.target.id; S.bath = e.target.value; $('#bath').value = S.bath; const pos = e.target.selectionStart; render(); const n = document.getElementById(id); if (n){ n.focus(); try { n.setSelectionRange(pos, pos); } catch(_){} } } });
   $('#results').addEventListener('change', e => { if (e.target.classList.contains('ol-consent')){ S.offlabel = Object.assign({}, S.offlabel || {}, {[e.target.dataset.d]: e.target.checked}); render(); } });
 $('#results').addEventListener('click', e => { const b = e.target.closest('button[data-sign]'); if (!b) return; const k = b.dataset.sign; if (!S.signs.includes(k)) S.signs.push(k); writeForm(); render(); });
-  $('#copy').addEventListener('click', copyMemo);
+  $('#copy').addEventListener('click', copyMemo); $('#share').addEventListener('click', copyShare);
   form.addEventListener('click', e => { const b = e.target.closest('button[data-seg]'); if (!b) return; S[b.dataset.seg] = S[b.dataset.seg] === b.dataset.v ? '' : b.dataset.v; if (isExample) setExample(false); setSeg(); render(); });
   $('#signs').addEventListener('click', e => {
     const t = e.target.closest('.tile'); if (t){ openPart = openPart === t.dataset.part ? '' : t.dataset.part; render(); return; }
@@ -1550,6 +1579,7 @@ function copyMemo(){
   const emEl = $('#em-panel').hidden ? [] : [...document.querySelectorAll('#em-panel li')]; if (emEl.length){ lines.push('緊急の処置:'); emEl.forEach((li, i) => lines.push(`  ${i + 1}. ${liText(li)}`)); }
   const tl = [...document.querySelectorAll('#todo li')]; if (tl.length){ lines.push('今やること:'); tl.forEach((li, i) => { const a = li.querySelector('.cite a'); lines.push(`  ${i + 1}. ${liText(li)}${a ? `(出典: ${a.textContent} ${a.href})` : ''}`); }); }
   lines.push('※文献の症状との一致による候補で、診断の確定ではありません。');
+  lines.push('さかなの保健室 ' + SITE);
   const text = lines.join('\n'); const ta = $('#copy-area');
   const done = ok => { $('#copy-msg').textContent = ok ? 'コピーしました。' : 'コピーできなかったので下に表示しました。選択してコピーしてください。'; if (!ok){ ta.hidden = false; ta.value = text; ta.focus(); ta.select(); } };
   try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch(e){ done(false); }
