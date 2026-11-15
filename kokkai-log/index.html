@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>国会ログ|その議員、国会で何してた?</title>
+<meta name="description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta name="theme-color" content="#2b2170">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/kokkai-log/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="国会ログ">
+<meta property="og:title" content="国会ログ|その議員、国会で何してた?">
+<meta property="og:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/">
+<meta property="og:image" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="国会ログ|その議員、国会で何してた?">
+<meta name="twitter:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta name="twitter:image" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0} img{max-width:100%} [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<style>
+/* Layout: 1カラム(最大640px)+画面下の4タブ。一覧 → 詳細の2階層。
+   配色: 特定の政党を連想させない藍色(インディゴ)を軸に、角を丸くして親しみやすく */
+:root{
+  --bg:#f5f4fb; --surface:#ffffff; --sunk:#eceaf6; --line:#dcd9ea;
+  --ink:#1a1830; --muted:#545170; --accent:#4535c8; --accent-ink:#ffffff; --accent-soft:#e9e6fc;
+  --hero:#2b2170; --hero-ink:#ffffff; --hero-soft:#d9d4ff;
+  --yes:#0b6b61; --yes-soft:#dbf0ec; --no:#9c3f0b; --no-soft:#f9e4d6; --mid:#6b5800; --mid-soft:#f6edc6;
+  --c1:#4535c8; --c2:#a8501f; --c3:#0b6b61; --c4:#74479a; --c5:#7a6a00; --c6:#a8314f;
+  --font:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --r:16px; --nav:64px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#110f1e; --surface:#1b1930; --sunk:#262340; --line:#37345a;
+  --ink:#eeecfa; --muted:#aeaacb; --accent:#a99dff; --accent-ink:#15112e; --accent-soft:#2a2552;
+  --hero:#2a2366; --hero-ink:#ffffff; --hero-soft:#cfc8ff;
+  --yes:#62d3c4; --yes-soft:#123430; --no:#f3a571; --no-soft:#3b2414; --mid:#e6cf6a; --mid-soft:#352d0d;
+  --c1:#a99dff; --c2:#f3a571; --c3:#62d3c4; --c4:#c9a3ea; --c5:#e0cf5c; --c6:#f28dab; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#110f1e; --surface:#1b1930; --sunk:#262340; --line:#37345a;
+  --ink:#eeecfa; --muted:#aeaacb; --accent:#a99dff; --accent-ink:#15112e; --accent-soft:#2a2552;
+  --hero:#2a2366; --hero-ink:#ffffff; --hero-soft:#cfc8ff;
+  --yes:#62d3c4; --yes-soft:#123430; --no:#f3a571; --no-soft:#3b2414; --mid:#e6cf6a; --mid-soft:#352d0d;
+  --c1:#a99dff; --c2:#f3a571; --c3:#62d3c4; --c4:#c9a3ea; --c5:#e0cf5c; --c6:#f28dab; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;
+  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 24px)}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4,p,ul{margin:0}
+ul{padding-left:1.2em}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ヘッダー */
+header{padding-block:14px 6px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.25rem;letter-spacing:.06em;background:none;border:0;padding:0;color:var(--ink)}
+.logo svg{width:30px;height:30px}
+.hero{background:var(--hero);color:var(--hero-ink);border-radius:24px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.hero h2{font-size:1.45rem;font-weight:900;line-height:1.45;text-wrap:balance;margin:0}
+.hero p{color:var(--hero-soft);font-size:.92rem}
+.hero .input{border-color:transparent}
+.hero .fl span{color:var(--hero-soft)}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px) + 16px);transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:999px;font-weight:700;font-size:.9rem;z-index:30}
+.share{display:inline-flex;align-items:center;gap:6px}
+.soon{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+footer.ft{font-size:.8rem;color:var(--muted);text-align:center;padding-top:8px}
+.help{display:flex;align-items:center;gap:4px;background:none;border:0;color:var(--muted);font-size:.85rem;padding:6px 4px}
+
+/* 画面下のタブ */
+nav.bn{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.bn .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav)}
+nav.bn button{background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.74rem;font-weight:700;color:var(--muted)}
+nav.bn button[aria-current="page"]{color:var(--accent)}
+nav.bn svg{width:24px;height:24px}
+
+/* 共通部品 */
+main .wrap{display:flex;flex-direction:column;gap:20px;padding-block:8px 24px}
+.title{font-size:1.25rem;font-weight:900;line-height:1.45;text-wrap:balance}
+.lead{color:var(--muted);font-size:.92rem}
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec>h3{font-size:.95rem;font-weight:900;display:flex;align-items:center;gap:8px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:.95rem}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.wide{width:100%}
+.btn.txt{border:0;background:none;color:var(--accent);padding:0 8px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row .grow{flex:1}
+.back{align-self:flex-start;display:inline-flex;align-items:center;gap:4px;background:none;border:0;color:var(--accent);font-weight:700;padding:6px 0;min-height:44px}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.bdg{display:inline-flex;align-items:center;gap:4px;font-size:.76rem;font-weight:700;border-radius:6px;padding:2px 8px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.bdg.y{background:var(--yes-soft);color:var(--yes)} .bdg.n{background:var(--no-soft);color:var(--no)} .bdg.m{background:var(--mid-soft);color:var(--mid)}
+.bdg.a{background:var(--accent-soft);color:var(--accent)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sunk);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;border-radius:999px;min-height:38px;font-weight:700;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0/.12)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;min-height:36px;padding:0 12px;font-size:.86rem;font-weight:700}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+details.more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-weight:700;font-size:.92rem}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"＋";color:var(--muted)}
+details.more[open]>summary::after{content:"－"}
+details.more{border-top:1px solid var(--line)}
+.input{width:100%;font:inherit;font-size:1rem;min-height:48px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink)}
+.input:focus{border-color:var(--accent);outline:2px solid var(--accent-soft)}
+.skel{height:64px;border-radius:var(--r);background:linear-gradient(90deg,var(--sunk),var(--surface),var(--sunk));background-size:200% 100%}
+@media (prefers-reduced-motion:no-preference){.skel{animation:sk 1.2s linear infinite}}
+@keyframes sk{to{background-position:-200% 0}}
+.empty{color:var(--muted);font-size:.9rem}
+.note{font-size:.86rem;color:var(--muted);display:flex;gap:6px}
+.note::before{content:"i";flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;font-size:.7rem;font-weight:900;display:grid;place-items:center;margin-top:3px}
+
+/* リスト */
+.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.item{display:flex;flex-direction:column;gap:6px;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:14px 16px;min-height:44px}
+.item:first-child{border-top:0}
+.item .t{font-weight:700;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .s{font-size:.82rem;color:var(--muted)}
+.item.chev{display:grid;grid-template-columns:1fr auto;align-items:center}
+.item.chev::after{content:"›";color:var(--muted);font-size:1.4rem;grid-row:1/span 2;grid-column:2}
+.group{display:flex;flex-direction:column;gap:8px}
+.group>h3{font-size:.82rem;font-weight:700;color:var(--muted);letter-spacing:.06em;padding-left:2px}
+
+/* 法案の詳細 */
+.ba{display:flex;flex-direction:column;gap:8px}
+.ba>div{border-radius:var(--r);padding:12px 14px;background:var(--sunk)}
+.ba>div.after{background:var(--accent-soft)}
+.ba b{display:block;font-size:.78rem;color:var(--muted);margin-bottom:2px}
+.ba>div.after b{color:var(--accent)}
+.ba ul{display:flex;flex-direction:column;gap:4px;font-size:.93rem}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.pc{grid-template-columns:1fr}}
+.pc>div{border-radius:var(--r);padding:12px 14px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.pc h4{font-size:.86rem;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.pc .p h4{color:var(--yes)} .pc .c h4{color:var(--no)}
+.pc ul{display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.tally{display:flex;flex-direction:column;gap:6px}
+.tbar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px;background:var(--sunk)}
+.tbar i{display:block}
+.tbar .ty{background:var(--yes)} .tbar .tn{background:var(--no)}
+.tleg{display:flex;justify-content:space-between;font-size:.84rem;font-weight:700}
+.tleg .y{color:var(--yes)} .tleg .n{color:var(--no)}
+.lvrow{display:grid;grid-template-columns:7.2em 1fr;gap:8px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.lvrow:first-child{border-top:0}
+.lvl{font-size:.8rem;font-weight:700;line-height:1.4;padding-top:8px;display:flex;gap:4px}
+.lvl.y{color:var(--yes)} .lvl.n{color:var(--no)} .lvl.m{color:var(--mid)}
+.pchip{border:1px solid var(--line);background:var(--surface);border-radius:999px;min-height:36px;padding:0 12px;font-size:.86rem;font-weight:700}
+.pchip.q{border-style:solid;border-color:var(--accent)}
+.pchip[aria-expanded="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.fxp{grid-column:1/-1;background:var(--sunk);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:.9rem}
+.fxp .nm{font-weight:900}
+.fxp blockquote{margin:0;padding-left:10px;border-left:3px solid var(--accent);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.fxp .meta{font-size:.8rem;color:var(--muted)}
+.legend{font-size:.8rem;color:var(--muted)}
+
+/* 診断 */
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;list-style:none;padding:0}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px;font-size:.82rem;display:flex;flex-direction:column;gap:4px}
+.steps b{font-size:1.1rem;color:var(--accent)}
+.prog{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--muted)}
+.prog .bar{flex:1;height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--accent)}
+.qtext{font-size:1.3rem;font-weight:900;line-height:1.5;text-wrap:balance}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ans button{min-height:64px;border-radius:var(--r);border:2px solid;background:var(--surface);font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;gap:8px}
+.ans .y{border-color:var(--yes);color:var(--yes)} .ans .n{border-color:var(--no);color:var(--no)}
+.ans .y[aria-pressed="true"]{background:var(--yes);color:var(--surface)} .ans .n[aria-pressed="true"]{background:var(--no);color:var(--surface)}
+.res{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;text-align:left;width:100%;background:none;border:0;border-top:1px solid var(--line);padding:14px 16px}
+.res:first-child{border-top:0}
+.res .pn{font-weight:900;font-size:1.05rem}
+.res .pct{font-weight:900;font-size:1.3rem}
+.res .bar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.res .bar i{display:block;height:100%;background:var(--accent)}
+.res .s{grid-column:1/-1;font-size:.8rem;color:var(--muted)}
+.cmp{list-style:none;padding:4px 16px 14px;display:flex;flex-direction:column;gap:6px;font-size:.88rem}
+.cmp li{display:grid;grid-template-columns:1.6em 1fr;gap:6px}
+.ok{color:var(--yes);font-weight:900}.ng{color:var(--no);font-weight:900}
+
+/* 議員 */
+.phead{display:flex;flex-direction:column;gap:6px}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{display:flex;flex-direction:column;gap:4px;font-size:.8rem;font-weight:700;color:var(--muted);min-width:0}
+.fl select{font-size:.95rem;font-weight:500;color:var(--ink);padding:0 10px;appearance:auto}
+.phead h2{font-size:1.6rem;font-weight:900;line-height:1.3}
+.phead .yomi{color:var(--muted);font-size:.9rem}
+.strip{position:relative;height:16px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.strip i{position:absolute;top:0;bottom:0;min-width:3px}
+.axis{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted)}
+.hist{list-style:none;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.hist li{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center}
+.hist .dot{width:12px;height:12px;border-radius:3px}
+.hist .yr{font-size:.8rem;color:var(--muted)}
+.vrow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.vrow:first-child{border-top:0}
+.vrow .q{font-size:.9rem;line-height:1.5}
+.vrow .src{grid-column:1/-1;font-size:.76rem;color:var(--muted)}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat div{background:var(--sunk);border-radius:var(--r);padding:10px;text-align:center}
+.stat b{display:block;font-size:1.2rem}
+.stat span{font-size:.76rem;color:var(--muted)}
+
+/* 政党の系譜 */
+.fam{border-top:1px solid var(--line)}
+.fam>summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:4px 8px;padding:12px 0;align-items:baseline}
+.fam>summary::-webkit-details-marker{display:none}
+.fam>summary .strip{grid-column:1/-1}
+.fam>summary .strip i,.frow .strip i{background:var(--accent)}
+.fam .fn{font-weight:900}
+.fam .yr{font-size:.8rem;color:var(--muted)}
+.frow{display:flex;flex-direction:column;gap:4px;padding:0 0 10px 12px;font-size:.86rem}
+.frow .strip{height:8px}
+.frow .yr{font-size:.76rem;color:var(--muted)}
+.ticks{position:relative;height:18px;font-size:.72rem;color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%)}
+
+/* 一覧表 */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;font-size:.84rem;width:100%}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+th{font-size:.76rem;color:var(--muted)}
+td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--surface);white-space:normal;min-width:11em;max-width:14em}
+td.y{color:var(--yes);background:var(--yes-soft);font-weight:900} td.n{color:var(--no);background:var(--no-soft);font-weight:900} td.x{color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.cardlink{background:none;border:0;padding:0;text-align:left;color:var(--ink);font-size:.84rem;line-height:1.45}
+</style>
+
+<header><div class="wrap">
+  <button class="logo" data-act="tab" data-v="people" aria-label="国会ログ トップへ"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="9" fill="var(--accent)"/><path d="M9 11h14M9 16h14M9 21h8" stroke="var(--accent-ink)" stroke-width="2.6" stroke-linecap="round"/><circle cx="22.5" cy="21" r="2.2" fill="var(--accent-ink)"/></svg>国会ログ</button>
+  <button class="help" data-act="tab" data-v="about" aria-label="このサイトについて">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>このサイトについて</button>
+</div></header>
+
+<main><div class="wrap" id="app" aria-live="polite"></div></main>
+
+<nav class="bn" aria-label="メインメニュー"><div class="in">
+  <button data-act="tab" data-v="people"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>議員</button>
+  <button data-act="tab" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg>診断</button>
+  <button data-act="tab" data-v="bills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg>法案</button>
+  <button data-act="tab" data-v="parties"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h7"/></svg>政党</button>
+</div></nav>
+
+<script>
+/* ===== データの読み込み(必要な画面を開いたときだけ読む) ===== */
+const DB={}, L={};
+const get=n=>L[n]||(L[n]=fetch(`db/${n}.json`).then(r=>{if(!r.ok)throw new Error(n);return r.json()}).then(j=>(DB[n]=j)));
+const need=(...ns)=>ns.every(n=>DB[n])?null:Promise.all(ns.map(get));
+
+/* ===== 共通 ===== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ym=d=>d?`${+d.slice(0,4)}年${+d.slice(5,7)}月`:"";
+const yr=d=>d?d.slice(0,4):"";
+const bullets=t=>String(t||"").replace(/^(この案が成立していた場合|この法案)/,"").replace(/^[（(][^)）]*[)）]/,"").split("。").map(x=>x.trim()).filter(Boolean);
+const ul=a=>`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+const SHORT=[["自由民主","自民"],["公明","公明"],["立憲民主","立憲"],["立憲・","立憲"],["中道","中道"],["日本維新","維新"],["おおさか維新","維新"],["維新の党","維新の党"],["国民民主","国民"],["日本共産","共産"],["れいわ","れいわ"],["参政","参政"],["社会民主","社民"],["日本保守","保守"],["チームみらい","みらい"],["有志の会","有志"],["希望の党","希望"],["民進","民進"],["民主・維新","民主"],["民主党","民主"],["次世代","次世代"],["生活の党","生活"],["自由党","自由"],["無所属の会","無所属の会"],["社会保障を立て直す","社保"],["未来日本","未来日本"],["改革結集","改革"],["みんなの党","みんな"],["減税","減税"],["志士","志士の会"]];
+const short=f=>{for(const [k,v] of SHORT) if(f.startsWith(k)) return v; return f.split("・")[0].slice(0,6)};
+/* 診断で比べる党(当時の会派名の先頭で判定) */
+const PARTIES=[["自由民主党","自民"],["公明党","公明"],["立憲民主","立憲"],["中道","中道"],["日本維新の会","維新"],["国民民主党","国民"],["日本共産党","共産"],["れいわ新選組","れいわ"],["参政党","参政"],["社会民主党","社民"]];
+const stance=(b,k)=>b.yes.some(s=>s.startsWith(k))?"y":b.no.some(s=>s.startsWith(k))?"n":null;
+/* 各党の態度:記録だけで決まる6段階 */
+const LV={1:["提出した","y","○"],2:["賛成","y","○"],3:["修正させて賛成","y","○"],4:["態度が割れた","m","△"],5:["対案を出して反対","n","✕"],6:["反対","n","✕"]};
+const LVDEF={1:"この法案を提出した",2:"本会議で賛成した",3:"修正案を出し、修正されたうえで賛成した",4:"衆議院と参議院で票が分かれた",5:"同じ国会に自分たちの改正案を出し、この法案には反対した",6:"本会議で反対した"};
+const resultBadge=o=>/否決/.test(o)?'<span class="bdg n">✕ 否決</span>':/審議中/.test(o)?'<span class="bdg m">△ 審議中</span>':/成立せず/.test(o)?'<span class="bdg m">衆院のみ可決</span>':/成立/.test(o)?'<span class="bdg y">○ 成立</span>':"";
+
+/* ===== 公開ルール: 確認済み(reviewed)の解説だけを出す。#draft で開くと下書きも見られる(確認作業用) ===== */
+let DRAFT=false; try{DRAFT=/draft/.test(location.hash)||sessionStorage.getItem("kl-draft")==="1"; if(DRAFT)sessionStorage.setItem("kl-draft","1");}catch(e){}
+const shown=b=>!!(b.reviewed||DRAFT);
+const officialTitle=b=>String(b.formal||"").replace(/[（(]提出:.*$/,"");
+const ttl=b=>shown(b)?b.q:officialTitle(b);
+const QMIN=10;   // 診断は、確認済みの法案がこの件数そろってから公開する
+const QB=()=>BILLS.filter(shown);
+
+/* ===== 共有 ===== */
+const shareBtn=t=>`<button class="btn share" style="align-self:flex-start;min-height:38px" data-act="share" data-t="${esc(t)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>共有する</button>`;
+function toast(m){const d=document.createElement("div");d.className="toast";d.setAttribute("role","status");d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2200);}
+async function share(title){
+  const url=location.href;
+  try{ if(navigator.share){ await navigator.share({title:title+" | 国会ログ",url}); return; } }catch(e){ if(e&&e.name==="AbortError") return; }
+  try{ await navigator.clipboard.writeText(url); toast("リンクをコピーしました"); }catch(e){ toast("このページのアドレスをコピーして共有してください"); }
+}
+
+/* ===== 状態 ===== */
+const S={pf:{pref:"",party:"",age:"",times:"",house:""},plim:20,tab:"people",bmode:"pick",bid:null,fx:null,bq:"",bp:"",pq:"",pid:null,ph:"衆議院",pall:false,qi:0,ans:{},done:false,peek:false,open:null};
+try{const s=JSON.parse(localStorage.getItem("kokkailog2")||"{}");if(s.ans)S.ans=s.ans;}catch(e){}
+const save=()=>{try{localStorage.setItem("kokkailog2",JSON.stringify({ans:S.ans}))}catch(e){}};
+let BILLS=[];
+const app=$("#app");
+const loading=()=>`<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
+
+/* ===== 各党の態度(法案の詳細で使う) ===== */
+function stancesHTML(b){
+  const st=b.s||[];
+  if(!st.length) return `<p class="empty">この法案は、衆議院で会派ごとの賛否が記録されていません。</p>`;
+  const ny=st.filter(x=>x.v==="yes").length, nn=st.length-ny;
+  let h=`<div class="tally"><div class="tbar" role="img" aria-label="賛成${ny}会派、反対${nn}会派">${ny?`<i class="ty" style="flex:${ny}"></i>`:""}${nn?`<i class="tn" style="flex:${nn}"></i>`:""}</div>
+    <div class="tleg"><span class="y">○ 賛成 ${ny}会派</span><span class="n">✕ 反対 ${nn}会派</span></div></div><div>`;
+  for(const lv of [1,2,3,4,5,6]){
+    const g=st.filter(x=>x.lv===lv); if(!g.length) continue;
+    const [lab,c,ic]=LV[lv];
+    h+=`<div class="lvrow"><div class="lvl ${c}"><span aria-hidden="true">${ic}</span>${lab}</div><div class="chips">${g.map(x=>`<button class="pchip${x.q?" q":""}" data-act="fx" data-f="${esc(x.f)}" aria-expanded="${S.fx===x.f}">${esc(short(x.f))}</button>`).join("")}</div>`;
+    const sel=g.find(x=>x.f===S.fx);
+    if(sel) h+=`<div class="fxp"><div class="nm">${esc(sel.f)}</div><div class="legend">${LVDEF[lv]}</div>
+      ${sel.q?`<blockquote>${esc(sel.q.head)}…</blockquote><div class="meta">${esc(sel.q.who)}・${esc(sel.q.where)}・${ym(sel.q.date)}</div><a href="${sel.q.url}" target="_blank" rel="noopener">会議録で全文を読む</a>`
+        :`<div class="meta">理由を述べた討論の記録は見つかっていません。</div>`}
+      ${sel.san?`<div class="meta">参議院では同じ党の議員が 賛成${sel.san[0]}人・反対${sel.san[1]}人</div>`:""}</div>`;
+    h+=`</div>`;
+  }
+  return h+`</div><p class="legend">党名を押すと、その党が国会で述べた理由が開きます(枠に色が付いた党は、理由の記録があります)。</p>`;
+}
+
+/* ===== 診断 ===== */
+const answered=()=>QB().filter(b=>S.ans[b.id]==="y"||S.ans[b.id]==="n");
+function vHome(){
+  const Q=QB();
+  if(Q.length<QMIN) return `<section class="hero soon"><h2>政党との相性診断は、ただいま準備中です</h2>
+      <p>国会で実際に採決された法案に答えて、各党の実際の賛否と比べられる診断です。解説の確認が済んだ法案から順に公開します(いま${Q.length}/${BILLS.length}件)。</p></section>
+    <div class="panel"><h3>今できること</h3><ul><li>議員を名前や地域から探して、所属の移り変わりと注目法案での態度を見る</li><li>注目の法案で、各党がどうしたか・討論で何を言ったかを見る</li></ul>
+      <div class="row"><button class="btn pri" data-act="tab" data-v="people">議員を探す</button><button class="btn" data-act="tab" data-v="bills">法案を見る</button></div></div>`;
+  if(S.done) return vResult();
+  const n=Q.length, cnt=Q.filter(b=>S.ans[b.id]).length;
+  if(S.qi===0&&!S.started) return `<section class="hero">
+      <h2>国会の「実際の採決」で、あなたと近い政党がわかる</h2>
+      <p>${n}の法案に「賛成・反対」で答えるだけ。答えるまで各党の賛否は見えません。</p>
+      ${cnt?`<button class="btn pri wide" data-act="start" data-from="${Math.min(cnt,n-1)}">続きから(${cnt}/${n})</button><button class="btn wide" data-act="reset">最初からやり直す</button>`
+           :`<button class="btn pri wide" data-act="start" data-from="0">はじめる</button>`}</section>
+    <ol class="steps"><li><b>1</b>法案の問いに答える</li><li><b>2</b>各党の実際の賛否と比べる</li><li><b>3</b>理由を読んで確かめる</li></ol>
+    <p class="lead">5問答えた時点で結果を見られます。</p>`;
+  const b=Q[S.qi], a=S.ans[b.id], na=answered().length;
+  return `<div class="prog"><span class="num">${S.qi+1} / ${n}</span><div class="bar" aria-hidden="true"><i style="width:${(S.qi+1)/n*100}%"></i></div><span class="bdg">${esc(b.theme)}</span></div>
+    <p class="qtext">${esc(b.q)}</p>
+    <button class="btn txt" style="align-self:flex-start" data-act="peek" aria-expanded="${S.peek}">${S.peek?"－ 背景を閉じる":"＋ 何が変わる?・賛否の言い分を見る"}</button>
+    ${S.peek?`<div class="panel">${baHTML(b)}${pcHTML(b)}</div>`:""}
+    <div class="ans"><button class="y" data-act="ans" data-a="y" aria-pressed="${a==="y"}"><span aria-hidden="true">○</span>賛成</button><button class="n" data-act="ans" data-a="n" aria-pressed="${a==="n"}"><span aria-hidden="true">✕</span>反対</button></div>
+    <button class="btn wide" data-act="ans" data-a="s">わからない(とばす)</button>
+    <div class="row">${S.qi>0?`<button class="btn txt" data-act="prev">‹ 前の問い</button>`:""}<span class="grow"></span>${na>=5?`<button class="btn pri" data-act="finish">結果を見る(${na}問)</button>`:`<span class="lead">あと${5-na}問で結果を見られます</span>`}</div>`;
+}
+function vResult(){
+  const A=answered();
+  const rows=PARTIES.map(([k,nm])=>{const it=A.map(b=>({b,st:stance(b,k)})).filter(x=>x.st);
+    const same=it.filter(x=>x.st===S.ans[x.b.id]).length;return {k,nm,it,same,n:it.length,pct:it.length?Math.round(same/it.length*100):0}}).filter(r=>r.n);
+  const main=rows.filter(r=>r.n>=5).sort((a,b)=>b.pct-a.pct||b.n-a.n), few=rows.filter(r=>r.n<5);
+  const row=r=>`<button class="res" data-act="open" data-k="${r.k}" aria-expanded="${S.open===r.k}"><span class="pn">${r.nm}</span><span class="pct num">${r.pct}%</span><span class="bar"><i style="width:${r.pct}%"></i></span><span class="s">${r.n}問中${r.same}問で同じ</span></button>
+    ${S.open===r.k?`<ul class="cmp">${r.it.map(x=>{const ok=x.st===S.ans[x.b.id];return `<li><span class="${ok?"ok":"ng"}">${ok?"○":"✕"}</span><button class="cardlink" data-act="bill" data-id="${x.b.id}">${esc(ttl(x.b))}</button></li>`}).join("")}</ul>`:""}`;
+  return `<h2 class="title">あなたの答えと近い順</h2>
+    <p class="note">過去の採決との一致率です。投票先のおすすめではありません。同じ反対でも理由は党ごとに違うので、党名を押して内訳を確かめてください。</p>
+    <div class="list">${main.map(row).join("")}</div>
+    ${few.length?`<details class="more"><summary>答えた問いのうち記録が少ない党(${few.length})</summary><div class="list">${few.map(row).join("")}</div></details>`:""}
+    <div class="row"><button class="btn" data-act="again">答えを見直す</button><button class="btn" data-act="reset">最初から</button></div>`;
+}
+
+/* ===== 法案 ===== */
+const baHTML=b=>{const bf=bullets(b.before),af=bullets(b.after),hyp=/^[（(]この案が成立していた場合/.test(b.after);
+  return `<div class="sec"><h3>何が変わる?</h3><div class="ba"><div><b>これまで</b>${ul(bf)}</div><div class="after"><b>${hyp?"この案が通っていたら":"この法律で"}</b>${ul(af)}</div></div></div>`};
+const pcHTML=b=>`<div class="sec"><h3>賛成・反対の言い分</h3><div class="pc"><div class="p"><h4>○ 賛成側</h4>${ul(b.pros)}</div><div class="c"><h4>✕ 反対・慎重側</h4>${ul(b.cons)}</div></div></div>`;
+function vBills(){
+  if(S.bid) return vBill();
+  const seg=`<div class="seg" role="group" aria-label="表示の切り替え">${[["pick","注目の30"],["all","すべての法案"],["table","一覧表"]].map(([k,l])=>`<button data-act="bmode" data-v="${k}" aria-pressed="${S.bmode===k}">${l}</button>`).join("")}</div>`;
+  if(S.bmode==="pick"){
+    const themes=[...new Set(BILLS.map(b=>b.theme))];
+    return seg+themes.map(t=>`<div class="group"><h3>${esc(t)}</h3><div class="list">${BILLS.filter(b=>b.theme===t).map(b=>`<button class="item chev" data-act="bill" data-id="${b.id}"><span class="t">${esc(ttl(b))}</span><span class="badges"><span class="bdg num">${b.year}年</span>${resultBadge(b.outcome)}${b.pattern==="全会一致"?'<span class="bdg a">全会一致</span>':""}</span></button>`).join("")}</div></div>`).join("");
+  }
+  if(S.bmode==="table"){
+    return seg+`<p class="legend">○ 賛成 ✕ 反対 ー 記録なし(当時その会派がなかった等)。法案名を押すと詳細を開きます。</p>
+      <div class="tblwrap"><table><thead><tr><th>法案</th>${PARTIES.map(p=>`<th>${p[1]}</th>`).join("")}</tr></thead><tbody>
+      ${BILLS.map(b=>`<tr><td><button class="cardlink" data-act="bill" data-id="${b.id}">${esc(ttl(b))}</button></td>${PARTIES.map(([k])=>{const s=stance(b,k);return `<td class="${s||"x"}">${s==="y"?"○":s==="n"?"✕":"ー"}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  const w=need("app_bills"); if(w){w.then(render,fail);return seg+loading();}
+  return seg+`<input class="input" id="bq" type="search" placeholder="法案名で探す(例:消費税)" value="${esc(S.bq)}" autocomplete="off" aria-label="法案名で探す">
+    <div class="chips" role="group" aria-label="採決の結果で絞り込む">${[["","すべて"],["賛否が割れた","賛否が割れた"],["全会一致","全会一致"],["否決","否決"]].map(([k,l])=>`<button class="chip" data-act="bp" data-v="${k}" aria-pressed="${S.bp===k}">${l}</button>`).join("")}</div>
+    <div id="bhits">${billHits()}</div>`;
+}
+let BL=null;
+function billHits(){
+  if(!BL) BL=Object.entries(DB.app_bills).filter(([,b])=>b.d&&(b.s.length||b.vs||(b.rc||[]).length)).sort((a,b)=>b[1].d.localeCompare(a[1].d));
+  const q=S.bq.trim(), l=BL.filter(([,b])=>(!q||b.t.includes(q))&&(!S.bp||b.p===S.bp));
+  if(!l.length) return `<p class="empty">見つかりませんでした。言葉を短くしてみてください。</p>`;
+  return `<p class="legend num">${l.length.toLocaleString()}件${l.length>30?"(新しい順に30件)":""}</p><div class="list">${l.slice(0,30).map(([id,b])=>`<button class="item chev" data-act="bill" data-id="${id}"><span class="t">${esc(b.t)}</span><span class="badges"><span class="bdg num">${yr(b.d)}年</span>${b.r==="否決"?'<span class="bdg n">✕ 否決</span>':""}${b.p==="全会一致"?'<span class="bdg a">全会一致</span>':""}${b.vs||(b.rc||[]).length?'<span class="bdg">議員別の票あり</span>':""}</span></button>`).join("")}</div>`;
+}
+function vBill(){
+  const c=BILLS.find(x=>x.id===S.bid);
+  if(c) return `<button class="back" data-act="bback">‹ もどる</button>
+    <div class="sec"><div class="badges"><span class="bdg">${esc(c.theme)}</span><span class="bdg num">${c.year}年</span>${resultBadge(c.outcome)}${!c.reviewed&&DRAFT?'<span class="bdg m">下書き(未公開)</span>':""}</div>
+      <h2 class="title">${esc(ttl(c))}</h2>${shown(c)?`<p class="lead">${esc(c.formal)}</p>`:""}${shareBtn(ttl(c))}</div>
+    ${shown(c)?baHTML(c)+pcHTML(c):`<p class="note">わかりやすい解説は準備中です。下の「各党はどうしたか」は、国会の公式記録と会議録から表示しています。</p>`}
+    <div class="sec"><h3>各党はどうしたか</h3><div class="panel">${stancesHTML(c)}</div>${c.note&&shown(c)?`<p class="note">${esc(c.note)}</p>`:""}</div>
+    ${shown(c)?`<details class="more"><summary>なぜ当時これが問題になった?</summary>${ul(bullets(c.why))}</details>`:""}
+    <details class="more"><summary>採決の記録と出典</summary><ul>
+      <li>${esc(c.ref)}・衆議院 ${esc(c.date)}・${esc(c.outcome)}</li>
+      <li><a href="${c.keika}" target="_blank" rel="noopener">衆議院:審議の経過と賛否</a></li>
+      ${c.honbun?`<li><a href="${c.honbun}" target="_blank" rel="noopener">衆議院:法案の本文</a></li>`:""}
+      ${shown(c)?(c.sources||[]).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join(""):""}</ul></details>`;
+  const w=need("app_bills","rollcalls"); if(w){w.then(render,fail);return loading();}
+  const b=DB.app_bills[S.bid];
+  if(!b) return `<button class="back" data-act="bback">‹ もどる</button><p class="empty">この法案は見つかりませんでした。</p>`;
+  return `<button class="back" data-act="bback">‹ もどる</button>
+    <div class="sec"><div class="badges"><span class="bdg">${esc(b.k)}</span><span class="bdg num">${yr(b.d)}年</span>${b.r==="否決"?'<span class="bdg n">✕ 否決</span>':b.r?`<span class="bdg">${esc(b.r)}</span>`:""}</div><h2 class="title">${esc(b.t)}</h2>${shareBtn(b.t)}</div>
+    <div class="sec"><h3>各党はどうしたか</h3><div class="panel">${stancesHTML(b)}</div></div>
+    ${(b.rc||[]).map(i=>rcHTML(i)).join("")}
+    ${sanHTML(b)}
+    <details class="more"><summary>出典</summary><ul><li><a href="${b.u}" target="_blank" rel="noopener">${b.u.includes("shugiin")?"衆議院":"参議院"}:審議の経過</a></li></ul></details>`;
+}
+const plinks=a=>a.map(n=>`<button class="cardlink" style="color:var(--accent)" data-act="pname" data-n="${esc(n)}">${esc(n)}</button>`).join("、");
+function rcHTML(i){const r=DB.rollcalls[i];
+  return `<div class="sec"><h3>衆議院:議員一人ひとりの票</h3><div class="panel"><div class="tleg"><span class="y">○ 賛成 ${r.yes.length}人</span><span class="n">✕ 反対 ${r.no.length}人</span></div>
+    <details class="more"><summary>賛成した議員</summary><p>${plinks(r.yes)}</p></details><details class="more"><summary>反対した議員</summary><p>${plinks(r.no)}</p></details></div></div>`;}
+const VS={};
+function sanHTML(b){
+  if(!b.vs) return "";
+  const v=VS[b.vs];
+  if(!v){fetch(`db/votes_san/${b.vs}.json`).then(r=>r.json()).then(j=>{VS[b.vs]=j;render();},()=>{});return `<div class="skel"></div>`;}
+  const fs=v[S.bid]; if(!fs) return "";
+  return `<div class="sec"><h3>参議院:議員一人ひとりの票</h3><div class="panel">${fs.map(([f,m])=>{
+    const y=m.filter(x=>x[1]==="賛成"),n=m.filter(x=>x[1]==="反対");
+    return `<details class="more"><summary>${esc(short(f))}<span class="legend num" style="margin-left:auto;margin-right:8px">○${y.length} ✕${n.length}</span></summary>${y.length?`<p><span class="bdg y">○ 賛成</span> ${plinks(y.map(x=>x[0]))}</p>`:""}${n.length?`<p><span class="bdg n">✕ 反対</span> ${plinks(n.map(x=>x[0]))}</p>`:""}</details>`}).join("")}</div></div>`;
+}
+
+/* ===== 議員 ===== */
+function vPeople(){
+  const w=need("app_people","app_bills","rollcalls"); if(w){w.then(render,fail);return `<h2 class="title">議員を探す</h2>`+loading();}
+  if(S.pid) return vPerson();
+  const now=DB.app_people.filter(p=>p.now);
+  const opt=(id,lab,list,cur)=>`<label class="fl"><span>${lab}</span><select class="input" id="${id}"><option value="">指定しない</option>${list.map(([v,l])=>`<option value="${esc(v)}" ${cur===v?"selected":""}>${esc(l)}</option>`).join("")}</select></label>`;
+  const pc={};now.forEach(p=>{const f=short(p.now.faction);pc[f]=(pc[f]||0)+1});
+  const parties=Object.entries(pc).sort((a,b)=>b[1]-a[1]).map(([f,n])=>[f,`${f}(${n})`]);
+  const F=S.pf, any=F.pref||F.party||F.age||F.times||F.house;
+  const empty=!S.pq&&!any;
+  return `${empty?`<section class="hero"><h2>その議員、国会で何してた?</h2><p>公約より、これまでの記録で選ぼう。現職${now.length}人の所属の移り変わりと、法案への態度がわかります。</p>
+      <label class="fl"><span>あなたの都道府県から探す</span><select class="input" id="f-pref"><option value="">都道府県を選ぶ</option>${PREFS.map(x=>`<option value="${x}">${x}</option>`).join("")}</select></label></section>`:`<h2 class="title">議員を探す</h2>`}
+    <input class="input" id="pq" type="search" placeholder="名前か、よみがなで探す(例:いしば)" value="${esc(S.pq)}" autocomplete="off" aria-label="議員の名前で探す">
+    <div class="seg" role="group" aria-label="院で絞り込む">${[["","すべて"],["衆議院","衆議院"],["参議院","参議院"]].map(([k,l])=>`<button data-act="phouse" data-v="${k}" aria-pressed="${F.house===k}">${l}</button>`).join("")}</div>
+    <div class="filters">
+      ${empty?"":opt("f-pref","地域(選挙区)",PREFS.map(x=>[x,x]),F.pref)}
+      ${opt("f-party","政党",parties,F.party)}
+      ${opt("f-age","年代",[["20","20代"],["30","30代"],["40","40代"],["50","50代"],["60","60代"],["70","70歳以上"]],F.age)}
+      ${opt("f-times","当選回数",[["1","1回"],["2","2〜3回"],["4","4〜6回"],["7","7回以上"]],F.times)}
+    </div>
+    ${any?`<button class="btn txt" style="align-self:flex-start" data-act="pclear">条件をすべて外す</button>`:""}
+    <div id="phits">${peopleHits()}</div>`;
+}
+const PREFS="北海道 青森県 岩手県 宮城県 秋田県 山形県 福島県 茨城県 栃木県 群馬県 埼玉県 千葉県 東京都 神奈川県 新潟県 富山県 石川県 福井県 山梨県 長野県 岐阜県 静岡県 愛知県 三重県 滋賀県 京都府 大阪府 兵庫県 奈良県 和歌山県 鳥取県 島根県 岡山県 広島県 山口県 徳島県 香川県 愛媛県 高知県 福岡県 佐賀県 長崎県 熊本県 大分県 宮崎県 鹿児島県 沖縄県".split(" ");
+/* 年齢: 生年月日がわかる精度(年 / 年月 / 年月日)で計算する */
+function ageOf(b){ if(!b) return null; const t=new Date(), y=+b.slice(0,4), m=b.length>=7?+b.slice(5,7):null, d=b.length>=10?+b.slice(8,10):1;
+  let a=t.getFullYear()-y; if(m&&(t.getMonth()+1<m||(t.getMonth()+1===m&&t.getDate()<d))) a--; return {a,exact:!!m}; }
+/* 当選回数: 衆議院の一覧は「2(参2)」のように参議院での回数を併記している */
+const timesN=t=>parseInt(t,10)||0;
+const timesLabel=t=>{const m=String(t||"").match(/^(\d+)\(参(\d+)\)$/);return m?`当選 衆${m[1]}回・参${m[2]}回`:`当選${t}回`};
+const ageLabel=b=>{const x=ageOf(b);return x?(x.exact?`${x.a}歳`:`${b.slice(0,4)}年生まれ`):""};
+const nowLine=p=>p.now?`${p.now.house}・${short(p.now.faction)}・${p.now.area||p.now.district}`:p.spans.length?`元議員・${short(p.spans.at(-1).faction)}(${yr(p.spans.at(-1).to)}年まで)`:"記録なし";
+function peopleHits(){
+  const q=S.pq.replace(/\s+/g,""), F=S.pf, filt=F.pref||F.party||F.age||F.times||F.house;
+  if(!q&&!filt) return `<p class="empty">1947年以降の元議員を含む約${Math.round(DB.app_people.length/100)*100}人を収録しています。</p>`;
+  let l=DB.app_people.filter(p=>!q||p.name.includes(q)||p.yomi.includes(q));
+  if(filt) l=l.filter(p=>{const n=p.now; if(!n) return false;
+    if(F.house&&n.house!==F.house) return false;
+    if(F.pref&&!(n.prefs||[]).includes(F.pref)) return false;
+    if(F.party&&short(n.faction)!==F.party) return false;
+    if(F.age){const x=ageOf(n.birth); if(!x) return false; const a=x.a, lo=+F.age; if(lo===70?a<70:(a<lo||a>=lo+10)) return false;}
+    if(F.times){const t=timesN(n.times), lo=+F.times, hi={1:1,2:3,4:6,7:99}[lo]; if(t<lo||t>hi) return false;}
+    return true;});
+  l.sort((a,b)=>(!!b.now-!!a.now)||(F.pref?((a.now.kind==="比例")-(b.now.kind==="比例")):0)||(a.yomi||"").localeCompare(b.yomi||"","ja")||(b.spans.length-a.spans.length));
+  if(!l.length) return `<p class="empty">条件に合う議員がいません。条件を減らしてみてください。</p>`;
+  const lim=S.plim||20;
+  return `<p class="legend num">${l.length}人${filt?"(現職)":""}</p><div class="list">${l.slice(0,lim).map(p=>{const n=p.now;return `<button class="item chev" data-act="person" data-id="${esc(p.id)}"><span class="t">${esc(p.name)} <span class="s">${esc(p.yomi)}</span></span><span class="badges">${n?`<span class="bdg a">${n.house==="衆議院"?"衆":"参"}</span><span class="bdg">${esc(short(n.faction))}</span><span class="bdg">${esc(n.area||n.district)}</span>${n.birth?`<span class="bdg num">${ageLabel(n.birth)}</span>`:""}<span class="bdg num">${esc(timesLabel(n.times))}</span>`:`<span class="bdg">${esc(nowLine(p))}</span>`}</span></button>`}).join("")}</div>
+    ${l.length>lim?`<button class="btn wide" data-act="pmore">さらに表示(残り${l.length-lim}人)</button>`:""}`;
+}
+const vr=r=>`<div class="vrow"><button class="cardlink q" data-act="bill" data-id="${r.b.id}">${esc(ttl(r.b))}</button><span class="bdg ${r.ic[0]}">${r.ic[1]}</span><span class="src">${esc(r.src)}</span></div>`;
+function mergeSpans(sp){const out=[];for(const s of sp){const k=short(s.family),l=out.at(-1);if(l&&l.family===k){l.to=s.to;l.names.add(s.faction)}else out.push({family:k,from:s.from,to:s.to,names:new Set([s.faction])})}return out}
+function vPerson(){
+  const p=DB.app_people.find(x=>x.id===S.pid);
+  if(!p) return `<button class="back" data-act="pback">‹ 検索にもどる</button><p class="empty">この議員は見つかりませんでした。名前で探し直してください。</p>`;
+  const T1=Date.parse("2026-12-31"), t0=p.spans.length?Date.parse(p.spans[0].from.slice(0,4)+"-01-01"):T1;
+  const ms=mergeSpans(p.spans), fams=[...new Set(ms.map(m=>m.family))], col=f=>`var(--c${fams.indexOf(short(f))%6+1})`, x=d=>(Date.parse(d)-t0)/(T1-t0)*100;
+  const rows=BILLS.map(b=>{
+    const d=DB.app_bills[b.id]?.d||"";
+    const own=(p.votes||[]).find(v=>v.bill===b.id);
+    const sp=p.spans.find(s=>s.house==="衆議院"&&s.from<=d&&d<=s.to);
+    if(own) return {b,ic:own.vote==="賛成"?["y","○ 賛成"]:own.vote==="反対"?["n","✕ 反対"]:["","投票なし"],src:"本人の票(参議院)"};
+    if(sp){const s=(b.s||[]).find(x=>x.f===sp.faction); if(s){const [lab,c,ic]=LV[s.lv];return {b,ic:[c,`${ic} ${lab}`],src:`所属会派(${short(sp.faction)})の態度`};}}
+    return null;}).filter(Boolean);
+  const myRc=DB.rollcalls.map(r=>({r,v:r.yes.includes(p.name)?"賛成":r.no.includes(p.name)?"反対":null})).filter(x=>x.v);
+  const subs=p.sub.map(i=>({i,...DB.app_bills[i]})).filter(x=>x.t).sort((a,b)=>(b.d||"").localeCompare(a.d||""));
+  return `<button class="back" data-act="pback">‹ 検索にもどる</button>
+    <div class="phead"><div class="badges">${p.now?`<span class="bdg a">現職 ${esc(p.now.house)}</span><span class="bdg">${esc(short(p.now.faction))}</span><span class="bdg">${esc(p.now.area||p.now.district)}</span>${p.now.birth?`<span class="bdg num">${ageLabel(p.now.birth)}</span>`:""}${p.now.birthplace?`<span class="bdg">${esc(p.now.birthplace)}出身</span>`:""}<span class="bdg num">${esc(timesLabel(p.now.times))}</span>`:`<span class="bdg">元議員</span>`}</div>
+      <h2>${esc(p.name)}</h2><span class="yomi">${esc(p.yomi)}</span>${shareBtn(p.name+"さんの国会での記録")}
+      ${p.ambiguous||p.gap?`<p class="note">同じ名前の別人の記録が混ざっている可能性があります。</p>`:""}</div>
+    <div class="sec"><h3>所属の移り変わり</h3><div class="panel">${p.spans.length?`
+      <div><div class="strip" aria-hidden="true">${p.spans.map(s=>`<i style="left:${x(s.from).toFixed(2)}%;width:${Math.max(x(s.to)-x(s.from),0).toFixed(2)}%;background:${col(s.family)}"></i>`).join("")}</div><div class="axis num"><span>${new Date(t0).getFullYear()}</span><span>2026</span></div></div>
+      <ul class="hist">${ms.map(m=>`<li><span class="dot" style="background:${col(m.family)}"></span><span>${esc(short(m.family))}</span><span class="yr num">${yr(m.from)}〜${yr(m.to)}</span></li>`).join("")}</ul>
+      <p class="legend">国会での発言・投票・法案提出の記録がある期間です。空白は記録がない期間です。</p>`:`<p class="empty">所属を確認できる記録がありません。</p>`}</div></div>
+    <div class="sec"><h3>注目の法案でどうしたか</h3><div class="panel">${rows.length?`
+      <div class="stat"><div><b class="num">${rows.filter(r=>r.ic[0]==="y").length}</b><span>○ 賛成</span></div><div><b class="num">${rows.filter(r=>r.ic[0]==="n").length}</b><span>✕ 反対</span></div><div><b class="num">${BILLS.length-rows.length}</b><span>記録なし</span></div></div>
+      <div>${rows.slice(0,5).map(vr).join("")}</div>
+      ${rows.length>5?`<details class="more"><summary>残り${rows.length-5}件を見る</summary><div>${rows.slice(5).map(vr).join("")}</div></details>`:""}`:`<p class="empty">注目の30法案のなかに、この議員の記録はありません。</p>`}</div>
+      <p class="legend">衆議院の多くの採決は、議員一人ひとりの票が記録されません。その場合は所属会派の態度を表示しています。</p></div>
+    ${p.vc||myRc.length?`<div class="sec"><h3>本人の票の記録</h3><div class="panel">
+      ${p.vc?`<div class="legend">参議院本会議</div><div class="stat"><div><b class="num">${p.vc["賛成"]}</b><span>賛成</span></div><div><b class="num">${p.vc["反対"]}</b><span>反対</span></div><div><b class="num">${p.vc["投票なし"]}</b><span>投票なし</span></div></div>`:""}
+      ${myRc.length?`<details class="more"><summary>衆議院の記名投票(${myRc.length}回)</summary><div>${myRc.slice(0,15).map(x=>`<div class="vrow"><span class="q">${yr(x.r.d)}年 ${esc(x.r.item)}</span><span class="bdg ${x.v==="賛成"?"y":"n"}">${x.v==="賛成"?"○ 賛成":"✕ 反対"}</span></div>`).join("")}</div></details>`:""}</div></div>`:""}
+    ${subs.length?`<details class="more"><summary>提出者になった法案(${subs.length}件)</summary><div class="list">${subs.slice(0,10).map(x=>`<button class="item chev" data-act="bill" data-id="${x.i}"><span class="t">${esc(x.t)}</span><span class="s num">${yr(x.d)}年</span></button>`).join("")}</div></details>`:""}`;
+}
+
+/* ===== 政党 ===== */
+function vParties(){
+  const w=need("factions","factions_all"); if(w){w.then(render,fail);return `<h2 class="title">政党の移り変わり</h2>`+loading();}
+  const h=S.ph, T1=Date.parse("2026-12-31"), t0=Date.parse("1947-01-01"), pos=m=>(Date.parse(m+"-01")-t0)/(T1-t0)*100;
+  const bar=ps=>`<div class="strip" aria-hidden="true">${ps.map(([a,b])=>`<i style="left:${pos(a).toFixed(2)}%;width:${Math.max(pos(b)-pos(a),.5).toFixed(2)}%"></i>`).join("")}</div>`;
+  const Lf=DB.factions_all.filter(f=>f.house===h&&(S.pall||f.people>=10)), fams=[...new Set(Lf.map(f=>f.family))];
+  const votes={};DB.factions.forEach(f=>votes[f.name]=f);
+  return `<h2 class="title">政党の移り変わり</h2>
+    <div class="seg" role="group" aria-label="院の切り替え">${["衆議院","参議院"].map(x=>`<button data-act="ph" data-v="${x}" aria-pressed="${h===x}">${x}</button>`).join("")}</div>
+    <div class="panel"><div class="ticks num">${[1950,1970,1990,2010].map(y=>`<span style="left:${pos(y+"-01").toFixed(2)}%">${y}</span>`).join("")}</div>
+    ${fams.map(fm=>{const fs=Lf.filter(f=>f.family===fm),a=fs.reduce((m,f)=>f.first<m?f.first:m,"9999"),b=fs.reduce((m,f)=>f.last>m?f.last:m,"0000");
+      return `<details class="fam"><summary><span class="fn">${esc(fm)}</span><span class="yr num">${yr(a)}〜${yr(b)}</span>${bar(fs.flatMap(f=>f.periods))}</summary>
+      ${fs.map(f=>{const v=votes[f.name];return `<div class="frow"><span>${esc(f.name)}</span><span class="yr num">${f.periods.map(([p,q])=>`${yr(p)}〜${yr(q)}`).join("、")}・議員${f.people}人${v?`・衆院の採決で賛成${v.yes}／反対${v.no}`:""}</span>${bar(f.periods)}</div>`}).join("")}</details>`}).join("")}</div>
+    <div class="row"><button class="chip" data-act="pall" aria-pressed="${S.pall}">小さな会派も表示</button></div>
+    <p class="legend">国会の記録に会派名が出てくる期間です。同じ名前で始まる会派を1つにまとめています。1940〜50年代の「民主党」「自由党」は今の同名の党とは別の党です。</p>`;
+}
+
+/* ===== 使い方 ===== */
+function vAbout(){
+  return `<h2 class="title">このサイトについて</h2>
+    <div class="panel"><h3>国会ログとは</h3><p>国会で実際に何が決まり、各議員や政党がどうしたのかを、公式の記録から調べられるサイトです。公約ではなく、これまでの記録をもとに投票先を考える手助けをめざしています。</p>
+      <ul><li><b>議員</b>:名前・地域・政党・年代・当選回数から探し、所属の移り変わりと法案への態度を見る</li><li><b>法案</b>:注目の法案と、各党の態度・討論での発言</li><li><b>政党</b>:1947年からの会派の移り変わり</li><li><b>診断</b>:法案に答えて、各党の実際の賛否と比べる(準備中)</li></ul></div>
+    <div class="panel"><h3>中立性について</h3><ul><li>特定の政党・候補者を支持したり、投票先をすすめたりはしません。</li><li>各党の態度は、国会の記録に残る行動(提出・賛成・反対など)だけで機械的に分けています。</li><li>各党の理由は、会議録の討論の言葉をそのまま引用し、要約していません。</li><li>色は、特定の政党を連想させないものを使っています。</li></ul></div>
+    <div class="panel"><h3>知っておいてほしいこと</h3><ul>
+      <li>衆議院の多くの採決は、議員一人ひとりの票が記録されません。その場合は、当時の所属会派の態度を表示しています。</li>
+      <li>党の合流や分裂があるため、昔の会派の行動を今の党にそのまま当てはめることはできません。</li>
+      <li>年齢・出身地は、衆議院・参議院の議員紹介ページの経歴から読み取っています(衆議院は生まれた年月まで)。</li>
+      <li>名前で記録をまとめているため、同じ名前の別人の記録が混ざることがあります。該当する議員には注意書きを出しています。</li></ul></div>
+    <div class="panel"><h3>データの出典</h3><ul>
+      <li><a href="https://www.shugiin.go.jp/internet/itdb_gian.nsf/html/gian/menu.htm" target="_blank" rel="noopener">衆議院 議案情報</a>・<a href="https://www.shugiin.go.jp/internet/itdb_annai.nsf/html/statics/syu/1giin.htm" target="_blank" rel="noopener">議員一覧・議員紹介</a></li>
+      <li><a href="https://www.sangiin.go.jp/" target="_blank" rel="noopener">参議院</a>(議案情報、本会議の投票結果、議員紹介)</li>
+      <li><a href="https://kokkai.ndl.go.jp/" target="_blank" rel="noopener">国立国会図書館 国会会議録検索システム</a>(討論の引用、所属会派の記録)</li>
+      <li><a href="https://github.com/smartnews-smri/house-of-representatives" target="_blank" rel="noopener">スマートニュース メディア研究所 衆議院議案データベース</a>・<a href="https://github.com/smartnews-smri/house-of-councillors" target="_blank" rel="noopener">参議院議案データベース</a>(MIT License)</li></ul>
+      <p class="legend">データは定期的に更新しています。誤りに気づいたら、下の連絡先から教えてください。</p></div>
+    <div class="panel"><h3>プライバシー</h3><p>アクセス解析や広告は使っていません。診断の答えは、あなたの端末の中だけに保存されます。</p></div>
+    <div class="panel"><h3>運営・連絡先</h3><p>PAY games(個人で運営しています)</p><p><a href="https://x.com/ART_HELPS_YOU" target="_blank" rel="noopener">X(旧Twitter):@ART_HELPS_YOU</a></p></div>
+    <footer class="ft">© PAY games ・ 国会ログ</footer>`;
+}
+
+/* ===== 描画と操作 ===== */
+const VIEWS={home:vHome,bills:vBills,people:vPeople,parties:vParties,about:vAbout};
+const fail=()=>{app.innerHTML=`<p class="empty">データを読み込めませんでした。通信の状態を確かめて、開き直してください。</p>`;};
+function render(){
+  document.querySelectorAll("nav.bn button").forEach(b=>b.dataset.v===S.tab?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  app.innerHTML=(VIEWS[S.tab]||vHome)();
+}
+function go(v){S.tab=v;if(v==="people")S.pid=null;if(v==="bills")S.bid=null;setHash("#"+v);render();window.scrollTo(0,0);}
+let inApp=0;   // アプリ内で詳細を開いた回数(「もどる」でブラウザの履歴を使えるか)
+function setHash(h,push){ if(location.hash===h) return; try{ push?history.pushState(null,"",h):history.replaceState(null,"",h); }catch(e){} }
+function openPerson(id){S.pid=id;S.tab="people";setHash("#p/"+encodeURIComponent(id),true);inApp++;render();window.scrollTo(0,0);}
+function openBill(id){S.bid=id;S.fx=null;S.tab="bills";setHash("#b/"+encodeURIComponent(id),true);inApp++;render();window.scrollTo(0,0);}
+function backTo(tab){ if(inApp>0){inApp--;history.back();} else go(tab); }
+const top0=()=>window.scrollTo(0,0);
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-act]"); if(!t) return;
+  const a=t.dataset.act, v=t.dataset.v;
+  switch(a){
+    case "tab": if(v==="bills"&&S.tab==="bills")S.bid=null; if(v==="people"&&S.tab==="people")S.pid=null; go(v); break;
+    case "start": S.started=true;S.qi=+t.dataset.from;S.peek=false;render();top0();break;
+    case "ans": {const Q=QB();S.ans[Q[S.qi].id]=t.dataset.a;save();S.peek=false;if(S.qi<Q.length-1)S.qi++;else S.done=true;render();top0();break;}
+    case "peek": S.peek=!S.peek;render();break;
+    case "prev": S.qi--;S.peek=false;render();top0();break;
+    case "finish": S.done=true;render();top0();break;
+    case "again": S.done=false;S.started=true;S.qi=0;render();top0();break;
+    case "reset": S.ans={};save();S.done=false;S.started=true;S.qi=0;S.open=null;render();top0();break;
+    case "open": S.open=S.open===t.dataset.k?null:t.dataset.k;render();break;
+    case "bmode": S.bmode=v;S.bid=null;render();break;
+    case "bill": openBill(t.dataset.id);break;
+    case "bback": backTo("bills");break;
+    case "share": share(t.dataset.t);break;
+    case "fx": S.fx=S.fx===t.dataset.f?null:t.dataset.f;render();break;
+    case "bp": S.bp=v;$("#bhits").innerHTML=billHits();document.querySelectorAll('[data-act="bp"]').forEach(c=>c.setAttribute("aria-pressed",c.dataset.v===v));break;
+    case "person": openPerson(t.dataset.id);break;
+    case "pname": {const go2=()=>{const p=DB.app_people.find(x=>x.name===t.dataset.n);if(p)openPerson(p.id);};DB.app_people?go2():get("app_people").then(go2);break;}
+    case "pback": backTo("people");break;
+    case "phouse": S.pf.house=v;S.plim=20;render();break;
+    case "pclear": S.pf={pref:"",party:"",age:"",times:"",house:""};S.pq="";S.plim=20;render();break;
+    case "pmore": S.plim+=20;$("#phits").innerHTML=peopleHits();break;
+    case "ph": S.ph=v;render();break;
+    case "pall": S.pall=!S.pall;render();break;
+  }
+});
+app.addEventListener("input",e=>{
+  if(e.target.id==="bq"){S.bq=e.target.value;$("#bhits").innerHTML=billHits();}
+  if(e.target.id==="pq"){S.pq=e.target.value;S.plim=20;$("#phits").innerHTML=peopleHits();}
+});
+app.addEventListener("change",e=>{const m={"f-pref":"pref","f-party":"party","f-age":"age","f-times":"times"}[e.target.id];
+  if(m){S.pf[m]=e.target.value;S.plim=20;render();}});
+function fromHash(){
+  const h=location.hash.slice(1);
+  if(h.startsWith("p/")){S.tab="people";S.pid=decodeURIComponent(h.slice(2));}
+  else if(h.startsWith("b/")){S.tab="bills";S.bid=decodeURIComponent(h.slice(2));}
+  else{S.tab=VIEWS[h]?h:"people";S.pid=null;S.bid=null;}
+  render();
+}
+window.addEventListener("hashchange",fromHash);
+app.innerHTML=loading();
+get("curated").then(j=>{BILLS=j;fromHash();
+  const idle=window.requestIdleCallback||(f=>setTimeout(f,1500));idle(()=>{get("app_bills").catch(()=>{});get("rollcalls").catch(()=>{});});
+},fail);
+</script>
+
+</body>
+</html>
