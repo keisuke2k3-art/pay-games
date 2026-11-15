@@ -21,8 +21,8 @@
 <style>
 /* Layout: intake sheet (left) + findings (right); one column on phones with a bottom result bar */
 :root{
-  --bg:#f4efe3; --paper:#fffdf8; --ink:#2a3832; --muted:#5f6d64; --line:#d8d1bf; --soft:#efe9da;
-  --accent:#2a7563; --accent-ink:#ffffff; --accent-soft:#d8ebe3;
+  --bg:#f4efe3; --paper:#fffdf8; --ink:#2a3832; --muted:#56635b; --line:#d8d1bf; --soft:#efe9da;
+  --accent:#276d5c; --accent-ink:#ffffff; --accent-soft:#d8ebe3;
   --ok:#2a7553; --ok-soft:#dcefe2; --warn:#8a5608; --warn-soft:#f8ecc9; --bad:#b03d2c; --bad-soft:#f9e0d9; --on-bad:#ffffff;
   --tape:#f0d684; --curtain:#cfe6dc; --curtain-2:#e3f1eb; --masc:#f4a987; --masc-2:#e58a66; --band:#f6e3c2; --pad:#fff7e6;
   --f-body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","BIZ UDPGothic","Hiragino Sans","Yu Gothic UI","Noto Sans JP",system-ui,sans-serif;
@@ -49,24 +49,18 @@ a{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h1,h2,h3{text-wrap:balance;margin:0}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:6}
-header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding-block:8px}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;text-decoration:none;color:var(--ink)}
 .brand .plate{display:flex;flex-direction:column;line-height:1.15}
 .brand h1{font-family:var(--f-disp);font-size:1.3rem;letter-spacing:.06em}
 .brand small{color:var(--muted);font-size:.62rem;font-family:var(--f-mono);letter-spacing:.18em}
 .masc{width:44px;height:33px;flex:none}
 .m-body{fill:var(--masc)}.m-tail,.m-fin{fill:var(--masc-2)}.m-band{fill:var(--band)}.m-pad{fill:var(--pad)}.m-eye{fill:#2a2a2a}.m-shine{fill:#fff}.m-smile{stroke:#2a2a2a;stroke-width:1.6;stroke-linecap:round}
-nav.tabs{display:flex;gap:2px}
-nav.tabs a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-size:.9rem}
-nav.tabs a[aria-current="page"]{background:var(--accent-soft);color:var(--ink);font-weight:700}
 .mode{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .mode button{font:inherit;font-size:.82rem;background:transparent;color:var(--muted);border:0;min-height:40px;padding:0 12px;cursor:pointer}
 .mode button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-@media (max-width:700px){.brand small{display:none}.brand h1{font-size:1.08rem}.masc{width:36px;height:27px}header.top .wrap{padding-block:4px}nav.tabs a{padding:0 9px;font-size:.85rem}}
-main{padding-block:16px 96px}
+main{padding-block:14px 24px}
 .notice{font-size:.8rem;color:var(--muted);border-left:3px solid var(--line);padding:2px 0 2px 10px;margin:0 0 14px}
-.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:24px;align-items:start}
+.grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
 .sheet{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
 .sheet>section{padding:16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
@@ -111,8 +105,6 @@ legend{font-size:.8rem;color:var(--muted);margin-bottom:4px;padding:0}
 details>summary{cursor:pointer;list-style:none}
 details>summary::-webkit-details-marker{display:none}
 details.fold>summary{display:flex;align-items:center;gap:8px;min-height:44px;font-weight:700;font-size:.92rem}
-details.fold>summary::before{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none;margin-right:2px}
-details.fold[open]>summary::before{transform:rotate(45deg)}
 details.fold>summary .eyebrow{margin-left:auto}
 details.fold>summary .cnt{font-weight:400;color:var(--muted);font-size:.8rem}
 .eyebrow{font-size:.68rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-family:var(--f-mono);font-weight:400}
@@ -123,8 +115,6 @@ details.help>div{font-size:.84rem;background:var(--soft);border-radius:var(--r);
 .panel>h2{font-size:1.05rem}
 details.panel>summary{display:flex;align-items:center;gap:10px;min-height:32px;font-weight:700;font-size:1.05rem}
 details.panel>summary .cnt{font-weight:400;font-size:.82rem;color:var(--muted)}
-details.panel>summary::after{content:"開く";margin-left:auto;font-size:.78rem;color:var(--accent);font-weight:400}
-details.panel[open]>summary::after{content:"閉じる"}
 .todo{border-color:var(--accent);border-width:2px}
 .todo ol, .em ol{margin:0;padding:0;list-style:none;counter-reset:t;display:flex;flex-direction:column;gap:12px}
 .todo li{counter-increment:t;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;font-size:.92rem}
@@ -139,6 +129,8 @@ details.panel[open]>summary::after{content:"閉じる"}
 .alert.ok{background:var(--ok-soft)} .alert.ok .dot{background:var(--ok)}
 .alert.warn{background:var(--warn-soft)} .alert.warn .dot{background:var(--warn)}
 .alert.bad{background:var(--bad-soft)} .alert.bad .dot{background:var(--bad)}
+.lvl{display:inline-block;font-size:.74rem;font-weight:700;padding:0 8px;margin-right:6px;border-radius:999px;border:1.5px solid currentColor;line-height:1.6;vertical-align:.08em}
+.alert.bad .lvl{color:var(--bad)} .alert.warn .lvl{color:var(--warn)} .alert.ok .lvl{color:var(--ok)}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .cite{font-size:.75rem;color:var(--muted);overflow-wrap:anywhere}
 .cite a{color:var(--muted)}
@@ -178,8 +170,6 @@ details.panel[open]>summary::after{content:"閉じる"}
 details.more{font-size:.8rem;color:var(--muted)}
 details.more > summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px;padding:2px 0;min-height:28px;color:var(--accent)}
 details.more > summary::-webkit-details-marker{display:none}
-details.more > summary::before{content:"＋";font-family:var(--f-mono)}
-details.more[open] > summary::before{content:"－"}
 details.more > *:not(summary){display:block;margin-top:4px}
 details.more p{margin:0;color:var(--fg);font-size:.86rem}
 details.morelist{margin-top:8px}
@@ -223,7 +213,7 @@ body.pro .tiles, body.pro .picked{display:none}
 .picked{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.8rem;color:var(--muted)}
 .picked button{font:inherit;font-size:.82rem;border:0;border-radius:999px;padding:6px 10px;background:var(--accent);color:var(--accent-ink);cursor:pointer;min-height:32px;text-align:left}
 /* icon bullets in the to-do / emergency lists (かんたん) */
-.tic{grid-column:1 !important;grid-row:1 / span 3;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.tic{grid-column:1 !important;grid-row:1 / span 4;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
 .tic .ic{width:17px;height:17px;vertical-align:0}
 li.bad > .tic{background:var(--bad);color:var(--on-bad)}
 body:not(.pro) .todo li::before, body:not(.pro) .em li::before{display:none}
@@ -255,34 +245,21 @@ details.fold>summary .ic{margin-right:6px;color:var(--accent)}
 .src-group ol{margin:0;padding-left:1.4em;font-size:.84rem;display:flex;flex-direction:column;gap:4px;overflow-wrap:anywhere}
 .banner{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.85rem;background:var(--accent-soft);padding:8px 16px}
 .mates{display:flex;flex-wrap:wrap;gap:6px}
-.bottombar{position:fixed;left:0;right:0;bottom:0;z-index:7;background:var(--paper);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;gap:10px;align-items:center}
-#results,#todo-panel,#cand-panel,.cand{scroll-margin-top:120px}
 body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
 .ask{display:flex;flex-direction:column;gap:6px;background:var(--accent-soft);border-radius:var(--r);padding:10px 12px}
 .ask .chips button{font:inherit;font-size:.86rem;min-height:40px;padding:4px 12px;border:1px dashed var(--accent);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
-.inline-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--warn-soft);border-radius:var(--r);padding:8px 10px;font-size:.86rem}
-.inline-in input{width:110px;flex:0 0 auto}
+.inline-in{display:flex;flex-direction:column;gap:6px;background:var(--warn-soft);border-radius:var(--r);padding:10px 12px;font-size:.88rem}
+.inline-in label{font-weight:700}
+.inline-in .unit{max-width:200px}
 .errbox{border-color:var(--bad)}
-.bottombar .s{flex:1;min-width:0;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media (min-width:901px){.bottombar{display:none}}
 @media (max-width:700px){.cite a{display:inline-block;padding:6px 0}}
 @media (prefers-reduced-motion:reduce){details.fold>summary::before{transition:none}.masc-big{animation:none}}
 /* ---- 保健室: curtain greeting, clipboard intake sheet, taped memo, notice board ---- */
-.curtain{background:linear-gradient(90deg,var(--curtain) 0 50%,var(--curtain-2) 50% 100%) 0 0/36px 100%;position:relative;padding-block:12px 20px}
-.curtain::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:10px;background:radial-gradient(circle at 9px 0,var(--curtain) 9px,transparent 9.5px) 0 0/36px 10px,radial-gradient(circle at 27px 0,var(--curtain-2) 9px,transparent 9.5px) 0 0/36px 10px}
-.curtain .wrap{display:flex;align-items:center;gap:12px}
-.curtain .say{background:var(--paper);border-radius:16px;padding:8px 14px;font-size:.92rem;position:relative;min-width:0}
-.curtain .say b{font-family:var(--f-disp);font-size:1.05rem;display:block}
-.curtain .say::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-6px;border:6px solid transparent;border-left:0;border-right-color:var(--paper)}
 .masc-big{width:64px;height:48px;flex:none;animation:bob 3.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-3px)}}
 .sheet{border-radius:14px;position:relative;margin-top:14px}
-.sheet-head{padding:22px 16px 10px;border-bottom:2px dashed var(--line);text-align:center}
-.sheet-head h2{font-family:var(--f-disp);font-size:1.25rem;letter-spacing:.3em;text-indent:.3em}
-.sheet-head p{margin:0;font-size:.8rem;color:var(--muted)}
 .clip{position:absolute;top:-14px;left:50%;margin-left:-46px;width:92px;height:28px;border-radius:8px 8px 4px 4px;background:linear-gradient(#b9c2bd,#8d9992);box-shadow:0 1px 0 rgba(0,0,0,.18)}
 .clip::after{content:"";position:absolute;left:50%;top:-7px;margin-left:-11px;width:22px;height:14px;border-radius:50%;border:4px solid #8d9992;box-sizing:border-box}
-.step .n{border-radius:8px;font-weight:500}
 .panel>h2,details.panel>summary>span:first-child,.cand .nm{font-family:var(--f-disp)}
 .kicker{font-size:.72rem;color:var(--accent);font-weight:700;letter-spacing:.08em}
 .todo{position:relative;margin-top:8px;background:var(--paper)}
@@ -292,9 +269,8 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
 .welcome .masc-big{width:96px;height:72px}
 .welcome h2{font-family:var(--f-disp);font-size:1.2rem}
 .board{margin-top:28px;background:var(--soft);border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
-.board .wrap{padding-block:18px calc(88px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:6px}
+.board .wrap{padding-block:18px 24px;display:flex;flex-direction:column;gap:6px}
 .board a{color:var(--accent)}
-@media (min-width:901px){.board .wrap{padding-block:18px 24px}}
 .terms ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px;font-size:.88rem}
 .terms h3{font-size:.92rem;margin-bottom:2px}
 .overlay{position:fixed;inset:0;z-index:20;background:rgba(20,30,26,.55);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
@@ -304,154 +280,270 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
 .poster ol{margin:0;padding-left:1.5em;display:flex;flex-direction:column;gap:8px;font-size:.92rem}
 .poster .btn{min-height:48px;font-size:1rem;font-weight:700}
 .poster .masc-big{align-self:center}
+
+/* ---- v15: less to read at once — one question per screen, standard tabs, one disclosure pattern ---- */
+header.top{background:var(--paper);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;flex-direction:column;padding-block:4px 0}
+.bar1{display:flex;align-items:center;gap:10px;min-height:52px}
+.modebox{display:flex;align-items:center;gap:8px;margin-left:auto}
+.modebox .ml{font-size:.8rem;color:var(--muted)}
+nav.tabs{display:flex;gap:4px}
+nav.tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 14px;text-decoration:none;color:var(--muted);font-size:.92rem;border-bottom:3px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
+@media (max-width:700px){.brand small{display:none}.brand h1{font-size:1.08rem}.masc{width:36px;height:27px}nav.tabs a{flex:1 1 0;padding:0 4px;font-size:.88rem}nav.tabs a .ic{margin-right:4px}.modebox .ml{display:none}}
+.left{display:flex;flex-direction:column;gap:14px;min-width:0}
+.stepper{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:6px 4px}
+.stepper ol{list-style:none;margin:0;padding:0;display:flex}
+.stepper li{flex:1 1 0;min-width:0}
+.stepper button{font:inherit;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:0;background:transparent;cursor:pointer;border-radius:10px;font-size:.8rem;color:var(--muted);line-height:1.2}
+.stepper .sn{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--paper);font-family:var(--f-mono);font-size:.84rem;color:var(--muted)}
+.stepper .sn .ic{width:16px;height:16px;stroke-width:2.4}
+.stepper button.done .sn{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+.stepper button.done .sl::after{content:" ✓"}
+.stepper button[aria-current="step"]{color:var(--ink);font-weight:700}
+.stepper button[aria-current="step"] .sn{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.stepper button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.sheet{margin-top:12px}
+.stp{padding:22px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.qh{display:flex;flex-direction:column;gap:2px}
+.kick{font-size:.8rem;color:var(--muted)}
+.q{font-family:var(--f-disp);font-size:1.3rem;line-height:1.4}
+.q:focus{outline:none}
+.greet{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--curtain) 0 50%,var(--curtain-2) 50% 100%) 0 0/36px 100%;border-radius:12px;padding:10px 12px}
+.greet .masc-big{width:52px;height:39px}
+.greet .say{margin:0;background:var(--paper);border-radius:12px;padding:8px 12px;font-size:.9rem;position:relative;min-width:0}
+.greet .say::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-6px;border:6px solid transparent;border-left:0;border-right-color:var(--paper)}
+.signs{display:flex;flex-direction:column;gap:12px}
+.grp{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.grp legend{font-size:.9rem;font-weight:700;padding:0;margin-bottom:6px}
+.q2{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.q2 .ql{flex:0 0 6.5em;font-size:.88rem;font-weight:700}
+.linkbtn{font:inherit;font-size:.88rem;background:transparent;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;align-self:flex-start}
+.btn .ic{margin:0 4px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);padding:0 8px}
+.btn.danger{background:var(--bad);border-color:var(--bad);color:var(--on-bad)}
+.actbar{border-top:1px solid var(--line);padding:12px 16px;display:flex;flex-direction:column;gap:8px;background:var(--paper);border-radius:0 0 14px 14px}
+.actbar .s{margin:0;font-size:.86rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.actbar .s:empty{display:none}
+.actbar .s.bad{color:var(--bad);font-weight:700;white-space:normal}
+.acts{display:flex;gap:8px;align-items:center}
+.acts #next{margin-left:auto;font-weight:700;padding-inline:18px}
+.acts #bbar-go:not(.primary):not(.danger){margin-left:auto}
+.acts #next:not([hidden]) ~ * {margin-left:0}
+.back{align-self:flex-start;display:none}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.results .notice{margin:0}
+.share .tools{display:flex;gap:8px;flex-wrap:wrap}
+#results,#todo-panel,#cand-panel,.cand,#stepper,#terms{scroll-margin-top:12px}
+@media (max-width:900px){
+  main{padding-bottom:120px}
+  .actbar{position:fixed;left:0;right:0;bottom:0;z-index:7;border-radius:0;box-shadow:0 -2px 12px rgba(20,30,26,.08);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  body.res .actbar{display:none}
+  body.res .sheet{display:none}
+  body:not(.res) .results{display:none}
+  body.res .back{display:inline-flex}
+  body.res main{padding-bottom:24px}
+}
+@media (min-width:901px){#bbar-go,.stepper .res-step{display:none !important}}
+.back{order:-6}.results .notice{order:-5}
+details.panel>summary>span:first-child{flex:1 1 auto;min-width:0}
+details.panel>summary .cnt{white-space:nowrap}
+details.more>summary{color:var(--muted)}
+.hgs{display:flex;flex-direction:column;gap:12px}
+.hg{display:flex;flex-direction:column;gap:6px}
+.hgl{font-size:.8rem;color:var(--muted)}
+.grp legend .cnt{font-weight:400;color:var(--muted);font-size:.8rem}
+/* one disclosure pattern everywhere: a chevron that turns, label on the right of it */
+details>summary{display:flex;align-items:center;gap:8px}
+details>summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .12s;flex:none;margin:0 3px 0 2px}
+details[open]>summary::before{transform:rotate(45deg) translate(-2px,-2px)}
+details.help>summary,details.more>summary{display:flex;width:fit-content;max-width:100%}
+details.panel>summary{min-height:44px}
+details.bathcare>summary{color:inherit;min-height:40px}
+details.bathcare>ul{margin-top:6px}
+.cand .chev{display:inline-flex;align-items:center;gap:8px}
+.cand .chev::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .12s;margin:0 3px 0 2px}
+.cand>button.head[aria-expanded="true"] .chev::before{transform:rotate(45deg) translate(-2px,-2px)}
+.ask .chips button{display:inline-flex;align-items:center;gap:4px}
+.ask .chips button .ic{width:16px;height:16px}
+.vh{font-family:var(--f-disp);font-size:1.15rem}
+.srcs{display:flex;flex-direction:column;gap:12px}
+#v-drugs>.panel{gap:12px}
+@media (prefers-reduced-motion:reduce){details>summary::before,.cand .chev::before{transition:none}}
 </style>
 </head>
 <body>
 
 
 <header class="top"><div class="wrap">
-  <a class="brand" href="#diagnose"><svg class="masc" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg><span class="plate"><h1>さかなの保健室</h1><small>FISH CARE LAB</small></span></a>
-  <nav class="tabs" aria-label="表示の切り替え">
+  <div class="bar1">
+    <a class="brand" href="#diagnose"><svg class="masc" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg><span class="plate"><h1>さかなの保健室</h1><small>FISH CARE LAB</small></span></a>
+    <div class="modebox"><span class="ml" id="mode-l">表示</span><div class="mode" role="group" aria-labelledby="mode-l"><button type="button" id="m-easy" aria-pressed="true">かんたん</button><button type="button" id="m-pro" aria-pressed="false">くわしく</button></div></div>
+  </div>
+  <nav class="tabs" aria-label="ページ">
     <a href="#diagnose" data-view="diagnose"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H10l-5 4v-4H4z"/></svg>相談する</a>
     <a href="#drugs" data-view="drugs"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 14l9-9a3.54 3.54 0 0 1 5 5l-9 9a3.54 3.54 0 0 1-5-5zM9.5 9.5l5 5"/></svg>くすり棚</a>
     <a href="#sources" data-view="sources"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></svg>資料と決まり</a>
   </nav>
-  <div class="mode" role="group" aria-label="表示の詳しさ"><button type="button" id="m-easy" aria-pressed="true">かんたん</button><button type="button" id="m-pro" aria-pressed="false">くわしく</button></div>
 </div></header>
 
-<div class="curtain" id="curtain"><div class="wrap"><svg class="masc masc-big" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg><p class="say" style="margin:0"><b>どうしましたか?</b>魚の様子を教えてください。わかるところだけで大丈夫です。</p></div></div>
 <main class="wrap">
-<p class="notice easy-only">参考情報です。診断ではありません。薬は製品の説明書に従ってください。<a href="#sources">くわしく</a></p>
-<p class="notice pro-only">金魚・メダカ・熱帯魚の不調について、出典のある情報を整理して示す参考情報です。診断を確定するものではありません。薬は必ず製品の説明書に従ってください。食用にする魚には使えない薬があります。<span class="pro-only">候補は文献に載っている症状との一致で並べたものです。「くわしく」では出典の原文と専門家向けの情報も出ます。</span> データ確認日 <span class="num" id="checked"></span></p>
-
 <div class="view" id="v-diagnose">
+  <div class="banner" id="example" hidden><span>入力例を表示しています(ネオンテトラとコリドラスの水槽)。</span><button type="button" class="btn" id="clear">消して自分の水槽を入れる</button></div>
   <div class="grid">
-    <form class="sheet" id="form" autocomplete="off" novalidate>
-      <span class="clip" aria-hidden="true"></span>
-      <div class="sheet-head"><h2>問診票</h2><p>上から順に、わかるところだけ</p></div>
-      <div class="banner" id="example" hidden><span>入力例を表示しています(ネオンテトラとコリドラスの水槽)。</span><button type="button" class="btn" id="clear">消して自分の水槽を入れる</button></div>
-      <section>
-        <div class="step"><span class="n">1</span><h2>具合の悪い魚</h2><span class="req">必須</span></div>
-        <select id="sick" aria-label="具合の悪い魚の種類"></select>
-        <details class="help" id="mates-box"><summary>＋ 同じ水槽にいるほかの魚・エビ・貝を選ぶ <span id="mates-n"></span></summary>
-          <div><p class="hint">使えない薬を外すために使います。</p><div class="mates" id="mates"></div></div>
-        </details>
-        <div class="spcard" id="spcard"></div>
-      </section>
-      <section>
-        <div class="step"><span class="n">2</span><h2>見られる症状</h2><span class="req">1つ以上</span></div>
-        <p class="hint">気になる場所を押して、あてはまる症状を選びます。いくつでも選べます。</p>
-        <div id="signs" style="display:flex;flex-direction:column;gap:12px"></div>
-        <details class="help"><summary>？ 症状の見分け方</summary><div id="sign-help"></div></details>
-      </section>
-      <section>
-        <div class="step"><span class="n">3</span><h2>最近のできごと</h2><span class="opt">任意</span></div>
-        <div class="q2"><span class="hint">不調の魚は</span><div class="mode" role="group" aria-label="不調の魚の数"><button type="button" data-seg="scope" data-v="one" aria-pressed="false">1匹だけ</button><button type="button" data-seg="scope" data-v="some" aria-pressed="false">一部</button><button type="button" data-seg="scope" data-v="most" aria-pressed="false">ほとんど全部</button></div></div>
-        <div class="q2"><span class="hint">いつから</span><div class="mode" role="group" aria-label="不調が始まった時期"><button type="button" data-seg="onset" data-v="sudden" aria-pressed="false">1〜2日</button><button type="button" data-seg="onset" data-v="week" aria-pressed="false">数日〜1週間</button><button type="button" data-seg="onset" data-v="long" aria-pressed="false">2週間以上</button></div></div>
-        <details class="help" id="hist-box"><summary>＋ 最近あったことを選ぶ(原因の手がかりになります) <span id="hist-n"></span></summary><div>
-          <p class="hint pro-only">獣医師が最初に聞く項目(問診)にあたります。原因の手がかりとして候補の順位に反映します。「多くの魚が同時に死んだ」「水温の急な変化」以外は決め手にしません。</p>
-          <div class="chips" id="hist"></div></div></details>
-      </section>
-      <section>
-        <div class="step"><span class="n">4</span><h2>水槽の水量</h2><span class="opt">薬の量の計算に使います</span></div>
-        <div class="mode" role="group" aria-label="水量の入力方法" style="align-self:flex-start"><button type="button" id="vm-l" aria-pressed="true">水量がわかる</button><button type="button" id="vm-d" aria-pressed="false">寸法から計算</button></div>
-        <div id="vol-l"><label class="f">水槽に入っている水の量<div class="unit"><input type="number" id="vol" step="0.5" inputmode="decimal" placeholder="例 35"><span>L</span></div></label><p class="hint">水槽の表示容量ではなく、実際に入っている水の量です。底砂やレイアウトの分を引き、外部フィルターの中の水は足します。多めに見積もると薬が濃くなります(このアプリの注記)。</p><p class="err" id="e-vol"></p></div>
-        <div id="vol-d" hidden>
-          <div class="row">
-            <label class="f">幅<div class="unit"><input type="number" id="dw" inputmode="decimal" placeholder="例 45"><span>cm</span></div></label>
-            <label class="f">奥行<div class="unit"><input type="number" id="dd" inputmode="decimal" placeholder="例 27"><span>cm</span></div></label>
+    <div class="left">
+      <nav class="stepper" id="stepper" aria-label="入力の手順">
+        <ol>
+          <li><button type="button" data-step="1"><span class="sn">1</span><span class="sl">魚</span></button></li>
+          <li><button type="button" data-step="2"><span class="sn">2</span><span class="sl">症状</span></button></li>
+          <li><button type="button" data-step="3"><span class="sn">3</span><span class="sl">様子</span></button></li>
+          <li><button type="button" data-step="4"><span class="sn">4</span><span class="sl">水量</span></button></li>
+          <li><button type="button" data-step="5"><span class="sn">5</span><span class="sl">水質</span></button></li>
+          <li class="res-step"><button type="button" data-step="r"><span class="sn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="sl">結果</span></button></li>
+        </ol>
+      </nav>
+      <form class="sheet" id="form" autocomplete="off" novalidate>
+        <span class="clip" aria-hidden="true"></span>
+        <section class="stp" data-step="1" id="st-1">
+          <div class="greet" id="curtain"><svg class="masc masc-big" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg><p class="say">どうしましたか? 5つの質問に、わかるところだけ答えてください。</p></div>
+          <div class="qh"><span class="kick">質問 1 / 5 ・ 必須</span><h2 class="q" tabindex="-1">どの魚の具合が悪いですか?</h2></div>
+          <select id="sick" aria-label="具合の悪い魚の種類"></select>
+          <p class="err" id="e-sick"></p>
+          <div class="spcard" id="spcard"></div>
+          <details class="help" id="mates-box"><summary>同じ水槽のほかの魚・エビ・貝(任意) <span id="mates-n"></span></summary>
+            <div><p class="hint">選ぶと、その生き物に使えない薬を外します。</p><div class="mates" id="mates"></div></div>
+          </details>
+          <button type="button" class="linkbtn" id="try2">はじめての方は、入力例で試せます</button>
+        </section>
+        <section class="stp" data-step="2" id="st-2" hidden>
+          <div class="qh"><span class="kick">質問 2 / 5 ・ 1つ以上</span><h2 class="q" tabindex="-1">どこに異常がありますか?</h2></div>
+          <p class="hint">場所を押して、あてはまる症状を選びます。いくつでも選べます。</p>
+          <div id="signs" class="signs"></div>
+          <details class="help"><summary>症状の見分け方</summary><div id="sign-help"></div></details>
+        </section>
+        <section class="stp" data-step="3" id="st-3" hidden>
+          <div class="qh"><span class="kick">質問 3 / 5 ・ 任意</span><h2 class="q" tabindex="-1">いつから、何匹が?</h2></div>
+          <div class="q2"><span class="ql" id="ql-scope">不調の魚</span><div class="mode" role="group" aria-labelledby="ql-scope"><button type="button" data-seg="scope" data-v="one" aria-pressed="false">1匹だけ</button><button type="button" data-seg="scope" data-v="some" aria-pressed="false">一部</button><button type="button" data-seg="scope" data-v="most" aria-pressed="false">ほぼ全部</button></div></div>
+          <div class="q2"><span class="ql" id="ql-onset">いつから</span><div class="mode" role="group" aria-labelledby="ql-onset"><button type="button" data-seg="onset" data-v="sudden" aria-pressed="false">1〜2日</button><button type="button" data-seg="onset" data-v="week" aria-pressed="false">数日〜1週間</button><button type="button" data-seg="onset" data-v="long" aria-pressed="false">2週間以上</button></div></div>
+          <fieldset class="grp" id="hist-box"><legend>最近あったこと(あてはまれば) <span id="hist-n" class="cnt"></span></legend>
+            <p class="hint pro-only">獣医師が最初に聞く項目(問診)にあたります。原因の手がかりとして候補の順位に反映します。「多くの魚が同時に死んだ」「水温の急な変化」以外は決め手にしません。</p>
+            <div class="hgs" id="hist"></div></fieldset>
+        </section>
+        <section class="stp" data-step="4" id="st-4" hidden>
+          <div class="qh"><span class="kick">質問 4 / 5 ・ 薬の量の計算に使います</span><h2 class="q" tabindex="-1">水槽の水の量は?</h2></div>
+          <div class="mode" role="group" aria-label="水量の入力方法" style="align-self:flex-start"><button type="button" id="vm-l" aria-pressed="true">水量で入れる</button><button type="button" id="vm-d" aria-pressed="false">寸法から計算</button></div>
+          <div id="vol-l"><label class="f">実際に入っている水の量<div class="unit"><input type="number" id="vol" step="0.5" inputmode="decimal" placeholder="例 35"><span>L</span></div></label><p class="hint">多めに入れると、薬が濃くなります。</p><p class="err" id="e-vol"></p>
+            <details class="help"><summary>水量の見積もり方</summary><div><p class="hint">水槽の表示容量ではなく、実際に入っている水の量です。底砂やレイアウトの分を引き、外部フィルターの中の水は足します。多めに見積もると薬が濃くなります(このアプリの注記)。</p></div></details></div>
+          <div id="vol-d" hidden>
+            <div class="row">
+              <label class="f">幅<div class="unit"><input type="number" id="dw" inputmode="decimal" placeholder="例 45"><span>cm</span></div></label>
+              <label class="f">奥行<div class="unit"><input type="number" id="dd" inputmode="decimal" placeholder="例 27"><span>cm</span></div></label>
+            </div>
+            <label class="f">水の深さ(水槽の高さではなく)<div class="unit"><input type="number" id="dh" inputmode="decimal" placeholder="例 26"><span>cm</span></div></label>
+            <label class="f">底砂・石・流木のぶん差し引く(任意)<div class="unit"><input type="number" id="dpct" inputmode="numeric" placeholder="例 10"><span>%</span></div></label>
+            <p class="err" id="e-dims"></p>
+            <p class="hint" id="dcalc"></p>
           </div>
-          <label class="f">水面までの高さ(水槽の高さではなく水の深さ)<div class="unit"><input type="number" id="dh" inputmode="decimal" placeholder="例 26"><span>cm</span></div></label>
-          <label class="f">底砂・石・流木のぶん差し引く(任意)<div class="unit"><input type="number" id="dpct" inputmode="numeric" placeholder="例 10"><span>%</span></div></label>
-          <p class="err" id="e-dims"></p>
-          <p class="hint" id="dcalc"></p>
-        </div>
-        <label class="check"><input type="checkbox" id="plants">水草が植わった水槽で治療する</label>
-        <label class="check"><input type="checkbox" id="uv">UV殺菌灯を使っている</label>
-        <details class="help"><summary>＋ 別の容器で薬浴する・体重を入れる(任意)</summary><div>
-          <label class="f">別の容器(薬浴槽)の水量<div class="unit"><input type="number" id="bath" inputmode="decimal" placeholder="例 10"><span>L</span></div></label>
-          <p class="err" id="e-bath"></p>
-          <p class="hint">「飼育水槽の外で使う」と書かれた薬は、この水量で計算します。</p>
+          <fieldset class="grp"><legend>水槽の設備(あてはまれば)</legend>
+            <label class="check"><input type="checkbox" id="plants">水草が植わっている</label>
+            <label class="check"><input type="checkbox" id="uv">UV殺菌灯を使っている</label>
+          </fieldset>
+          <details class="help"><summary>別の容器で薬浴する・体重を入れる(任意)</summary><div>
+            <label class="f">別の容器(薬浴槽)の水量<div class="unit"><input type="number" id="bath" inputmode="decimal" placeholder="例 10"><span>L</span></div></label>
+            <p class="err" id="e-bath"></p>
+            <p class="hint">「飼育水槽の外で使う」と書かれた薬は、この水量で計算します。</p>
+            <div class="row">
+              <label class="f">魚1匹の体重<div class="unit"><input type="number" id="wt" step="0.1" inputmode="decimal"><span>g</span></div></label>
+              <label class="f">治療する匹数<div class="unit"><input type="number" id="cnt" step="1" inputmode="numeric"><span>匹</span></div></label>
+            </div>
+            <p class="err" id="e-wt"></p>
+            <p class="hint" id="wt-note"></p>
+          </div></details>
+        </section>
+        <section class="stp" data-step="5" id="st-5" hidden>
+          <div class="qh"><span class="kick">質問 5 / 5 ・ 任意</span><h2 class="q" tabindex="-1">水質はわかりますか?</h2></div>
+          <p class="hint">わかる項目だけで大丈夫です。空欄でも結果は出ます。<span class="pro-only">試験紙なら pH と亜硝酸だけでも大丈夫です。換水に使う水道水の pH や硬度は、<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>で調べられます。</span></p>
           <div class="row">
-            <label class="f">魚1匹の体重<div class="unit"><input type="number" id="wt" step="0.1" inputmode="decimal"><span>g</span></div></label>
-            <label class="f">治療する匹数<div class="unit"><input type="number" id="cnt" step="1" inputmode="numeric"><span>匹</span></div></label>
+            <label class="f">水温<div class="unit"><input type="number" id="temp" step="0.5" inputmode="decimal"><span>℃</span></div></label>
+            <label class="f">pH<div class="unit"><input type="number" id="ph" step="0.1" inputmode="decimal"><span>pH</span></div></label>
           </div>
-          <p class="err" id="e-wt"></p>
-          <p class="hint" id="wt-note"></p>
-        </div></details>
-      </section>
-      <section>
-        <div class="step"><span class="n">5</span><h2>水質</h2><span class="opt">任意・わかる項目だけ</span></div>
-        <p class="hint easy-only">わかる項目だけで大丈夫です。</p>
-        <p class="hint pro-only">わかる項目だけ入れます。試験紙なら pH と亜硝酸だけでも大丈夫です。換水に使う水道水の pH や硬度は、<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>で調べられます。</p>
-        <div class="row">
-          <label class="f">水温<div class="unit"><input type="number" id="temp" step="0.5" inputmode="decimal"><span>℃</span></div></label>
-          <label class="f">pH<div class="unit"><input type="number" id="ph" step="0.1" inputmode="decimal"><span>pH</span></div></label>
+          <p class="err" id="e-tp"></p>
+          <div id="tbar-w" hidden><div class="tbar" id="tbar" aria-hidden="true"><div class="band"></div><div class="pin"></div></div>
+          <div class="scale-l" aria-hidden="true"><span>15℃</span><span id="tbar-l"></span><span>35℃</span></div></div>
+          <div id="phbar-w" hidden><div class="scale" id="phbar" aria-hidden="true"><div class="band"></div><div class="pin"></div></div>
+          <div class="scale-l" aria-hidden="true"><span>pH4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+          <div class="row">
+            <label class="f">亜硝酸<div class="unit"><input type="number" id="no2" step="0.05" inputmode="decimal"><span>mg/L</span></div></label>
+            <label class="f">アンモニア(総量)<div class="unit"><input type="number" id="tan" step="0.1" inputmode="decimal"><span>mg/L</span></div></label>
+          </div>
+          <div class="q2" id="nu-row"><span class="ql" id="ql-nu">亜硝酸キットの単位</span><div class="mode" role="group" aria-labelledby="ql-nu"><button type="button" id="nu-no2" aria-pressed="true">NO₂</button><button type="button" id="nu-n" aria-pressed="false">NO₂-N</button><button type="button" id="nu-u" aria-pressed="false">わからない</button></div></div>
+          <p class="hint" id="nu-hint">箱に「NO₂-N」とあれば NO₂-N を選びます。わからなければそのままで大丈夫です(安全側に計算します)。</p>
+          <details class="help" id="wq-more"><summary>硝酸塩・溶存酸素・KH も入れる</summary><div>
+          <div class="row">
+            <label class="f">硝酸塩<div class="unit"><input type="number" id="no3" step="1" inputmode="decimal"><span>mg/L</span></div></label>
+            <label class="f">溶存酸素<div class="unit"><input type="number" id="do" step="0.1" inputmode="decimal"><span>mg/L</span></div></label>
+          </div>
+          <div class="row">
+            <label class="f">KH(炭酸塩硬度)<div class="unit"><input type="number" id="kh" step="0.5" inputmode="decimal"><span>°dH</span></div></label>
+            <span class="f hint" style="align-self:end">pH の下がりにくさの目安です。試験紙や試薬の「KH」の値を入れます。</span>
+          </div></div></details>
+          <p class="err" id="e-wq"></p>
+          <details class="help"><summary>水質の用語</summary><div id="wq-help"></div></details>
+        </section>
+        <div class="actbar" id="bbar">
+          <p class="s" id="bbar-s" aria-live="polite"></p>
+          <div class="acts">
+            <button type="button" class="btn ghost" id="prev"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"/></svg>戻る</button>
+            <a class="btn" href="#results" id="bbar-go">結果を見る</a>
+            <button type="button" class="btn primary" id="next">次へ<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></button>
+          </div>
         </div>
-        <p class="err" id="e-tp"></p>
-        <div class="tbar" id="tbar" aria-hidden="true"><div class="band"></div><div class="pin"></div></div>
-        <div class="scale-l" aria-hidden="true"><span>15℃</span><span id="tbar-l"></span><span>35℃</span></div>
-        <div class="scale" id="phbar" aria-hidden="true"><div class="band"></div><div class="pin"></div></div>
-        <div class="scale-l" aria-hidden="true"><span>pH4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
-        <div class="row">
-          <label class="f">亜硝酸<div class="unit"><input type="number" id="no2" step="0.05" inputmode="decimal"><span>mg/L</span></div></label>
-          <label class="f">アンモニア(総アンモニア)<div class="unit"><input type="number" id="tan" step="0.1" inputmode="decimal"><span>mg/L</span></div></label>
-        </div>
-        <div class="row" style="align-items:center" id="nu-row"><span class="hint" style="flex:0 1 auto">亜硝酸キットの表示単位</span><div class="mode" role="group" aria-label="亜硝酸の単位" style="flex:0 0 auto"><button type="button" id="nu-no2" aria-pressed="true">NO₂</button><button type="button" id="nu-n" aria-pressed="false">NO₂-N</button><button type="button" id="nu-u" aria-pressed="false">わからない</button></div></div>
-        <p class="hint" id="nu-hint">箱に「NO₂-N」とあれば NO₂-N を選びます。わからなければそのままで大丈夫です(安全側に計算します)。</p>
-        <details class="help" id="wq-more"><summary>＋ 硝酸塩・溶存酸素・KH も入れる</summary><div>
-        <div class="row">
-          <label class="f">硝酸塩<div class="unit"><input type="number" id="no3" step="1" inputmode="decimal"><span>mg/L</span></div></label>
-          <label class="f">溶存酸素<div class="unit"><input type="number" id="do" step="0.1" inputmode="decimal"><span>mg/L</span></div></label>
-        </div>
-        <div class="row">
-          <label class="f">KH(炭酸塩硬度)<div class="unit"><input type="number" id="kh" step="0.5" inputmode="decimal"><span>°dH</span></div></label>
-          <span class="f hint" style="align-self:end">pH の下がりにくさの目安です。試験紙や試薬の「KH」の値を入れます。</span>
-        </div></div></details>
-        <p class="err" id="e-wq"></p>
-        <details class="help"><summary>？ 水質の用語</summary><div id="wq-help"></div></details>
-      </section>
-    </form>
+      </form>
+    </div>
 
     <div class="results" id="results">
+      <button type="button" class="btn ghost back" id="back-edit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"/></svg>入力を直す</button>
+      <p class="notice easy-only" id="notice">参考情報です。診断ではありません。薬は製品の説明書に従ってください。</p>
+      <p class="notice pro-only">金魚・メダカ・熱帯魚の不調について、出典のある情報を整理して示す参考情報です。診断を確定するものではありません。薬は必ず製品の説明書に従ってください。食用にする魚には使えない薬があります。候補は文献に載っている症状との一致で並べたものです。 データ確認日 <span class="num" id="checked"></span></p>
       <div class="panel errbox" id="errbox" hidden><h2>入力を確認してください</h2><ul class="ev" id="errlist"></ul></div>
       <div class="panel welcome" id="empty" hidden>
         <svg class="masc masc-big" viewBox="0 0 64 48" aria-hidden="true"><path class="m-tail" d="M50 24l12-10v20z"/><ellipse class="m-body" cx="30" cy="24" rx="24" ry="17"/><path class="m-fin" d="M26 9c4-6 12-6 15 0z"/><g transform="rotate(-24 34 30)"><rect class="m-band" x="22" y="26" width="24" height="9" rx="4.5"/><rect class="m-pad" x="30" y="26" width="8" height="9"/></g><circle class="m-eye" cx="17" cy="20" r="3.2"/><circle class="m-shine" cx="16" cy="19" r="1"/><path class="m-smile" d="M10 28q4 4 8 1" fill="none"/></svg>
         <h2 id="empty-h">魚の様子を入れてください</h2>
-        <p class="empty" id="empty-p">問診票の「1 具合の悪い魚」と「2 見られる症状」を選ぶと、ここに考えられる病気と今やることが出ます。水量を入れると薬の量も計算します。</p>
+        <p class="empty" id="empty-p">質問1で魚、質問2で症状を選ぶと、ここに考えられる病気と今やることが出ます。</p>
         <button type="button" class="btn primary" id="try">入力例で試してみる</button>
       </div>
       <div class="panel em" id="em-panel" hidden></div>
-      <div class="panel todo" id="todo-panel" hidden><span class="kicker">保健室からのメモ</span><h2>今やること</h2><div id="todo"></div><div class="tools"><button type="button" class="btn" id="copy">相談メモをコピー</button><button type="button" class="btn" id="share">この結果のリンクをコピー</button><span class="hint" id="copy-msg" aria-live="polite"></span></div><textarea id="copy-area" readonly hidden style="width:100%;min-height:160px;font:inherit;font-size:.8rem"></textarea></div>
-      <div class="panel" id="cand-panel" hidden><div class="step" style="justify-content:space-between"><h2>考えられる病気</h2><span class="cite" id="cand-n"></span></div><div class="cands" id="cands"></div></div>
-      <div class="panel care" id="care-panel" hidden><h2>病名がわからなくてもできること</h2><p class="hint pro-only">病名がはっきりしなくてもできる、一般的な処置と注意です。<span class="pro-only">多くは獣医療・水産の資料の記述で、家庭の水槽だけを想定したものではありません。各項目の「注意」も読んでください。</span></p><div id="care"></div></div>
+      <div class="panel todo" id="todo-panel" hidden><span class="kicker">保健室からのメモ</span><h2>今やること</h2><div id="todo"></div></div>
+      <div class="panel" id="cand-panel" hidden><div class="ph"><h2>考えられる病気</h2><span class="cite" id="cand-n"></span></div><div class="cands" id="cands"></div></div>
+      <details class="panel care" id="care-panel" hidden><summary><span>病名がわからなくてもできること</span><span class="cnt" id="care-n"></span></summary><p class="hint pro-only">病名がはっきりしなくてもできる、一般的な処置と注意です。多くは獣医療・水産の資料の記述で、家庭の水槽だけを想定したものではありません。各項目の「注意」も読んでください。</p><div id="care"></div></details>
       <details class="panel" id="water-panel"><summary><span>水質の判定</span><span class="cnt" id="water-sum"></span></summary><div class="alerts" id="alerts" style="margin-top:6px"></div></details>
+      <div class="panel share" id="share-panel" hidden><h2>保存・共有</h2><div class="tools"><button type="button" class="btn" id="copy"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>相談メモをコピー</button><button type="button" class="btn" id="share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>結果のリンクをコピー</button></div><p class="hint" id="copy-msg" aria-live="polite"></p><textarea id="copy-area" readonly hidden style="width:100%;min-height:160px;font:inherit;font-size:.8rem"></textarea></div>
     </div>
   </div>
-  <div class="bottombar" id="bbar" hidden><span class="s" id="bbar-s"></span><a class="btn primary" href="#results" id="bbar-go">結果を見る</a></div>
 </div>
 
 <div class="view" id="v-drugs" hidden>
   <div class="panel">
-    <div class="toolbar">
-      <input type="search" id="q" placeholder="製品名・成分・病名で検索(例: 白点病、尾ぐされ、オキソリン酸)" aria-label="薬を検索">
-      <label class="f" style="flex:0 1 150px">水槽の水量<div class="unit"><input type="number" id="dvol" inputmode="decimal"><span>L</span></div></label>
-      <label class="f" style="flex:0 1 150px">別の容器の水量<div class="unit"><input type="number" id="dbath" inputmode="decimal"><span>L</span></div></label>
+    <h2 class="vh">承認薬をさがす</h2>
+    <input type="search" id="q" placeholder="製品名・成分・病名(例: 白点病)" aria-label="薬を検索">
+    <div class="row">
+      <label class="f">水槽の水量<div class="unit"><input type="number" id="dvol" inputmode="decimal"><span>L</span></div></label>
+      <label class="f">別の容器の水量<div class="unit"><input type="number" id="dbath" inputmode="decimal"><span>L</span></div></label>
     </div>
-    <div class="toolbar">
-      <label class="f" style="flex:0 1 180px">並べ替え<select id="sort"><option value="status">販売状況順</option><option value="name">名前順</option></select></label>
-      <label class="check"><input type="checkbox" id="f-trop" checked>「相談する」タブで選んだ魚(未選択なら熱帯魚)に承認があるもの</label>
+    <details class="help"><summary>並べ替え・絞り込み</summary><div>
+      <label class="f">並べ替え<select id="sort"><option value="status">販売状況順</option><option value="name">名前順</option></select></label>
+      <label class="check"><input type="checkbox" id="f-trop" checked>「相談する」で選んだ魚(未選択なら熱帯魚)に承認があるもの</label>
       <label class="check"><input type="checkbox" id="f-sale">販売中のみ</label>
-    </div>
+    </div></details>
     <p class="hint" id="q-n"></p>
   </div>
   <div class="plist" id="plist" style="margin-top:14px"></div>
 </div>
 
 <div class="view" id="v-sources" hidden>
-  <div class="split">
-    <div class="panel">
-      <h2>このアプリの決まりごと</h2>
+  <h2 class="vh">資料と決まり</h2>
+  <div class="srcs">
+    <details class="panel" id="rules"><summary><span>このアプリの決まりごと</span><span class="cnt" id="rules-n"></span></summary>
       <ul class="ev">
         <li>症状と病気の対応は、すべて出典の記述に紐づけています。出典のない対応は入れていません。製品の表示(効能効果)だけが根拠のものには「製品表示」と付けています。</li>
         <li>薬の成分・効能・用法用量・使用上の注意は、農林水産省 動物医薬品検査所「動物用医薬品等データベース」の記載です。</li>
@@ -470,10 +562,9 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
         <li>顕微鏡でないと区別できない病気(コスティア症・トリコジナ症・エピスティリス症など)は、症状だけでは確からしさを「中」までにしています。測った水質が正常なら、水質の病気は「低」にします。</li>
         <li>「文献にある方法(参考情報・自己責任)」は「くわしく」表示だけに出ます。表示の条件は、確からしさ「高」・アンモニアと亜硝酸を測って問題なし・緊急でない・換水直後でない・病気ごとの同意、のすべてです。水産・養殖や海外の文献にある方法を成分名で示す一般的な情報で、製品名は出さず、量も計算しません。承認された製品を承認外の病気や魚に使う案内はしません。この水槽の魚(テトラ類と塩、エビ・貝と銅、ナマズ・テトラ・シクリッドと有機リン剤、参考水温の上限)で使えないものは中身を表示しません。有機リン剤について出典が避けるよう述べているのは「一部のカラシン・シクリッド」で、ナマズ類を含めているのは、オトシンクルスでの死亡報告にもとづくこのアプリの安全側の判断です。テトラのいる水槽で塩の方法を表示しないのも、このアプリの安全側の判断です(出典は、テトラを塩に入れたまま飼わないこと、一部のテトラが塩に弱いことを述べています)。</li>
       </ul>
-    </div>
-    <div class="panel"><h2>確認できなかったこと</h2><ul class="ev" id="unv"></ul></div>
-  </div>
-  <div class="panel terms" style="margin-top:14px" id="terms"><h2>利用規約・免責</h2>
+    </details>
+    <details class="panel" id="unv-panel"><summary><span>確認できなかったこと</span><span class="cnt" id="unv-n"></span></summary><ul class="ev" id="unv"></ul></details>
+    <details class="panel terms" id="terms"><summary><span>利用規約・免責</span><span class="cnt">2026年11月10日 制定</span></summary>
     <p class="hint">制定日 2026年11月10日。「さかなの保健室」(以下「本アプリ」)を使う前にお読みください。使った時点で、この内容に同意したものとします。</p>
     <ol>
       <li><h3>本アプリの位置づけ</h3>本アプリは、観賞魚(金魚・メダカ・熱帯魚など)の飼育についての参考情報を、文献と公的なデータベースから整理して示すものです。魚の診断・治療・投薬の指示を行うものではなく、獣医師の診察の代わりにはなりません。魚の状態の判断と対処は、利用者自身の責任で行ってください。</li>
@@ -486,8 +577,9 @@ body:not(.pro) .eyebrow,body:not(.pro) .cand .sci{display:none}
       <li><h3>出典と権利</h3>引用した文章の権利は、それぞれの著作者・発行者にあります。引用は出典を示したうえで、必要な範囲にとどめています。本アプリの内容を転載するときは、出典として本アプリの名前を示してください。</li>
       <li><h3>変更と連絡先</h3>本アプリの内容とこの規約は、予告なく変更・終了することがあります。誤りの報告・問い合わせは X の <a href="https://x.com/ART_HELPS_YOU" target="_blank" rel="noopener">@ART_HELPS_YOU</a> までお願いします。個別の魚の診断や治療の相談にはお答えできません。</li>
     </ol>
+    </details>
+    <details class="panel" id="src-panel"><summary><span>出典一覧</span><span class="cnt" id="src-n"></span></summary><div id="srclist" class="split"></div></details>
   </div>
-  <div class="panel" style="margin-top:14px"><h2>出典一覧</h2><div id="srclist" class="split"></div></div>
 </div>
 </main>
 <footer class="board"><div class="wrap">
@@ -587,8 +679,38 @@ const KEY = 'fish-hoken-v1';
 const BLANK = {sick:'', mates:[], signs:[], hist:[], scope:'', onset:'', vm:'L', nu:'U', plants:false, uv:false, mode:'easy'};
 FIELDS.forEach(k => BLANK[k] = '');
 const EXAMPLE = Object.assign({}, BLANK, {sick:'neon_tetra', mates:['corydoras_aeneus'], signs:['white_spots','flashing'], vol:'32', temp:'25', ph:'6.8', no2:'0'});
-let S, isExample = false, open = new Set(), lastKey = '', lastRes = [], bbarWanted = false, resultsVisible = false;
-function updateBbar(){ $('#bbar').hidden = !bbarWanted || resultsVisible; }
+let S, isExample = false, open = new Set(), lastKey = '', lastRes = [], step = 1, resView = false, careInit = false;
+/* step-by-step intake: one question at a time; on phones the result is its own screen */
+const ready = () => !!(S.sick && S.signs.length);
+function stepDone(n){
+  if (n === 1) return !!S.sick; if (n === 2) return S.signs.length > 0;
+  if (n === 3) return !!(S.scope || S.onset || (S.hist || []).length);
+  if (n === 4) return !!volume();
+  return ['temp','ph','no2','tan','no3','do','kh'].some(k => raw(k) !== '');
+}
+function showStep(){
+  document.querySelectorAll('#form .stp').forEach(x => x.hidden = x.dataset.step !== String(step));
+  document.body.classList.toggle('res', resView);
+  document.querySelectorAll('#stepper button').forEach(b => { const k = b.dataset.step; const cur = k === 'r' ? resView : (!resView && k === String(step)); const done = k !== 'r' && stepDone(Number(k));
+    b.classList.toggle('done', done); if (cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    b.setAttribute('aria-label', k === 'r' ? '結果' : `質問${k} ${b.querySelector('.sl').textContent}${done ? '(入力済み)' : ''}`); });
+  $('#prev').hidden = step === 1; $('#next').hidden = step === 5;
+  $('#bbar-go').classList.toggle('primary', step === 5); $('#bbar-go').hidden = step < 5 && !ready();
+}
+function updateNav(res, em){
+  const s = $('#bbar-s'); s.classList.remove('bad');
+  if (em){ s.textContent = em.level === 2 ? '緊急:結果の画面で、まずやることを確かめてください' : '急いで確かめることがあります。結果の画面を見てください'; s.classList.add('bad'); }
+  else if (res.length && S.sick) s.textContent = `第1候補: ${res[0].d.name}(候補 ${res.length}件)`;
+  else s.textContent = '';
+  $('#bbar-go').classList.toggle('danger', !!em);
+  showStep();
+}
+function go(n){
+  if (n === 'r'){ resView = true; } else { resView = false; step = n; }
+  showStep();
+  const top = $('#stepper'); if (top.getBoundingClientRect().top < 0) top.scrollIntoView({block:'start'});
+  const h = resView ? null : document.querySelector(`#st-${step} .q`); if (h) h.focus({preventScroll:true});
+}
 /* ---- share link: the entered state travels in the URL hash (#s=...). Only known keys and valid ids are accepted. ---- */
 const SITE = 'https://keisuke2k3-art.github.io/pay-games/hokenshitsu/';
 function packState(){
@@ -629,7 +751,10 @@ function buildForm(){
   $('#signs').innerHTML = `<div class="picked" id="picked" hidden></div>
     <div class="tiles" id="tiles">${PARTS.map(([k, name]) => `<button type="button" class="tile" data-part="${k}" aria-expanded="false" aria-controls="rg-${k}">${ic(k)}<span>${esc(name)}</span><span class="bdg" hidden></span></button>`).join('')}</div>
     ${PARTS.map(([k, name, ids]) => `<fieldset class="rg" id="rg-${k}" data-part="${k}"><legend>${esc(name)}</legend><div class="chips">${ids.filter(id => SIGN[id]).map(id => chip(SIGN[id])).join('')}</div></fieldset>`).join('')}`;
-  $('#hist').innerHTML = A.history.map(h => `<label class="chip"><input type="checkbox" id="hs-${h.id}" value="${h.id}"><span>${esc(h.label)}</span></label>`).join('');
+  const HG = [['魚・水槽の変化', ['h_new_fish','h_new_tank','h_handling','h_meds']], ['水・設備・薬品', ['h_after_change','h_temp','h_co2','h_h2s','h_copper','h_elec','h_toxin']], ['餌', ['h_overfeed','h_live_food']], ['死に方', ['h_mass','h_chronic']]];
+  const hUsed = new Set(HG.flatMap(g => g[1])); const hRest = A.history.filter(h => !hUsed.has(h.id)).map(h => h.id); if (hRest.length) HG[0][1].push(...hRest);
+  const HC = Object.fromEntries(A.history.map(h => [h.id, h]));
+  $('#hist').innerHTML = HG.map(([g, ids]) => `<div class="hg"><span class="hgl">${esc(g)}</span><div class="chips">${ids.filter(id => HC[id]).map(id => `<label class="chip"><input type="checkbox" id="hs-${id}" value="${id}"><span>${esc(HC[id].label)}</span></label>`).join('')}</div></div>`).join('');
   const ich = DIS.ich, vel = DIS.velvet_piscinoodinium;
   $('#sign-help').innerHTML = `<ul class="ev">
     ${evItem('鼻上げ:水面で口をパクパクさせること。考えられる原因は、酸素不足・亜硝酸の多さ・エラの病気です。', WS.MERCK_ENV, W.clues[0].quote)}
@@ -988,7 +1113,7 @@ function lineAmount(p, d){
   return {sep, need:'この用量は自動計算できません。公式の用量に従ってください。'};
 }
 function doseView(p, d, nocalc){
-  const off = `公式の用量: ${esc(d.dose_text || '')}${d.water_text ? '/' + esc(d.water_text.startsWith('水') ? d.water_text : '水 ' + d.water_text) : ''}`;
+  const off = `<span class="${S.mode === 'pro' ? '' : 'pro-only'}">公式の用量: ${esc(d.dose_text || '')}${d.water_text ? '/' + esc(d.water_text.startsWith('水') ? d.water_text : '水 ' + d.water_text) : ''}</span>`;
   const period = d.duration ? '期間: ' + esc(d.duration) : '期間: 公式DBの用法用量欄に記載なし(製品の説明書で確認)';
   const pkg = /^カプセル/.test(d.dose_text || '') ? 'カプセル入りの製品' : /^分包/.test(d.dose_text || '') ? '分包の製品' : (p.dosage.some(x => /^(カプセル|分包)/.test(x.dose_text || '')) ? '瓶入り(粉末)の製品' : '');
   const meth = S.mode === 'pro' ? (d.method || '') : (d.method || '').replace('浸漬', '薬を溶かした水に入れる').replace('水槽内投薬', '水槽に入れる');
@@ -1002,7 +1127,7 @@ function doseView(p, d, nocalc){
 function ingName(id){ const i = A.drugs.ingredients.find(x => x.id === id); return i ? i.name : id; }
 function bathCare(){
   const t = A.tri; const li = (txt, x, note) => `<li>${esc(txt)}${note ? '<span class="cite">(このアプリの注記)</span>' : x ? `<span class="cite">出典: ${cite(x.source)}</span>${quote(x.quote)}` : ''}</li>`;
-  return `<div class="alert warn"><span class="dot"></span><div><b>別の容器で薬浴するとき</b><ul class="ev">
+  return `<div class="alert warn"><span class="dot"></span><details class="bathcare"${S.mode === 'pro' ? ' open' : ''}><summary><b>別の容器で薬浴するときの注意(8項目・使う前に読みます)</b></summary><ul class="ev">
     ${li('容器の水は、水槽の水を使うか、カルキを抜いて水温と pH を水槽に合わせた水を使います(カルキ抜きは出典の記述。水槽の水を使う・水温と pH を合わせるのはこのアプリの注記)。', t.dechlorinate_new_water)}
     ${li('カルキ抜きは薬を入れる前に済ませます。説明書に「水質安定剤・調整剤との併用を避ける」とある製品があるので、薬と同時に入れないでください。', null, true)}
     ${li('白点病などでは、魚を別の容器に移しても、もとの水槽に病原体が残ります。もとの水槽の扱いは製品の説明書と病気のカードを確かめます。', null, true)}
@@ -1011,7 +1136,7 @@ function bathCare(){
     ${li('網・バケツなどは治療用に分けて使います。', t.dedicated_equipment)}
     ${li('薬浴中に魚が暴れる・喘ぐ・飛び出そうとするときは、すぐに薬の入っていないきれいな水へ移します。', t.distress_during_treatment)}
     ${li('換水したときの薬の足し方は、製品の説明書に従います。記載がなければ販売元に確認します。換水のたびに全量を入れ直すと濃くなりすぎます。', null, true)}
-  </ul></div></div>`;
+  </ul></details></div>`;
 }
 /* antibiotics: amounts only when confidence is 高 and both ammonia and nitrite were measured and are not elevated */
 function abxBlock(r){
@@ -1020,6 +1145,7 @@ function abxBlock(r){
   if (waterAlerts().some(a => ['nh3','nh3w','nh3t','old','no2','no2w','do'].includes(a.key))) return '水質に問題があるため、抗菌剤の量はまだ出しません。先に水質を直します(抗菌剤の前に水質不良を正すことが勧められています)。';
   return '';
 }
+const srcLine = p => `<span class="cite">出典: ${cite(p.db.url)}(DB更新 ${esc(p.db.updated)})${p.status.note ? ` ／ 販売状況(二次情報・${esc(p.status.checked)}確認): ${esc(p.status.note)}` : ''}</span>`;
 function drugCard(u, rec, r){
   const p = u.p; const ints = [];
   const lowConf = r && !r.strong; const ab = isABX(p) ? abxBlock(r) : ''; const nocalc = lowConf ? '決め手になる症状がまだないため、量は計算しません。' : ab || null;
@@ -1034,7 +1160,7 @@ function drugCard(u, rec, r){
     ${ints.length ? `<ul class="ev pro-only">${ints.join('')}</ul>` : ''}
     <span class="cite pro-only">効能効果: ${esc(p.indications_text)}</span>
     ${p.precautions.length ? `<details class="more"><summary>使用上の注意(公式DB・${p.precautions.length}項目)</summary><ul class="ev">${p.precautions.map(x => `<li>${esc(x)}</li>`).join('')}</ul></details>` : ''}
-    <span class="cite">出典: ${cite(p.db.url)}(DB更新 ${esc(p.db.updated)})${p.status.note ? ` ／ 販売状況(二次情報・${esc(p.status.checked)}確認): ${esc(p.status.note)}` : ''}</span>
+    ${S.mode === 'pro' ? srcLine(p) : `<details class="more"><summary>根拠・出典</summary>${tropicalLines(p).map(d => `<p>公式の用量: ${esc(d.dose_text || '')}${d.water_text ? '/' + esc(d.water_text.startsWith('水') ? d.water_text : '水 ' + d.water_text) : ''}${d.target ? `(${esc(d.target)})` : ''}</p>`).join('')}${srcLine(p)}</details>`}
   </div>`;
 }
 
@@ -1083,7 +1209,7 @@ function litBlock(d, r){
   if (!(S.offlabel && S.offlabel[d.id])) return '<p class="hint">上の「文献にある方法(参考情報・自己責任)」で同意すると表示します。</p>';
   return `<div class="alert warn"><span class="dot"></span><div>国内で観賞魚用として承認された製品がない薬です。動物病院で処方される薬で、入手には獣医師の診察が必要です。文献に書かれた用量をそのまま示すだけで、このアプリは量を計算しません。量と使い方は獣医師の指示に従います。食用にする魚には使いません。</div></div>` + d.lit.map(x => `<div class="dose"><span>${esc(x.drug)}:${esc(x.text)}${x.days && !x.text.includes(x.days) && !/\d+\s*(日|回)/.test(x.text) ? `(${esc(x.days)})` : ''}</span><span class="sub">出典: ${cite(x.source)}</span>${quote(x.quote)}</div>`).join('');
 }
-function bathInput(k){ return `<div class="inline-in"><label for="bath-in-${k}">別の容器(薬浴槽)の水量</label><input type="number" class="bath-in" id="bath-in-${k}" inputmode="decimal" value="${esc(S.bath || '')}"><span class="num">L</span><span class="hint">入れると必要量を計算します</span></div>`; }
+function bathInput(k){ return `<div class="inline-in"><label for="bath-in-${k}">別の容器(薬浴槽)の水量</label><div class="unit"><input type="number" class="bath-in" id="bath-in-${k}" inputmode="decimal" value="${esc(S.bath || '')}"><span>L</span></div><span class="hint">入れると、別の容器で使う薬の量を計算します。</span></div>`; }
 function detail(r){
   const d = r.d; const pro = S.mode === 'pro'; const K = d.id + ':';
   let drugs;
@@ -1123,11 +1249,11 @@ function detail(r){
     ${salt ? fold('塩浴', 'Salt', salt.html, !!salt.blocked, null, K + 'salt') : ''}
     ${r.env ? '' : `<div class="pro-only">${fold('文献にある方法(参考情報・自己責任)', 'Literature', offlabelHtml(r), false, null, K + 'off')}</div>`}
     ${fold('この病気だと考えた理由', 'Why', matched + spn, pro || r.air, null, K + 'why')}
-    ${(d.differential.length || spec.length || (pro && d.tests.length)) ? '' : '<!-- no differential -->'}${!(d.differential.length || spec.length || (pro && d.tests.length)) ? '' : fold('似た病気との見分け方・確かめ方', 'Differential', evList(d.differential) + (spec.length ? '<p class="hint">専門家による確認</p><ul class="ev">' + spec.map(triItem).join('') + '</ul>' : '') + (d.tests.length ? '<div class="pro-only"><p class="hint">確定に必要な検査</p>' + evList(d.tests) + '</div>' : ''), pro, null, K + 'diff')}
-    ${fol.length || dont.length ? fold('治療中・治療後に見ること', 'Follow-up', (fol.length ? folNote + `<ul class="ev">${fol.map(triItem).join('')}</ul>` : '') + (dont.length ? `<p class="hint">してはいけないこと</p><ul class="ev">${dont.map(triItem).join('')}</ul>` : ''), r.strong && !r.env, null, K + 'fol') : ''}
-    ${r.env ? '' : `<div class="pro-only">${fold('文献にある対処', 'Management', `<p class="hint">主に海外の獣医学・水産の文献の記載です。国内で観賞魚用として承認されていない薬剤を含みます。</p>${evList(d.management)}`, pro, null, K + 'mgmt')}</div>`}
+    ${(d.differential.length || spec.length || (pro && d.tests.length)) ? '' : '<!-- no differential -->'}${!(d.differential.length || spec.length || (pro && d.tests.length)) ? '' : fold('似た病気との見分け方・確かめ方', 'Differential', evList(d.differential) + (spec.length ? '<p class="hint">専門家による確認</p><ul class="ev">' + spec.map(triItem).join('') + '</ul>' : '') + (d.tests.length ? '<div class="pro-only"><p class="hint">確定に必要な検査</p>' + evList(d.tests) + '</div>' : ''), false, null, K + 'diff')}
+    ${fol.length || dont.length ? fold('治療中・治療後に見ること', 'Follow-up', (fol.length ? folNote + `<ul class="ev">${fol.map(triItem).join('')}</ul>` : '') + (dont.length ? `<p class="hint">してはいけないこと</p><ul class="ev">${dont.map(triItem).join('')}</ul>` : ''), false, null, K + 'fol') : ''}
+    ${r.env ? '' : `<div class="pro-only">${fold('文献にある対処', 'Management', `<p class="hint">主に海外の獣医学・水産の文献の記載です。国内で観賞魚用として承認されていない薬剤を含みます。</p>${evList(d.management)}`, false, null, K + 'mgmt')}</div>`}
     ${d.lit && d.lit.length ? `<div class="pro-only">${fold('文献にある用量(獣医師向けの参考・承認外)', 'Off-label', litBlock(d, r), false, null, K + 'lit')}</div>` : ''}
-    ${fold('水温・起こりやすい条件・予後', 'Context', ctx, pro, null, K + 'ctx')}
+    ${fold('水温・起こりやすい条件・予後', 'Context', ctx, false, null, K + 'ctx')}
     ${d.unverified.length ? `<div class="pro-only">${fold('出典で確認できなかったこと', 'Unverified', `<ul class="ev">${d.unverified.map(u => `<li class="blk">${esc(u)}</li>`).join('')}</ul>`, false, d.unverified.length + '件', K + 'unv')}</div>` : ''}
   </div>`;
 }
@@ -1174,13 +1300,13 @@ function liHtml(x){
   const cau = x.c ? `<span class="cau">注意: ${esc(x.c)}</span>` : '';
   const q = quote([x.q, x.q2].filter(Boolean).join(' / '));
   if (S.mode === 'pro') return `<li class="${x.bad ? 'bad' : ''}"><span>${x.h || esc(x.t)}</span>${cau}${src || '<span></span>'}${q}</li>`;
-  /* かんたん: one short headline; red (bad) cautions stay visible; everything else behind "くわしく・出典" */
+  /* かんたん: one short headline; red (bad) cautions stay visible; everything else behind "根拠・出典" */
   let head, rest, keep = '';
   if (x.h){ const k = x.h.indexOf('<br>'); head = k >= 0 ? x.h.slice(0, k) : x.h; rest = k >= 0 ? x.h.slice(k + 4) : '';
     keep = (rest.match(/<span class="cau bad">.*?<\/span>/g) || []).join('<br>'); rest = rest.replace(/<span class="cau bad">.*?<\/span>(<br>)?/g, '').replace(/^(<br>)+|(<br>)+$/g, ''); }
   else { const sp = splitFirst(x.t); head = esc(sp[0]); rest = esc(sp[1]); }
   const more = [rest ? `<p>${rest}</p>` : '', cau, src].filter(Boolean).join('');
-  return `<li class="${x.bad ? 'bad' : ''}"><i class="tic">${ic(icOf(x))}</i><span>${head}</span>${keep ? `<span>${keep}</span>` : ''}${more ? `<details class="more"><summary>くわしく・出典</summary>${more}</details>` : '<span></span>'}</li>`;
+  return `<li class="${x.bad ? 'bad' : ''}"><i class="tic">${ic(icOf(x))}</i><span>${head}</span>${keep ? `<span>${keep}</span>` : ''}${more ? `<details class="more"><summary>根拠・出典</summary>${more}</details>` : '<span></span>'}</li>`;
 }
 /* easy mode shows the first few steps; the rest stays one tap away */
 function listHtml(items, limit, label){
@@ -1318,7 +1444,7 @@ function renderCare(res){
   const top = new Set(res.slice(0, 3).map(r => r.d.id));
   const rel = x => x.links.some(l => top.has(l));
   const item = x => { if (S.mode === 'pro') return `<li>${esc(x.text)}${x.caution ? `<span class="cau">注意: ${esc(x.caution)}</span>` : ''}<span class="cite">出典: ${cite(x.source)}</span>${quote(x.quote)}</li>`;
-    const sp = splitFirst(x.text); return `<li>${esc(sp[0])}<details class="more"><summary>くわしく・出典</summary>${sp[1] ? `<p>${esc(sp[1])}</p>` : ''}${x.caution ? `<span class="cau">注意: ${esc(x.caution)}</span>` : ''}<span class="cite">出典: ${cite(x.source)}</span>${quote(x.quote)}</details></li>`; };
+    const sp = splitFirst(x.text); return `<li>${esc(sp[0])}<details class="more"><summary>根拠・出典</summary>${sp[1] ? `<p>${esc(sp[1])}</p>` : ''}${x.caution ? `<span class="cau">注意: ${esc(x.caution)}</span>` : ''}<span class="cite">出典: ${cite(x.source)}</span>${quote(x.quote)}</details></li>`; };
   const FIRST = ['correct_stressors_first','isolate_sick_remove_dead','remove_dead_promptly','treat_offline_tank','dechlorinate_new_water','partial_water_change_ammonia','reduce_stop_feeding','aerate_during_treatment','temperature_change_rate','water_sample_before_change','record_deaths_per_day'];
   const byId = Object.fromEntries(A.care.map(x => [x.id, x]));
   const wk = new Set(waterAlerts().map(a => a.key).filter(Boolean));
@@ -1330,6 +1456,7 @@ function renderCare(res){
   const donts = A.care.filter(x => x.cat === 'D').sort((a, b) => rel(b) - rel(a));
   const vet = A.care.filter(x => x.cat === 'E').sort((a, b) => rel(b) - rel(a));
   const E = S.mode !== 'pro';
+  $('#care-n').textContent = `${first.length + donts.length + vet.length + 5 + prev.length}項目`;
   $('#care').innerHTML = fold(ic('aid') + (E ? 'すぐできること' : 'すぐにできる一般的な処置'), 'General care', `<ul class="ev">${first.map(item).join('')}</ul>`, S.mode === 'pro', first.length + '件', 'care-c')
     + fold(ic('stop') + 'やってはいけないこと', "Don'ts", `<ul class="ev">${donts.map(item).join('')}</ul>`, S.mode === 'pro', donts.length + '件', 'care-d')
     + fold(ic('talk') + (E ? '専門家に相談する目安' : '獣医師・専門家に相談するとき(目安と持っていくもの)'), 'When to consult', `<ul class="ev">${vet.map(item).join('')}</ul><p class="hint">一般の飼い主が観賞魚の魚病診断を頼める日本の公的窓口と持参物の決まりは、見つかりませんでした。都道府県の水産試験場には飼育相談に応じるところがあります。</p>`, false, vet.length + '件', 'care-e')
@@ -1355,7 +1482,7 @@ function renderSpeciesCard(sp){
     <div class="num">${ic('thermo')} 参考 水温 ${sp.temp_c ? sp.temp_c.join('〜') + '℃' : '記載なし'} ／ pH ${sp.ph ? sp.ph.join('〜') : '記載なし'}</div>
     ${mates.length ? `<div>同じ水槽: ${mates.map(m => esc(m.name_ja)).join('、')}</div>` : ''}
     <div class="cite pro-only">出典: ${cite(sp.source)}</div>
-    ${notes.length || sd.length ? `<details class="help" data-k="sphelp"${foldState.get('sphelp') ? ' open' : ''}><summary>？ この水槽の魚の注意(${notes.length + sd.length}件)</summary><div><ul class="ev">${[...notes, ...sd].map(n => evItem(n.text, n.source, n.quote)).join('')}</ul></div></details>` : ''}`;
+    ${notes.length || sd.length ? `<details class="help" data-k="sphelp"${foldState.get('sphelp') ? ' open' : ''}><summary>この水槽の魚の注意(${notes.length + sd.length}件)</summary><div><ul class="ev">${[...notes, ...sd].map(n => evItem(n.text, n.source, n.quote)).join('')}</ul></div></details>` : ''}`;
 }
 function renderBars(){
   const tp = x => Math.max(0, Math.min(100, (x - 15) / 20 * 100)), pp = x => Math.max(0, Math.min(100, (x - 4) / 6 * 100));
@@ -1366,6 +1493,7 @@ function renderBars(){
   tband.hidden = !(tr.length && thi >= tlo); if (!tband.hidden){ tband.style.left = tp(tlo) + '%'; tband.style.width = (tp(thi) - tp(tlo)) + '%'; }
   pband.hidden = !(prr.length && phi >= plo); if (!pband.hidden){ pband.style.left = pp(plo) + '%'; pband.style.width = (pp(phi) - pp(plo)) + '%'; }
   const t = val('temp'), ph = val('ph'); const tpin = tb.querySelector('.pin'), ppin = pb.querySelector('.pin');
+  $('#tbar-w').hidden = t == null; $('#phbar-w').hidden = ph == null;
   tpin.hidden = t == null; if (t != null) tpin.style.left = `calc(${tp(t)}% - 1px)`;
   ppin.hidden = ph == null; if (ph != null) ppin.style.left = `calc(${pp(ph)}% - 1px)`;
   $('#tbar-l').textContent = tr.length ? (thi >= tlo ? `枠=参考水温 ${tlo}〜${thi}℃` : '魚どうしの参考水温が重なりません') : '';
@@ -1391,15 +1519,16 @@ function render(){
   $('#water-sum').textContent = al.length ? [nBad ? `危険 ${nBad}件` : '', nWarn ? `注意 ${nWarn}件` : '', !nBad && !nWarn ? '問題なし' : ''].filter(Boolean).join('・') : '未入力';
   $('#water-panel').open = nBad + nWarn > 0;
   const first = W.clues.find(c => c.sign === 'any');
-  $('#alerts').innerHTML = al.map(a => `<div class="alert ${a.lv}"><span class="dot"></span><div><b>${a.h}</b>${a.d ? `<div>${esc(a.d)}</div>` : ''}${a.calc ? `<div class="cite pro-only">${esc(a.calc)}</div>` : ''}<div class="cite">出典: ${a.src.map(cite).join('、')}</div>${quote(a.q)}</div></div>`).join('')
+  const LV = {bad:'危険', warn:'注意', ok:'問題なし'};
+  $('#alerts').innerHTML = al.map(a => `<div class="alert ${a.lv}"><span class="dot"></span><div>${LV[a.lv] ? `<span class="lvl">${LV[a.lv]}</span>` : ''}<b>${a.h}</b>${a.d ? `<div>${esc(a.d)}</div>` : ''}${a.calc ? `<div class="cite pro-only">${esc(a.calc)}</div>` : ''}<div class="cite">出典: ${a.src.map(cite).join('、')}</div>${quote(a.q)}</div></div>`).join('')
     + `<div class="alert"><span class="dot"></span><div>${esc(first.text_ja)}<span class="cite"> 出典: ${cite(WS[first.src])}</span></div></div>`;
   const res = rank().filter(r => S.signs.length || r.envHit || (S.hist || []).length);
   const has = res.length > 0;
   $('#empty').hidden = has || (S.signs.length > 0 && !!S.sick);
   $('#empty-h').textContent = !S.sick && S.signs.length ? 'まず魚の種類を選んでください' : '魚の様子を入れてください';
-  $('#empty-p').textContent = !S.sick && S.signs.length ? '魚の種類によって、使える薬や水質の目安が変わります。「1 具合の悪い魚」で選ぶと結果が出ます。' : '問診票の「1 具合の悪い魚」と「2 見られる症状」を選ぶと、ここに考えられる病気と今やることが出ます。水量を入れると薬の量も計算します。';
+  $('#empty-p').textContent = !S.sick && S.signs.length ? '魚の種類によって、使える薬や水質の目安が変わります。質問1で魚を選ぶと結果が出ます。' : '質問1で魚、質問2で症状を選ぶと、ここに考えられる病気と今やることが出ます。';
   $('#try').hidden = !!(S.signs.length && !S.sick);
-  const wb = nBad + nWarn > 0; $('#em-panel').style.order = 0; $('#todo-panel').style.order = 1; $('#water-panel').style.order = wb ? 2 : 5; $('#cand-panel').style.order = 3; $('#care-panel').style.order = 4; $('#errbox').style.order = -1; $('#empty').style.order = 0;
+  const wb = nBad + nWarn > 0; $('#em-panel').style.order = 0; $('#todo-panel').style.order = 1; $('#water-panel').style.order = wb ? 2 : 5; $('#cand-panel').style.order = 3; $('#care-panel').style.order = 4; $('#errbox').style.order = -1; $('#empty').style.order = 0; $('#share-panel').style.order = 6;
   const em = emergency(al);
   $('#em-panel').hidden = !em; $('#em-panel').classList.toggle('amber', !!em && em.level < 2); if (!em) $('#em-panel').innerHTML = '';
   if (em) $('#em-panel').innerHTML = `<h2>${em.level === 2 ? '緊急:病名を考える前に、まずこれを' : '急いで確かめること'}</h2><p class="hint">理由: ${esc(em.why.join('、'))}</p>${listHtml(em.items, 3, 'ほかにやること')}`;
@@ -1408,6 +1537,7 @@ function render(){
   $('#cand-panel').hidden = !(has || S.signs.length);
   $('#todo').innerHTML = listHtml(todo(res, al, em), 4, '続きを見る');
   $('#care-panel').hidden = !(has || S.signs.length || em); if (!$('#care-panel').hidden) renderCare(res); $('#copy-area').hidden = true; $('#copy-msg').textContent = '';
+  $('#share-panel').hidden = $('#todo-panel').hidden;
   $('#cand-n').textContent = S.signs.length ? `症状 ${S.signs.length}件 → 候補 ${res.length}件` : '';
   lastRes = res;
   if (!has) $('#cands').innerHTML = S.signs.length || (S.hist || []).length ? '<p class="empty">選んだ症状に一致する病気はデータにありません。魚病に詳しい獣医師や専門店に相談してください。</p>' : '';
@@ -1416,7 +1546,7 @@ function render(){
     const pool = res.filter(r => r.score >= res[0].score * 0.5).slice(0, 4); const cnt = {}, wmax = {};
     pool.forEach(r => r.d.links.forEach(l => { if (S.signs.includes(l.sign)) return; cnt[l.sign] = (cnt[l.sign] || 0) + 1; wmax[l.sign] = Math.max(wmax[l.sign] || 0, l.w); }));
     const keys = Object.keys(cnt).filter(k => cnt[k] < pool.length || pool.length === 1).sort((a, b) => wmax[b] - wmax[a] || cnt[a] - cnt[b]).slice(0, 6);
-    const ask = res.length > 1 && keys.length ? `<div class="ask"><b>${S.mode === 'pro' ? '見分けるために:次の症状はありますか?' : 'これもありますか?'}</b><span class="hint pro-only">あれば押すと候補が絞り込まれます。</span><div class="chips">${(S.mode === 'pro' ? keys : keys.slice(0, 3)).map(k => `<button type="button" data-sign="${k}">＋ ${esc(SIGN[k].label)}</button>`).join('')}</div></div>` : '';
+    const ask = res.length > 1 && keys.length ? `<div class="ask"><b>${S.mode === 'pro' ? '見分けるために:次の症状はありますか?' : 'これもありますか?'}</b><span class="hint">あれば押すと、症状に追加して候補を絞り込みます。</span><div class="chips">${(S.mode === 'pro' ? keys : keys.slice(0, 3)).map(k => `<button type="button" data-sign="${k}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>${esc(SIGN[k].label)}</button>`).join('')}</div></div>` : '';
     const card = (r, i) => {
       const d = r.d; const isOpen = open.has(d.id) || (i === 0 && S.mode === 'pro' && !open.has('__closed0'));
       return `<div class="cand${i === 0 ? ' first' : ''}" data-id="${d.id}" data-i="${i}">
@@ -1426,15 +1556,17 @@ function render(){
           <span class="why${''}">${S.mode === 'pro' ? '一致した症状: ' : ''}${r.matched.map(l => esc(SIGN[l.sign].label)).join('、') || (r.envHit ? 'なし(水質の数値から)' : 'なし(問診から)')}${r.hl.length ? ` ／ 問診: ${r.hl.map(l => esc(l.h.label)).join('、')}` : ''}</span>
           <span class="tags"><span class="tag c${r.conf}"><span class="dots" aria-hidden="true"><i class="on"></i><i class="${r.conf >= 2 ? 'on' : ''}"></i><i class="${r.conf >= 3 ? 'on' : ''}"></i></span>確からしさ ${CONF[r.conf]}</span><span class="tag">${esc(d.cat)}</span>${r.envHit ? '<span class="tag env">水質の数値からも疑われる</span>' : ''}${r.spNotes.length ? '<span class="tag sp">この魚種で報告あり</span>' : ''}${r.env ? '<span class="tag">水質の改善で対処</span>' : d.drug_diseases.length ? '' : '<span class="tag">国内承認薬なし</span>'}</span>
           ${i > 0 ? `<span class="meter" aria-hidden="true"><span class="track"><span class="fill" style="width:${Math.round(r.score / max * 100)}%"></span></span><span class="num">第1候補との比較</span></span>` : ''}
-          <span class="chev">${isOpen ? '▲ 閉じる' : '▼ 対処と薬を見る'}</span>
+          <span class="chev">${isOpen ? '閉じる' : '対処と薬を見る'}</span>
         </button>
         ${isOpen ? detail(r) : ''}
       </div>`;
     };
     const strongN = res.filter(r => r.strong).length; const shownN = Math.min(5, strongN ? strongN : 3);
-    $('#cands').innerHTML = courseHint() + `<details class="help" data-k="confhelp"${foldState.get('confhelp') ? ' open' : ''}><summary>？ 「確からしさ」の決め方</summary><div><ul class="ev"><li><b>高</b>:決め手(その病気に特徴的と出典にある症状・できごと)が一致し、ほかの手がかり(ほかの症状・問診・水質の数値・魚種の報告)も1つ以上ある</li><li><b>中</b>:決め手だけが一致している、または水質の数値だけから疑われる</li><li><b>低</b>:決め手が一致していない。薬はまだ使わない段階</li></ul><p class="hint">「高」でも診断の確定ではありません。多くの病気は顕微鏡などの検査が必要です。順位は 確からしさ → 一致の多さ の順です(このアプリの決まりごと)。</p></div></details>` + ask + res.slice(0, shownN).map(card).join('') + (res.length > shownN ? fold(strongN ? 'ほかの候補(可能性低)' : 'ほかの候補', 'More', `<div class="cands">${res.slice(shownN).map((r, j) => card(r, j + shownN)).join('')}</div>`, false, (res.length - shownN) + '件', 'morecands') : '');
+    const confHelp = `<details class="help" data-k="confhelp"${foldState.get('confhelp') ? ' open' : ''}><summary>「確からしさ」の決め方</summary><div><ul class="ev"><li><b>高</b>:決め手(その病気に特徴的と出典にある症状・できごと)が一致し、ほかの手がかり(ほかの症状・問診・水質の数値・魚種の報告)も1つ以上ある</li><li><b>中</b>:決め手だけが一致している、または水質の数値だけから疑われる</li><li><b>低</b>:決め手が一致していない。薬はまだ使わない段階</li></ul><p class="hint">「高」でも診断の確定ではありません。多くの病気は顕微鏡などの検査が必要です。順位は 確からしさ → 一致の多さ の順です(このアプリの決まりごと)。</p></div></details>`;
+    const shown = res.slice(0, shownN).map(card);
+    $('#cands').innerHTML = courseHint() + shown[0] + ask + shown.slice(1).join('') + (res.length > shownN ? fold(strongN ? 'ほかの候補(可能性低)' : 'ほかの候補', 'More', `<div class="cands">${res.slice(shownN).map((r, j) => card(r, j + shownN)).join('')}</div>`, false, (res.length - shownN) + '件', 'morecands') : '') + confHelp;
   }
-  bbarWanted = has; updateBbar(); if (has) $('#bbar-s').textContent = `第1候補: ${res[0].d.name}(候補 ${res.length}件)`;
+  updateNav(res, em);
   save();
 }
 
@@ -1469,7 +1601,7 @@ function renderDrugs(){
         return (exWhy ? `<div class="cau bad">「相談する」タブの水槽では使えません:${esc(exWhy)}</div>` : '') + p.dosage.filter(d => !trop || tl.includes(d)).map(d => doseView(p, d, exWhy ? 'この水槽では使えないため、量は計算しません' : tl.includes(d) && tropicalOK(p) ? null : `対象: ${d.target || '記載の魚種'}(${FCN()}に使える用量ではないため、量は計算しません)`)).join(''); })()}
       ${p.excluded_fish.length ? `<div class="cau">使用不可の魚: ${esc(p.excluded_fish.join('、'))}</div>` : ''}
       ${p.water_conditions ? `<div class="cau">${esc(p.water_conditions)}</div>` : ''}
-      <details class="fold"><summary><span>使用上の注意(公式)</span><span class="cnt">${p.precautions.length}件</span></summary><div class="body"><ul class="ev">${p.precautions.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></details>
+      ${p.precautions.length ? `<details class="more"><summary>使用上の注意(公式DB・${p.precautions.length}項目)</summary><ul class="ev">${p.precautions.map(x => `<li>${esc(x)}</li>`).join('')}</ul></details>` : ''}
       <span class="cite">出典: ${cite(p.db.url)}(DB更新 ${esc(p.db.updated)})${p.status.note ? ` ／ 販売状況(二次情報・${esc(p.status.checked)}確認): ${esc(p.status.note)}` : ''}</span>
     </div>`).join('') || `<div class="panel"><p class="empty">条件に合う製品はありません。${/エビ|えび|貝|かい|ヌマエビ/.test(q) ? 'エビ・貝の治療やエビ・貝への使用を効能効果に含む観賞魚用医薬品は、公式DBにありません。エビ・貝のいる水槽で魚を治療するときは、「相談する」タブの「同じ水槽にいるほかの魚・エビ・貝」でエビ・貝を選ぶと、別の容器で薬浴する前提で量を計算します。' : ''}${q && !/エビ|えび|貝|ヌマエビ/.test(q) ? '国内で観賞魚用に承認された製品がない病気・成分の可能性があります(例: ヘキサミタ、メトロニダゾール)。「相談する」タブで症状から病気を選ぶと、文献にある対処を確認できます。' : ''}${trop && P.some(p => !tropicalOK(p) && norm([p.name, p.indications_text, ...p.diseases.flatMap(d => [dn[d].name, ...dn[d].aliases])].join(' ')).includes(q.split(/\s+/)[0] || '\u0000')) ? '熱帯魚に承認のある製品はありません。「熱帯魚に承認があるもの」を外すと、金魚・錦鯉用や業務用の製品を表示します(熱帯魚への承認はありません)。' : ''}</p></div>`;
 }
@@ -1488,11 +1620,13 @@ function renderSources(){
     const us = Object.keys(SRC).filter(u => !used.has(u) && test(host(u))); us.forEach(u => used.add(u));
     if (us.length) html.push(`<div class="src-group"><h3 style="font-size:.92rem">${esc(name)}(${us.length})</h3><ol>${us.map(u => `<li>${cite(u)}${/vin\.com/.test(u) ? '<span class="cite">(会員制。閲覧に登録が必要)</span>' : ''}</li>`).join('')}</ol></div>`);
   }
-  $('#srclist').innerHTML = html.join('');
+  $('#srclist').innerHTML = html.join(''); $('#src-n').textContent = `${Object.keys(SRC).length}件`;
   $('#unv').innerHTML = A.diseases.filter(d => d.unverified.length).map(d => `<li><b>${esc(d.name)}</b>: ${esc(d.unverified.join(' / '))}</li>`).join('')
     + '<li><b>魚種の薬剤感受性</b>: 「ローチ類・古代魚・コリドラス/プレコは薬に弱い」を一般化する学術出典は見つかりませんでした(国内製品の注意事項を除く)。</li>'
     + '<li><b>水量</b>: 底砂やレイアウトで実水量が減る割合を示す学術・公的出典は見つかりませんでした。差し引き率は利用者が入れる値です。</li>'
     + '<li><b>亜硝酸の危険域</b>: Merckの表は「NO2 > 0.1 mg/L」ですが、脚注に「多くのキットはNO2-Nで測る」とあり、表の値の単位は断定できません。このアプリはNO2に換算して比べます(安全側)。</li>';
+  $('#unv-n').textContent = `${$('#unv').children.length}件`;
+  $('#rules-n').textContent = `${document.querySelectorAll('#rules > ul > li').length}項目`;
 }
 
 /* ---------------- routing + events ---------------- */
@@ -1529,7 +1663,7 @@ function init(){
   buildForm();
   S = load() || JSON.parse(JSON.stringify(BLANK));
   { const m = (location.hash || '').match(/^#s=([A-Za-z0-9_-]+)$/); if (m){ const st = unpackState(m[1]); if (st){ st.mode = S.mode || 'easy'; S = st; save(); } try { history.replaceState(null, '', location.pathname + location.search + '#diagnose'); } catch(e){ location.hash = '#diagnose'; } } }
-  writeForm(); setExample(false); render(); route();
+  writeForm(); setExample(false); resView = ready(); render(); route();
   const form = $('#form');
   const onEdit = () => { readForm(); if (isExample) setExample(false); render(); };
   form.addEventListener('input', onEdit); form.addEventListener('change', e => { if (e.target.type === 'number') return; onEdit(); });
@@ -1538,14 +1672,20 @@ function init(){
   seg('#vm-l', () => S.vm = 'L'); seg('#vm-d', () => S.vm = 'D'); seg('#nu-no2', () => S.nu = 'NO2'); seg('#nu-n', () => S.nu = 'N'); seg('#nu-u', () => S.nu = 'U');
   seg('#m-easy', () => S.mode = 'easy'); seg('#m-pro', () => S.mode = 'pro');
   $('#try').addEventListener('click', () => { S = Object.assign(JSON.parse(JSON.stringify(EXAMPLE)), {mode:S.mode}); writeForm(); setExample(true); render(); });
-  $('#clear').addEventListener('click', () => { S = Object.assign(JSON.parse(JSON.stringify(BLANK)), {mode:S.mode}); writeForm(); setExample(false); render(); });
+  $('#clear').addEventListener('click', () => { S = Object.assign(JSON.parse(JSON.stringify(BLANK)), {mode:S.mode}); writeForm(); setExample(false); render(); go(1); });
   $('#cands').addEventListener('click', e => {
     const b = e.target.closest('button.head'); if (!b) return;
     const c = b.parentElement; const id = c.dataset.id; const wasOpen = b.getAttribute('aria-expanded') === 'true';
     if (wasOpen){ open.delete(id); if (c.dataset.i === '0') open.add('__closed0'); } else open.add(id);
     render(); const again = document.querySelector(`.cand[data-id="${id}"]`); if (again) again.scrollIntoView({block:'nearest'});
   });
-  $('#bbar-go').addEventListener('click', e => { e.preventDefault(); $('#results').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); });
+  $('#bbar-go').addEventListener('click', e => { e.preventDefault(); go('r'); });
+  $('#stepper').addEventListener('click', e => { const b = e.target.closest('button[data-step]'); if (!b) return; go(b.dataset.step === 'r' ? 'r' : Number(b.dataset.step)); });
+  $('#prev').addEventListener('click', () => go(Math.max(1, step - 1)));
+  $('#next').addEventListener('click', () => { if (step === 1 && !S.sick){ $('#e-sick').textContent = '魚の種類を選んでください。使える薬や水質の目安が変わります。'; $('#sick').focus(); return; } $('#e-sick').textContent = ''; go(Math.min(5, step + 1)); });
+  $('#back-edit').addEventListener('click', () => go(step));
+  $('#try2').addEventListener('click', () => { $('#try').click(); go('r'); });
+  document.querySelectorAll('a[href="#sources"]').forEach(a => { if (/規約/.test(a.textContent)) a.addEventListener('click', () => setTimeout(() => { const t = $('#terms'); t.open = true; t.scrollIntoView({block:'start'}); }, 0)); });
   $('#q').addEventListener('input', renderDrugs); $('#f-trop').addEventListener('change', renderDrugs); $('#f-sale').addEventListener('change', renderDrugs); $('#sort').addEventListener('change', renderDrugs);
   $('#dbath').addEventListener('input', () => { S.bath = $('#dbath').value; $('#bath').value = S.bath; save(); renderDrugs(); });
   $('#dvol').addEventListener('input', () => { if (S.vm !== 'L') return; S.vol = $('#dvol').value; $('#vol').value = S.vol; save(); renderDrugs(); });
@@ -1561,7 +1701,7 @@ $('#results').addEventListener('click', e => { const b = e.target.closest('butto
     const t = e.target.closest('.tile'); if (t){ openPart = openPart === t.dataset.part ? '' : t.dataset.part; render(); return; }
     const u = e.target.closest('button[data-unsign]'); if (u){ S.signs = S.signs.filter(id => id !== u.dataset.unsign); writeForm(); if (isExample) setExample(false); render(); }
   });
-  if ('IntersectionObserver' in window){ new IntersectionObserver(es => { resultsVisible = es.some(x => x.isIntersecting); updateBbar(); }, {rootMargin:'0px 0px -40% 0px'}).observe($('#results')); }
+  $('#sick').addEventListener('change', () => { $('#e-sick').textContent = ''; });
 }
 let userToggle = false;
 function copyMemo(){
