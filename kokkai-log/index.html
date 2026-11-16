@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>国会ログ|その議員、国会で何してた?</title>
-<meta name="description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta name="description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わり・法案への態度・政治資金(総務省公表の収支報告書)がわかります。">
 <meta name="theme-color" content="#2b2170">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <script>(function(){if(typeof location==="undefined"||!/github\.io$/.test(location.hostname))return;var me=false;try{me=localStorage.getItem("pay-me")==="1"}catch(e){}window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}window.gtag=g;var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-YRLZTCPTSE";document.head.appendChild(s);g("js",new Date());var c={game:"kokkai-log"};if(me)c.traffic_type="internal";g("config","G-YRLZTCPTSE",c)})();</script>
@@ -12,13 +12,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="国会ログ">
 <meta property="og:title" content="国会ログ|その議員、国会で何してた?">
-<meta property="og:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta property="og:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わり・法案への態度・政治資金(総務省公表の収支報告書)がわかります。">
 <meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/">
 <meta property="og:image" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/og.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="国会ログ|その議員、国会で何してた?">
-<meta name="twitter:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わりと法案への態度がわかります。">
+<meta name="twitter:description" content="国会で実際に何が決まり、各議員や政党がどうしたのかを公式の記録から調べられるサイト。名前や地域から議員を探し、所属の移り変わり・法案への態度・政治資金(総務省公表の収支報告書)がわかります。">
 <meta name="twitter:image" content="https://keisuke2k3-art.github.io/pay-games/kokkai-log/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -217,6 +217,36 @@ details.more{border-top:1px solid var(--line)}
 .stat b{display:block;font-size:1.2rem}
 .stat span{font-size:.76rem;color:var(--muted)}
 
+/* 政治資金 */
+.org{border-top:1px solid var(--line)}
+.org:first-of-type{border-top:0}
+.org>summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:12px 0;align-items:baseline}
+.org>summary::-webkit-details-marker{display:none}
+.org>summary .t{font-weight:900;line-height:1.45}
+.org>summary .k{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
+.org>summary .amt{font-weight:900;white-space:nowrap}
+.org>summary .amt small{font-size:.72rem;font-weight:700;color:var(--muted);margin-right:4px}
+.org>summary::after{content:"詳しく ▾";grid-column:1/-1;font-size:.78rem;font-weight:700;color:var(--accent)}
+.org[open]>summary::after{content:"閉じる ▴"}
+.obody{display:flex;flex-direction:column;gap:14px;padding:0 0 16px}
+.obody h4{font-size:.84rem;font-weight:900}
+.fbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--sunk);gap:2px}
+.fbar i{display:block;height:100%;min-width:3px}
+.ftab{display:flex;flex-direction:column;font-size:.86rem}
+.ftab div{display:grid;grid-template-columns:12px 1fr auto 3.4em;gap:8px;align-items:center;padding:5px 0;border-top:1px solid var(--line)}
+.ftab div:first-child{border-top:0}
+.ftab .sw{width:12px;height:12px;border-radius:3px}
+.ftab .pc{text-align:right;color:var(--muted);font-size:.8rem}
+.ftab .sub{padding-left:20px;color:var(--muted);font-size:.8rem;grid-template-columns:1fr auto 3.4em}
+.ebar{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:.86rem}
+.ebar .bar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.ebar .bar i{display:block;height:100%;background:var(--accent)}
+.keyfig{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.keyfig div{background:var(--sunk);border-radius:var(--r);padding:8px 6px;text-align:center}
+.keyfig b{display:block;font-size:1rem}
+.keyfig span{font-size:.72rem;color:var(--muted)}
+.fsrc{font-size:.82rem;display:flex;flex-wrap:wrap;gap:4px 14px}
+
 /* 政党の系譜 */
 .fam{border-top:1px solid var(--line)}
 .fam>summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:4px 8px;padding:12px 0;align-items:baseline}
@@ -298,7 +328,7 @@ async function share(title){
 }
 
 /* ===== 状態 ===== */
-const S={pf:{pref:"",party:"",age:"",times:"",house:""},plim:20,tab:"people",bmode:"pick",bid:null,fx:null,bq:"",bp:"",pq:"",pid:null,ph:"衆議院",pall:false,qi:0,ans:{},done:false,peek:false,open:null};
+const S={pf:{pref:"",party:"",age:"",times:"",house:"",funds:""},plim:20,tab:"people",bmode:"pick",bid:null,fx:null,bq:"",bp:"",pq:"",pid:null,ph:"衆議院",pall:false,qi:0,ans:{},done:false,peek:false,open:null};
 try{const s=JSON.parse(localStorage.getItem("kokkailog2")||"{}");if(s.ans)S.ans=s.ans;}catch(e){}
 const save=()=>{try{localStorage.setItem("kokkailog2",JSON.stringify({ans:S.ans}))}catch(e){}};
 let BILLS=[];
@@ -434,13 +464,13 @@ function sanHTML(b){
 
 /* ===== 議員 ===== */
 function vPeople(){
-  const w=need("app_people","app_bills","rollcalls"); if(w){w.then(render,fail);return `<h2 class="title">議員を探す</h2>`+loading();}
+  const w=need("app_people","app_bills","rollcalls",...(S.pf.funds?["funds"]:[])); if(w){w.then(render,fail);return `<h2 class="title">議員を探す</h2>`+loading();}
   if(S.pid) return vPerson();
   const now=DB.app_people.filter(p=>p.now);
   const opt=(id,lab,list,cur)=>`<label class="fl"><span>${lab}</span><select class="input" id="${id}"><option value="">指定しない</option>${list.map(([v,l])=>`<option value="${esc(v)}" ${cur===v?"selected":""}>${esc(l)}</option>`).join("")}</select></label>`;
   const pc={};now.forEach(p=>{const f=short(p.now.faction);pc[f]=(pc[f]||0)+1});
   const parties=Object.entries(pc).sort((a,b)=>b[1]-a[1]).map(([f,n])=>[f,`${f}(${n})`]);
-  const F=S.pf, any=F.pref||F.party||F.age||F.times||F.house;
+  const F=S.pf, any=F.pref||F.party||F.age||F.times||F.house||F.funds;
   const empty=!S.pq&&!any;
   return `${empty?`<section class="hero"><h2>その議員、国会で何してた?</h2><p>公約より、これまでの記録で選ぼう。現職${now.length}人の所属の移り変わりと、法案への態度がわかります。</p>
       <label class="fl"><span>あなたの都道府県から探す</span><select class="input" id="f-pref"><option value="">都道府県を選ぶ</option>${PREFS.map(x=>`<option value="${x}">${x}</option>`).join("")}</select></label></section>`:`<h2 class="title">議員を探す</h2>`}
@@ -451,6 +481,7 @@ function vPeople(){
       ${opt("f-party","政党",parties,F.party)}
       ${opt("f-age","年代",[["20","20代"],["30","30代"],["40","40代"],["50","50代"],["60","60代"],["70","70歳以上"]],F.age)}
       ${opt("f-times","当選回数",[["1","1回"],["2","2〜3回"],["4","4〜6回"],["7","7回以上"]],F.times)}
+      ${opt("f-funds","政治資金(2024年)",[["1","金額を確認できる議員"],["2","関係団体の届出がある議員"]],F.funds)}
     </div>
     ${any?`<button class="btn txt" style="align-self:flex-start" data-act="pclear">条件をすべて外す</button>`:""}
     <div id="phits">${peopleHits()}</div>`;
@@ -465,7 +496,7 @@ const timesLabel=t=>{const m=String(t||"").match(/^(\d+)\(参(\d+)\)$/);return m
 const ageLabel=b=>{const x=ageOf(b);return x?(x.exact?`${x.a}歳`:`${b.slice(0,4)}年生まれ`):""};
 const nowLine=p=>p.now?`${p.now.house}・${short(p.now.faction)}・${p.now.area||p.now.district}`:p.spans.length?`元議員・${short(p.spans.at(-1).faction)}(${yr(p.spans.at(-1).to)}年まで)`:"記録なし";
 function peopleHits(){
-  const q=S.pq.replace(/\s+/g,""), F=S.pf, filt=F.pref||F.party||F.age||F.times||F.house;
+  const q=S.pq.replace(/\s+/g,""), F=S.pf, filt=F.pref||F.party||F.age||F.times||F.house||F.funds;
   if(!q&&!filt) return `<p class="empty">1947年以降の元議員を含む約${Math.round(DB.app_people.length/100)*100}人を収録しています。</p>`;
   let l=DB.app_people.filter(p=>!q||p.name.includes(q)||p.yomi.includes(q));
   if(filt) l=l.filter(p=>{const n=p.now; if(!n) return false;
@@ -473,6 +504,7 @@ function peopleHits(){
     if(F.pref&&!(n.prefs||[]).includes(F.pref)) return false;
     if(F.party&&short(n.faction)!==F.party) return false;
     if(F.age){const x=ageOf(n.birth); if(!x) return false; const a=x.a, lo=+F.age; if(lo===70?a<70:(a<lo||a>=lo+10)) return false;}
+    if(F.funds){const o=DB.funds.p[p.id]; if(!o||(F.funds==="1"&&!o.some(x=>x.f))) return false;}
     if(F.times){const t=timesN(n.times), lo=+F.times, hi={1:1,2:3,4:6,7:99}[lo]; if(t<lo||t>hi) return false;}
     return true;});
   l.sort((a,b)=>(!!b.now-!!a.now)||(F.pref?((a.now.kind==="比例")-(b.now.kind==="比例")):0)||(a.yomi||"").localeCompare(b.yomi||"","ja")||(b.spans.length-a.spans.length));
@@ -513,7 +545,58 @@ function vPerson(){
     ${p.vc||myRc.length?`<div class="sec"><h3>本人の票の記録</h3><div class="panel">
       ${p.vc?`<div class="legend">参議院本会議</div><div class="stat"><div><b class="num">${p.vc["賛成"]}</b><span>賛成</span></div><div><b class="num">${p.vc["反対"]}</b><span>反対</span></div><div><b class="num">${p.vc["投票なし"]}</b><span>投票なし</span></div></div>`:""}
       ${myRc.length?`<details class="more"><summary>衆議院の記名投票(${myRc.length}回)</summary><div>${myRc.slice(0,15).map(x=>`<div class="vrow"><span class="q">${yr(x.r.d)}年 ${esc(x.r.item)}</span><span class="bdg ${x.v==="賛成"?"y":"n"}">${x.v==="賛成"?"○ 賛成":"✕ 反対"}</span></div>`).join("")}</div></details>`:""}</div></div>`:""}
+    ${fundsHTML(p)}
     ${subs.length?`<details class="more"><summary>提出者になった法案(${subs.length}件)</summary><div class="list">${subs.slice(0,10).map(x=>`<button class="item chev" data-act="bill" data-id="${x.i}"><span class="t">${esc(x.t)}</span><span class="s num">${yr(x.d)}年</span></button>`).join("")}</div></details>`:""}`;
+}
+
+/* ===== 政治資金(総務省公表の収支報告書) ===== */
+const yen=n=>n.toLocaleString("ja-JP")+"円";
+const man=n=>n>=1e8?`${(n/1e8).toFixed(n>=1e9?1:2).replace(/\.?0+$/,"")}億円`:n>=1e4?`${Math.round(n/1e4).toLocaleString("ja-JP")}万円`:yen(n);
+const FIN=[  // 収入の内訳(報告書の項目 → 表示)
+  ["grant","政党本部・支部からの交付金","党から","--c1"],
+  ["biz","事業収入(政治資金パーティーなど)","パーティー等","--c2"],
+  ["dC","寄附:企業・団体から","企業・団体","--c6"],
+  ["dI","寄附:個人から","個人","--c3"],
+  ["dP","寄附:政治団体から","政治団体","--c4"],
+  ["etc","その他(党費・会費、借入金など)","その他","--c5"]];
+const KUBUN={"1":"議員本人が代表の団体","2":"議員を支援するための団体(後援会など)","1・2":"議員本人が代表で、議員を支援するための団体"};
+function incGroups(f){const i=f.i, v={grant:i.grant||0,biz:i.biz||0,dC:i.dC||0,dI:i.dI||0,dP:i.dP||0,etc:(i.fee||0)+(i.dA||0)+(i.loan||0)+(i.oth||0)};
+  return FIN.map(([k,l,sh,c])=>({k,l,sh,c,v:v[k]})).filter(g=>g.v>0);}
+const EXPN={"人件費":"職員の給料など","光熱水費":"電気・ガス・水道","備品・消耗品費":"事務用品など","事務所費":"家賃・電話・郵便など",
+  "組織活動費":"会合・行事・交際など","選挙関係費":"選挙のための費用","機関紙誌の発行事業費":"機関紙の発行","宣伝事業費":"宣伝・広告",
+  "政治資金パーティー開催事業費":"パーティーの開催","その他の事業費":"","調査研究費":"調査・研修・書籍など","寄附・交付金":"ほかの政治団体などへ","その他の経費":""};
+const FIXN={ti:"収入総額",cp:"前年からの繰越額",iy:"本年の収入額",to:"支出総額",cn:"翌年への繰越額",fee:"党費・会費",dI:"個人からの寄附",dC:"法人その他の団体からの寄附",dP:"政治団体からの寄附",dA:"政党匿名寄附",dsub:"寄附の小計",dtot:"寄附の合計",biz:"事業収入",loan:"借入金",grant:"交付金",oth:"その他の収入","k小計":"経常経費の小計","p小計":"政治活動費の小計","事業費計":"事業費の計","合計":"支出の合計"};
+function orgHTML(o,open,Y){
+  const f=o.f, pdf=`<a href="${esc(o.u)}${f&&f.pg?`#page=${f.pg}`:""}" target="_blank" rel="noopener">原本(総務省・PDF)${f&&f.pg?`の収支のページ`:""}</a>${f&&f.p13?`<a href="${esc(o.u)}#page=${f.p13}" target="_blank" rel="noopener">支出の内訳のページ</a>`:""}`;
+  if(!f) return `<details class="org"><summary><span class="t">${esc(o.o)}</span><span class="amt"><small>収入</small>原本で確認</span><span class="k">${esc(KUBUN[o.k]||"")}</span></summary>
+    <div class="obody"><p class="note">${o.r==="corr"?"この団体の報告書には手書きの訂正があるため、金額を載せていません。":"この団体の報告書は、原本の画像から数字を読み取ったときに報告書の中の合計が合わなかったため、金額を載せていません。"}原本でご確認ください。</p><div class="fsrc">${pdf}</div></div></details>`;
+  const g=incGroups(f), tot=f.iy||1, top=g.slice().sort((a,b)=>b.v-a.v)[0];
+  const exp=Object.entries(f.e||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const fixed=(f.fixed||[]).map(k=>FIXN[k]||k);
+  return `<details class="org" ${open?"open":""}><summary><span class="t">${esc(o.o)}</span><span class="amt num"><small>${Y}年の収入</small>${man(f.iy)}</span><span class="k">${esc(KUBUN[o.k]||"")}</span></summary>
+    <div class="obody">
+      ${f.iy>0?`<div><h4>お金の入り口${top?` <span class="bdg a">いちばん多いのは「${esc(top.sh)}」${Math.round(top.v/tot*100)}%</span>`:""}</h4></div>
+      <div class="fbar" role="img" aria-label="${esc(g.map(x=>`${x.sh}${Math.round(x.v/tot*100)}%`).join("、"))}">${g.map(x=>`<i style="width:${(x.v/tot*100).toFixed(2)}%;background:var(${x.c})"></i>`).join("")}</div>
+      <div class="ftab num">${g.map(x=>`<div><span class="sw" style="background:var(${x.c})"></span><span>${esc(x.l)}</span><span>${yen(x.v)}</span><span class="pc">${(x.v/tot*100).toFixed(1)}%</span></div>`).join("")}</div>`:`<p class="empty">${Y}年の収入はありませんでした。</p>`}
+      ${exp.length?`<div><h4>お金の使い道(多い順)</h4></div><div class="ebar num">${exp.map(([k,v])=>`<span>${esc(k)}${EXPN[k]?`<small class="legend"> ${esc(EXPN[k])}</small>`:""}</span><span>${yen(v)}</span><span class="bar"><i style="width:${(v/f.to*100).toFixed(1)}%"></i></span>`).join("")}</div>`:(f.to===0?`<p class="empty">${Y}年の支出はありませんでした。</p>`:"")}
+      <div class="keyfig num"><div><b>${man(f.iy)}</b><span>${Y}年の収入</span></div><div><b>${man(f.to)}</b><span>${Y}年の支出</span></div><div><b>${man(f.cn)}</b><span>${Y+1}年への繰越</span></div></div>
+      ${fixed.length?`<p class="legend">※「${esc(fixed.join("・"))}」は原本の字が読み取りにくかったため、報告書の中の合計から計算した値です(ほかの数字との合計が合うことを確かめています)。</p>`:""}
+      <div class="fsrc">${pdf}</div>
+    </div></details>`;
+}
+let FERR=false;
+function fundsHTML(p){
+  if(!DB.funds){if(!FERR)get("funds").then(()=>{if(S.pid===p.id&&S.tab==="people")render()},()=>{FERR=true;if(S.pid===p.id)render()});
+    return `<div class="sec"><h3>政治資金</h3><div class="panel"><p class="legend">${FERR?"データを読み込めませんでした。時間をおいて開き直してください。":"読み込み中…"}</p></div></div>`;}
+  const M=DB.funds.meta, Y=M.year, L=(DB.funds.p[p.id]||[]).slice().sort((a,b)=>(b.f?b.f.iy:-1)-(a.f?a.f.iy:-1));
+  const links=`<div class="fsrc"><a href="${esc(M.source)}" target="_blank" rel="noopener">総務省の公表ページ(${Y}年分)</a><a href="https://www.soumu.go.jp/senkyo/senkyo_s/links/senkan/index.html" target="_blank" rel="noopener">都道府県の選挙管理委員会</a></div>`;
+  const what=`<details class="more"><summary>政治資金収支報告書とは</summary><p class="note">政治団体が、1年間に集めたお金と使ったお金を届け出る書類です。議員の関係政治団体(議員本人が代表の団体や、議員を支援する後援会など)は、領収書の確認など、ほかの団体より細かいルールがあります。ここでは総務省が公表した原本(紙の画像)から、収支の表の数字を読み取って載せています。</p></details>`;
+  const legend=`<p class="legend">出典:総務省「政治資金収支報告書」${esc(M.label)}。総務大臣に届け出た国会議員関係政治団体だけを載せています。都道府県の選挙管理委員会に届け出た団体(地元の政党支部や後援会の多く)は含みません。数字は原本の画像から読み取り、報告書の中の合計がすべて合うことを確かめたものだけを載せています。同じ議員の団体どうしでお金をやりとりしていることがあるため、団体の金額は足し合わせていません。</p>`;
+  if(!L.length) return `<div class="sec"><h3>政治資金(${Y}年分)</h3><div class="panel"><p class="empty">${Y}年分の総務大臣届出分に、この議員の関係政治団体はありません。</p>
+    <p class="note">都道府県の選挙管理委員会に届け出ている団体は、ここには入っていません。${Y+1}年以降に初当選した議員も、まだ載っていません。</p>${links}</div>${legend}</div>`;
+  return `<div class="sec"><h3>政治資金(${Y}年分)</h3><div class="panel">
+    <p>総務大臣に届け出た関係政治団体 <b class="num">${L.length}</b>つ</p>
+    <div>${L.map((o,i)=>orgHTML(o,i===0&&L.length<=2,Y)).join("")}</div>${what}${links}</div>${legend}</div>`;
 }
 
 /* ===== 政党 ===== */
@@ -537,20 +620,22 @@ function vParties(){
 function vAbout(){
   return `<h2 class="title">このサイトについて</h2>
     <div class="panel"><h3>国会ログとは</h3><p>国会で実際に何が決まり、各議員や政党がどうしたのかを、公式の記録から調べられるサイトです。公約ではなく、これまでの記録をもとに投票先を考える手助けをめざしています。</p>
-      <ul><li><b>議員</b>:名前・地域・政党・年代・当選回数から探し、所属の移り変わりと法案への態度を見る</li><li><b>法案</b>:注目の法案と、各党の態度・討論での発言</li><li><b>政党</b>:1947年からの会派の移り変わり</li><li><b>診断</b>:法案に答えて、各党の実際の賛否と比べる(準備中)</li></ul></div>
+      <ul><li><b>議員</b>:名前・地域・政党・年代・当選回数から探し、所属の移り変わり・法案への態度・政治資金(総務大臣届出分)を見る</li><li><b>法案</b>:注目の法案と、各党の態度・討論での発言</li><li><b>政党</b>:1947年からの会派の移り変わり</li><li><b>診断</b>:法案に答えて、各党の実際の賛否と比べる(準備中)</li></ul></div>
     <div class="panel"><h3>中立性について</h3><ul><li>特定の政党・候補者を支持したり、投票先をすすめたりはしません。</li><li>各党の態度は、国会の記録に残る行動(提出・賛成・反対など)だけで機械的に分けています。</li><li>各党の理由は、会議録の討論の言葉をそのまま引用し、要約していません。</li><li>色は、特定の政党を連想させないものを使っています。</li></ul></div>
     <div class="panel"><h3>知っておいてほしいこと</h3><ul>
       <li>衆議院の多くの採決は、議員一人ひとりの票が記録されません。その場合は、当時の所属会派の態度を表示しています。</li>
       <li>党の合流や分裂があるため、昔の会派の行動を今の党にそのまま当てはめることはできません。</li>
       <li>年齢・出身地は、衆議院・参議院の議員紹介ページの経歴から読み取っています(衆議院は生まれた年月まで)。</li>
+      <li>政治資金は、総務大臣に届け出た団体の分だけです。都道府県の選挙管理委員会に届け出た団体は含まないため、議員どうしの金額の比べ合いには向きません。</li>
       <li>名前で記録をまとめているため、同じ名前の別人の記録が混ざることがあります。該当する議員には注意書きを出しています。</li></ul></div>
     <div class="panel"><h3>データの出典</h3><ul>
       <li><a href="https://www.shugiin.go.jp/internet/itdb_gian.nsf/html/gian/menu.htm" target="_blank" rel="noopener">衆議院 議案情報</a>・<a href="https://www.shugiin.go.jp/internet/itdb_annai.nsf/html/statics/syu/1giin.htm" target="_blank" rel="noopener">議員一覧・議員紹介</a></li>
       <li><a href="https://www.sangiin.go.jp/" target="_blank" rel="noopener">参議院</a>(議案情報、本会議の投票結果、議員紹介)</li>
       <li><a href="https://kokkai.ndl.go.jp/" target="_blank" rel="noopener">国立国会図書館 国会会議録検索システム</a>(討論の引用、所属会派の記録)</li>
+      <li><a href="https://www.soumu.go.jp/senkyo/seiji_s/seijishikin/" target="_blank" rel="noopener">総務省 政治資金収支報告書</a>(国会議員関係政治団体の収支。原本の画像から数字を読み取り、報告書の中の合計がすべて合うものだけを載せています)</li>
       <li><a href="https://github.com/smartnews-smri/house-of-representatives" target="_blank" rel="noopener">スマートニュース メディア研究所 衆議院議案データベース</a>・<a href="https://github.com/smartnews-smri/house-of-councillors" target="_blank" rel="noopener">参議院議案データベース</a>(MIT License)</li></ul>
       <p class="legend">データは定期的に更新しています。誤りに気づいたら、下の連絡先から教えてください。</p></div>
-    <div class="panel"><h3>プライバシー</h3><p>アクセス解析や広告は使っていません。診断の答えは、あなたの端末の中だけに保存されます。</p></div>
+    <div class="panel"><h3>プライバシー</h3><p>どのくらい使われているかを知るために、Google アナリティクス(アクセス解析)を使っています。広告は使っていません。診断の答えは、あなたの端末の中だけに保存され、送信されません。</p></div>
     <div class="panel"><h3>運営・連絡先</h3><p>PAY games(個人で運営しています)</p><p><a href="https://x.com/ART_HELPS_YOU" target="_blank" rel="noopener">X(旧Twitter):@ART_HELPS_YOU</a></p></div>
     <footer class="ft">© PAY games ・ 国会ログ</footer>`;
 }
@@ -592,7 +677,7 @@ document.addEventListener("click",e=>{
     case "pname": {const go2=()=>{const p=DB.app_people.find(x=>x.name===t.dataset.n);if(p)openPerson(p.id);};DB.app_people?go2():get("app_people").then(go2);break;}
     case "pback": backTo("people");break;
     case "phouse": S.pf.house=v;S.plim=20;render();break;
-    case "pclear": S.pf={pref:"",party:"",age:"",times:"",house:""};S.pq="";S.plim=20;render();break;
+    case "pclear": S.pf={pref:"",party:"",age:"",times:"",house:"",funds:""};S.pq="";S.plim=20;render();break;
     case "pmore": S.plim+=20;$("#phits").innerHTML=peopleHits();break;
     case "ph": S.ph=v;render();break;
     case "pall": S.pall=!S.pall;render();break;
@@ -602,7 +687,7 @@ app.addEventListener("input",e=>{
   if(e.target.id==="bq"){S.bq=e.target.value;$("#bhits").innerHTML=billHits();}
   if(e.target.id==="pq"){S.pq=e.target.value;S.plim=20;$("#phits").innerHTML=peopleHits();}
 });
-app.addEventListener("change",e=>{const m={"f-pref":"pref","f-party":"party","f-age":"age","f-times":"times"}[e.target.id];
+app.addEventListener("change",e=>{const m={"f-pref":"pref","f-party":"party","f-age":"age","f-times":"times","f-funds":"funds"}[e.target.id];
   if(m){S.pf[m]=e.target.value;S.plim=20;render();}});
 function fromHash(){
   const h=location.hash.slice(1);
