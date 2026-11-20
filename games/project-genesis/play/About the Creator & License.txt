@@ -1,0 +1,25 @@
+About the Creator
+Hi, I'm PAY. I created this project out of a simple wish: to share my love for aquariums with as many people as possible.
+Thank you for playing, and I hope you enjoy the world I’ve built!
+
+Website: https://synth-aquarium.xblog.jp/
+
+
+PROJECT GENESIS
+Copyright (c) 2025-2026 keisuke2k3-art
+
+This project is publicly viewable on GitHub for educational
+and portfolio purposes.
+
+You MAY:
+  - Play the game via GitHub Pages
+  - Study the source code for personal learning
+  - Share links to the official GitHub Pages URL
+
+You MAY NOT:
+  - Copy, redistribute, or host this project (in whole or in part)
+  - Use the code, artwork, or narrative text in other projects
+  - Create derivative works based on this project
+  - Use any part of this project for commercial purposes
+
+For permissions beyond these terms, contact the author.

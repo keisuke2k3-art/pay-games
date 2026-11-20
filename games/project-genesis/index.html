@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PROJECT GENESIS//One-Shot-Setup | PAY</title>
-<meta name="description" content="設計は一度きり。100日間、介入不可。初期設計だけで水槽生態系の生存を賭ける、SFディストピア・アクアリウム・シミュレーション。">
+<meta name="description" content="密閉したら、もう手は届かない。滅びた地球の地下で、小さな水槽に命の循環を設計する生態系パズル。18の実験と★54。ブラウザでそのまま遊べます。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="PROJECT GENESIS//One-Shot-Setup">
 <meta property="og:description" content="One design. 100 days. Zero intervention.">
@@ -69,6 +69,11 @@ body {
   padding: 18px 28px; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
 .btn:hover { background: #F7C06A; }
+.btn.sub { background: transparent; color: var(--amber); box-shadow: inset 0 0 0 2px var(--amber); font-size: 16px; padding: 15px 22px; clip-path: none; }
+.btn.sub:hover { background: rgba(242, 169, 59, .12); }
+.feat { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.feat li { padding-left: 18px; position: relative; }
+.feat li::before { content: ""; position: absolute; left: 0; top: .8em; width: 8px; height: 2px; background: var(--amber); }
 .lang-note { font-size: 14px; color: var(--cyan); }
 
 /* 計測コンソール */
@@ -155,7 +160,8 @@ dt { color: var(--cyan); padding-right: 28px; font-family: "Chakra Petch", "BIZ 
         <span class="motto-en cp" lang="ja">One design. 100 days. Zero intervention.</span>
       </p>
       <div class="cta">
-        <a class="btn" href="https://pay-k.itch.io/projectgenesis-one-shot-setup"><span lang="ja">無料で実験を開始</span><span lang="en">Start the experiment for free</span></a>
+        <a class="btn" href="play/"><span lang="ja">このサイトで遊ぶ(無料)</span><span lang="en">Play it here, free</span></a>
+        <a class="btn sub" href="https://pay-k.itch.io/projectgenesis-one-shot-setup"><span lang="ja">itch.io で遊ぶ</span><span lang="en">Play on itch.io</span></a>
         <span class="lang-note"><span lang="ja">日本語 / English(ゲーム内で切替)</span><span lang="en">English / Japanese (switch in-game)</span></span>
       </div>
     </div>
@@ -192,8 +198,13 @@ dt { color: var(--cyan); padding-right: 28px; font-family: "Chakra Petch", "BIZ 
     <div class="wrap cols">
       <p class="big"><span lang="ja">ルールその一。<br>チャンスは<br><em>初期設計</em>の一度きり。</span><span lang="en">Rule number one:<br>you only get <em>one shot</em>.</span></p>
       <div>
-        <p><span lang="ja">『PROJECT GENESIS//One-Shot-Setup』は、計画力を限界まで試すハードコアな水槽生態系シミュレーションです。</span><span lang="en">PROJECT GENESIS//One-Shot-Setup is a hardcore aquatic ecosystem simulation that tests your planning skills to the limit.</span></p>
-        <p><span lang="ja">限られたコストの中で、生体・水草・底床を慎重に選び、「SEAL」を押す。封印したあとは一切手出しできません。あとは自分の計算が正しかったことを祈るだけ。毎日が、生態系崩壊との静かな戦いです。</span><span lang="en">Balance your budget across lifeforms, flora and substrate, then hit SEAL. Once sealed, you can't intervene. All that's left is hoping your math was right. Every day is a silent war against ecological collapse.</span></p>
+        <p><span lang="ja">滅びた地球の地下で、小さなガラスの水槽に「命の循環」を設計する生態系パズルです。底床を敷き、水草を植え、魚を選び、ハッチを閉じる。チャンスは一度きり。あとはただ、日々の推移を見届けるだけです。</span><span lang="en">Beneath a dead Earth, design a cycle of life inside a small glass tank. Lay the substrate, plant the green, choose the fish, and seal the hatch. You get one shot. Then all you can do is watch the days unfold.</span></p>
+        <ul class="feat">
+          <li><span lang="ja">見えないバクテリアの戦争:密閉直後に必ず来るアンモニアと亜硝酸の山を、設計だけで乗り越える</span><span lang="en">The invisible war: survive the ammonia and nitrite spikes that follow every fresh seal, by design alone</span></li>
+          <li><span lang="ja">光と影のパズル:浮草は真下を暗くする。コケを抑える盾にも、水草を枯らす刃にもなる</span><span lang="en">Light and shade: floating plants darken what lies beneath, a shield against algae or a blade for your stem plants</span></li>
+          <li><span lang="ja">死因分析:何が・いつ・なぜ崩れたかを数値で解説。配置はそのまま、直して再挑戦</span><span lang="en">Autopsy reports: what failed, when and why, in numbers. Keep your layout, fix it, and seal again</span></li>
+          <li><span lang="ja">18の実験と★54、初回の密閉で成功した証「ONE-SHOT」。フリーラボとデイリー実験も</span><span lang="en">18 experiments, 54 stars, and the ONE-SHOT badge for a first-seal clear. Plus a Free Lab and a Daily Experiment</span></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -205,17 +216,17 @@ dt { color: var(--cyan); padding-right: 28px; font-family: "Chakra Petch", "BIZ 
         <li>
           <span class="no">PHASE 01</span>
           <h3>INITIAL SETUP<small lang="ja">初期設計</small></h3>
-          <p><span lang="ja">コスト予算の範囲で、魚(ネオンテトラ、アロワナ、エンゼルフィッシュ)と水草を慎重に選ぶ。</span><span lang="en">Carefully pick fish (neon tetras, arowanas, angelfish) and plants within your budget.</span></p>
+          <p><span lang="ja">底床・水草・魚・照明とフィルターを、在庫の範囲で配置する。設計診断が立ち上げの危うさを教えてくれる。</span><span lang="en">Place substrate, plants, fish, light and filter from a limited stock. The design check warns you how risky the start will be.</span></p>
         </li>
         <li>
           <span class="no">PHASE 02</span>
           <h3>AUTO-OBSERVATION<small lang="ja">自動観測</small></h3>
-          <p><span lang="ja">ハッチを封印。100日間、生命力と水質(<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>)の推移を見守る。</span><span lang="en">Seal the hatch. Monitor vitality and water chemistry (<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>) over 100 simulated days.</span></p>
+          <p><span lang="ja">ハッチを密閉。20〜100日間、生体と水質(<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>)の推移を見守る。もう手は出せない。</span><span lang="en">Seal the hatch. Watch the lifeforms and water chemistry (<span class="chem">NH3</span><span class="chem">NO2</span><span class="chem">NO3</span>) over 20 to 100 days. No more hands-on.</span></p>
         </li>
         <li>
           <span class="no">PHASE 03</span>
           <h3>DATA COLLECTION<small lang="ja">データ回収</small></h3>
-          <p><span lang="ja">失敗を分析するか、成功を祝うか。次の生体バッチに備えよう。</span><span lang="en">Analyze your failure or celebrate your success, then prepare the next biological batch.</span></p>
+          <p><span lang="ja">死因分析で崩れた理由を読み、設計を直して次の密閉へ。★3つと ONE-SHOT を狙う。</span><span lang="en">Read the autopsy, fix the design and seal again. Go for three stars and the ONE-SHOT badge.</span></p>
         </li>
       </ol>
     </div>
@@ -242,17 +253,18 @@ dt { color: var(--cyan); padding-right: 28px; font-family: "Chakra Petch", "BIZ 
         <h2>SPEC<small><span lang="ja">作品情報</span><span lang="en">Game info</span></small></h2>
         <dl>
           <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">シミュレーション / ストラテジー</span><span lang="en">Simulation / Strategy</span></dd>
-          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)。PC、スマホは横持ち</span><span lang="en">Browser (HTML5). PC, or a phone held sideways</span></dd>
+          <dt><span lang="ja">版</span><span lang="en">Version</span></dt><dd>v3.0.0 <small><span lang="ja">(18の実験・★54)</span><span lang="en">(18 experiments, 54 stars)</span></small></dd>
           <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">英語 / 日本語</span><span lang="en">English / Japanese</span></dd>
           <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
           <dt><span lang="ja">タグ</span><span lang="en">Tags</span></dt><dd class="tags"><span>Sci-fi</span><span>Dystopian</span><span>Dark</span><span>Atmospheric</span><span>Pixel Art</span><span>Aquarium</span></dd>
-          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small><span lang="ja">(生成AIを使用:絵・音・プログラム)</span><span lang="en">(made with generative AI: art, sound and code)</span></small></dd>
         </dl>
       </div>
       <div class="embed">
         <h2>ACCESS<small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></small></h2>
         <iframe src="https://itch.io/embed/4721036?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
-        <p><span lang="ja">itch.io で公開中。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+        <p><span lang="ja">このサイトの <a href="play/">遊ぶページ</a> か itch.io で、ダウンロードなしで遊べます。セーブは遊んだ場所(ブラウザとサイト)ごとに別々です。</span><span lang="en">Play on <a href="play/">this site</a> or on itch.io, right in your browser. Saves are kept separately for each place you play.</span></p>
       </div>
     </div>
   </section>

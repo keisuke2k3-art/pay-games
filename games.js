@@ -172,7 +172,7 @@ window.PAY_GAMES = [
     cover: "https://img.itch.zone/aW1nLzI4MTM2MjU4LnBuZw==/original/CkwFu9.png",
     accent: "#F2A93B",
     price: { ja: "無料", en: "Free" },
-    tags: [{ ja: "1周約5分・周回前提", en: "About 5 min per run, built for replays" }, { ja: "マウスだけ", en: "Mouse only" }],
+    tags: [{ ja: "18の実験・★54", en: "18 experiments, 54 stars" }, { ja: "サイトで遊べる", en: "Play on this site" }],
     crop: [.5, .47, .78]
   }
 ];
