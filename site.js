@@ -84,7 +84,7 @@
     return t;
   }
   function playLabel(g) {
-    return g.featured && g.featured.play ? g.featured.play : isFree(g) ? { ja: "無料で遊ぶ", en: "Play free" } : { ja: "ブラウザで遊ぶ", en: "Play in browser" };
+    return g.play ? g.play : g.featured && g.featured.play ? g.featured.play : isFree(g) ? { ja: "無料で遊ぶ", en: "Play free" } : { ja: "ブラウザで遊ぶ", en: "Play in browser" };
   }
 
   // 作品ページ:スクロールしても常に出ている「遊ぶ」の帯
@@ -98,7 +98,7 @@
       tagList(g).map(function (t) { return bi(t); }).join('<i aria-hidden="true"></i>') + "</small></span>" +
       '<span class="pay-dock__btns">' +
       (g.buy ? '<a class="pay-dock__buy" href="' + esc(g.buy) + '" rel="noopener">' + bi({ ja: "製品版", en: "Full game" }) +
-        (g.featured && g.featured.priceShort ? " " + bi(g.featured.priceShort) : "") + "</a>" : "") +
+        (g.priceShort || (g.featured && g.featured.priceShort) ? " " + bi(g.priceShort || g.featured.priceShort) : "") + "</a>" : "") +
       '<a class="pay-dock__play" href="' + esc(g.itch) + '" rel="noopener">' + bi(playLabel(g)) + "</a></span>";
     document.body.appendChild(dock);
     var img = dock.querySelector("img");
@@ -124,7 +124,9 @@
     var p = document.createElement("p");
     p.className = "pay-meta";
     p.innerHTML = tagList(g).map(function (t) { return "<span>" + bi(t) + "</span>"; }).join("");
-    a.insertAdjacentElement("afterend", p);
+    // ボタンの列に data-meta-below が付いていれば(体験版+製品版など)、列の下に添える
+    var host = a.parentElement && a.parentElement.hasAttribute("data-meta-below") ? a.parentElement : a;
+    host.insertAdjacentElement("afterend", p);
   }
 
   /* ---------- 共通パーツ生成 ---------- */

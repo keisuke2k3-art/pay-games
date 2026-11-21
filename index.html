@@ -350,7 +350,7 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
 
   /* ---------- 作品一覧・ヒーローのボタン・図鑑 ---------- */
   function isFree(g) { return g.price && /^(無料|Free)$/.test(g.price.ja); }
-  function playLabel(g) { return g.featured && g.featured.play ? g.featured.play : isFree(g) ? { ja: "無料で遊ぶ", en: "Play free" } : { ja: "ブラウザで遊ぶ", en: "Play in browser" }; }
+  function playLabel(g) { return g.play ? g.play : g.featured && g.featured.play ? g.featured.play : isFree(g) ? { ja: "無料で遊ぶ", en: "Play free" } : { ja: "ブラウザで遊ぶ", en: "Play in browser" }; }
   function tagsHtml(g) {
     var t = (g.featured && g.featured.points) || g.tags || [];
     if (isFree(g)) t = [{ ja: "無料・ブラウザで遊べる", en: "Free in your browser" }].concat(t);
@@ -371,7 +371,7 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
         tagsHtml(g) +
         (f && f.shots ? '<span class="shots">' + f.shots.map(function (p) { return '<img src="' + esc(p.src) + '" alt="' + esc(T(p.cap)) + '" loading="lazy" width="112" height="63">'; }).join("") + "</span>" : "") + "</span></a>" +
         '<div class="row__cta"><a class="btn ' + (f ? "btn--main" : "btn--sub") + '" href="' + esc(g.itch) + '" rel="noopener">' + bi(playLabel(g)) + "</a>" +
-        (g.buy ? '<a class="row__buy" href="' + esc(g.buy) + '" rel="noopener">' + bi({ ja: "製品版を買う", en: "Buy the full game" }) + (f && f.priceShort ? " " + bi(f.priceShort) : "") + "</a>" : "") +
+        (g.buy ? '<a class="row__buy" href="' + esc(g.buy) + '" rel="noopener">' + bi({ ja: "製品版を買う", en: "Buy the full game" }) + (g.priceShort || (f && f.priceShort) ? " " + bi(g.priceShort || f.priceShort) : "") + "</a>" : "") +
         "</div></li>";
     }).join("");
     // プレイ画面が読めないときは、その画像ごと隠す
@@ -1062,7 +1062,7 @@ body { background: var(--air); color: var(--ink); font: 400 15px/1.8 "Zen Kaku G
     document.getElementById("catch-p").innerHTML = gm.secret ? "" : (gm.secret ? "" : tagsHtml(gm)) + (gm.featured && gm.featured.demo ? bi(gm.featured.demo) : bi({ ja: "itch.io のページが開き、ブラウザでそのまま遊べます。", en: "Opens on itch.io and plays right in your browser." }));
     var play = document.getElementById("catch-play"), buy = document.getElementById("catch-buy"), pg = document.getElementById("catch-page");
     play.href = gm.secret ? P.profile.x : gm.itch; play.innerHTML = bi(gm.secret ? { ja: "X でフォローする", en: "Follow on X" } : playLabel(gm));
-    if (gm.buy) { buy.href = gm.buy; buy.innerHTML = bi({ ja: "製品版", en: "Full game" }) + (gm.featured && gm.featured.priceShort ? "<small>" + bi(gm.featured.priceShort) + "</small>" : ""); } else { buy.removeAttribute("href"); buy.innerHTML = ""; }
+    if (gm.buy) { buy.href = gm.buy; buy.innerHTML = bi({ ja: "製品版", en: "Full game" }) + (gm.priceShort || (gm.featured && gm.featured.priceShort) ? "<small>" + bi(gm.priceShort || gm.featured.priceShort) + "</small>" : ""); } else { buy.removeAttribute("href"); buy.innerHTML = ""; }
     pg.href = gm.secret ? P.profile.itch : page(gm); pg.innerHTML = bi(gm.secret ? { ja: "itch.io の PAY のページ", en: "PAY on itch.io" } : { ja: "作品ページでくわしく見る", en: "See the game page" });
     card.classList.add("on"); card.setAttribute("aria-hidden", "false"); hero.classList.add("catching");
     hover = null; showTip(null); needDraw = true;

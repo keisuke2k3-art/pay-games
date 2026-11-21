@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>連打決裁 ポンポン・スタンパー Press &amp; Pass | 物理押印アクション | PAY</title>
-<meta name="description" content="トン、ポン、ポン、シュパッ!山積みの稟議書にハンコを押して決裁箱へはじき飛ばす、物理押印アクション。1ステージ約1分、ブラウザで無料。マウスでもスマホのタッチでも遊べます。日本語/英語対応。">
+<meta name="description" content="トン、ポン、ポン、シュパッ!山積みの稟議書にハンコを押して決裁箱へはじき飛ばす、物理押印アクション。1ステージ約1分。体験版(Day1〜2)はブラウザで無料、マウスでもスマホのタッチでも遊べます。完全版(全5日+残業モード)は$2.99のダウンロード版。日本語/英語対応。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="連打決裁 ポンポン・スタンパー Press &amp; Pass">
 <meta property="og:description" content="トン、ポン、ポン、シュパッ!山積みの稟議書を捌く物理押印アクション。/ A satisfying physics-based stamp-approval action game.">
@@ -70,6 +70,10 @@ section h2 small { display: block; font: 700 12px/1 "Zen Kaku Gothic New", sans-
 .btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 #7E0A1D; }
 .btn:active { transform: translateY(6px); box-shadow: 0 0 0 #7E0A1D; }
 .hero .note { margin: 14px 0 0; font-size: 13px; color: #C9D2CC; }
+.btn--buy { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px #E9C9CF; }
+.btn--buy:hover { transform: none; box-shadow: inset 0 0 0 2px #fff; background: rgba(255, 255, 255, .08); }
+.btn--buy:active { transform: translateY(2px); box-shadow: inset 0 0 0 2px #fff; }
+.btn small { font: 700 14px/1 "Zen Kaku Gothic New", sans-serif; opacity: .85; }
 
 /* 稟議書 */
 .desk { position: relative; display: grid; justify-items: center; }
@@ -163,10 +167,11 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; border: 1.5px s
       <div>
         <h1><span class="k"><span lang="ja">連打決裁</span><span lang="en">Rapid-fire approvals</span></span><span lang="ja">ポンポン・<br>スタンパー</span><span lang="en">Press &amp; Pass</span><span class="en" lang="ja">Press &amp; Pass</span></h1>
         <p class="catch"><span lang="ja"><em>トン、ポン、ポン、シュパッ!</em><br>山積みの稟議書を捌く、物理押印アクション。</span><span lang="en"><em>Ton, pon, pon, swoosh!</em><br>A physics stamping game about clearing a mountain of approval forms.</span></p>
-        <div class="cta">
-          <a class="btn" href="https://pay-k.itch.io/ponpon-stamper"><span lang="ja">無料で遊ぶ</span><span lang="en">Play free</span></a>
+        <div class="cta" data-meta-below>
+          <a class="btn" href="https://pay-k.itch.io/ponpon-stamper"><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span></a>
+          <a class="btn btn--buy" href="https://pay-k.itch.io/ponpon-stamper-full"><span lang="ja">完全版を買う</span><span lang="en">Buy the full version</span><small>$2.99</small></a>
         </div>
-        <p class="note"><span lang="ja">体験版(開発中)・ブラウザで遊べます・日本語 / English</span><span lang="en">Demo (in development) · Plays in your browser · English / Japanese</span></p>
+        <p class="note"><span lang="ja">体験版(Day1〜2)はブラウザですぐ遊べます。完全版は全5日+残業モード、PC向けのダウンロード版。日本語 / English</span><span lang="en">The demo (Day 1–2) plays right in your browser. The full version has all 5 days plus Overtime Mode, as a download for PC. English / Japanese</span></p>
       </div>
       <div class="desk">
         <span class="rank" id="rank" aria-live="polite"></span>
@@ -258,18 +263,20 @@ kbd { display: inline-block; min-width: 1.6em; padding: 1px 6px; border: 1.5px s
           <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">物理押印アクション</span><span lang="en">Physics stamping action</span></dd>
           <dt><span lang="ja">遊ぶ時間</span><span lang="en">Play time</span></dt><dd><span lang="ja">1ステージ約1分(全5日)</span><span lang="en">About 1 minute per stage (5 days)</span></dd>
           <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">マウス(キーボード併用可)/スマホ・タブレットのタッチ</span><span lang="en">Mouse (keyboard optional) / touch on phones and tablets</span></dd>
-          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ(HTML5)</span><span lang="en">Browser (HTML5)</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">体験版:ブラウザ(HTML5)/完全版:ダウンロード版(zip を展開して index.html をブラウザで開く・PC向け)</span><span lang="en">Demo: browser (HTML5) / Full version: download (unzip and open index.html in your browser, for PC)</span></dd>
           <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語(タイトル画面で切替)</span><span lang="en">Japanese / English (switch on the title screen)</span></dd>
-          <dt><span lang="ja">状態</span><span lang="en">Status</span></dt><dd><span lang="ja">体験版(開発中)</span><span lang="en">Demo (in development)</span></dd>
-          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料</span><span lang="en">Free</span></dd>
+          <dt><span lang="ja">状態</span><span lang="en">Status</span></dt><dd><span lang="ja">完全版 販売中</span><span lang="en">Full version on sale</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">体験版 無料 / 完全版 $2.99</span><span lang="en">Free demo / Full version $2.99</span></dd>
           <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.10.04</dd>
           <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
         </dl>
       </div>
       <div class="embed">
         <h2><small>PLAY</small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
-        <iframe src="https://itch.io/embed/5098909?linkback=true" title="Press &amp; Pass on itch.io" loading="lazy"></iframe>
-        <p><span lang="ja">itch.io で無料公開中。ブラウザでそのまま遊べます。ダウンロード不要です。</span><span lang="en">Free on itch.io. Plays right in your browser, no download needed.</span></p>
+        <iframe src="https://itch.io/embed/5098909?linkback=true" title="Press &amp; Pass demo on itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">体験版(Day1〜2)は無料。ブラウザでそのまま遊べます。</span><span lang="en">The demo (Day 1–2) is free and plays right in your browser.</span></p>
+        <iframe src="https://itch.io/embed/5411205?linkback=true" title="Press &amp; Pass full version on itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">完全版は $2.99。全5日+残業モード、スキル14種・書類図鑑49種。購入後に zip をダウンロードし、中の index.html をブラウザで開いて遊びます(PC向け)。</span><span lang="en">The full version is $2.99: all 5 days plus Overtime Mode, 14 skills and 49 forms to collect. After purchase, download the zip and open index.html in your browser (for PC).</span></p>
       </div>
     </div>
   </section>

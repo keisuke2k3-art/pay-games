@@ -77,9 +77,12 @@ window.PAY_GAMES = [
     short: { ja: "ポンポン・スタンパー", en: "Press & Pass" },
     fx: "stamp",
     itch: "https://pay-k.itch.io/ponpon-stamper",
+    buy: "https://pay-k.itch.io/ponpon-stamper-full",   // 完全版(ダウンロード版)のページ
+    priceShort: { ja: "$2.99", en: "$2.99" },            // 「製品版」ボタンの横に出す価格(featured でない作品用)
+    play: { ja: "無料体験版を遊ぶ", en: "Play the free demo" },
     itchId: 5098909,
     released: "2026-10-04",
-    status: { ja: "体験版(開発中)", en: "Demo (in development)" },
+    status: { ja: "完全版 販売中", en: "Full version on sale" },
     title: { ja: "連打決裁 ポンポン・スタンパー", en: "Press & Pass" },
     tagline: {
       ja: "トン、ポン、ポン、シュパッ!山積みの稟議書を捌く物理押印アクション",
@@ -88,8 +91,8 @@ window.PAY_GAMES = [
     genre: { ja: "物理押印アクション", en: "Physics stamping action" },
     cover: "https://img.itch.zone/aW1nLzMwNTI0ODE3LnBuZw==/original/6OX%2Bph.png",
     accent: "#C8102E",
-    price: { ja: "無料", en: "Free" },
-    tags: [{ ja: "1ステージ約1分", en: "About 1 min per stage" }, { ja: "PC・スマホ対応", en: "PC & mobile" }],
+    price: { ja: "体験版 無料 / 完全版 $2.99", en: "Free demo / Full version $2.99" },
+    tags: [{ ja: "体験版は無料", en: "Free demo" }, { ja: "1ステージ約1分", en: "About 1 min per stage" }, { ja: "全5日+残業モード", en: "5 days + Overtime Mode" }],
     crop: [.5, .5, .8]
   },
   {
