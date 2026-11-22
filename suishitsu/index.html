@@ -194,6 +194,11 @@
   .about details { margin-top: var(--sp-3); }
   .about summary { cursor: pointer; color: var(--link); min-height: var(--tap); display: flex; align-items: center; }
   .coverage { font-size: var(--fs-xs); color: var(--text-2); background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--r-s); padding: var(--sp-3); max-height: 420px; overflow: auto; }
+  .pref-links { margin-top: var(--sp-6); font-size: var(--fs-xs); color: var(--text-2); }
+  .pref-links h2 { font-size: var(--fs-xs); font-weight: 700; color: var(--text-2); margin: 0 0 var(--sp-2); letter-spacing: .04em; }
+  .pref-links p { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; line-height: 1.9; }
+  .pref-links a { color: var(--link); text-decoration: none; white-space: nowrap; }
+  .pref-links a:hover, .pref-links a:focus-visible { text-decoration: underline; }
   .coverage h4 { color: var(--text); font-size: var(--fs-xs); margin: var(--sp-2) 0 2px; }
   .coverage .u { color: var(--link); }
   .stamp { margin-top: var(--sp-3); font-size: var(--fs-xs); color: var(--text-2); }
@@ -351,6 +356,10 @@
     <details id="cov-box"><summary id="cov-sum">収録地域の一覧</summary><div class="coverage" id="coverage"></div></details>
     <p class="stamp">水質は配水系統・採水地点・季節で変わり、リアルタイムの値ではありません。生体の飼育など精密な用途では、試薬やTDSメーターでの実測を併用してください。<br>データ最終更新: 2026-11-05 / 収録: <span id="cov-count"></span></p>
   </section>
+  <nav class="pref-links" id="pref-links" aria-labelledby="pref-links-h">
+    <h2 id="pref-links-h">都道府県から探す</h2>
+    <p><a href="p/01/">北海道</a><a href="p/02/">青森県</a><a href="p/03/">岩手県</a><a href="p/04/">宮城県</a><a href="p/05/">秋田県</a><a href="p/06/">山形県</a><a href="p/07/">福島県</a><a href="p/08/">茨城県</a><a href="p/09/">栃木県</a><a href="p/10/">群馬県</a><a href="p/11/">埼玉県</a><a href="p/12/">千葉県</a><a href="p/13/">東京都</a><a href="p/14/">神奈川県</a><a href="p/15/">新潟県</a><a href="p/16/">富山県</a><a href="p/17/">石川県</a><a href="p/18/">福井県</a><a href="p/19/">山梨県</a><a href="p/20/">長野県</a><a href="p/21/">岐阜県</a><a href="p/22/">静岡県</a><a href="p/23/">愛知県</a><a href="p/24/">三重県</a><a href="p/25/">滋賀県</a><a href="p/26/">京都府</a><a href="p/27/">大阪府</a><a href="p/28/">兵庫県</a><a href="p/29/">奈良県</a><a href="p/30/">和歌山県</a><a href="p/31/">鳥取県</a><a href="p/32/">島根県</a><a href="p/33/">岡山県</a><a href="p/34/">広島県</a><a href="p/35/">山口県</a><a href="p/36/">徳島県</a><a href="p/37/">香川県</a><a href="p/38/">愛媛県</a><a href="p/39/">高知県</a><a href="p/40/">福岡県</a><a href="p/41/">佐賀県</a><a href="p/42/">長崎県</a><a href="p/43/">熊本県</a><a href="p/44/">大分県</a><a href="p/45/">宮崎県</a><a href="p/46/">鹿児島県</a><a href="p/47/">沖縄県</a></p>
+  </nav>
   <footer>
     住所判定: 市区町村一覧 <a href="https://github.com/code4fukui/localgovjp" target="_blank" rel="noopener">localgovjp</a>(CC0)/ 郵便番号検索 <a href="https://zipcloud.ibsnet.co.jp/" target="_blank" rel="noopener">zipcloud</a><br>
     水質データの著作権・出典は各水道事業者に帰属します。<br>
