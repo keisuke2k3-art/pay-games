@@ -14,6 +14,25 @@
    ========================================================= */
 window.PAY_GAMES = [
   {
+    slug: "gun-dojo",
+    short: { ja: "銃道場", en: "Gun Dojo" },
+    itch: "https://pay-k.itch.io/gun-dojo",
+    itchId: 5425530,
+    released: "2026-11-23",
+    status: { ja: "公開中", en: "Released" },
+    title: { ja: "銃道場(Gun Dojo: Read the Draw)", en: "Gun Dojo: Read the Draw" },
+    tagline: {
+      ja: "相手の癖を読み、撃つ瞬間を奪い合う。2ボタンの決闘。",
+      en: "Read their habits. Beat them to the shot. A two-button duel."
+    },
+    genre: { ja: "2ボタンの決闘", en: "Two-button duel" },
+    cover: "https://img.itch.zone/aW1nLzMyNjg3NTkwLnBuZw==/original/fTno3D.png",
+    accent: "#D9B25F",
+    price: { ja: "無料", en: "Free" },
+    tags: [{ ja: "キー2つ・横向きタッチ", en: "Two keys or touch" }, { ja: "相手9人", en: "9 opponents" }, { ja: "日本語 / English", en: "English / Japanese" }],
+    crop: [.5, .5, .8]
+  },
+  {
     slug: "goldie",
     short: { ja: "Goldie", en: "Goldie" },
     fx: "gold",                                      // 泡が割れると金貨が飛び散る

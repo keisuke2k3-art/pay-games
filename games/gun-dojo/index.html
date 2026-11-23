@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>銃道場 — Gun Dojo: Read the Draw | PAY</title>
+<meta name="description" content="[J] 構える と [F] 払う の2つだけで遊ぶ決闘ゲーム。癖の違う9人の相手を読み、撃つ瞬間を奪い合う。無料・ブラウザでそのまま遊べます。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="銃道場 — Gun Dojo: Read the Draw">
+<meta property="og:description" content="A two-button duel. Read their habits. Beat them to the shot.">
+<meta property="og:image" content="https://img.itch.zone/aW1nLzMyNjg3NTkwLnBuZw==/original/fTno3D.png">
+<meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/gun-dojo/">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/gun-dojo/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f0e0b'/><path d='M18 70 L82 30' stroke='%23d9b25f' stroke-width='8'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Zen+Old+Mincho:wght@700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+:root {
+  --ink: #0f0e0b;       /* 墨 */
+  --ink-2: #191712;
+  --rule: rgba(230, 220, 196, .16);
+  --paper: #e6dcc4;     /* 紙(文字) */
+  --dim: rgba(236, 228, 210, .62);
+  --gold: #d9b25f;      /* 見切り */
+  --shu: #e0603e;       /* 照準の線 */
+
+  --pay-bg: var(--ink);
+  --pay-fg: var(--paper);
+  --pay-line: var(--rule);
+  --pay-accent: var(--gold);
+  --pay-accent-fg: #17130a;
+  --pay-bar-bg: rgba(15, 14, 11, .9);
+  --pay-bar-fg: var(--paper);
+  --pay-bar-bg-solid: var(--ink);
+}
+body { background: var(--ink); color: var(--paper); font: 400 16px/1.9 "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .04em; }
+main a:not(.btn) { color: var(--gold); text-underline-offset: 3px; }
+kbd { display: inline-block; min-width: 1.6em; padding: 0 .4em; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 3px; font: 500 .9em/1.5 "IBM Plex Mono", monospace; text-align: center; color: var(--gold); }
+
+/* ---------- ヒーロー ---------- */
+.hero {
+  min-height: 100svh; max-width: 1140px; margin: 0 auto; box-sizing: border-box;
+  padding: calc(92px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) 64px max(20px, env(safe-area-inset-left, 0px));
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 52px; align-items: center;
+}
+.hero h1 { margin: 0; line-height: 1; }
+.hero h1 .a { display: block; font: 700 clamp(56px, 8vw, 104px)/1 "Zen Old Mincho", serif; letter-spacing: .12em; }
+.hero h1 .b { display: block; margin-top: 18px; font: 500 clamp(14px, 1.6vw, 17px)/1.3 "IBM Plex Mono", monospace; color: var(--gold); letter-spacing: .08em; }
+.motto { margin: 34px 0 0; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.6; font-weight: 700; }
+.motto small { display: block; margin-top: 6px; font: 400 14px/1.5 "IBM Plex Mono", monospace; color: var(--dim); }
+.keys { margin: 20px 0 0; color: var(--dim); }
+.cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 34px; }
+.btn { display: inline-flex; align-items: center; min-height: 48px; box-sizing: border-box; text-decoration: none; padding: 0 26px; border-radius: 3px;
+  background: var(--gold); color: #17130a; font: 700 17px/1 "Zen Kaku Gothic New", sans-serif; letter-spacing: .08em; }
+.btn:hover { background: #e7c67e; }
+.btn.sub { background: transparent; color: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); font-size: 15px; }
+.btn.sub:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.lang-note { font-size: 13px; color: var(--dim); }
+
+/* 間合いの稽古(サイト用の演出) */
+.drill { border: 1px solid var(--rule); background: var(--ink-2); padding: 18px 20px 20px; border-radius: 4px; }
+.drill-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--dim); }
+.drill-top b { font: 500 13px/1 "IBM Plex Mono", monospace; color: var(--gold); letter-spacing: .1em; }
+.drill svg { display: block; width: 100%; height: auto; margin-top: 10px; touch-action: manipulation; }
+.drill-msg { min-height: 1.9em; margin: 10px 0 0; font-weight: 700; text-align: center; }
+.drill-msg.ok { color: var(--gold); }
+.drill-msg.ng { color: var(--shu); }
+.drill-btns { display: flex; gap: 10px; margin-top: 10px; }
+.drill-btns button { flex: 1; min-height: 48px; border: 1px solid var(--rule); border-radius: 3px; background: transparent; color: var(--paper); font: 700 16px/1 "Zen Kaku Gothic New", sans-serif; letter-spacing: .12em; cursor: pointer; }
+.drill-btns button:active, .drill-btns button.hit { background: rgba(217, 178, 95, .16); border-color: var(--gold); }
+.drill-btns small { display: block; margin-top: 4px; font: 500 11px/1 "IBM Plex Mono", monospace; color: var(--dim); letter-spacing: 0; }
+.drill-note { margin: 12px 0 0; font-size: 12px; color: var(--dim); line-height: 1.6; }
+
+/* ---------- 本文 ---------- */
+section h2 { margin: 0 0 30px; font: 700 clamp(24px, 3vw, 34px)/1.3 "Zen Kaku Gothic New", sans-serif; letter-spacing: .06em; }
+section h2 small { display: block; margin-top: 6px; font: 500 13px/1.4 "IBM Plex Mono", monospace; color: var(--gold); letter-spacing: .1em; }
+.block { padding: 96px 0; border-top: 1px solid var(--rule); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 52px; align-items: start; }
+.big { margin: 0; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.55; font-weight: 700; }
+.big em { font-style: normal; color: var(--gold); }
+.block p { margin: 0 0 16px; max-width: 34em; }
+
+.moves { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
+.moves li { padding: 22px 22px 26px 0; border-bottom: 1px solid var(--rule); }
+.moves li + li { padding-left: 22px; border-left: 1px solid var(--rule); }
+.moves h3 { margin: 0 0 10px; font-size: 19px; }
+.moves h3 span.mono { display: block; font-size: 12px; color: var(--gold); font-weight: 500; margin-bottom: 6px; }
+.moves p { margin: 0; font-size: 15px; color: var(--dim); }
+
+.roster { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+.roster li { display: grid; grid-template-columns: 2.2em 1fr; gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.roster .no { font: 500 13px/1 "IBM Plex Mono", monospace; color: var(--dim); }
+.roster b { font-size: 17px; }
+.roster b i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.roster small { display: block; color: var(--dim); font-size: 14px; }
+.roster .hidden small { font-style: italic; }
+
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; }
+dt, dd { margin: 0; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+dt { color: var(--dim); padding-right: 28px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { border: 1px solid var(--rule); padding: 0 8px; font-size: 13px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { font-size: 14px; color: var(--dim); }
+.cover { display: block; width: 100%; max-width: 420px; aspect-ratio: 630 / 500; object-fit: cover; border: 1px solid var(--rule); background: var(--ink-2); margin-bottom: 22px; }
+
+@media (max-width: 900px) {
+  .hero, .cols { grid-template-columns: 1fr; }
+  .hero { gap: 40px; }
+  .moves, .roster { grid-template-columns: 1fr; }
+  .moves li + li { padding-left: 0; border-left: 0; }
+  .block { padding: 72px 0; }
+}
+</style>
+</head>
+<body data-game="gun-dojo">
+<main>
+  <section class="hero">
+    <div>
+      <h1><span class="a">銃道場</span><span class="b">GUN DOJO: READ THE DRAW</span></h1>
+      <p class="motto">
+        <span lang="ja">相手の癖を読み、<br>撃つ瞬間を奪い合う。</span>
+        <span lang="en">Read their habits.<br>Beat them to the shot.</span>
+        <small lang="ja">Read their habits. Beat them to the shot.</small>
+      </p>
+      <p class="keys"><span lang="ja">使うのは <kbd>J</kbd> 構える と <kbd>F</kbd> 払う の2つだけ。</span><span lang="en">Two keys: <kbd>J</kbd> Draw and <kbd>F</kbd> Parry.</span></p>
+      <div class="cta">
+        <a class="btn" href="play/"><span lang="ja">このサイトで遊ぶ(無料)</span><span lang="en">Play it here, free</span></a>
+        <a class="btn sub" href="https://pay-k.itch.io/gun-dojo"><span lang="ja">itch.io で遊ぶ</span><span lang="en">Play on itch.io</span></a>
+        <span class="lang-note"><span lang="ja">日本語 / English(タイトル画面で切替)</span><span lang="en">English / Japanese (switch on the title screen)</span></span>
+      </div>
+    </div>
+
+    <div class="drill" id="drill">
+      <div class="drill-top"><span><span lang="ja">試し稽古:払いの間合い</span><span lang="en">Try it: the parry window</span></span><b id="d-score">0 / 0</b></div>
+      <svg viewBox="0 0 400 150" aria-hidden="true">
+        <line x1="20" y1="118" x2="380" y2="118" stroke="rgba(230,220,196,.25)"/>
+        <g id="d-tl">
+          <rect id="d-win" x="0" y="96" width="0" height="10" fill="rgba(217,178,95,.28)"/>
+          <rect id="d-early" x="0" y="96" width="0" height="10" fill="rgba(230,220,196,.08)"/>
+          <line id="d-mark" x1="0" y1="90" x2="0" y2="112" stroke="#d9b25f" stroke-width="2"/>
+          <line id="d-head" x1="20" y1="86" x2="20" y2="114" stroke="#e6dcc4" stroke-width="2"/>
+        </g>
+        <!-- 相手(右)と自分(左)。線だけの人影 -->
+        <g stroke="#e6dcc4" stroke-width="2.2" fill="none" stroke-linecap="round">
+          <circle cx="70" cy="28" r="9"/><path d="M70 37 V66 M70 66 L60 86 M70 66 L80 86 M70 45 L88 52"/>
+        </g>
+        <g id="d-opp" stroke="#e0603e" stroke-width="2.2" fill="none" stroke-linecap="round">
+          <circle cx="330" cy="28" r="9"/><path d="M330 37 V66 M330 66 L320 86 M330 66 L340 86"/><path id="d-arm" d="M330 45 L314 58"/>
+        </g>
+        <line id="d-aim" x1="314" y1="48" x2="88" y2="48" stroke="#f06842" stroke-width="2" opacity="0"/>
+      </svg>
+      <p class="drill-msg" id="d-msg" aria-live="polite"><span lang="ja">相手が構えたら、撃たれる直前に払う。</span><span lang="en">When they draw, parry just before the shot.</span></p>
+      <div class="drill-btns">
+        <button type="button" id="d-parry"><span lang="ja">払う</span><span lang="en">Parry</span><small>F</small></button>
+      </div>
+      <p class="drill-note"><span lang="ja">サイト用の小さな演出です。本編の判定や速さとは別物で、本編には間合い・構え・回避・9人の癖があります。</span><span lang="en">A small toy for this page, not the game's real timing. The full game adds distance, drawing, dodges and nine opponents.</span></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap cols">
+      <p class="big"><span lang="ja">早すぎれば受け流すだけ。<br>遅ければ撃たれる。<br><em>直前</em>なら、相手は隙だらけ。</span><span lang="en">Too early and you only deflect.<br>Too late and you're hit.<br><em>Just before</em>, and they're wide open.</span></p>
+      <div>
+        <p><span lang="ja">銃道場は、<kbd>J</kbd> 構える と <kbd>F</kbd> 払う の2つだけで遊ぶ、短い決闘ゲームです。撃たれる直前に払えば「見切り」、相手は隙だらけ。少し早い払いは受け流すだけ。構えてすぐ取り消せば、相手の払いを空振りさせられます。</span><span lang="en">Gun Dojo is a short duel game played with two keys. Parry just before the shot lands and your opponent is open for one clean hit. Parry a little early and you only deflect the shot. Draw and cancel, and you can bait a parry.</span></p>
+        <p><span lang="ja">回避は自動で、1本につき2回まで。3発目は当たります。何も起きなければ間合いが詰まり、近いほど構えは速くなる。近間では見てからでは間に合いません。読むしかない。</span><span lang="en">You dodge automatically, twice per point. The third hit lands. If nobody moves, the two of you close in, and the closer you get the faster a draw becomes. At close range you can't react any more. You have to read.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2><span lang="ja">三つの手</span><span lang="en">Three moves</span><small>KATA</small></h2>
+      <ul class="moves">
+        <li><h3><span class="mono">J</span><span lang="ja">構える</span><span lang="en">Draw</span></h3><p><span lang="ja">構えてから撃つまでの間がある。もう一度押せば取り消し。</span><span lang="en">There's a beat between drawing and firing. Press again to cancel.</span></p></li>
+        <li><h3><span class="mono">F</span><span lang="ja">払う</span><span lang="en">Parry</span></h3><p><span lang="ja">撃たれる直前なら見切り。早すぎると受け流すだけで、払った後には隙ができる。</span><span lang="en">Right before the shot, it's a clean counter. Too early and you only deflect, and you're open afterwards.</span></p></li>
+        <li><h3><span class="mono">J → J</span><span lang="ja">誘い</span><span lang="en">Bait</span></h3><p><span lang="ja">構えてすぐ取り消して、相手の払いを空振りさせる。ただし6秒構えずに待つと「圧」で回避が1つ減る。</span><span lang="en">Draw and cancel to make them parry the air. But wait six seconds without drawing and the pressure costs you a dodge.</span></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2><span lang="ja">癖の違う9人</span><span lang="en">Nine opponents, nine habits</span><small>DOJO RUN</small></h2>
+      <ul class="roster">
+        <li><span class="no">01</span><span><b><i style="background:#e0603e"></i><span lang="ja">早瀬</span><span lang="en">Hayase</span></b><small><span lang="ja">始めの合図の直後に撃つ</span><span lang="en">Fires right after "Begin"</span></small></span></li>
+        <li><span class="no">02</span><span><b><i style="background:#6f9ccb"></i><span lang="ja">堅田</span><span lang="en">Katada</span></b><small><span lang="ja">毎本、同じ順番で動く</span><span lang="en">Runs the same sequence every point</span></small></span></li>
+        <li><span class="no">03</span><span><b><i style="background:#72b8a4"></i><span lang="ja">水鏡</span><span lang="en">Mikagami</span></b><small><span lang="ja">こちらの手を少し遅れて真似る</span><span lang="en">Copies your last move a beat later</span></small></span></li>
+        <li class="hidden"><span class="no">04–08</span><span><b><span lang="ja">浮田・綾目・荒巻・守山・鷹野</span><span lang="en">Five more</span></b><small><span lang="ja">癖は勝つと巻物に書き込まれる</span><span lang="en">Their habits go into your scroll when you win</span></small></span></li>
+        <li><span class="no">09</span><span><b><i style="background:#d4ae55"></i><span lang="ja">師範</span><span lang="en">The Master</span></b><small><span lang="ja">あなたのいちばん多い手を覚えて対策する</span><span lang="en">Learns your favourite move and counters it</span></small></span></li>
+      </ul>
+      <p style="margin-top:22px;color:var(--dim)"><span lang="ja">負ければ癖の手がかり。勝てば型の巻物に書き込まれる。3本先取、進み具合はブラウザに保存されます。初めての人は「型稽古」(6つの型・数分)から。</span><span lang="en">Lose and you get a hint about their habit; win and it's written into your scroll. First to 3 points, progress saved in your browser. New players start with Kata practice (six short lessons, a few minutes).</span></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap cols">
+      <div>
+        <h2><span lang="ja">作品情報</span><span lang="en">Game info</span><small>SPEC</small></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">2ボタンの決闘(読み合い)</span><span lang="en">Two-button duel (mind games)</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">ブラウザ。PC はキーボード、スマホ・タブレットは横向きでタッチ</span><span lang="en">Browser. Keyboard on PC, touch in landscape on phones and tablets</span></dd>
+          <dt><span lang="ja">遊ぶ時間</span><span lang="en">Length</span></dt><dd><span lang="ja">型稽古 数分/道場破り 9人</span><span lang="en">Kata practice: a few minutes / Dojo run: 9 opponents</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語</span><span lang="en">English / Japanese</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">無料(itch.io で任意の支援ができます)</span><span lang="en">Free (optional tip on itch.io)</span></dd>
+          <dt><span lang="ja">タグ</span><span lang="en">Tags</span></dt><dd class="tags"><span>Duel</span><span>Two-button</span><span>Mind games</span><span>Minimalist</span><span>3D</span></dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small><span lang="ja">(企画・監修 PAY。コードと文章は Claude〔Anthropic の AI〕で書いています。人物の線画は実行時にコードで描き、音はブラウザで合成。画像・音声ファイルはありません)</span><span lang="en">(Designed and directed by PAY. Code and text written with Claude, Anthropic's AI. Figures are drawn by code at runtime and sounds are synthesized in the browser; no image or audio files.)</span></small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span><small>ACCESS</small></h2>
+        <a href="play/"><img class="cover" src="https://img.itch.zone/aW1nLzMyNjg3NTkwLnBuZw==/original/fTno3D.png" alt="銃道場 Gun Dojo: Read the Draw" loading="lazy" width="630" height="500"></a>
+        <iframe src="https://itch.io/embed/5425530?linkback=true&amp;dark=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">このサイトの <a href="play/">遊ぶページ</a> か itch.io で、ダウンロードなしで遊べます。進み具合は遊んだ場所(サイトと itch.io)ごとに別々に保存されます。</span><span lang="en">Play on <a href="play/">this site</a> or on itch.io, no download needed. Progress is saved separately for each place you play.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ヒーロー:払いの間合いの試し稽古(サイト用の演出。本編の判定・速さとは別物) */
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var X0 = 20, X1 = 380, WIN = 0.16, EARLY = 0.22;   // 撃つ瞬間の手前 WIN 秒が見切り、その手前 EARLY 秒が受け流し(秒は帯の割合)
+  var head = $("d-head"), mark = $("d-mark"), win = $("d-win"), early = $("d-early"), aim = $("d-aim"), arm = $("d-arm"), msg = $("d-msg");
+  var st = { t0: 0, dur: 1.6, fire: 0, done: true, wait: 0, ok: 0, n: 0 };
+  var en = function () { return document.documentElement.lang === "en"; };
+  function say(ja, eng, cls) { msg.textContent = en() ? eng : ja; msg.className = "drill-msg" + (cls ? " " + cls : ""); }
+  function setX(el, x) { el.setAttribute("x1", x); el.setAttribute("x2", x); }
+  function round(now) {
+    st.t0 = now; st.dur = 1.3 + Math.random() * 0.9; st.fire = 0.55 + Math.random() * 0.35; st.done = false;
+    var fx = X0 + (X1 - X0) * st.fire, ww = (X1 - X0) * WIN / st.dur * 0.9, ew = (X1 - X0) * EARLY / st.dur * 0.9;
+    setX(mark, fx); win.setAttribute("x", fx - ww); win.setAttribute("width", ww); early.setAttribute("x", fx - ww - ew); early.setAttribute("width", ew);
+    arm.setAttribute("d", "M330 45 L314 58"); aim.setAttribute("opacity", 0);
+  }
+  function end(now, kind) {
+    st.done = true; st.wait = now + 1400; st.n++;
+    if (kind === "ok") { st.ok++; say("見切った。相手は隙だらけ。", "Countered! They're wide open.", "ok"); }
+    else if (kind === "early") say("早い。受け流しただけ。", "Too early: you only deflected it.", "ng");
+    else if (kind === "miss") say("撃たれた。印の直前で払う。", "Hit. Parry just before the mark.", "ng");
+    else say("空振り。相手はまだ構えていない。", "Whiffed. They hadn't drawn yet.", "ng");
+    $("d-score").textContent = st.ok + " / " + st.n;
+  }
+  function parry() {
+    var b = $("d-parry"); b.classList.add("hit"); setTimeout(function () { b.classList.remove("hit"); }, 120);
+    var now = performance.now();
+    if (st.done) return;
+    var p = (now - st.t0) / 1000 / st.dur, d = (st.fire - p) * st.dur;   // 撃つまでの残り秒
+    if (p < 0.25) end(now, "whiff");
+    else if (d >= 0 && d <= WIN) end(now, "ok");
+    else if (d > WIN) end(now, "early");
+    else end(now, "miss");
+  }
+  function frame(now) {
+    if (st.done) { if (now > st.wait) { round(now); say("相手が構えたら、撃たれる直前に払う。", "When they draw, parry just before the shot."); } }
+    else {
+      var p = (now - st.t0) / 1000 / st.dur;
+      setX(head, X0 + (X1 - X0) * Math.min(p, 1));
+      if (p > 0.25) arm.setAttribute("d", "M330 45 L310 48");          // 構えた
+      if (p >= st.fire) { aim.setAttribute("opacity", 1); end(now, "miss"); }
+    }
+    requestAnimationFrame(frame);
+  }
+  $("d-parry").addEventListener("click", parry);
+  document.addEventListener("keydown", function (e) {
+    if ((e.key === "f" || e.key === "F") && !e.repeat && !/INPUT|TEXTAREA/.test(e.target.tagName)) parry();
+  });
+  st.wait = 0; requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
