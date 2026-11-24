@@ -58,6 +58,12 @@ window.PAY_GAMES = [
     itch: "https://pay-k.itch.io/the-silent-press",
     buy: "https://pay-k.itch.io/the-silent-press/purchase",   // 購入ページ(有料作品のみ)
     itchId: 5177559,
+    sale: {                                   // 期間中だけ価格の表示が変わる(下の「期間限定のセール表示」)。itch のセールの日程と必ず合わせる
+      from: "2026-11-27T17:00:00+09:00", to: "2026-12-03T03:00:00+09:00",   // Creator Day & Black Friday 2026(itch 公式の日程)
+      priceShort: { ja: "$2.99(40%オフ)", en: "$2.99 (40% off)" },
+      price: { ja: "体験版 無料 / 製品版 $2.99(12/3 3:00まで40%オフ)", en: "Free demo / Full game $2.99 (40% off through Dec 2 UTC)" },
+      bar: { ja: "40%オフ 12/3まで", en: "40% off through Dec 2" }
+    },
     released: "2026-10-18",
     status: { ja: "公開中", en: "Released" },
     title: { ja: "沈黙の輪転機(The Silent Press)", en: "The Silent Press" },
@@ -208,3 +214,21 @@ window.PAY_PROFILE = {
   blogName: "Synth-Aquarium",
   ga: "G-YRLZTCPTSE"          // Google アナリティクスの測定 ID(サイト・ブログ・itch.io で共通)
 };
+
+/* 期間限定のセール表示
+   sale を付けた作品は、from 〜 to の間だけ価格の表示(price・priceShort・上部バーの一言)がセール用に変わり、
+   g.onSale が true になる。期間の外では何も変わらないので、セールが終わっても書き換えは要らない */
+(function () {
+  var now = Date.now();
+  (window.PAY_GAMES || []).forEach(function (g) {
+    var s = g.sale;
+    if (!s || !(now >= Date.parse(s.from) && now < Date.parse(s.to))) return;
+    g.onSale = true;
+    if (s.price) g.price = s.price;
+    if (s.priceShort) {
+      if (g.priceShort) g.priceShort = s.priceShort;
+      if (g.featured && g.featured.priceShort) g.featured.priceShort = s.priceShort;
+    }
+    if (s.bar && g.featured) g.featured.bar = s.bar;
+  });
+})();

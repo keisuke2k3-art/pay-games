@@ -174,6 +174,8 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
 .buy { border: 2px solid var(--ink); padding: 24px; background: #F6F0E2; }
 .buy h3 { margin: 0 0 4px; font-size: 22px; font-weight: 800; }
 .buy .price { margin: 0 0 18px; font: 900 40px/1.1 var(--display); color: var(--red); }
+.buy .price .sale-note { display: block; margin-top: 8px; font: 700 14px/1.5 var(--serif); color: var(--red); }
+.buy .price s { font-size: 24px; color: var(--ink-2); margin-right: 10px; text-decoration-thickness: 2px; }
 .buy .price small { font: 600 15px/1 var(--serif); color: var(--ink); margin-left: 8px; }
 .buy .acts { margin-top: 0; }
 .buy .acts .btn { flex: 1 1 200px; }
@@ -208,7 +210,7 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
         <span class="en-d">Vol. I &mdash; No. 1</span>
         <span class="opt"><span lang="ja">2026年10月18日 発行</span><span lang="en">Published 18 October 2026</span></span>
         <span class="opt"><span lang="ja">日本語 / English</span><span lang="en">English / Japanese</span></span>
-        <span class="price"><span lang="ja">体験版 無料 / 製品版 $4.99</span><span lang="en">Free demo / Full game $4.99</span></span>
+        <span class="price" data-sale="mast"><span lang="ja">体験版 無料 / 製品版 $4.99</span><span lang="en">Free demo / Full game $4.99</span></span>
       </div>
       <h1><span class="mast__en">The Silent Press</span><span class="mast__jp">沈黙の輪転機</span></h1>
       <p class="mast__motto">Every line is true. The layout is what lies.</p>
@@ -225,7 +227,7 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
         <p class="deck"><span lang="ja">あなたはPR会社の代表、狐のフォックス。写真を切り取り、事実の札を紙面に並べる。どの写真の隣に、どの記事を置くか。それだけで、読者は勝手に結論を出す。</span><span lang="en">You are Fox, head of a PR firm. Crop the photo. Arrange the fact cards on the front page. Which story goes next to which picture &mdash; that's all it takes. Readers draw their own conclusions.</span></p>
         <div class="acts">
           <a class="btn btn-demo" href="https://pay-k.itch.io/the-silent-press"><span><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span><small><span lang="ja">ブラウザ・ダウンロード不要</span><span lang="en">Plays in your browser, no download</span></small></span></a>
-          <a class="btn btn-buy" href="https://pay-k.itch.io/the-silent-press/purchase"><span><span lang="ja">製品版を買う</span><span lang="en">Buy the full game</span><small>$4.99 &middot; itch.io</small></span></a>
+          <a class="btn btn-buy" href="https://pay-k.itch.io/the-silent-press/purchase"><span><span lang="ja">製品版を買う</span><span lang="en">Buy the full game</span><small data-sale="btn">$4.99 &middot; itch.io</small></span></a>
         </div>
         <p class="note"><span lang="ja">体験版はチュートリアルと序章を遊べます。製品版は全10章、結末は31種類。</span><span lang="en">The demo covers the tutorial and prologue. The full game has 10 chapters and 31 endings.</span></p>
       </div>
@@ -450,7 +452,7 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
           <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">紙面を組む物語パズル</span><span lang="en">Narrative front-page layout puzzle</span></dd>
           <dt><span lang="ja">体験版</span><span lang="en">Demo</span></dt><dd><span lang="ja">チュートリアルと序章(ブラウザで無料)</span><span lang="en">Tutorial and prologue (free, in browser)</span></dd>
           <dt><span lang="ja">製品版</span><span lang="en">Full game</span></dt><dd><span lang="ja">全10章・結末31種・幕間8話</span><span lang="en">10 chapters, 31 endings, 8 interludes</span></dd>
-          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">$4.99(itch.io)</span><span lang="en">$4.99 (itch.io)</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd data-sale="spec"><span lang="ja">$4.99(itch.io)</span><span lang="en">$4.99 (itch.io)</span></dd>
           <dt><span lang="ja">製品版の形式</span><span lang="en">Full game formats</span></dt><dd><span lang="ja">Windows版 / ブラウザ版(Windows・Mac・Linux)</span><span lang="en">Windows download / browser version (Windows, Mac, Linux)</span></dd>
           <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">PC(マウス)/ スマホ横持ち(タッチ)</span><span lang="en">PC (mouse) / phone in landscape (touch)</span></dd>
           <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd><span lang="ja">日本語 / 英語(いつでも切り替え可)</span><span lang="en">English / Japanese (switch any time)</span></dd>
@@ -459,7 +461,7 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
         </dl>
         <div class="buy">
           <h3><span lang="ja">まずは体験版から</span><span lang="en">Start with the free demo</span></h3>
-          <p class="price">$4.99<small><span lang="ja">製品版</span><span lang="en">full game</span></small></p>
+          <p class="price" data-sale="box">$4.99<small><span lang="ja">製品版</span><span lang="en">full game</span></small></p>
           <div class="acts">
             <a class="btn btn-demo" href="https://pay-k.itch.io/the-silent-press"><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span></a>
             <a class="btn btn-buy" href="https://pay-k.itch.io/the-silent-press/purchase"><span lang="ja">製品版を買う</span><span lang="en">Buy the full game</span></a>
@@ -472,6 +474,20 @@ dl.spec dt { font-weight: 800; padding-right: 24px; }
   </section>
 </main>
 
+<script>
+/* セール期間中だけ、このページに直接書いた価格をセール価格に差し替える(期間と価格は games.js の sale) */
+(function () {
+  var g = (window.PAY_GAMES || []).filter(function (x) { return x.slug === "the-silent-press"; })[0];
+  if (!g || !g.onSale) return;
+  function q(k) { return document.querySelector('[data-sale="' + k + '"]'); }
+  var ja = "12/3 3:00(日本時間)まで40%オフ", en = "40% off through Dec 2 (18:00 UTC)";
+  var e;
+  if ((e = q("mast"))) e.innerHTML = '<span lang="ja">製品版 $2.99(40%オフ)</span><span lang="en">Full game $2.99 (40% off)</span>';
+  if ((e = q("btn"))) e.innerHTML = "<s>$4.99</s> $2.99 &middot; itch.io";
+  if ((e = q("spec"))) e.innerHTML = '<span lang="ja">$2.99(' + ja + '。通常 $4.99)</span><span lang="en">$2.99 (' + en + '; usually $4.99)</span>';
+  if ((e = q("box"))) e.innerHTML = '<s>$4.99</s>$2.99<small><span lang="ja">製品版</span><span lang="en">full game</span></small><span class="sale-note"><span lang="ja">' + ja + '</span><span lang="en">' + en + '</span></span>';
+})();
+</script>
 <script>
 /* 一面の切り取りデモ:枠に何が入っているかで、見出しと読者の反応が変わる(サイト用の演出) */
 (function () {
