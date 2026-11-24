@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <!--
+  G12b: 審査で「本の途中の連打がまだ効く」→ 早瀬が構えていない間に先に構えたら、本の途中でも 70% で払う。圧の浮き文字を「圧が満ちた 回避−1」に。
+  G12: 早瀬は始めの合図の直後(早瀬が動く前)に先に構えると 70% で払う(jumpParry。[J] 連打だけでは勝てない。待って構えを見てから払う本来の攻略は不変)。
+       圧で回避を失った本の理由に「圧」の説明。型稽古の札「約2分」→「数分」(売り場と揃える)。ほかの相手の勝敗は不変。
   G11f: 一本の決着の帯に浮き文字(参ノ舞など)を重ねない。一度も払わずに負けた本の理由を「一度も払わず、回避だけで受けていた」に。勝敗は不変。
   G11d/e: 右ボタンの「[J] もう一度で中止」を構えている間だけに(タイトル・決着画面・構える前は [J] だけ)。英語の言い換え3か所(タイトルの操作の案内/回避の説明/撃った後の隙)。勝敗は不変。
   G11: 英語圏の買い手の再審査に対応。英語の用語(Countered!/Dodged!/Auto-dodge!/2nd Shot/Pressure/Trade! ほか)、型稽古の助言の持ち越しをやめる、
@@ -40,8 +43,8 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<script>(function(){if(typeof location==="undefined"||!/github\.io$/.test(location.hostname))return;var me=false;try{me=localStorage.getItem("pay-me")==="1"}catch(e){}window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}window.gtag=g;var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-YRLZTCPTSE";document.head.appendChild(s);g("js",new Date());var c={game:"gun-dojo-play"};if(me)c.traffic_type="internal";g("config","G-YRLZTCPTSE",c)})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script>(function(){if(typeof location==="undefined"||!/github\.io$/.test(location.hostname))return;var me=false;try{me=localStorage.getItem("pay-me")==="1"}catch(e){}window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}window.gtag=g;var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-YRLZTCPTSE";document.head.appendChild(s);g("js",new Date());var c={game:"gun-dojo-play"};if(me)c.traffic_type="internal";g("config","G-YRLZTCPTSE",c)})();</script>
 <title>銃道場 — Gun Dojo: Read the Draw</title>
 <link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/gun-dojo/play/">
 <style>
@@ -3877,7 +3880,7 @@ const I18N_EN = {
   // タイトル・メニュー
   "銃道場": "Gun Dojo", "じゅうどうじょう  ・  道場破り": "READ  THE  DRAW", "バルーン・ガン・カタ": "Balloon Gun Kata",
   "相手の癖を読み、撃つ瞬間を奪い合う。": "Read their habits. Beat them to the shot.",
-  "型稽古": "Kata Practice", "6つの型を1つずつ・約2分": "6 forms · a few minutes", "修了": "Completed",
+  "型稽古": "Kata Practice", "6つの型を1つずつ・数分": "6 forms · a few minutes", "修了": "Completed",
   "はじめての方はこちら": "New here? Start with this", "道場破り": "Dojo Run", "全員に勝った": "All nine defeated",
   "次の相手: ": "Next: ", "癖の違う相手と{0}本先取": "Nine habits · first to {0} points", "勝ち": "Won",
   "型の巻物": "Kata Scroll", "左の [F] 払う = 型稽古 / 右の [J] 構える = 道場破り": "Parry button [F]: Kata Practice   ·   Draw button [J]: Dojo Run",
@@ -3922,7 +3925,7 @@ const I18N_EN = {
   "かわした!": "Dodged!", "回避!": "Auto-dodge!", "弐連さばき": "Double parry", "参連さばき": "Triple parry",
   "返し舞!": "Reversal!", "返された!": "Countered!", "見切った!": "Perfect parry!", "見切られた!": "Parried!",
   "隙だらけ!": "Wide open!", "受け流し": "Deflected", "弐ノ舞": "2nd Shot", "参ノ舞": "3rd Shot",
-  "追い撃ち! ": "Follow-up! ", "間合いを詰められた": "Pressure! -1 dodge", "勝利": "Victory", "敗北": "Defeat",
+  "追い撃ち! ": "Follow-up! ", "圧が満ちた 回避−1": "Pressure! -1 dodge", "勝利": "Victory", "敗北": "Defeat",
   "道場破り 達成": "Dojo Conquered", "タップでタイトルへ": "Tap for title",
   // 決まり手・負けた理由
   "決まり手": "Finishing move", "この試合の決まり手": "How each point was decided", "{0}本目": "Point {0}",
@@ -3932,7 +3935,7 @@ const I18N_EN = {
   "追い撃ちを読まれ、払われた": "Your follow-up was read and parried", "近間の構えまで読まれていた": "Even your close-range draw was read",
   "遠間の構えは、見てから払われる": "A draw from far away gets parried on sight", "払いの空振りを撃たれた": "Shot after parrying thin air",
   "取り消しの直後を撃たれた": "Shot right after a cancel", "撃った後の隙を撃たれた": "Shot while recovering from your own shot",
-  "構えの途中を撃たれた": "Shot in the middle of your draw", "待ちすぎて、間合いを詰められていた": "You waited too long and lost a dodge to pressure",
+  "構えの途中を撃たれた": "Shot in the middle of your draw", "待ちすぎて「圧」が満ち、回避を1つ失っていた(構えると圧は消える)": "You waited too long: Pressure filled and cost a dodge (drawing resets it)",
   "かわした後の追い撃ちを払えなかった": "Couldn't parry the follow-up after your dodge", "回避が尽きていた": "You were out of dodges", "一度も払わず、回避だけで受けていた": "You never parried, so your dodges ran out",
   // HUD
   "あなた": "You", "回避": "Dodges", "近 — 見てからでは間に合わない": "Near: too fast to react", "圧": "Pressure",
@@ -4192,7 +4195,7 @@ const OPPONENTS = [
     ai: { reactionMs: 320, parryChance: 0.15, parryLeadMs: 230, parryLeadSdMs: 100,
           feintChance: 0, abortOnFeint: 0.5, decideMinMs: 450, decideMaxMs: 950,
           punishWhiffChance: 0.45, rushUse2: 0.9, rushUse3: 0.8, rushParry2: 0.1, rushParry3: 0.05,
-          rushFeintChance: 0, fixedWindup: 0, firstMoveMs: [250, 550], maSpeed: 1.6, patience: 0, hold: 0 } },
+          rushFeintChance: 0, fixedWindup: 0, firstMoveMs: [250, 550], maSpeed: 1.6, patience: 0, hold: 0, jumpParry: 0.7 } },
   { id: "katadoori", name: "堅田", kuse: "型通り", color: "#8fb8d8", rgb: "143,184,216", bulk: 1.0,
     intro: "型は、裏切らない。",
     hint: "毎本、撃つ・撃つ・取り消し・待つの順を繰り返す。3つ目の構えは払わず、4つ目の間に撃つ。",
@@ -4964,7 +4967,7 @@ function startRound() {
   game.rings = [];
   cpu.pending = [];
   cpu.decideT = D().firstMoveMs ? rand(D().firstMoveMs[0], D().firstMoveMs[1]) : rand(D().decideMinMs, D().decideMaxMs);
-  cpu.lastFeint = false; cpu.scriptI = 0; cpu.waiting = false;
+  cpu.lastFeint = false; cpu.scriptI = 0; cpu.waiting = false; cpu.moved = false;
   game.pQuiet = 0;
   game.kimarite = null; game.pTick = 0; P.pressLost = 0; game.pParries = 0; P.staggerCause = C.staggerCause = null;   // G5
   cam.theta = CAM.baseTheta; cam.spinV = 0; cam.punch = 0; cam.shake = 0;
@@ -5097,7 +5100,7 @@ function kimarite(atk, def, defPre, stage) {
     else if (defPre === "feint") why = "取り消しの直後を撃たれた";
     else if (defPre === "fired" || defPre === "deflected") why = "撃った後の隙を撃たれた";
     else if (defPre === "windup") why = "構えの途中を撃たれた";
-    else if (P.pressLost) why = "待ちすぎて、間合いを詰められていた";
+    else if (P.pressLost) why = "待ちすぎて「圧」が満ち、回避を1つ失っていた(構えると圧は消える)";
     else if (!game.pParries) why = "一度も払わず、回避だけで受けていた";   // G11f 何も押さずに負けた本
     else if (stage >= 2) why = "かわした後の追い撃ちを払えなかった";
     else why = "回避が尽きていた";
@@ -5410,7 +5413,8 @@ function cpuOnPlayerWindup() {
   const lateCh = D().lateParry ? 0.9 : CONFIG.WAIT.LATE;
   if (late && !lateCh) return;
   if (cpu.waiting) return;
-  if (Math.random() < (late ? lateCh : effectiveParryChance())) {
+  const jump = !late && D().jumpParry && C.state === "idle";   // G12b 相手が構えていないときに先に構えた(早瀬)
+  if (Math.random() < (late ? lateCh : jump ? D().jumpParry : effectiveParryChance())) {
     // G3a: 発砲の少し前(相手ごとの癖=早め/遅め)を狙う。G4.5: 構えを見てから払いを置けるのは reactionMs×0.85 以降(人並み)
     const dur = windupDur(P);
     const react = D().reactionMs * CONFIG.MA.REACT_K;
@@ -5442,6 +5446,7 @@ function cpuOnPlayerParry() {
 }
 function cpuAttack(feint) {
   if (!canAct(C)) return;
+  cpu.moved = true;   // G12
   C.attackStage = 1;
   C.windupVar = D().fixedWindup != null ? D().fixedWindup : (Math.random() * 4) | 0;
   C.windupMs = maWindup();
@@ -5827,7 +5832,7 @@ function drawTitle() {
 
   const def = kata.cleared ? "duel" : "kata";
   const info = {
-    kata: { label: L("型稽古"), key: "[F]", sub: L("6つの型を1つずつ・約2分"), note: L(kata.cleared ? "修了" : "はじめての方はこちら") },
+    kata: { label: L("型稽古"), key: "[F]", sub: L("6つの型を1つずつ・数分"), note: L(kata.cleared ? "修了" : "はじめての方はこちら") },
     duel: { label: L("道場破り"), key: "[J]",
             sub: dojoNext() < 0 ? L("全員に勝った") : L("次の相手: ") + oFull(OPPONENTS[dojoNext()]),
             note: L("癖の違う相手と{0}本先取", CONFIG.ROUNDS_TO_WIN) },
@@ -6027,7 +6032,7 @@ function update(rawDt) {
         game.pQuiet += dt;
         if (game.pQuiet >= CONFIG.WAIT.PRESS_MS) {   // 挑む側が手を出さない=間合いを詰められる
           game.pQuiet = 0;
-          if (P.dodge > 0) { P.dodge--; P.pressLost = (P.pressLost || 0) + 1; game.pressFx = 700; addFloater("間合いを詰められた", balloonPos(P), TH.gold); }
+          if (P.dodge > 0) { P.dodge--; P.pressLost = (P.pressLost || 0) + 1; game.pressFx = 700; addFloater("圧が満ちた 回避−1", balloonPos(P), TH.gold); }
         }
       }
       updateFighter(P, dt);
