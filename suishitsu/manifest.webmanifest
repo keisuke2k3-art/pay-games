@@ -1,0 +1,20 @@
+{
+  "name": "水質スキャナ — 水道水の水質を住所から",
+  "short_name": "水質スキャナ",
+  "description": "郵便番号・住所から、お住まいの地域の水道水の水質(pH・硬度・残留塩素ほか)を、各水道事業者の公式検査結果に基づいて出典付きで表示します。",
+  "lang": "ja",
+  "dir": "ltr",
+  "id": "/pay-games/suishitsu/",
+  "start_url": "/pay-games/suishitsu/?src=app",
+  "scope": "/pay-games/suishitsu/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#081420",
+  "theme_color": "#081420",
+  "categories": ["utilities", "lifestyle"],
+  "icons": [
+    { "src": "app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
