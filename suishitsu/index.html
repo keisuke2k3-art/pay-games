@@ -246,6 +246,9 @@
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 <script>(function(){if(typeof location==="undefined"||!/github\.io$/.test(location.hostname))return;var me=false;try{me=localStorage.getItem("pay-me")==="1"}catch(e){}window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}window.gtag=g;var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-YRLZTCPTSE";document.head.appendChild(s);g("js",new Date());var c={game:"suishitsu"};if(me)c.traffic_type="internal";g("config","G-YRLZTCPTSE",c)})();</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#081420">
+<link rel="apple-touch-icon" href="app/icon-192.png">
 </head>
 <body>
 <!-- アイコン(必ず文字ラベルと一緒に使う) -->
@@ -839,6 +842,8 @@ try {
   else renderRecent();
 } catch (_) {}
 
+// アプリ化(ホーム画面・Android アプリ)用:電波がなくても開けるように保存する
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) { navigator.serviceWorker.register("sw.js").catch(() => {}); }
 // テスト用フック(node の検証スクリプトから利用)
 window.__WQ = { parseAddress, lookup, suggest, UTILS, MUNIS };
 </script>
