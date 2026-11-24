@@ -374,7 +374,8 @@
   </nav>
   <footer>
     住所判定: 市区町村一覧 <a href="https://github.com/code4fukui/localgovjp" target="_blank" rel="noopener">localgovjp</a>(CC0)/ 郵便番号検索 <a href="https://zipcloud.ibsnet.co.jp/" target="_blank" rel="noopener">zipcloud</a><br>
-    水質データの著作権・出典は各水道事業者に帰属します。<br>
+    水質データの著作権・出典は各水道事業者に帰属します(<a href="sources/">出典一覧</a>)。<br>
+    水質スキャナは個人が作った非公式のツールです。国・自治体・水道事業者とは関係がなく、それらを代表するものではありません。<br>
     魚の具合が悪いときは <a href="https://keisuke2k3-art.github.io/pay-games/hokenshitsu/">さかなの保健室</a>(症状から病気と手当てを調べるツール)へ。<br>
     制作: <a href="https://keisuke2k3-art.github.io/pay-games/">PAY games</a>(アクアリウムをテーマにしたブラウザゲームも公開しています)<br>
     このサイトは Google アナリティクスでアクセス数を計測しています(Cookie を使います。名前などの個人情報は集めていません)。<a href="privacy/">プライバシーポリシー</a>
@@ -816,10 +817,10 @@ function buildCoverage() {
   for (const p of PREFS) {
     if (!byPref[p]) continue;
     const g = new Map();
-    for (const u of byPref[p]) { if (!g.has(u.utility)) g.set(u.utility, []); g.get(u.utility).push(...u.areas); }
-    h += "<h4>" + esc(p) + "</h4>" + [...g].map(([n, a]) => '<span class="u">' + esc(n) + "</span>: " + esc(a.join("・"))).join("<br>");
+    for (const u of byPref[p]) { if (!g.has(u.utility)) g.set(u.utility, { a: [], s: u.source_url }); g.get(u.utility).a.push(...u.areas); }
+    h += "<h4>" + esc(p) + "</h4>" + [...g].map(([n, v]) => '<span class="u">' + esc(n) + "</span>: " + esc(v.a.join("・")) + ' <a href="' + esc(v.s) + '" target="_blank" rel="noopener">出典↗</a>').join("<br>");
   }
-  h += '<p style="margin-top:10px">上記以外の地域では「未収録」と表示し、近くの収録地域の公表値を参考表示します。</p>';
+  h += '<p style="margin-top:10px">上記以外の地域では「未収録」と表示し、近くの収録地域の公表値を参考表示します。検査時期つきの一覧は <a href="sources/">出典一覧</a> へ。</p>';
   el.innerHTML = h; el.dataset.built = "1";
 }
 
@@ -874,7 +875,7 @@ $("again-btn").addEventListener("click", () => { window.scrollTo({ top: 0, behav
 $("cov-box").addEventListener("toggle", () => { if ($("cov-box").open) buildCoverage(); });
 
 const N_AREAS = UTILS.reduce((s, u) => s + u.areas.length, 0);
-$("cov-sum").textContent = "収録地域の一覧(" + N_AREAS + "市区町村)";
+$("cov-sum").textContent = "収録地域と出典の一覧(" + N_AREAS + "市区町村)";
 $("cov-count").textContent = new Set(UTILS.map(u => u.utility)).size + "事業者・" + N_AREAS + "市区町村";
 
 // 起動時: URLの ?q= があればその地域を表示。なければ前回の地域をワンタップで呼べるようにする
