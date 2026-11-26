@@ -30,7 +30,7 @@ window.PAY_GAMES = [
       en: "The Secretary only reads reports. Hide the defects until 10 km."
     },
     genre: { ja: "報告書の管理シミュレーション", en: "Paperwork management sim" },
-    cover: "★カバー画像のURL(itch の og:image)",
+    cover: "https://img.itch.zone/aW1nLzMyODU0NjI2LnBuZw==/original/g8lPsh.png",
     accent: "#B8322A",
     price: { ja: "体験版 無料 / 製品版 $2.99", en: "Free demo / Full version $2.99" },
     tags: [{ ja: "体験版は無料", en: "Free demo" }, { ja: "1回の計画 約25分", en: "About 25 min per plan" }, { ja: "日本語 / English", en: "English / Japanese" }],
