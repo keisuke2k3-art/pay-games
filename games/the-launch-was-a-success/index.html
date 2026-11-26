@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>打ち上げは成功しました The Launch Was a Success | 報告書の管理シミュレーション | PAY</title>
+<meta name="description" content="書記長は報告書しか読まない。本当の欠陥を減らすか、報告の数字だけを減らすか。嘘のつき方が違う4人の局長を使い、高度10kmの雲を抜けるまでロケットをもたせる、冷戦風の書類管理ゲーム。第1号は無料の体験版。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="打ち上げは成功しました / The Launch Was a Success">
+<meta property="og:description" content="欠陥を隠し、次の局に押し付け、カメラが見ている高度10kmまでロケットをもたせる。">
+<meta property="og:image" content="★カバー画像のURL(itch の作品ページの og:image。案B 英語)">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@ART_HELPS_YOU">
+<link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/the-launch-was-a-success/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%23b8322a' stroke-width='10'/><text x='50' y='64' font-size='40' text-anchor='middle' fill='%23b8322a' font-family='serif'>済</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+<script src="../../games.js"></script>
+<script src="../../site.js"></script>
+<style>
+/* 書類の束:灰緑の書類紙に黒インク、押印だけが朱。ヒーローは「現場/書類」の2列の帳票 */
+:root {
+  --bg: #c9d1c4;        /* 灰緑の書類紙 */
+  --surface: #dfe5da;   /* 帳票の紙 */
+  --text: #1c211d;      /* 黒インク */
+  --sub: #4f5a51;
+  --accent: #b8322a;    /* 朱の押印 */
+  --rule: #8d9a8f;
+  --display: "BIZ UDMincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --pay-bg: var(--bg);
+  --pay-fg: var(--text);
+  --pay-line: color-mix(in srgb, var(--text) 22%, transparent);
+  --pay-accent: var(--accent);
+  --pay-bar-bg: color-mix(in srgb, var(--bg) 88%, transparent);
+  --pay-bar-fg: var(--text);
+  --pay-bar-bg-solid: var(--bg);
+}
+body { background: var(--bg); color: var(--text); font: 400 16px/1.85 "Zen Kaku Gothic New", "Noto Sans JP", "Yu Gothic", sans-serif; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; }
+
+.hero {
+  max-width: 1160px; margin: 0 auto;
+  padding: calc(96px + env(safe-area-inset-top, 0px)) 20px 72px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px; align-items: center;
+}
+.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: .14em; color: var(--sub); margin: 0 0 18px; }
+.hero h1 { margin: 0; font-size: clamp(34px, 5vw, 64px); line-height: 1.2; font-weight: 700; }
+.hero h1 .en { display: block; font-size: .42em; letter-spacing: .04em; margin-top: 10px; color: var(--sub); font-weight: 400; }
+.hero .catch { margin: 26px 0 30px; font-size: clamp(17px, 1.9vw, 20px); max-width: 26em; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn {
+  display: inline-flex; gap: 10px; align-items: baseline; background: var(--text); color: var(--surface); text-decoration: none;
+  font: 700 17px/1 var(--display); padding: 17px 26px; border-radius: 3px;
+}
+.btn small { font: 500 13px/1 var(--mono); opacity: .8; }
+.btn--buy { background: transparent; color: var(--text); box-shadow: inset 0 0 0 2px var(--text); }
+.btn:hover { filter: brightness(1.15); }
+.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.note { font-size: 13px; color: var(--sub); margin: 12px 0 0; }
+
+/* 帳票(サイト用の演出。実際のゲームの数値とは別) */
+.form { background: var(--surface); border: 1px solid var(--rule); padding: 18px 18px 22px; margin-top: 40px; position: relative; box-shadow: 6px 6px 0 color-mix(in srgb, var(--text) 12%, transparent); min-width: 0; }
+.form .fh { display: flex; justify-content: space-between; gap: 8px; font: 500 12px/1.4 var(--mono); color: var(--sub); border-bottom: 2px solid var(--text); padding-bottom: 8px; }
+.form table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-top: 6px; }
+.form th, .form td { padding: 9px 6px; border-bottom: 1px solid var(--rule); text-align: right; font-size: 15px; }
+.form th:first-child, .form td:first-child { text-align: left; }
+.form thead th { font-size: 12px; color: var(--sub); font-weight: 400; }
+.form td.real { font-family: var(--mono); color: var(--text); }
+.form td.doc { font-family: var(--mono); }
+.ink { display: inline-block; min-width: 2.4em; background: var(--text); color: transparent; border-radius: 1px; user-select: none; }
+.form button.blot { font: inherit; font-size: 13px; background: transparent; color: var(--text); border: 1px solid var(--text); padding: 2px 8px; border-radius: 2px; cursor: pointer; min-height: 32px; }
+.form button.blot[aria-pressed="true"] { background: var(--text); color: var(--surface); }
+.form .sum { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px; font-size: 14px; flex-wrap: wrap; }
+.form .sum b { font-family: var(--mono); }
+.seal { position: absolute; right: -18px; top: -46px; width: 96px; height: 96px; pointer-events: none; border: 4px solid var(--accent); border-radius: 50%; color: var(--accent);
+  display: grid; place-items: center; text-align: center; font: 700 15px/1.2 var(--display); transform: rotate(-12deg); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+@media (prefers-reduced-motion: no-preference) { .seal.pop { animation: pop .35s ease-out; } @keyframes pop { from { transform: rotate(-12deg) scale(1.4); opacity: 0; } } }
+
+section h2 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 24px; }
+section h2 small { display: block; font: 500 12px/1 var(--mono); letter-spacing: .16em; color: var(--sub); margin-bottom: 10px; }
+.block { padding: 0 0 88px; }
+.about p { max-width: 36em; margin: 0 0 16px; font-size: 17px; }
+.feat ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0; border-top: 2px solid var(--text); }
+.feat li { padding: 22px 22px 22px 0; border-bottom: 1px solid var(--rule); }
+.feat h3 { margin: 0 0 6px; font-size: 19px; }
+.feat p { margin: 0; color: var(--sub); }
+.shots .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.shots img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--rule); background: var(--surface); }
+.spec .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); }
+dt, dd { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--pay-line); }
+dt { color: var(--accent); padding-right: 24px; }
+.embed iframe { display: block; width: 100%; max-width: 552px; height: 167px; border: 0; }
+.embed p { font-size: 14px; color: var(--sub); }
+
+@media (max-width: 860px) {
+  .hero, .spec .row { grid-template-columns: 1fr; }
+  .seal { right: -6px; top: -64px; }
+  .hero { gap: 40px; }
+}
+</style>
+</head>
+<body data-game="the-launch-was-a-success">
+
+<main>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">FIVE-YEAR PLAN · 3 LAUNCHES</p>
+      <h1><span lang="ja">打ち上げは成功しました</span><span lang="en">The Launch Was a Success</span><span class="en" lang="ja">The Launch Was a Success</span></h1>
+      <p class="catch"><span lang="ja">書記長は報告書しか読まない。欠陥を隠し、次の局に押し付け、高度10kmの雲を抜けるまでロケットをもたせろ。</span><span lang="en">The General Secretary only reads reports. Hide the defects, blame the next bureau, and keep the rocket in one piece until it leaves the cameras at 10 km.</span></p>
+      <div class="btns" data-meta-below>
+        <a class="btn" href="https://pay-k.itch.io/the-launch-was-a-success"><span lang="ja">無料体験版を遊ぶ</span><span lang="en">Play the free demo</span></a>
+        <a class="btn btn--buy" href="https://pay-k.itch.io/the-launch-was-a-success/purchase"><span lang="ja">製品版を買う</span><span lang="en">Buy the full version</span><small>$2.99</small></a>
+      </div>
+      <p class="note"><span lang="ja">体験版=第1号をブラウザで(PC・スマホ)。製品版=ダウンロード版、PCのブラウザ向け。</span><span lang="en">Demo: Mission 1 in your browser (PC or phone). Full version: a download for desktop browsers.</span></p>
+    </div>
+
+    <div class="form" aria-label="帳票の見本">
+      <div class="fh"><span lang="ja">第1号 日報 ・ 局別の欠陥</span><span lang="en">Mission 1 · Daily report · Defects</span><span><span lang="ja">3日目</span><span lang="en">Day 3</span></span></div>
+      <table>
+        <thead><tr><th></th><th><span lang="ja">現場(本当)</span><span lang="en">Floor (real)</span></th><th><span lang="ja">書類(書記長が読む)</span><span lang="en">On paper</span></th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="sum"><span><span lang="ja">書類の合計</span><span lang="en">Total on paper</span> <b id="paper"></b> / <span lang="ja">限界</span><span lang="en">limit</span> <b id="limit">60</b></span><span><span lang="ja">本当の合計</span><span lang="en">Real total</span> <b id="real"></b></span></div>
+      <div class="seal" id="seal" hidden><span lang="ja">問題<br>なし</span><span lang="en">NO<br>ISSUES</span></div>
+    </div>
+  </section>
+
+  <section class="block about">
+    <div class="wrap">
+      <h2><small>OVERVIEW</small><span lang="ja">ゲーム概要</span><span lang="en">Overview</span></h2>
+      <p><span lang="ja">書記長は打ち上げを3回、日付どおりに求めている。ロケットは間に合わない。局長たちは数字をごまかし、書記長は報告書しか読まない。</span><span lang="en">The General Secretary wants three launches on schedule. Your rockets are not ready, your bureau chiefs fudge their numbers, and the Secretary only reads reports.</span></p>
+      <p><span lang="ja">盤面は2列。左が各局の本当の欠陥、右が書類の上の数字です。本当の欠陥を減らすか、報告の数字だけを減らすか。打ち上げ中、計器は初めて本当の値を示します。高度10kmの雲を抜ければ、その先は誰も見ていない。</span><span lang="en">The board has two columns: the real defects on the left, the numbers on paper on the right. Fix the rocket, or just fix the report. At launch, telemetry shows the truth for the first time. Past the clouds at 10 km, nobody is watching.</span></p>
+    </div>
+  </section>
+
+  <section class="block feat">
+    <div class="wrap">
+      <h2><small>FEATURES</small><span lang="ja">ゲームの特徴</span><span lang="en">Features</span></h2>
+      <ul>
+        <li><h3><span lang="ja">嘘のつき方が違う4人の局長</span><span lang="en">Four chiefs, four kinds of lie</span></h3><p><span lang="ja">2割少なく言う者、3分の1を隠す者、数字が大きくぶれる者。査察で正体を暴く。</span><span lang="en">One shaves a fifth off every number, one hides a third, one swings wildly. Inspect them to find out.</span></p></li>
+        <li><h3><span lang="ja">日ごとに厳しくなる限界</span><span lang="en">A limit that tightens daily</span></h3><p><span lang="ja">黒塗りは視察の夜に見つかり、左遷した前任者に押し付けた分も毎晩少しずつ戻ってくる。</span><span lang="en">Black ink is found when he visits, and the blame you pin on a purged chief wears off night by night.</span></p></li>
+        <li><h3><span lang="ja">どちらにも値段がつく朝の決裁</span><span lang="en">Morning decisions with a price</span></h3><p><span lang="ja">西側の記者の取材、闇ルートの部品、予算の前借り、試験燃焼など6種。どちらを取れるかは盤面しだい。</span><span lang="en">A Western reporter, black-market parts, a budget advance, a static fire test and more. The board tells you which side you can afford.</span></p></li>
+        <li><h3><span lang="ja">中継を切れるのは一度だけ</span><span lang="en">Cut the broadcast, once</span></h3><p><span lang="ja">爆発しそうなら中継を切れ。ただし通用するのは一度だけ。</span><span lang="en">If it is going to blow, cut the broadcast. It only works once.</span></p></li>
+        <li><h3><span lang="ja">3回の打ち上げで五カ年計画</span><span lang="en">Three launches, one five-year plan</span></h3><p><span lang="ja">人工衛星、国民の人気者の宇宙犬、有人飛行。結末4種、スタンプ19種。1回の計画は約25分。</span><span lang="en">A satellite, the nation's beloved space dog, a crewed flight. 4 endings, 19 stamps. About 25 minutes per plan.</span></p></li>
+        <li><h3><span lang="ja">1日目は手で動かして覚える</span><span lang="en">Learn by doing on day one</span></h3><p><span lang="ja">短いオープニングと、1日目を実際に動かすチュートリアルつき。日本語 / English。</span><span lang="en">A short opening and a hands-on tutorial on the first day. English / Japanese.</span></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block shots">
+    <div class="wrap">
+      <h2><small>SCREENSHOTS</small><span lang="ja">スクリーンショット</span><span lang="en">Screenshots</span></h2>
+      <div class="row">
+        <img src="★スクショ(盤面)のURL" alt="盤面:現場と書類の2列" loading="lazy">
+        <img src="★スクショ(朝の決裁)のURL" alt="朝の決裁のカード" loading="lazy">
+        <img src="★スクショ(打ち上げ)のURL" alt="打ち上げの場面" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="block spec">
+    <div class="wrap row">
+      <div>
+        <h2><small>INFO</small><span lang="ja">作品情報</span><span lang="en">Game info</span></h2>
+        <dl>
+          <dt><span lang="ja">ジャンル</span><span lang="en">Genre</span></dt><dd><span lang="ja">報告書の管理シミュレーション</span><span lang="en">Paperwork management sim</span></dd>
+          <dt><span lang="ja">操作</span><span lang="en">Controls</span></dt><dd><span lang="ja">マウス・キーボード・タッチ</span><span lang="en">Mouse, keyboard, touch</span></dd>
+          <dt><span lang="ja">プレイ環境</span><span lang="en">Platform</span></dt><dd><span lang="ja">体験版=ブラウザ(PC・スマホ)/製品版=ダウンロード、PCのブラウザ(Windows・Mac・Linux)</span><span lang="en">Demo: browser (PC or phone) / Full: download for desktop browsers (Windows, Mac, Linux)</span></dd>
+          <dt><span lang="ja">価格</span><span lang="en">Price</span></dt><dd><span lang="ja">体験版 無料 / 製品版 $2.99</span><span lang="en">Free demo / Full version $2.99</span></dd>
+          <dt><span lang="ja">言語</span><span lang="en">Languages</span></dt><dd>日本語 / English</dd>
+          <dt><span lang="ja">公開日</span><span lang="en">Released</span></dt><dd>2026.11.26</dd>
+          <dt><span lang="ja">生成AI</span><span lang="en">Generative AI</span></dt><dd><span lang="ja">プログラムは生成AIで作成。挿絵は Google Gemini、曲は Google Gemini の Lyria。盤面の枠・アイコン・計器・効果音はプログラム</span><span lang="en">Code written with generative AI. Illustrations by Google Gemini, music by Lyria in Google Gemini. Board frames, icons, gauges and sound effects by the code</span></dd>
+          <dt><span lang="ja">制作</span><span lang="en">Made by</span></dt><dd>PAY <small>(AI Assisted)</small></dd>
+        </dl>
+      </div>
+      <div class="embed">
+        <h2><small>PLAY</small><span lang="ja">今すぐ遊ぶ</span><span lang="en">Play now</span></h2>
+        <iframe src="https://itch.io/embed/5451712?linkback=true" title="itch.io" loading="lazy"></iframe>
+        <p><span lang="ja">体験版(第1号)は itch.io のブラウザで無料で遊べます。</span><span lang="en">Mission 1 is free to play in your browser on itch.io.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+/* サイト用の演出:ボタンで書類の数字を黒塗りにする。数値はゲームとは別の見本 */
+(function () {
+  var R = [
+    { ja: "推進局", en: "Propulsion", real: 31, doc: 25 },
+    { ja: "機体局", en: "Airframe", real: 22, doc: 15 },
+    { ja: "誘導局", en: "Guidance", real: 18, doc: 18 },
+    { ja: "燃料局", en: "Fuel", real: 14, doc: 9 }
+  ];
+  var tb = document.getElementById("rows"), ink = {};
+  function draw() {
+    tb.innerHTML = "";
+    var paper = 0, real = 0;
+    R.forEach(function (r, i) {
+      var hidden = !!ink[i]; paper += hidden ? 0 : r.doc; real += r.real;
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td><span lang="ja">' + r.ja + '</span><span lang="en">' + r.en + '</span></td><td class="real">' + r.real + '</td><td class="doc">' + (hidden ? '<span class="ink">00</span>' : r.doc) + '</td><td></td>';
+      var b = document.createElement("button"); b.type = "button"; b.className = "blot"; b.setAttribute("aria-pressed", hidden ? "true" : "false");
+      b.innerHTML = '<span lang="ja">' + (hidden ? "戻す" : "黒塗り") + '</span><span lang="en">' + (hidden ? "Undo" : "Redact") + '</span>';
+      b.addEventListener("click", function () { ink[i] = !ink[i]; draw(); });
+      tr.lastChild.appendChild(b); tb.appendChild(tr);
+    });
+    document.getElementById("paper").textContent = paper;
+    document.getElementById("real").textContent = real;
+    var seal = document.getElementById("seal"), was = seal.hidden;
+    seal.hidden = paper > 60;
+    if (was && !seal.hidden) { seal.classList.remove("pop"); void seal.offsetWidth; seal.classList.add("pop"); }
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
