@@ -90,7 +90,7 @@ td:first-child,th:first-child{text-align:left}
 </head>
 <body>
 <div class="wrap">
-  <header><h1>水を立ち上げる</h1><span class="tag">試作 v0.3.7 ・ あなたの街の水道水で、水槽を何日で「立ち上げ」られるかを詰めるパズル</span></header>
+  <header><h1>水を立ち上げる</h1><span class="tag">試作 v0.3.8 ・ あなたの街の水道水で、水槽を何日で「立ち上げ」られるかを詰めるパズル</span></header>
 
   <section id="menu">
     <div class="card">
@@ -133,7 +133,7 @@ td:first-child,th:first-child{text-align:left}
         </div>
       </div>
     </div>
-    <p class="note" id="gnote">簡略化したモデルの遊びです(立ち上げの手引きではありません)。KH は総硬度からの推定、細菌の増え方や KH の減り方は遊びやすく調整しています。水道水の値は各水道事業者の公表値(<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>)。</p>
+    <p class="note" id="gnote">簡略化したモデルの遊びです(立ち上げの手引きではありません)。KH は総硬度からの推定、細菌の増え方や KH の減り方は遊びやすく調整しています。水道水の値は各水道事業者の公表値(<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>)。<b>実際の立ち上げは、試薬でアンモニアと亜硝酸を測りながら進めます</b>(遊びの最短手順のように「1回入れて放っておけばよい」という意味ではありません)。</p>
   </section>
   <p class="note" style="border-top:1px solid var(--line);padding-top:10px">試作版です。続きを作るかは遊ばれ方を見て決めます。監修 PAY。コードと文章は Claude〔Anthropic の AI〕で書いています。水槽の絵は実行時にコードで描いています(画像・音声の生成は使っていません)。 ・ <a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/">水質スキャナで自分の街の水を調べる</a> ・ <a href="https://keisuke2k3-art.github.io/pay-games/">PAY games</a></p>
 </div>
@@ -275,7 +275,7 @@ const ACT={
   change:{n:'水を4割換える',d:'すべて薄める・KH を水道水に戻す'},
   shell:{n:'牡蠣殻を入れる',d:'KH と pH を支える。pH 7.4 未満で溶け、溶ける量に限りあり'},
   heater:{n:'ヒーターを入れる',d:'水温を26℃に'},
-  plant:{n:'水草を植える',d:'アンモニアと硝酸塩を少し吸う'},
+  plant:{n:'水草を植える',d:'アンモニアを毎日少し吸う(残った分の片づけと、魚が来てからの量を少し減らす)・硝酸塩も吸う'},
   bottle:{n:'バクテリア剤',d:'2種の細菌を少し足す'},
 };
 const CUSTOM={turns:12,best:8,temp:25,limits:{bottle:0,shell:2,heater:0,plant:1}};
@@ -409,7 +409,7 @@ function finish(){
 function gate(t){const pr=t.pre,need=E.C.fishLoad;const row=(n,v,ok,lim)=>`<tr><td>${n}</td><td class="${ok?'okc':'bad'}">${v}</td><td>${lim}</td></tr>`;
   $('mbody').innerHTML=`<b style="font-size:17px">まだ魚を迎えられない</b><p style="font-size:13px">迎える前の点検で止めた。魚はまだ来ていないので、★は減らない。</p>
   <table><tr><th>点検</th><th>いま</th><th>必要</th></tr>${row('アンモニア',fmt(S.nh),S.nh<=0.1,'0.1 以下')}${row('亜硝酸',fmt(S.no2),S.no2<=0.1,'0.1 以下')}${row('アンモニア→亜硝酸の細菌',pr.capA.toFixed(2)+'/日',pr.capA>=need,need+'/日 以上')}${row('亜硝酸→硝酸塩の細菌',pr.capB.toFixed(2)+'/日',pr.capB>=need,need+'/日 以上')}</table>
-  <p style="font-size:13px">${pr.ph<6.4?`pH ${pr.ph.toFixed(2)} では細菌が鈍い(6.8 未満で鈍り、5.8 で止まる)。`:''}魚は毎日 ${need} のアンモニアを出す。細菌がそれを処理しきれないと、数日で溜まる。</p>
+  <p style="font-size:13px">${pr.ph<6.4?`pH ${pr.ph.toFixed(2)} では細菌が鈍い(6.8 未満で鈍り、5.8 で止まる)。`:''}魚は毎日 ${need} のアンモニアを出す。細菌がそれを処理しきれないと、数日で溜まる。${(pr.capA<need||pr.capB<need)&&S.nh<=0.1?'<br>餌(アンモニア)が無い日は、細菌が少しずつ減る(1日に約3%)。待つ間も少し足して餌を絶やさないのが、実際の立ち上げと同じ考え方。':''}</p>
   <div class="row"><button class="main" id="mOk">続ける</button></div>`;
   $('modal').classList.add('show');$('mOk').onclick=()=>$('modal').classList.remove('show');}
 function help(){
