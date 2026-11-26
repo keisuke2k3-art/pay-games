@@ -14,6 +14,29 @@
    ========================================================= */
 window.PAY_GAMES = [
   {
+    slug: "the-launch-was-a-success",
+    short: { ja: "打ち上げは成功しました", en: "The Launch Was a Success" },
+    fx: "sealed",
+    itch: "https://pay-k.itch.io/the-launch-was-a-success",
+    buy: "https://pay-k.itch.io/the-launch-was-a-success/purchase",
+    priceShort: { ja: "$2.99", en: "$2.99" },
+    play: { ja: "無料体験版を遊ぶ", en: "Play the free demo" },
+    itchId: 5451712,
+    released: "2026-11-26",
+    status: { ja: "製品版 販売中", en: "Full version on sale" },
+    title: { ja: "打ち上げは成功しました(The Launch Was a Success)", en: "The Launch Was a Success" },
+    tagline: {
+      ja: "書記長は報告書しか読まない。欠陥を隠して高度10kmまでもたせろ。",
+      en: "The Secretary only reads reports. Hide the defects until 10 km."
+    },
+    genre: { ja: "報告書の管理シミュレーション", en: "Paperwork management sim" },
+    cover: "https://img.itch.zone/aW1nLzMyODU0NjI2LnBuZw==/original/g8lPsh.png",
+    accent: "#B8322A",
+    price: { ja: "体験版 無料 / 製品版 $2.99", en: "Free demo / Full version $2.99" },
+    tags: [{ ja: "体験版は無料", en: "Free demo" }, { ja: "1回の計画 約25分", en: "About 25 min per plan" }, { ja: "日本語 / English", en: "English / Japanese" }],
+    crop: [.5, .5, .8]
+  },
+  {
     slug: "gun-dojo",
     short: { ja: "銃道場", en: "Gun Dojo" },
     itch: "https://pay-k.itch.io/gun-dojo",
