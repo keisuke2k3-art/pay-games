@@ -328,6 +328,8 @@
       <ul class="checks" id="tips"></ul>
     </section>
 
+    <div class="block" id="cycle-box" hidden></div>
+
     <section class="block" aria-labelledby="h-all">
       <h3 class="sec-title" id="h-all"><svg class="ico" aria-hidden="true"><use href="#i-list"/></svg>すべての項目</h3>
       <div class="rows" id="param-grid"></div>
@@ -626,6 +628,15 @@ function renderResult(muni, hit, inputText) {
   const cu = VAL(p, nd, "copper");
   if (cu && cu.v != null) tips.push(["warn", "エビ・貝を飼うなら銅も確認", "銅 " + cu.v + " mg/L(水道の基準は1.0以下)。エビ・貝は銅に弱いとされ、水道管の影響で蛇口ごとにも変わります。"]);
   tips.push(["flask", "KHは試薬で測る", "KH(炭酸塩硬度)は水道の検査項目にないため、どの事業者も公表していません。"]);
+  // この水で立ち上げの試作パズルへ(公表値の GH と pH がある地域だけ)
+  const cyc = $("cycle-box");
+  if (hit.exact && gh != null && p.ph != null) {
+    const href = "../games/cycle/?pref=" + encodeURIComponent(muni.p) + "&city=" + encodeURIComponent(muni.n) + "&src=suishitsu";
+    cyc.innerHTML = '<div class="card"><p style="margin:0 0 8px"><b>この水で水槽の立ち上げに挑戦</b><br><span style="font-size:.9em;opacity:.8">' + esc(muni.n) + "の水道水(GH " + fmt(gh, 1) + "°dH・pH " + esc(p.ph) + ")で、ろ過の細菌を育てて魚を迎えるまでの日数を詰める無料の試作パズル。遊び用に簡略化したモデルです。</span></p>" +
+      '<a class="btn btn-secondary" id="cycle-link" href="' + esc(href) + '">' + icon("fish") + "<span>この水で遊んでみる</span></a></div>";
+    $("cycle-link").addEventListener("click", () => { try { window.gtag && gtag("event", "cycle_click", { place: muni.p + muni.n, transport_type: "beacon" }); } catch (e) {} });
+    cyc.hidden = false;
+  } else { cyc.hidden = true; cyc.innerHTML = ""; }
   $("tips").innerHTML = tips.map(([ic, h, d]) => "<li>" + icon(ic) + "<div><b>" + esc(h) + "</b><span>" + esc(d) + "</span></div></li>").join("");
 
   // すべての項目
