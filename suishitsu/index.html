@@ -632,7 +632,7 @@ function renderResult(muni, hit, inputText) {
   const cyc = $("cycle-box");
   if (hit.exact && gh != null && p.ph != null) {
     const href = "../games/cycle/?pref=" + encodeURIComponent(muni.p) + "&city=" + encodeURIComponent(muni.n) + "&src=suishitsu";
-    cyc.innerHTML = '<div class="card"><p style="margin:0 0 8px"><b>この水で水槽の立ち上げに挑戦</b><br><span style="font-size:.9em;opacity:.8">' + esc(muni.n) + "の水道水(GH " + fmt(gh, 1) + "°dH・pH " + esc(p.ph) + ")で、水槽に細菌を育てて魚を迎えるまでを試す、はじめての人向けの無料パズル(試作)。資料に沿って単純化した遊びです。</span></p>" +
+    cyc.innerHTML = '<div class="card"><p style="margin:0 0 8px"><b>この水で水槽の立ち上げに挑戦・合う生き物も</b><br><span style="font-size:.9em;opacity:.8">' + esc(muni.n) + "の水道水(GH " + fmt(gh, 1) + "°dH・pH " + esc(p.ph) + ")で、水槽に細菌を育てて魚を迎えるまでを試す、はじめての人向けの無料パズル(試作)。この水に合う生き物も出ます。資料に沿って単純化した遊びです。</span></p>" +
       '<a class="btn btn-secondary" id="cycle-link" href="' + esc(href) + '">' + icon("fish") + "<span>この水で遊んでみる</span></a></div>";
     $("cycle-link").addEventListener("click", () => { try { window.gtag && gtag("event", "cycle_click", { place: muni.p + muni.n, transport_type: "beacon" }); } catch (e) {} });
     cyc.hidden = false;

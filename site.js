@@ -198,7 +198,7 @@
                   a.closest("#list") ? "list" : a.closest("#feature") ? "hero_top" : current ? "game_page" : "top";
       track(/\/purchase/.test(href) ? "buy_click" : "play_click", { game: g.slug, place: place });
       // itch の解析の「参照元」で、公式サイトのどこから来たかが分かるように utm を付ける(押した瞬間だけ)
-      if (href.indexOf("utm_source=") < 0) {
+      if (href.indexOf("utm_source=") < 0 && a.host !== location.host) {   // 同じサイト内(水を立ち上げる)には付けない
         var u = new URL(href);
         u.searchParams.set("utm_source", "pay-games");
         u.searchParams.set("utm_medium", "site");

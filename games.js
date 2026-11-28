@@ -14,6 +14,24 @@
    ========================================================= */
 window.PAY_GAMES = [
   {
+    slug: "cycle",                                   // 公式サイトの中で遊ぶ無料の試作(itch には出していない)
+    short: { ja: "水を立ち上げる", en: "Cycling the Tank" },
+    itch: "https://keisuke2k3-art.github.io/pay-games/games/cycle/?src=site",   // 遊ぶボタンの先(サイト内)
+    released: "2026-11-28",
+    status: { ja: "プロトタイプ(無料)", en: "Prototype (free)" },
+    title: { ja: "水を立ち上げる(試作)", en: "Cycling the Tank (prototype, Japanese only)" },
+    tagline: {
+      ja: "あなたの街の水道水で、はじめての水槽を立ち上げる。合う生き物もわかる。",
+      en: "Cycle your first fish tank with your own city's tap water."
+    },
+    genre: { ja: "水槽の立ち上げパズル", en: "Fish-tank cycling puzzle" },
+    cover: "https://keisuke2k3-art.github.io/pay-games/games/cycle/cover.png",
+    accent: "#3F8F8A",
+    price: { ja: "無料", en: "Free" },
+    tags: [{ ja: "ブラウザ・スマホ対応", en: "Browser & mobile" }, { ja: "1面 約1分", en: "About 1 min per stage" }, { ja: "日本語のみ", en: "Japanese only" }],
+    crop: [.32, .38, .7]
+  },
+  {
     slug: "the-launch-was-a-success",
     short: { ja: "打ち上げは成功しました", en: "The Launch Was a Success" },
     fx: "sealed",
