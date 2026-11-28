@@ -363,7 +363,7 @@
       <dt>定量下限未満</dt>
       <dd>検査はしたが、測れる下限より少なかった(ほぼ含まれない)</dd>
       <dt>公表なし</dt>
-      <dd>その項目の検査結果が公表されていない(KH・カリウム・リン酸は水道の検査項目外)</dd>
+      <dd>その項目の検査結果が公表されていない(KH・カリウム・リン酸は水道の水質基準の項目外)</dd>
       <dt>GH(°dH)</dt>
       <dd>硬度(CaCO₃換算 mg/L)÷ 17.85</dd>
     </dl></details>
@@ -627,12 +627,12 @@ function renderResult(muni, hit, inputText) {
   else if (!cl) tips.push(["drop", "カルキ抜きは必要", "残留塩素は公表されていませんが、水道水には必ず含まれます。中和剤で除去してから使います。"]);
   const cu = VAL(p, nd, "copper");
   if (cu && cu.v != null) tips.push(["warn", "エビ・貝を飼うなら銅も確認", "銅 " + cu.v + " mg/L(水道の基準は1.0以下)。エビ・貝は銅に弱いとされ、水道管の影響で蛇口ごとにも変わります。"]);
-  tips.push(["flask", "KHは試薬で測る", "KH(炭酸塩硬度)は水道の検査項目にないため、どの事業者も公表していません。"]);
+  tips.push(["flask", "KHは試薬で測る", "KH(炭酸塩硬度)は水道の水質基準の項目ではなく、公表していない事業者が多い値です(アルカリ度として公表している事業者もありますが、このツールには入れていません)。"]);
   // この水で立ち上げの試作パズルへ(公表値の GH と pH がある地域だけ)
   const cyc = $("cycle-box");
   if (hit.exact && gh != null && p.ph != null) {
     const href = "../games/cycle/?pref=" + encodeURIComponent(muni.p) + "&city=" + encodeURIComponent(muni.n) + "&src=suishitsu";
-    cyc.innerHTML = '<div class="card"><p style="margin:0 0 8px"><b>この水で水槽の立ち上げに挑戦</b><br><span style="font-size:.9em;opacity:.8">' + esc(muni.n) + "の水道水(GH " + fmt(gh, 1) + "°dH・pH " + esc(p.ph) + ")で、ろ過の細菌を育てて魚を迎えるまでの日数を詰める無料の試作パズル。遊び用に簡略化したモデルです。</span></p>" +
+    cyc.innerHTML = '<div class="card"><p style="margin:0 0 8px"><b>この水で水槽の立ち上げに挑戦</b><br><span style="font-size:.9em;opacity:.8">' + esc(muni.n) + "の水道水(GH " + fmt(gh, 1) + "°dH・pH " + esc(p.ph) + ")で、水槽に細菌を育てて魚を迎えるまでを試す、はじめての人向けの無料パズル(試作)。資料に沿って単純化した遊びです。</span></p>" +
       '<a class="btn btn-secondary" id="cycle-link" href="' + esc(href) + '">' + icon("fish") + "<span>この水で遊んでみる</span></a></div>";
     $("cycle-link").addEventListener("click", () => { try { window.gtag && gtag("event", "cycle_click", { place: muni.p + muni.n, transport_type: "beacon" }); } catch (e) {} });
     cyc.hidden = false;

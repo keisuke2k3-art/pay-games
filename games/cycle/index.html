@@ -3,499 +3,558 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>水を立ち上げる(試作)— あなたの街の水道水で水槽を立ち上げるパズル｜PAY games</title>
-<meta name="description" content="水道水の総硬度と pH は街ごとに違う。全国1,212市区町村の公表値から、あなたの街の水で水槽を何日で立ち上げられるかを詰める無料のパズル(試作)。ブラウザでそのまま遊べます。">
+<title>水を立ち上げる(試作)— あなたの街の水道水で、はじめての水槽を立ち上げるパズル｜PAY games</title>
+<meta name="description" content="水道水の硬さと pH は街ごとに違う。全国1,212市区町村の公表値で、新しい水槽に細菌を育てて魚を迎えるまでを試す、はじめての人向けの無料パズル(試作)。ブラウザでそのまま遊べます。">
 <link rel="canonical" href="https://keisuke2k3-art.github.io/pay-games/games/cycle/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="水を立ち上げる(試作)— あなたの街の水道水で水槽を立ち上げるパズル">
-<meta property="og:description" content="水道水の総硬度と pH は街ごとに違う。全国1,212市区町村の公表値から、あなたの街の水で水槽を何日で立ち上げられるかを詰める無料のパズル(試作)。ブラウザでそのまま遊べます。">
+<meta property="og:title" content="水を立ち上げる(試作)— あなたの街の水道水で、はじめての水槽を立ち上げるパズル">
+<meta property="og:description" content="水道水の硬さと pH は街ごとに違う。全国1,212市区町村の公表値で、新しい水槽に細菌を育てて魚を迎えるまでを試す、はじめての人向けの無料パズル(試作)。ブラウザでそのまま遊べます。">
 <meta property="og:url" content="https://keisuke2k3-art.github.io/pay-games/games/cycle/">
 <meta property="og:image" content="https://keisuke2k3-art.github.io/pay-games/og.png">
 <script>(function(){if(typeof location==="undefined"||!/github\.io$/.test(location.hostname))return;var me=false;try{me=localStorage.getItem("pay-me")==="1"}catch(e){}window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}window.gtag=g;var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-YRLZTCPTSE";document.head.appendChild(s);g("js",new Date());var c={game:"cycle-play"};if(me)c.traffic_type="internal";g("config","G-YRLZTCPTSE",c)})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=BIZ+UDPGothic:wght@400;700&display=swap">
 <style>
+/* はじめての水槽の手帳:上に水槽の絵、下にゲージと手。PCは左右に分ける */
 :root{
-  --bg:#e9edef; --paper:#f6f8f8; --ink:#1d2a30; --sub:#5b6b72; --line:#c7d0d4;
-  --water:#cfe3e6; --glass:#9fb4ba; --ok:#2f6b4f; --bad:#a0402c; --warn:#a8741a;
-  --btn:#24363e; --btnText:#f2f5f5; --chip:#dfe6e8;
+  --bg:#e9efec; --sheet:#f8faf8; --ink:#16302c; --sub:#536864; --rule:#cfdad6;
+  --water:#3f8f8a; --good:#2f7d5b; --warn:#a8741c; --bad:#b0442e; --chip:#dfe8e5;
+  --f-disp:"Zen Maru Gothic","Hiragino Maru Gothic ProN","BIZ UDPGothic",system-ui,sans-serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
 }
-
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#162024;--paper:#1f2b30;--ink:#e3eaec;--sub:#9aabb2;--line:#2c3a40;--glass:#5d7178;--btn:#d9e3e6;--btnText:#162024;--chip:#2c3a40}
-:root:not([data-theme="light"]) .tube .glass,:root:not([data-theme="light"]) .act,:root:not([data-theme="light"]) .lv,:root:not([data-theme="light"]) .slot,:root:not([data-theme="light"]) .next,:root:not([data-theme="light"]) select,:root:not([data-theme="light"]) .days i{background:#26343a;color:var(--ink)}}
-:root[data-theme="dark"]{--bg:#162024;--paper:#1f2b30;--ink:#e3eaec;--sub:#9aabb2;--line:#2c3a40;--glass:#5d7178;--btn:#d9e3e6;--btnText:#162024;--chip:#2c3a40}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111b1a; --sheet:#182523; --ink:#e2ece9; --sub:#93a7a2; --rule:#2c3d3a;
+  --water:#6fbab3; --good:#68c095; --warn:#ddb062; --bad:#e78468; --chip:#223230; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111b1a; --sheet:#182523; --ink:#e2ece9; --sub:#93a7a2; --rule:#2c3d3a;
+  --water:#6fbab3; --good:#68c095; --warn:#ddb062; --bad:#e78468; --chip:#223230; color-scheme:dark}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
-html{background:var(--bg)}
-body{min-height:100vh;background-color:var(--bg);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px}
-button{font:inherit;cursor:pointer}
-.wrap{max-width:980px;margin:0 auto;padding:12px 16px 40px}
-header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-h1{font-size:20px;margin:0;letter-spacing:.04em}
-.tag{font-size:12px;color:var(--sub)}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mplace{display:none}
-@media (max-width:760px){.mplace{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}.mplace b{color:var(--ink)}.grid{grid-template-columns:1fr}.grid>.card:first-child{order:2}.log{max-height:72px}
-  .row.ctl{position:sticky;bottom:0;z-index:3;background:var(--paper);margin:10px -12px -12px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);border-radius:0 0 6px 6px}
-  .row.ctl{flex-wrap:nowrap;gap:6px}.row.ctl button{flex:1 1 0;min-width:0;padding:8px 2px;font-size:13px;white-space:nowrap}.row.ctl .main{flex:1.3 1 0}}
-.head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
-.place{font-weight:700;font-size:17px}
-.tap{font-size:13px;color:var(--sub)}
-#tapinfo{white-space:pre-line}
-.days{display:flex;gap:3px;margin:8px 0 2px;flex-wrap:wrap}
-.days i{width:18px;height:18px;border:1px solid var(--glass);border-radius:3px;background:#fff;font-style:normal;font-size:10px;display:grid;place-items:center;color:var(--sub)}
-.days i.done{background:var(--chip);color:var(--ink)}
-.days i.now{outline:2px solid var(--ink)}
-.days i.fish{background:#f3e3c4;border-color:var(--warn)}
-canvas{width:100%;height:auto;display:block;border-radius:4px}
-.tubes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.tube{text-align:center;font-size:12px}
-.tube .glass{height:84px;width:30px;margin:0 auto 4px;border:2px solid var(--glass);border-top:none;border-radius:0 0 15px 15px;position:relative;background:#fff;overflow:hidden}
-.tube .liq{position:absolute;left:0;right:0;bottom:0;height:72%}
-.tube b{display:block;font-size:15px}
-.tube .lim{color:var(--sub)}
-.tube .u{font-size:11px;color:var(--sub);font-weight:400}
-.tube.alert b{color:var(--bad)}
-.next{font-size:13px;margin-top:8px;padding:8px;background:#fff;border:1px dashed var(--glass);border-radius:4px}
-.next .up{color:var(--bad)} .next .down{color:var(--ok)}
-.acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:10px}
-.act{min-height:56px;text-align:left;padding:8px 10px;border:1px solid var(--glass);background:#fff;border-radius:5px;color:var(--ink)}
-.act small{display:block;color:var(--sub);font-size:12px;line-height:1.3}
-.act[disabled]{opacity:.4;cursor:not-allowed}
-.act.on{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
-.slots{display:flex;gap:6px;align-items:center;margin-top:10px;flex-wrap:wrap;font-size:13px}
-.slot{min-width:92px;min-height:34px;border:1px dashed var(--glass);border-radius:4px;padding:6px 8px;background:#fff}
-.slot.f{border-style:solid;border-color:var(--ink)}
-.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.main{background:var(--btn);color:var(--btnText);border:0;border-radius:5px;padding:10px 16px;min-height:44px;font-weight:700}
-.ghost{background:transparent;border:1px solid var(--glass);border-radius:5px;padding:10px 14px;min-height:44px;color:var(--ink)}
-.log{font-size:12px;color:var(--sub);margin-top:8px;max-height:120px;overflow:auto}
-.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:10px}
-.lv{text-align:left;padding:12px;border:1px solid var(--glass);border-radius:6px;background:#fff;min-height:96px;color:var(--ink)}
-.lv .n{font-weight:700}
-.lv .s{font-size:13px;color:var(--sub)}
-.lv .st{color:var(--warn);letter-spacing:2px}
-.tsume{display:inline-block;border:1.5px solid var(--warn);color:var(--warn);border-radius:3px;padding:0 5px;font-size:12px;letter-spacing:1px;font-weight:700}
-select{font:inherit;padding:8px;min-height:44px;border:1px solid var(--glass);border-radius:5px;background:#fff;max-width:100%}
-.modal{position:fixed;inset:0;background:rgba(20,30,34,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
-.modal.show{display:flex}
-.modal .card{max-width:520px;width:100%;max-height:90vh;overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
-td,th{border-bottom:1px solid var(--line);padding:4px 6px;text-align:right}
-td:first-child,th:first-child{text-align:left}
-.bad{color:var(--bad);font-weight:700}.okc{color:var(--ok);font-weight:700}
-.note{font-size:12px;color:var(--sub);margin-top:14px}
-.hidden{display:none}
-.goal{font-size:13px;margin:-2px 0 8px;padding:4px 8px;border-left:3px solid var(--warn);background:var(--chip);border-radius:0 4px 4px 0}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:14px}
+h1,h2,h3{font-family:var(--f-disp);font-weight:700;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--water);outline-offset:2px}
+a{color:var(--water)}
+.sub{color:var(--sub);font-size:.9rem}
+
+/* メニュー */
+#menu header{display:grid;gap:6px;padding:8px 0 4px}
+#menu h1{font-size:clamp(1.9rem,6vw,2.6rem);letter-spacing:.04em}
+.lead{max-width:34em;margin:0}
+.stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.stage{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;width:100%;text-align:left;
+  background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;min-height:64px}
+.stage:hover{border-color:var(--water)}
+.stage .no{font-family:var(--f-disp);font-size:1.3rem;color:var(--water);width:1.4em}
+.stage .nm{font-weight:700}
+.stars{font-family:var(--f-disp);letter-spacing:.1em;color:var(--warn);white-space:nowrap}
+.stars .off{color:var(--rule)}
+.type{display:inline-block;font-size:.78rem;padding:1px 9px;border-radius:99px;background:var(--chip);color:var(--ink);font-weight:700;white-space:nowrap}
+.type.soft{background:color-mix(in srgb,var(--warn) 22%,var(--sheet))}
+.type.alk{background:color-mix(in srgb,var(--water) 26%,var(--sheet))}
+.type.winter{background:color-mix(in srgb,#5b7fb5 26%,var(--sheet))}
+.mycity{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:14px;display:grid;gap:10px}
+.mycity .row{display:flex;flex-wrap:wrap;gap:8px}
+select{font:inherit;font-size:16px;min-height:44px;padding:6px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);flex:1 1 140px;min-width:0}
+.primary{background:var(--water);color:var(--sheet);border:0;border-radius:8px;min-height:48px;padding:8px 20px;font-weight:700}
+.primary:disabled{opacity:.45;cursor:default}
+.plain{background:transparent;border:1px solid var(--rule);border-radius:8px;min-height:44px;padding:6px 14px}
+.plain:disabled{opacity:.4;cursor:default}
+
+/* 遊ぶ画面 */
+#play{display:grid;gap:12px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px}
+.bar h2{font-size:1.35rem}
+.quirk{margin:2px 0 0;font-size:.95rem}
+.board{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.board{grid-template-columns:minmax(0,1fr)}}
+.tankbox{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:10px;display:grid;gap:8px}
+canvas{width:100%;aspect-ratio:16/10;display:block;border-radius:6px;max-width:100%}
+.day{display:flex;justify-content:space-between;align-items:baseline;font-variant-numeric:tabular-nums}
+.day b{font-family:var(--f-disp);font-size:1.25rem}
+.msg{min-height:3.2em;margin:0;font-size:.98rem}
+.msg.bad{color:var(--bad)} .msg.good{color:var(--good)}
+.gauges{display:grid;gap:8px;background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+.g{display:grid;grid-template-columns:5.2em minmax(0,1fr) auto;gap:10px;align-items:center}
+.g .lbl{font-weight:700;font-size:.92rem}
+.g .word{font-size:.88rem;color:var(--sub);white-space:nowrap}
+.dots{display:flex;gap:5px;align-items:center}
+.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--good);display:block;flex:none}
+.dots i.on{background:var(--good)}
+.dots .need{width:2px;height:22px;background:var(--ink);opacity:.55;margin:0 2px}
+.meter{height:12px;border-radius:99px;background:var(--chip);overflow:hidden}
+.meter span{display:block;height:100%;border-radius:99px;transition:width .3s}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:420px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:10px 8px 8px;display:grid;justify-items:center;gap:2px;text-align:center;min-height:96px}
+.card:hover:not(:disabled){border-color:var(--water)}
+.card:disabled{opacity:.38;cursor:default}
+.card svg{width:34px;height:34px}
+.card b{font-size:.92rem;line-height:1.3}
+.card small{font-size:.74rem;color:var(--sub);line-height:1.35}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.acts .primary{flex:1 1 200px}
+.fails{font-size:.85rem;color:var(--bad)}
+
+/* 結果 */
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;z-index:20;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 16px) max(16px,env(safe-area-inset-left,0px))}
+.panel{background:var(--sheet);color:var(--ink);border-radius:14px;max-width:460px;width:100%;max-height:100%;overflow:auto;padding:20px;display:grid;gap:12px}
+.panel h3{font-size:1.4rem}
+.big{font-family:var(--f-disp);font-size:2rem;letter-spacing:.12em;color:var(--warn)}
+.steps{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:0;padding:0;list-style:none}
+.steps li{display:flex;align-items:center;gap:3px;font-size:.82rem;background:var(--chip);border-radius:6px;padding:2px 7px 2px 4px}
+.steps li svg{width:20px;height:20px}
+.facts{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:.9rem;display:grid;gap:4px}
+.facts .num{font-variant-numeric:tabular-nums;font-weight:700}
+.panel .acts{justify-content:flex-end}
+.foot{font-size:.8rem;color:var(--sub);border-top:1px solid var(--rule);padding-top:10px;margin-top:6px}
+@media (prefers-reduced-motion:reduce){.meter span{transition:none}}
+/* v0.5.1 で足したもの:地図・しくみ */
+.jmap{display:block;flex:none}
+.jmap rect{fill:color-mix(in srgb,var(--sub) 30%,var(--sheet));stroke:var(--sheet);stroke-width:1.2}
+.jmap .pin{fill:var(--bad);stroke:var(--sheet);stroke-width:2;pointer-events:none}
+#p-map,#pick-map{flex:none}
+.jmap rect.on{fill:var(--water)}
+.jmap.pick rect{cursor:pointer}
+.jmap.pick rect:hover{fill:color-mix(in srgb,var(--water) 45%,var(--chip))}
+.jmap.pick rect.on:hover{fill:var(--water)}
+.stage{grid-template-columns:auto minmax(0,1fr) auto}
+.stage .jmap{width:58px;height:54px}
+.where{display:flex;gap:12px;align-items:center;min-width:0}
+.where .jmap{width:84px;height:78px}
+.where>div{min-width:0}
+.mycity .pickrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.mycity .pickrow .jmap{width:150px;height:139px}
+@media (max-width:480px){.mycity .pickrow{grid-template-columns:minmax(0,1fr)}.mycity .pickrow .jmap{width:180px;height:166px;justify-self:center}}
+.mycity .row{display:flex;flex-wrap:wrap;gap:8px}
+.headrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px}
+.guide{max-width:620px}
+.guide p,.guide dd{margin:0}
+.guide h4{font-family:var(--f-disp);font-size:1rem;margin:4px 0 0}
+.guide dl{display:grid;gap:8px;margin:0}
+.guide dt{font-weight:700}
+.guide dd{font-size:.92rem}
+.guide ol{margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:.86rem}
+.guide .note{font-size:.86rem;background:var(--bg);border-radius:8px;padding:10px 12px}
+.cyc{width:100%;height:auto;max-width:100%}
+.cyc text{fill:var(--ink);font-family:var(--f-body);font-size:13px}
+.cyc .box{fill:var(--bg);stroke:var(--rule)}
+.cyc .bad{fill:color-mix(in srgb,var(--bad) 18%,var(--sheet));stroke:var(--bad)}
+.cyc .ok{fill:color-mix(in srgb,var(--good) 18%,var(--sheet));stroke:var(--good)}
+.cyc .arr{stroke:var(--sub);stroke-width:2;fill:none}
+.cyc .bug{fill:var(--good)}
+.cyc .lbl{fill:var(--sub);font-size:11px}
+.scan{display:grid;gap:2px;background:var(--water);color:var(--sheet);text-decoration:none;border-radius:10px;padding:12px 14px}
+.scan:hover{filter:brightness(1.06)}
+.scan span{font-size:.85rem;opacity:.92}
+.quirk a{font-size:.88rem;white-space:nowrap}
 </style>
 </head>
 <body>
+
 <div class="wrap">
-  <header><h1>水を立ち上げる</h1><span class="tag">試作 v0.4.3 ・ あなたの街の水道水で、水槽を何日で「立ち上げ」られるかを詰めるパズル</span></header>
-
   <section id="menu">
-    <div class="card">
-      <div>ろ過の細菌を育てて、魚を迎えられる水にする。<b>早く迎えられるほど★が増える</b>。水道水の硬さと pH は街ごとに違う。たいていの街は素直な水だが、硬さや pH が極端な街では、ほかの街で通った手順が通らない。</div>
-      <div class="levels" id="levels"></div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <div class="head"><b>あなたの街の水で挑戦</b><span class="tap">全国1,212の市区町村(水質スキャナに載せている公表値)。全国895種の水のうち、東京の区部で最短だった手順がそのままでは通らない「手ごわい水」はおよそ3分の1(301種)</span></div>
-      <div class="tap" id="ktally"></div>
-      <div class="row">
-        <select id="pref" aria-label="都道府県"></select>
-        <select id="city" aria-label="市区町村"></select>
-        <button class="main" id="goCity">この水で始める</button>
+    <header>
+      <div class="headrow">
+        <h1>水を立ち上げる</h1>
+        <button class="plain" id="btn-guide" type="button">水を立ち上げるとは</button>
       </div>
-    </div>
-    <p class="note">簡略化したモデルです。数値の動きは実際の水槽の目安を参考にしていますが、立ち上げの手引きではありません。KH は公表値の総硬度からの推定です(実際は水によって違います)。KH の減る速さや細菌の増える速さは、遊びやすいように実際より調整しています。水道水の総硬度と pH は各水道事業者の公表値(<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>)から。プログラムは生成AI(Claude)で作っています。</p>
-  </section>
-
-  <section id="game" class="hidden">
-    <div class="grid">
-      <div class="card">
-        <div class="head"><span class="place" id="place"></span><button class="ghost" id="back" style="min-height:36px;padding:4px 10px">面を選ぶ</button></div>
-        <div class="tap" id="tapinfo"></div>
-        <details class="tap" id="tplan" hidden><summary>東京の区部の手順を見る</summary><div id="tplanBody"></div></details>
-        <div class="days" id="days"></div>
-        <canvas id="tank" width="440" height="260"></canvas>
-        <div class="log" id="log"></div>
-      </div>
-      <div class="card">
-        <div class="mplace" id="mplace"></div>
-        <div class="goal" id="goal"></div>
-        <div class="tubes" id="tubes"></div>
-        <div class="next" id="next"></div>
-        <div class="slots"><span>この3日の手(2つまで)</span><span class="slot" id="s0">―</span><span class="slot" id="s1">―</span></div>
-        <div class="acts" id="acts"></div>
-        <div class="row ctl">
-          <button class="main" id="adv">3日進める</button>
-          <button class="ghost" id="fish">魚を迎える</button>
-          <button class="ghost" id="undo">1手戻す</button>
-          <button class="ghost" id="clear">手を消す</button>
+      <p class="lead">買ったばかりの水槽には、魚のフンを分解してくれる細菌がまだいません。魚を迎える前に細菌を育てておくのが「水を立ち上げる」こと。水道水は街ごとに性質がちがうので、立ち上げ方も街によって少しずつ変わります。</p>
+    </header>
+    <ul class="stages" id="stages"></ul>
+    <div class="mycity" style="margin-top:12px">
+      <h2 style="font-size:1.1rem">あなたの街の水で</h2>
+      <div class="pickrow">
+        <div id="pick-map"></div>
+        <div style="display:grid;gap:8px;min-width:0">
+          <p class="sub" style="margin:0">地図か一覧で選んでください。水道事業者が硬度と pH を公表している全国 1,212 の市区町村から選べます。</p>
+          <div class="row">
+            <select id="sel-pref" aria-label="都道府県"></select>
+            <select id="sel-city" aria-label="市区町村"></select>
+          </div>
+          <button class="primary" id="btn-city" type="button">この街の水で始める</button>
+          <p class="sub" style="margin:0">住所や郵便番号から自分の街の水を調べるなら <a id="menu-scan" href="" target="_blank" rel="noopener" data-scan="menu">水質スキャナ↗</a></p>
         </div>
       </div>
     </div>
-    <p class="note" id="gnote">簡略化したモデルの遊びです(立ち上げの手引きではありません)。KH は総硬度からの推定、細菌の増え方や KH の減り方は遊びやすく調整しています。水道水の値は各水道事業者の公表値(<a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/" target="_blank" rel="noopener">水質スキャナ</a>)。<b>実際の立ち上げは、試薬でアンモニアと亜硝酸を測りながら進めます</b>(遊びの最短手順のように「1回入れて放っておけばよい」という意味ではありません)。</p>
+    <p class="foot">試作版。監修 PAY・コードと文章は Claude(Anthropic の AI)・絵はコードで描いています。ゲームの考え方は「水を立ち上げるとは」にある資料に沿って単純化したもので、型の線引きや日数はゲーム用の目安です。実際の水槽では試薬で測ってください。</p>
   </section>
-  <p class="note" style="border-top:1px solid var(--line);padding-top:10px">試作版です。続きを作るかは遊ばれ方を見て決めます。監修 PAY。コードと文章は Claude〔Anthropic の AI〕で書いています。水槽の絵は実行時にコードで描いています(画像・音声の生成は使っていません)。 ・ <a href="https://keisuke2k3-art.github.io/pay-games/suishitsu/">水質スキャナで自分の街の水を調べる</a> ・ <a href="https://keisuke2k3-art.github.io/pay-games/">PAY games</a></p>
+
+  <section id="play" hidden>
+    <div class="bar">
+      <div class="where">
+        <div id="p-map"></div>
+        <div>
+          <h2 id="p-name"></h2>
+          <p class="quirk" id="p-quirk"></p>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="plain" id="btn-guide2" type="button">しくみ</button>
+        <button class="plain" id="btn-menu" type="button">面を選ぶ</button>
+      </div>
+    </div>
+    <div class="board">
+      <div class="tankbox">
+        <canvas id="tank" width="640" height="400" aria-label="水槽の様子"></canvas>
+        <div class="day"><span><b id="p-day">0</b> 日目</span><span class="sub" id="p-limit"></span></div>
+        <p class="msg" id="p-msg" role="status"></p>
+      </div>
+      <div style="display:grid;gap:12px;min-width:0">
+        <div class="gauges" id="gauges"></div>
+        <div class="cards" id="cards"></div>
+        <div class="acts">
+          <button class="primary" id="btn-fish" type="button">魚を迎える</button>
+          <button class="plain" id="btn-undo" type="button">1手戻す</button>
+        </div>
+        <span class="fails" id="p-fails"></span>
+      </div>
+    </div>
+  </section>
 </div>
+<div class="overlay" id="ov" hidden><div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="ov-h"></div></div>
 
-<div class="modal" id="modal"><div class="card" id="mbody"></div></div>
+<template id="guide-tpl">
+  <h3 id="ov-h">水を立ち上げるとは</h3>
+  <p>魚のフンや食べ残しからは、アンモニアという毒が出ます。フィルターや砂利に住む細菌が、アンモニアを亜硝酸に、亜硝酸を硝酸塩に変えていきます。硝酸塩は毒がずっと弱く、水換えで抜けます。</p>
+  <svg class="cyc" viewBox="0 0 520 132" role="img" aria-label="魚のフンやエサからアンモニア、細菌が亜硝酸に、さらに細菌が硝酸塩に変え、水換えで抜ける流れ">
+    <rect class="box" x="4" y="38" width="86" height="48" rx="8"/><text x="47" y="58" text-anchor="middle">魚のフン</text><text x="47" y="76" text-anchor="middle">エサの残り</text>
+    <path class="arr" d="M92 62h22m-6-5 6 5-6 5"/>
+    <rect class="bad" x="118" y="38" width="96" height="48" rx="8"/><text x="166" y="58" text-anchor="middle">アンモニア</text><text x="166" y="76" text-anchor="middle" class="lbl">毒</text>
+    <path class="arr" d="M216 62h30m-6-5 6 5-6 5"/><circle class="bug" cx="231" cy="46" r="4"/><circle class="bug" cx="223" cy="40" r="3"/><text x="231" y="100" text-anchor="middle" class="lbl">細菌</text>
+    <rect class="bad" x="250" y="38" width="96" height="48" rx="8"/><text x="298" y="58" text-anchor="middle">亜硝酸</text><text x="298" y="76" text-anchor="middle" class="lbl">毒</text>
+    <path class="arr" d="M348 62h30m-6-5 6 5-6 5"/><circle class="bug" cx="363" cy="46" r="4"/><circle class="bug" cx="355" cy="40" r="3"/><text x="363" y="100" text-anchor="middle" class="lbl">細菌</text>
+    <rect class="ok" x="382" y="38" width="96" height="48" rx="8"/><text x="430" y="58" text-anchor="middle">硝酸塩</text><text x="430" y="76" text-anchor="middle" class="lbl">毒は弱い</text>
+    <path class="arr" d="M430 88v22h-40"/><text x="384" y="124" text-anchor="end" class="lbl">水換えで抜く</text>
+    <text x="166" y="22" text-anchor="middle" class="lbl">このゲームの「汚れ」</text><path class="arr" d="M118 28h228" stroke-dasharray="3 3"/>
+  </svg>
+  <p>買ったばかりの水槽には、この細菌がまだいません。<b>魚を入れる前に細菌を育てておくことを「水を立ち上げる」(水づくり)</b>といいます。ゴールは、細菌が十分に増え、汚れ(アンモニアと亜硝酸)が消えた水。資料では、ふつう3〜8週かかるとされています。</p>
+  <dl>
+    <dt>まず、カルキ抜き</dt>
+    <dd>水道水には消毒の塩素(カルキ)が入っていて、魚にも細菌にも害があります。中和剤で抜いてから使います(このゲームでは、カルキ抜きはすんでいるものとします)。あなたの街の残留塩素は <a href="../../suishitsu/" data-scan="guide">水質スキャナ</a>で見られます。</dd>
+    <dt>魚がいないのに、エサを入れるの?</dt>
+    <dd>魚の代わりに、魚のエサを少し入れて傷ませます。そこから出るアンモニアが細菌の食べ物になります。市販のアンモニア液を使うやり方もあります。</dd>
+    <dt>pH が下がる、とは</dt>
+    <dd>細菌が働くと、水は少しずつ酸性に傾きます(pH が下がる)。やわらかい水は、それを打ち消す成分(アルカリ度・KH)が少ないので下がりやすく、下がりすぎると細菌が働かなくなります。</dd>
+    <dt>サンゴ砂</dt>
+    <dd>アクアショップやホームセンターで売っている砂。ネットに入れてフィルターや底に置くと少しずつ溶けて、pH を下がりにくくします。牡蠣殻も同じ目的で使われます。</dd>
+    <dt>アルカリ寄りの水(pH が高い)</dt>
+    <dd>pH が高いほど、同じ量のアンモニアでも魚への毒が強くなります。汚れが消えきってから魚を迎えます。</dd>
+    <dt>冬の水</dt>
+    <dd>水が冷たいと、細菌の増え方が遅くなります。熱帯魚にはヒーターも要ります。</dd>
+    <dt>バクテリア剤</dt>
+    <dd>市販の細菌。立ち上げを早める助けになりますが、これだけで済むとは限りません。</dd>
+  </dl>
+  <h4>このゲームの考え方と出典</h4>
+  <p class="note">下の資料の説明に沿って、ゲーム用に単純化しています。型の線引き(硬度 30 mg/L 未満を「とてもやわらかい水」、pH 7.8 以上を「アルカリ寄りの水」)、日数、細菌や汚れの量はゲームの目安で、資料にある数値ではありません。立ち上げ方には、ほかにもいろいろな流儀があります。実際の水槽では試薬で測ってください。</p>
+  <ol>
+    <li><a href="https://ask.ifas.ufl.edu/publication/FA031" target="_blank" rel="noopener">Ammonia in Aquatic Systems(FA031)</a> Francis-Floyd ほか、フロリダ大学 IFAS Extension。細菌がアンモニア→亜硝酸→硝酸塩と変えること、pH と水温が高いほどアンモニアの毒が強いこと、細菌の働きでアルカリ度が使われ pH が下がること</li>
+    <li><a href="https://ask.ifas.ufl.edu/publication/FA101" target="_blank" rel="noopener">Fish Health Management Considerations in Recirculating Aquaculture Systems Part 3(FA101)</a> Yanong、同。新しい水槽には細菌がいないこと、3〜8週以上かかること、魚の前にアンモニア源を入れる方法、市販の細菌、水が冷たいと細菌が育ちにくいこと</li>
+    <li><a href="https://www.practicalfishkeeping.co.uk/features/how-to-cycle-a-fish-tank-the-complete-guide/" target="_blank" rel="noopener">How to Cycle a Fish Tank: The Complete Guide</a> Practical Fishkeeping(2026)。軟水の地域では pH が急に下がりやすいこと、バクテリア剤だけには頼れないこと</li>
+    <li><a href="https://aquariumscience.org/index.php/2-4-cycling-with-ammonia" target="_blank" rel="noopener">Cycling with ammonia</a> aquariumscience.org。魚のエサをアンモニア源にする方法、サンゴ砂</li>
+    <li><a href="../../suishitsu/sources/">水道水の硬度と pH</a> 各水道事業者の公表値(水質スキャナの出典一覧)</li>
+  </ol>
+  <div class="acts"><button class="primary" id="ov-ok" type="button">わかった</button></div>
+</template>
 
-<script>// 水を立ち上げる — 簡略化した硝化サイクルのモデル(決定論。同じ手なら同じ結果)
-// 1手番=3日。手は手番の始めに打ち、その後3日分を1日ずつ計算する。
-(function (root) {
-  'use strict';
-  const C = {
-    turnDays: 3,
-    seed: 0.012,         // 最初から住んでいる細菌(ほぼゼロ)
-    rA: 0.42, rB: 0.30,  // 1日の増え方(26℃・餌が十分なとき)
-    capA: 1.0, capB: 1.0, // 1単位の細菌が1日に処理できる量(mg/L)
-    decay: 0.97,         // 餌が無い日の減り方
-    acid: 0.08,          // アンモニア1mg/L を処理すると減る KH(dKH)
-    fishLoad: 0.9,       // 魚が来てから毎日出るアンモニア
-    testDays: 4,
-    dose: 2.0, small: 0.5, bottle: 0.08, shell: 2.0, change: 0.4,
-    phDrop: 1.4,         // KH が尽きたときに下がる pH
-    shellPh: 0.15,       // 殻1つ(KH+2)で上がる pH は 0.3
-    shellPool: 4.0,      // 殻1つが溶けて戻せる KH の総量(使い切ると殻は効かなくなる)
-    shellStopPh: 7.4,    // これ以上の pH では殻はほとんど溶けない
-    minKh: 0.8,          // 迎える前の点検:KH(dKH)がいまも、魚を迎えた4日後の見込みでもこれ以上残っていること
-    heatDays: 9,         // ヒーター1回で動く日数(電気代の上限がある面だけ。level.heatDays)
-  };
-  function khFromHardness(h) { return Math.max(0.3, h * 0.8 / 17.85); }
-  function phOf(s) {
-    let p = s.ph0 + Math.min(1.0, Math.max(0, s.kh - s.kh0) * C.shellPh * 2); // 殻が溶けて水道水より KH が増えた分だけ pH が上がる(入れた瞬間には効かない)
-    const ref = Math.min(1.2, s.kh0); if (s.kh < ref) p -= (1 - s.kh / ref) * C.phDrop; // 水道水そのものの pH から、KH が減った割合だけ下がる(尽きると大きく落ちる)
-    return Math.max(5.6, Math.min(8.6, p));
+<script>
+const WATER=[["愛知県","瀬戸市",17,7.4,"23204"],["神奈川県","相模原市",57,7.4,"14150"],["神奈川県","鎌倉市",57,7.4,"14204"],["神奈川県","厚木市",57,7.4,"14212"],["神奈川県","逗子市",57,7.4,"14208"],["神奈川県","伊勢原市",57,7.4,"14214"],["神奈川県","海老名市",57,7.4,"14215"],["神奈川県","大和市",57,7.4,"14213"],["神奈川県","箱根町",57,7.4,"14382"],["神奈川県","藤沢市",57,7.4,"14205"],["神奈川県","茅ヶ崎市",57,7.4,"14207"],["神奈川県","綾瀬市",57,7.4,"14218"],["千葉県","木更津市",115,7.8,"12206"],["千葉県","君津市",115,7.8,"12225"],["千葉県","富津市",115,7.8,"12226"],["千葉県","袖ケ浦市",115,7.8,"12229"],["大阪府","能勢町",41.2,7.3,"27322"],["大阪府","島本町",41.2,7.3,"27301"],["大阪府","茨木市",41.2,7.3,"27211"],["大阪府","摂津市",41.2,7.3,"27224"],["大阪府","交野市",41.2,7.3,"27230"],["大阪府","寝屋川市",41.2,7.3,"27215"],["大阪府","四條畷市",41.2,7.3,"27229"],["大阪府","高石市",41.2,7.3,"27225"],["大阪府","泉大津市",41.2,7.3,"27206"],["大阪府","柏原市",41.2,7.3,"27221"],["大阪府","八尾市",41.2,7.3,"27212"],["大阪府","岬町",41.2,7.3,"27366"],["大阪府","千早赤阪村",41.2,7.3,"27383"],["大阪府","河南町",41.2,7.3,"27382"],["大阪府","太子町",41.2,7.3,"27381"],["大阪府","河内長野市",41.2,7.3,"27216"],["大阪府","藤井寺市",41.2,7.3,"27226"],["大阪府","忠岡町",41.2,7.3,"27341"],["大阪府","和泉市",41.2,7.3,"27219"],["大阪府","岸和田市",41.2,7.3,"27202"],["大阪府","阪南市",41.2,7.3,"27232"],["大阪府","田尻町",41.2,7.3,"27362"],["大阪府","泉南市",41.2,7.3,"27228"],["大阪府","熊取町",41.2,7.3,"27361"],["大阪府","貝塚市",41.2,7.3,"27208"],["茨城県","取手市",70,7.4,"08217"],["茨城県","龍ケ崎市",70,7.4,"08208"],["茨城県","牛久市",70,7.4,"08219"],["茨城県","利根町",70,7.4,"08564"],["千葉県","千葉市",89,7.7,"12100"],["千葉県","市原市",89,7.7,"12219"],["千葉県","船橋市",89,7.7,"12204"],["千葉県","習志野市",89,7.7,"12216"],["千葉県","鎌ケ谷市",89,7.7,"12224"],["千葉県","白井市",89,7.7,"12232"],["千葉県","成田市",89,7.7,"12211"],["千葉県","市川市",89,7.7,"12203"],["千葉県","松戸市",89,7.7,"12207"],["千葉県","浦安市",89,7.7,"12227"],["北海道","滝川市",45.7,7.43,"01225"],["北海道","砂川市",45.7,7.43,"01226"],["北海道","歌志内市",45.7,7.43,"01227"],["北海道","奈井江町",45.7,7.43,"01424"],["埼玉県","上尾市",66,7.1,"11219"],["埼玉県","久喜市",66,7.1,"11232"],["埼玉県","和光市",66,7.1,"11229"],["埼玉県","宮代町",66,7.1,"11442"],["埼玉県","川口市",66,7.1,"11203"],["埼玉県","川越市",66,7.1,"11201"],["埼玉県","所沢市",66,7.1,"11208"],["埼玉県","新座市",66,7.1,"11230"],["埼玉県","春日部市",66,7.1,"11214"],["埼玉県","狭山市",66,7.1,"11215"],["埼玉県","草加市",66,7.1,"11221"],["埼玉県","蕨市",66,7.1,"11223"],["埼玉県","越谷市",66,7.1,"11222"],["秋田県","横手市",30,7.1,"05203"],["京都府","八幡市",37,7.38,"26210"],["愛知県","津島市",16,7.4,"23208"],["宮城県","富谷市",21.4,7.1,"04216"],["茨城県","坂東市",62,7.6,"08228"],["長野県","飯田市",6.9,7,"20205"],["岡山県","総社市",65,7.3,"33208"],["新潟県","柏崎市",20,7,"15205"],["千葉県","四街道市",63.2,8,"12228"],["群馬県","桐生市",30.4,7.5,"10203"],["山形県","酒田市",26,7.3,"06204"],["京都府","福知山市",48,7.2,"26201"],["福岡県","太宰府市",43.9,7.7,"40221"],["秋田県","大館市",34,7.1,"05204"],["愛知県","愛西市",19,7.2,"23232"],["埼玉県","羽生市",96,7.6,"11216"],["愛媛県","西条市",40,7.7,"38206"],["埼玉県","八潮市",61,7.7,"11234"],["愛知県","知多市",30,7.3,"23224"],["愛知県","知立市",20,7.2,"23225"],["徳島県","阿南市",51.7,7.44,"36204"],["栃木県","大田原市",46,7.9,"09210"],["千葉県","旭市",78.3,7,"12215"],["宮城県","大崎市",40.6,7.7,"04215"],["北海道","千歳市",25.2,6.98,"01224"],["福岡県","宗像市",82,7.3,"40220"],["茨城県","神栖市",96,7.4,"08232"],["栃木県","鹿沼市",33,7.1,"09205"],["三重県","伊賀市",88,7.5,"24216"],["京都府","木津川市",50.9,6.82,"26214"],["山梨県","甲斐市",70,7.2,"19210"],["三重県","名張市",36.4,7.63,"24208"],["埼玉県","吉川市",67,7.4,"11243"],["沖縄県","名護市",94,7.8,"47209"],["山梨県","笛吹市",57,7.2,"19211"],["石川県","野々市市",77,6.8,"17212"],["大阪府","大阪狭山市",43.6,7.6,"27231"],["青森県","十和田市",47.5,6.93,"02206"],["東京都","羽村市",54,7.2,"13227"],["新潟県","村上市",27,6.5,"15212"],["徳島県","鳴門市",37.5,7.3,"36202"],["新潟県","三条市",18,7,"15204"],["埼玉県","飯能市",73,7.7,"11209"],["埼玉県","本庄市",168,7.5,"11211"],["愛知県","碧南市",15,7.3,"23209"],["滋賀県","栗東市",53,6.9,"25208"],["福岡県","小郡市",42,7.6,"40216"],["福岡県","大刀洗町",42,7.6,"40503"],["岐阜県","瑞穂市",41,7.8,"21216"],["京都府","向日市",45,7.1,"26208"],["岩手県","滝沢市",44,7.7,"03216"],["埼玉県","日高市",52.9,7.6,"11242"],["奈良県","大和高田市",48,7.5,"29202"],["奈良県","大和郡山市",59,7.5,"29203"],["奈良県","天理市",52,7.7,"29204"],["奈良県","桜井市",63,7.5,"29206"],["奈良県","五條市",49,7.6,"29207"],["奈良県","御所市",137,7,"29208"],["奈良県","香芝市",48,7.8,"29210"],["奈良県","宇陀市",53,7.5,"29212"],["奈良県","平群町",53,7.5,"29342"],["奈良県","三郷町",56,7.4,"29343"],["奈良県","斑鳩町",51,8,"29344"],["奈良県","安堵町",46,7.6,"29345"],["奈良県","川西町",47,7.6,"29361"],["奈良県","三宅町",47,7.6,"29362"],["奈良県","田原本町",47,7.6,"29363"],["奈良県","高取町",49,7.5,"29401"],["奈良県","明日香村",50,7.6,"29402"],["奈良県","上牧町",46,7.5,"29424"],["奈良県","王寺町",45,7.6,"29425"],["奈良県","広陵町",46,7.5,"29426"],["奈良県","河合町",54,7.3,"29427"],["奈良県","吉野町",49,7.7,"29441"],["奈良県","大淀町",49,7.8,"29442"],["奈良県","下市町",49,7.9,"29443"],["香川県","東かがわ市",31,7.86,"37207"],["香川県","さぬき市",42,7.75,"37206"],["香川県","土庄町",34,7.17,"37322"],["香川県","宇多津町",28,7.63,"37386"],["広島県","竹原市",38,7.5,"34203"],["広島県","三原市",34,7.8,"34204"],["広島県","府中市",42,7.3,"34208"],["広島県","三次市",20,6.9,"34209"],["広島県","庄原市",19,7.4,"34210"],["広島県","江田島市",23,7.5,"34215"],["広島県","熊野町",20,7.3,"34307"],["広島県","北広島町",22,7,"34369"],["広島県","大崎上島町",23,7.4,"34431"],["広島県","世羅町",35,7.4,"34462"],["広島県","神石高原町",16,7.2,"34545"],["東京都","あきる野市",44.6,7.6,"13228"],["東京都","三鷹市",71.2,7.7,"13204"],["東京都","世田谷区",65.4,7.4,"13112"],["東京都","中央区",62.9,7.5,"13102"],["東京都","中野区",60.6,7.5,"13114"],["東京都","八王子市",56.6,7.5,"13201"],["東京都","北区",71,7.6,"13117"],["東京都","千代田区",68,7.6,"13101"],["東京都","台東区",68.4,7.5,"13106"],["東京都","品川区",62.5,7.3,"13109"],["東京都","国分寺市",61,7.5,"13214"],["東京都","国立市",54.6,7.5,"13215"],["東京都","墨田区",62.6,7.5,"13107"],["東京都","多摩市",65.4,7.6,"13224"],["東京都","大田区",60.9,7.4,"13111"],["東京都","奥多摩町",33.9,7.5,"13308"],["東京都","小平市",63.7,7.4,"13211"],["東京都","小金井市",58.3,7.4,"13210"],["東京都","府中市",55.7,7.4,"13206"],["東京都","文京区",68.5,7.5,"13105"],["東京都","新宿区",69.7,7.5,"13104"],["東京都","日の出町",57.2,7.6,"13305"],["東京都","日野市",67.7,7.7,"13212"],["東京都","杉並区",65.9,7.5,"13115"],["東京都","東久留米市",58.8,7.5,"13222"],["東京都","東大和市",47.6,7.4,"13220"],["東京都","東村山市",56,7.5,"13213"],["東京都","板橋区",59.2,7.6,"13119"],["東京都","武蔵村山市",47.7,7.5,"13223"],["東京都","江戸川区",65.7,7.5,"13123"],["東京都","江東区",63.8,7.6,"13108"],["東京都","清瀬市",57.1,7.4,"13221"],["東京都","渋谷区",58.5,7.5,"13113"],["東京都","港区",64.9,7.6,"13103"],["東京都","狛江市",55.8,7.5,"13219"],["東京都","瑞穂町",63.4,7.8,"13303"],["東京都","町田市",59.8,7.5,"13209"],["東京都","目黒区",62,7.4,"13110"],["東京都","福生市",49.7,7.6,"13218"],["東京都","稲城市",55.5,7.4,"13225"],["東京都","立川市",53.9,7.5,"13202"],["東京都","練馬区",65,7.5,"13120"],["東京都","荒川区",68,7.5,"13118"],["東京都","葛飾区",60,7.6,"13122"],["東京都","西東京市",63.5,7.5,"13229"],["東京都","調布市",69.2,7.5,"13208"],["東京都","豊島区",67.6,7.5,"13116"],["東京都","足立区",62,7.5,"13121"],["東京都","青梅市",45.7,7.5,"13205"],["愛知県","長久手市",16,7.2,"23238"],["愛知県","東郷町",16,7.2,"23302"],["愛知県","日進市",19,7.2,"23230"],["愛知県","みよし市",19,7.2,"23236"],["愛知県","豊明市",19,7.2,"23229"],["福岡県","福岡市東区",52,7.6,"40131"],["福岡県","福岡市博多区",53,7.5,"40132"],["福岡県","福岡市中央区",37,7.6,"40133"],["福岡県","福岡市早良区",36,7.5,"40137"],["福岡県","福岡市南区",27,7.5,"40134"],["福岡県","福岡市城南区",41,7.5,"40136"],["福岡県","福岡市西区",34,7.6,"40135"],["福岡県","福岡市",42,7.6,"40130"],["広島県","広島市",19.1,7.4,"34100"],["愛知県","名古屋市千種区",19,7.03,"23101"],["愛知県","名古屋市東区",19,7.2,"23102"],["愛知県","名古屋市北区",19,7.1,"23103"],["愛知県","名古屋市西区",20,7.2,"23104"],["愛知県","名古屋市中村区",20,7.16,"23105"],["愛知県","名古屋市中区",19,7.22,"23106"],["愛知県","名古屋市昭和区",19,7.24,"23107"],["愛知県","名古屋市瑞穂区",20,7.26,"23108"],["愛知県","名古屋市熱田区",20,7.21,"23109"],["愛知県","名古屋市中川区",20,7.17,"23110"],["愛知県","名古屋市港区",20,7.18,"23111"],["愛知県","名古屋市南区",19,7.19,"23112"],["愛知県","名古屋市守山区",19,6.98,"23113"],["愛知県","名古屋市緑区",19,6.98,"23114"],["愛知県","名古屋市名東区",19,6.96,"23115"],["愛知県","名古屋市天白区",19,7.19,"23116"],["愛知県","名古屋市",19,7.14,"23100"],["北海道","札幌市",39,7.3,"01100"],["北海道","旭川市",23.7,7,"01204"],["北海道","函館市",17,7.3,"01202"],["青森県","青森市",72.6,7.33,"02201"],["岩手県","盛岡市",16.3,7,"03201"],["秋田県","秋田市",27,7.4,"05201"],["山形県","山形市",19,7.4,"06201"],["福島県","福島市",17,7,"07201"],["福島県","郡山市",32.7,7.35,"07203"],["福島県","いわき市",38,7.5,"07204"],["青森県","八戸市",43.3,7.4,"02203"],["青森県","弘前市",31.5,6.8,"02202"],["京都府","京都市",42,7.3,"26100"],["兵庫県","神戸市",45.5,7.8,"28100"],["愛知県","豊田市",15.8,7.3,"23211"],["兵庫県","尼崎市",41,7.55,"28202"],["兵庫県","西宮市",41,7.7,"28204"],["兵庫県","芦屋市",43.4,7.5,"28206"],["愛知県","一宮市",59.6,6.9,"23203"],["埼玉県","朝霞市",71.4,7.3,"11227"],["埼玉県","三郷市",63.3,7.5,"11237"],["埼玉県","入間市",70.3,7.1,"11225"],["埼玉県","戸田市",74,7.3,"11224"],["埼玉県","深谷市",112.6,7.4,"11218"],["埼玉県","富士見市",83,7,"11235"],["埼玉県","ふじみ野市",86.6,7.1,"11245"],["埼玉県","加須市",54,7.5,"11210"],["千葉県","佐倉市",89,7.9,"12212"],["千葉県","野田市",64,7.5,"12208"],["千葉県","我孫子市",69,7.6,"12222"],["千葉県","印西市",68,7.6,"12231"],["神奈川県","秦野市",113,7.8,"14211"],["神奈川県","座間市",109,6.9,"14216"],["静岡県","三島市",58,7.3,"22206"],["静岡県","磐田市",65,7.7,"22211"],["静岡県","藤枝市",53,7.6,"22214"],["静岡県","焼津市",58,6.8,"22212"],["静岡県","富士宮市",44,7.4,"22207"],["静岡県","掛川市",46,7.8,"22213"],["栃木県","栃木市",100,7,"09203"],["栃木県","足利市",53,6.9,"09202"],["栃木県","佐野市",97,6.8,"09204"],["栃木県","那須塩原市",45,7.6,"09213"],["群馬県","伊勢崎市",87,7.7,"10204"],["石川県","白山市",116,6.8,"17210"],["石川県","小松市",52.1,7.3,"17203"],["岐阜県","大垣市",88,8,"21202"],["岐阜県","各務原市",45,7.6,"21213"],["岐阜県","多治見市",19,7.3,"21204"],["愛知県","豊川市",41.8,7.3,"23207"],["愛知県","西尾市",26,7.3,"23213"],["愛知県","刈谷市",18.9,7.4,"23210"],["愛知県","半田市",32,7.4,"23205"],["愛知県","東海市",16,7.2,"23222"],["三重県","松阪市",46,7,"24204"],["三重県","桑名市",75,7,"24205"],["三重県","伊勢市",40,6.8,"24203"],["愛知県","春日井市",19,7.3,"23206"],["愛知県","小牧市",20,7.4,"23219"],["兵庫県","宝塚市",39,7.4,"28214"],["兵庫県","伊丹市",55.1,6.98,"28207"],["兵庫県","川西市",66.7,7.5,"28217"],["兵庫県","三田市",43,7.2,"28219"],["滋賀県","彦根市",42,7.6,"25202"],["滋賀県","長浜市",41,7.4,"25203"],["滋賀県","米原市",41,7.4,"25214"],["滋賀県","東近江市",40,7,"25213"],["大阪府","守口市",44,7.7,"27209"],["大阪府","松原市",39.6,7.3,"27217"],["大阪府","大東市",42,7.44,"27218"],["大阪府","門真市",43,7.3,"27223"],["大阪府","池田市",65,7.8,"27204"],["大阪府","羽曳野市",90.9,7.4,"27222"],["大阪府","富田林市",33.2,7.6,"27214"],["大阪府","泉佐野市",50,7.46,"27213"],["奈良県","橿原市",51,7.6,"29205"],["奈良県","生駒市",54,7.8,"29209"],["大阪府","東大阪市",43.5,7.4,"27227"],["大阪府","豊中市",42.6,7.2,"27203"],["大阪府","枚方市",38.1,7.57,"27210"],["大阪府","高槻市",42,7.4,"27207"],["山口県","山口市",32,6.91,"35203"],["山口県","下関市",37,7.5,"35201"],["山口県","宇部市",66,7.7,"35202"],["山口県","周南市",26.2,7.3,"35215"],["山口県","防府市",30,6.8,"35206"],["鳥取県","米子市",73.3,7.3,"31202"],["島根県","出雲市",27.1,7.1,"32203"],["愛媛県","今治市",44,7.3,"38202"],["愛媛県","新居浜市",51,6.6,"38205"],["福岡県","春日市",38.5,7.4,"40218"],["福岡県","那珂川市",38.5,7.4,"40231"],["沖縄県","沖縄市",58,7.4,"47211"],["沖縄県","うるま市",27.3,7.5,"47213"],["栃木県","宇都宮市",42.2,7.1,"09201"],["群馬県","前橋市",25,7.4,"10201"],["群馬県","高崎市",37,7.7,"10202"],["茨城県","水戸市",56,7.5,"08201"],["新潟県","新潟市",28,7.6,"15100"],["神奈川県","横須賀市",62,7.6,"14201"],["山梨県","甲府市",18,7.23,"19201"],["長野県","長野市",50,7.4,"20201"],["兵庫県","明石市",67,7.1,"28203"],["滋賀県","大津市",37,7.3,"25201"],["岐阜県","岐阜市",31,6.8,"21201"],["愛知県","豊橋市",25.9,7.3,"23201"],["愛知県","岡崎市",24.8,6.9,"23202"],["三重県","四日市市",60,7,"24202"],["三重県","津市",33,7.4,"24201"],["奈良県","奈良市",44.2,7.5,"29201"],["京都府","宇治市",59,7,"26204"],["福岡県","久留米市",46,7.6,"40203"],["佐賀県","佐賀市",26,7.6,"41201"],["長崎県","長崎市",27.2,7.3,"42201"],["大分県","大分市",68,7.6,"44201"],["宮崎県","宮崎市",50,7.4,"45201"],["鹿児島県","鹿児島市",51,7.3,"46201"],["高知県","高知市",38,7.5,"39201"],["広島県","福山市",52.5,7.2,"34207"],["香川県","高松市",40,7.62,"37201"],["香川県","三木町",40,7.62,"37341"],["香川県","綾川町",40,7.62,"37387"],["鳥取県","鳥取市",29,6.8,"31201"],["島根県","松江市",31.2,7.2,"32201"],["茨城県","つくば市",81.1,7.46,"08220"],["茨城県","ひたちなか市",56,7.3,"08221"],["茨城県","日立市",44,7.6,"08202"],["埼玉県","熊谷市",107,7.4,"11202"],["神奈川県","小田原市",62,7.7,"14206"],["千葉県","流山市",68,7.7,"12220"],["千葉県","八千代市",76,8.1,"12221"],["栃木県","小山市",70,7.4,"09208"],["茨城県","土浦市",80.5,7.27,"08203"],["茨城県","古河市",60.4,7.45,"08204"],["東京都","武蔵野市",89,7.4,"13203"],["東京都","昭島市",69.5,7.6,"13207"],["静岡県","静岡市",74,7.8,"22100"],["静岡県","浜松市",46,7.4,"22130"],["富山県","富山市",27.1,7.4,"16201"],["石川県","金沢市",19,7.4,"17201"],["福井県","福井市",77,7.7,"18201"],["静岡県","富士市",52,7.4,"22210"],["新潟県","長岡市",35,7.2,"15202"],["愛知県","安城市",21,7.1,"23212"],["三重県","鈴鹿市",54,7.6,"24207"],["長野県","上田市",47,8.1,"20203"],["富山県","高岡市",41,7,"16202"],["大阪府","堺市",42.3,7.3,"27140"],["和歌山県","和歌山市",54,7.7,"30201"],["兵庫県","姫路市",48,7,"28201"],["大阪府","箕面市",45,7.6,"27220"],["岡山県","倉敷市",50,7.1,"33202"],["岡山県","岡山市",33.8,7.1,"33100"],["徳島県","徳島市",45,7.1,"36201"],["愛媛県","松山市",53,7.8,"38201"],["広島県","東広島市",25,7.5,"34212"],["広島県","廿日市市",11,7.3,"34213"],["広島県","呉市",20.6,7.6,"34202"],["広島県","尾道市",27,7.5,"34205"],["熊本県","熊本市",85,7,"43100"],["沖縄県","那覇市",63,7.3,"47201"],["北海道","苫小牧市",26,7.2,"01213"],["北海道","江別市",40.8,7.2,"01217"],["北海道","釧路市",40,7,"01206"],["北海道","北見市",26.4,7.28,"01208"],["北海道","小樽市",25,7.15,"01203"],["長崎県","佐世保市",37,7.1,"42202"],["長崎県","諫早市",82,7.8,"42204"],["佐賀県","唐津市",60,7.8,"41202"],["福岡県","飯塚市",86,7.4,"40205"],["大阪府","大阪市",44,7.6,"27100"],["神奈川県","横浜市",60,7.54,"14100"],["神奈川県","川崎市",60,7.4,"14130"],["埼玉県","さいたま市",65,7.3,"11100"],["宮城県","仙台市",23.7,7.5,"04100"],["岐阜県","高山市",19,6.5,"21203"],["沖縄県","浦添市",24,7.3,"47208"],["岐阜県","可児市",16,7.3,"21214"],["長野県","松本市",35,7.4,"20202"],["長野県","塩尻市",26,7.5,"20215"],["京都府","亀岡市",48.4,6.59,"26206"],["富山県","射水市",27,7.3,"16211"],["山口県","岩国市",24.8,7.3,"35208"],["山形県","鶴岡市",21,7.7,"06203"],["大阪府","吹田市",43,7.3,"27205"],["福井県","坂井市",16,7.2,"18210"],["福井県","越前市",26.1,7.1,"18209"],["群馬県","渋川市",109,7.5,"10208"],["山形県","天童市",20,7.2,"06210"],["宮城県","栗原市",26,7,"04213"],["山口県","山陽小野田市",64.7,7.6,"35216"],["北海道","北広島市",22.4,7.06,"01234"],["福島県","伊達市",14,7.2,"07213"],["新潟県","南魚沼市",19,7.4,"15226"],["宮崎県","延岡市",36,6.9,"45203"],["岩手県","奥州市",20,7.4,"03215"],["埼玉県","東松山市",72,7.3,"11212"],["愛媛県","四国中央市",26.2,8,"38213"],["佐賀県","鳥栖市",52.6,7.39,"41203"],["茨城県","笠間市",64,7.4,"08216"],["山梨県","南アルプス市",36,7.6,"19208"],["宮城県","名取市",33.4,7.4,"04207"],["熊本県","八代市",49.3,7.5,"43202"],["長野県","安曇野市",50,7,"20220"],["静岡県","袋井市",55,6.8,"22216"],["京都府","京田辺市",48,7.44,"26211"],["兵庫県","三木市",30,7.3,"28215"],["秋田県","由利本荘市",10,6.9,"05210"],["愛知県","清須市",21,7.7,"23233"],["千葉県","八街市",79.7,7.8,"12230"],["宮城県","多賀城市",19,7,"04209"],["香川県","三豊市",30,7.52,"37208"],["香川県","観音寺市",30,7.42,"37205"],["香川県","丸亀市",27,7.43,"37202"],["香川県","坂出市",40,7.82,"37203"],["香川県","善通寺市",53,7.05,"37204"],["香川県","琴平町",58,6.78,"37403"],["香川県","多度津町",22,7.66,"37404"],["香川県","まんのう町",52,7.47,"37406"],["香川県","小豆島町",33,7.26,"37324"],["新潟県","新発田市",14,6.3,"15206"],["滋賀県","守山市",39,7.7,"25207"],["岐阜県","関市",35,6.9,"21205"],["愛媛県","宇和島市",25,7.35,"38203"],["兵庫県","丹波市",113,7.3,"28223"],["愛知県","田原市",20,7.5,"23231"],["北海道","石狩市",18.3,7.2,"01235"],["大分県","日田市",37.1,7.8,"44204"],["熊本県","宇城市",89,7.4,"43213"],["愛知県","あま市",16,7.4,"23237"],["埼玉県","志木市",74.9,7,"11228"],["兵庫県","豊岡市",49,7.2,"28209"],["熊本県","天草市",78.5,7.2,"43215"],["千葉県","香取市",76,7.7,"12236"],["茨城県","鹿嶋市",88,7.3,"08222"],["愛知県","常滑市",34,7.4,"23216"],["長野県","茅野市",17,7.4,"20214"],["岡山県","玉野市",55,7.6,"33204"],["群馬県","安中市",67.8,7.6,"10211"],["神奈川県","平塚市",64,7.4,"14203"],["大分県","別府市",38,7.5,"44202"],["福岡県","大野城市",54.5,7.7,"40219"],["福岡県","大牟田市",64,7.5,"40202"],["岩手県","一関市",35,6.9,"03209"],["福岡県","糸島市",42.4,7.1,"40230"],["沖縄県","宜野湾市",62,7.2,"47205"],["長崎県","大村市",36,7.7,"42205"],["鹿児島県","鹿屋市",48,6.4,"46203"],["茨城県","筑西市",50,7.4,"08227"],["岡山県","津山市",19,7.3,"33203"],["新潟県","十日町市",54,6.46,"15210"],["新潟県","見附市",29,7.2,"15211"],["新潟県","糸魚川市",166,7.5,"15216"],["新潟県","五泉市",33,6.7,"15218"],["新潟県","阿賀野市",23,7,"15223"],["新潟県","佐渡市",52,7.1,"15224"],["新潟県","胎内市",15,6.9,"15227"],["富山県","魚津市",48,7.2,"16204"],["富山県","氷見市",21,7,"16205"],["富山県","滑川市",39.5,7.1,"16206"],["富山県","黒部市",31.9,7.3,"16207"],["富山県","小矢部市",23,7.2,"16209"],["石川県","七尾市",16.7,6.3,"17202"],["石川県","輪島市",27.3,7.1,"17204"],["石川県","羽咋市",61.6,7.3,"17207"],["石川県","かほく市",62.7,7.3,"17209"],["石川県","能美市",51.8,7.5,"17211"],["福井県","あわら市",21,7.4,"18208"],["山梨県","山梨市",58,7.7,"19205"],["山梨県","韮崎市",27.8,7.41,"19207"],["山梨県","北杜市",28.8,7.48,"19209"],["山梨県","甲州市",21,7.2,"19213"],["山梨県","中央市",72,7.5,"19214"],["長野県","諏訪市",49,7.2,"20206"],["長野県","須坂市",67,6.7,"20207"],["長野県","小諸市",179,6.8,"20208"],["長野県","駒ヶ根市",10,7.2,"20210"],["長野県","中野市",64,6.8,"20211"],["長野県","大町市",13,7,"20212"],["長野県","飯山市",35,7.2,"20213"],["長野県","東御市",56,7,"20219"],["岐阜県","美濃市",46,6.7,"21207"],["岐阜県","瑞浪市",17,7,"21208"],["岐阜県","飛騨市",60,7.3,"21217"],["岐阜県","本巣市",41,7.6,"21218"],["岐阜県","海津市",37,7.9,"21221"],["静岡県","熱海市",33,7.8,"22205"],["静岡県","下田市",45,7.6,"22219"],["静岡県","裾野市",44,7.5,"22220"],["静岡県","伊豆市",31.5,7.8,"22222"],["静岡県","菊川市",45,7.6,"22224"],["静岡県","伊豆の国市",31,7.8,"22225"],["静岡県","牧之原市",60,7.3,"22226"],["愛知県","新城市",30,7.9,"23221"],["愛知県","高浜市",16,7.2,"23227"],["愛知県","岩倉市",22,7.3,"23228"],["三重県","尾鷲市",10,7,"24209"],["三重県","亀山市",43,6.9,"24210"],["三重県","熊野市",16,6.5,"24212"],["三重県","いなべ市",110,7.7,"24214"],["三重県","志摩市",51,7.7,"24215"],["滋賀県","高島市",30,7.1,"25212"],["京都府","綾部市",30,7.45,"26203"],["京都府","宮津市",10,6.8,"26205"],["京都府","京丹後市",20,7.1,"26212"],["兵庫県","相生市",46.1,7.01,"28208"],["兵庫県","赤穂市",56.9,7.1,"28212"],["兵庫県","西脇市",42,7.4,"28213"],["兵庫県","小野市",46,7.5,"28218"],["兵庫県","加西市",30,7.3,"28220"],["兵庫県","丹波篠山市",43,7.5,"28221"],["兵庫県","朝来市",36,6.48,"28225"],["兵庫県","宍粟市",36,7.24,"28227"],["奈良県","葛城市",63,7.6,"29211"],["和歌山県","海南市",54,7.24,"30202"],["和歌山県","有田市",45.3,6.79,"30204"],["和歌山県","御坊市",22,7.45,"30205"],["和歌山県","新宮市",17,7.4,"30207"],["鳥取県","倉吉市",33,6.6,"31203"],["島根県","浜田市",42.8,7,"32202"],["島根県","益田市",48.6,6.5,"32204"],["島根県","大田市",30.4,7,"32205"],["島根県","江津市",21.7,7.4,"32207"],["島根県","雲南市",24.6,7.1,"32209"],["岡山県","笠岡市",48,7.6,"33205"],["岡山県","井原市",62.1,7.7,"33207"],["岡山県","高梁市",82,7.4,"33209"],["岡山県","新見市",32,7.6,"33210"],["岡山県","備前市",43,6.9,"33211"],["岡山県","瀬戸内市",29,7.7,"33212"],["岡山県","真庭市",35,7.1,"33214"],["岡山県","美作市",44,7.2,"33215"],["岡山県","浅口市",46,7.57,"33216"],["広島県","大竹市",12,7.4,"34211"],["山口県","萩市",26,7.01,"35204"],["山口県","光市",35,7.2,"35210"],["山口県","長門市",30,7.4,"35211"],["山口県","美祢市",92,7.4,"35213"],["徳島県","小松島市",44.7,7.18,"36203"],["徳島県","吉野川市",57.6,6.85,"36205"],["徳島県","阿波市",72.7,6.54,"36206"],["徳島県","三好市",30.2,7.4,"36208"],["愛媛県","大洲市",54.9,7.2,"38207"],["愛媛県","伊予市",76.8,7.2,"38210"],["愛媛県","東温市",89.2,7.2,"38215"],["高知県","土佐清水市",11.4,6.7,"39209"],["高知県","四万十市",27.6,6.8,"39210"],["高知県","香美市",59,7.2,"39212"],["福岡県","田川市",78,7.6,"40206"],["福岡県","筑後市",132,7.2,"40211"],["福岡県","大川市",38,7.6,"40212"],["福岡県","豊前市",32,7.3,"40214"],["福岡県","中間市",97.5,7.7,"40215"],["福岡県","嘉麻市",74,7.2,"40227"],["福岡県","朝倉市",50,7.5,"40228"],["福岡県","みやま市",69,6.8,"40229"],["佐賀県","伊万里市",43,7.1,"41205"],["佐賀県","鹿島市",48,7.5,"41207"],["佐賀県","小城市",63,7.7,"41208"],["長崎県","平戸市",26,7.1,"42207"],["長崎県","松浦市",29.4,7.3,"42208"],["長崎県","対馬市",18,6.8,"42209"],["長崎県","五島市",60,7.4,"42211"],["長崎県","西海市",28,7.3,"42212"],["長崎県","雲仙市",25,7.3,"42213"],["熊本県","荒尾市",78.2,7,"43204"],["熊本県","山鹿市",61.5,6.7,"43208"],["熊本県","宇土市",50,7.2,"43211"],["熊本県","阿蘇市",38.1,7.4,"43214"],["宮崎県","日南市",31,6.7,"45204"],["宮崎県","小林市",99,6.7,"45205"],["宮崎県","串間市",50,6.1,"45207"],["宮崎県","えびの市",57,7.8,"45209"],["鹿児島県","枕崎市",50,6.9,"46204"],["鹿児島県","阿久根市",45,7,"46206"],["鹿児島県","指宿市",45,7,"46210"],["熊本県","菊池市",39.5,7.4,"43210"],["鹿児島県","垂水市",12,7.1,"46214"],["鹿児島県","曽於市",51,6.7,"46217"],["鹿児島県","いちき串木野市",98,7.4,"46219"],["鹿児島県","南さつま市",42,6.6,"46220"],["鹿児島県","志布志市",46,6.3,"46221"],["沖縄県","石垣市",74,7.4,"47207"],["沖縄県","南城市",22,7.4,"47215"],["北海道","当別町",16.9,7,"01303"],["北海道","福島町",21,7.1,"01332"],["北海道","木古内町",22,7.1,"01334"],["北海道","鹿部町",23,7.3,"01343"],["北海道","八雲町",84,7.7,"01346"],["北海道","長万部町",53.4,8,"01347"],["北海道","京極町",22,7.09,"01399"],["北海道","岩内町",11,6.9,"01402"],["北海道","余市町",17,7.17,"01408"],["北海道","南幌町",43.6,8.07,"01423"],["北海道","上砂川町",33.5,7.22,"01425"],["北海道","由仁町",51.2,7.3,"01427"],["北海道","長沼町",43.6,8.07,"01428"],["北海道","栗山町",26.7,7.4,"01429"],["北海道","月形町",30,7.1,"01430"],["北海道","沼田町",23,7.2,"01438"],["北海道","東神楽町",45,7,"01453"],["北海道","当麻町",49.7,7.1,"01454"],["北海道","比布町",32,7.2,"01455"],["北海道","上川町",15.2,7,"01457"],["北海道","南富良野町",18,7,"01462"],["北海道","占冠村",26.9,7.1,"01463"],["北海道","和寒町",16,7.1,"01464"],["北海道","下川町",16.3,6.67,"01468"],["北海道","羽幌町",30.7,7.1,"01484"],["北海道","遠別町",35.9,7.1,"01486"],["北海道","天塩町",60.3,7.2,"01487"],["北海道","中頓別町",36,7.3,"01513"],["北海道","枝幸町",18,7,"01514"],["北海道","豊富町",32,7,"01516"],["北海道","利尻富士町",15.7,7.4,"01519"],["北海道","幌延町",61.9,7.7,"01520"],["埼玉県","伊奈町",64.2,7.1,"11301"],["埼玉県","三芳町",66,7.3,"11324"],["埼玉県","毛呂山町",73.9,7.3,"11326"],["埼玉県","越生町",66.5,7.4,"11327"],["埼玉県","滑川町",62,7.3,"11341"],["埼玉県","嵐山町",75.9,7.4,"11342"],["埼玉県","小川町",73.2,7.4,"11343"],["埼玉県","川島町",72,7.2,"11346"],["埼玉県","吉見町",59,7.2,"11347"],["埼玉県","ときがわ町",43,7.8,"11349"],["埼玉県","横瀬町",56,7.9,"11361"],["埼玉県","皆野町",56,7.8,"11362"],["埼玉県","長瀞町",53,7.9,"11363"],["埼玉県","小鹿野町",95,7.8,"11365"],["埼玉県","美里町",98.3,7.4,"11381"],["埼玉県","神川町",89,7.4,"11383"],["埼玉県","上里町",155,7,"11385"],["埼玉県","寄居町",69.2,7.4,"11408"],["埼玉県","杉戸町",63.8,7.4,"11464"],["埼玉県","松伏町",69.5,7.2,"11465"],["千葉県","酒々井町",63.9,8,"12322"],["千葉県","栄町",88.7,7.7,"12329"],["千葉県","神崎町",96,6.68,"12342"],["千葉県","多古町",100,7.7,"12347"],["千葉県","東庄町",75,7.1,"12349"],["千葉県","九十九里町",94.3,7.3,"12403"],["千葉県","横芝光町",98.4,7.4,"12410"],["千葉県","一宮町",91,7.4,"12421"],["千葉県","睦沢町",92,7.4,"12422"],["千葉県","白子町",91,7.4,"12424"],["千葉県","長柄町",113,7.5,"12426"],["千葉県","長南町",91,7.4,"12427"],["千葉県","鋸南町",84,7.8,"12463"],["神奈川県","中井町",90,8,"14361"],["神奈川県","大井町",70,7.8,"14362"],["神奈川県","開成町",59.4,7.6,"14366"],["神奈川県","湯河原町",20,7.5,"14384"],["愛知県","大治町",20,7.14,"23424"],["愛知県","蟹江町",19.2,7.4,"23425"],["愛知県","阿久比町",27,7.3,"23441"],["愛知県","東浦町",31,7.3,"23442"],["愛知県","南知多町",35,7.3,"23445"],["愛知県","美浜町",34,7.4,"23446"],["愛知県","武豊町",33,7.3,"23447"],["愛知県","幸田町",19,7.3,"23501"],["愛知県","東栄町",22,7.6,"23562"],["大阪府","豊能町",53.1,7.8,"27321"],["兵庫県","猪名川町",44,7.5,"28301"],["兵庫県","稲美町",27.8,7.09,"28381"],["兵庫県","播磨町",35,6.7,"28382"],["兵庫県","市川町",28.7,6.76,"28442"],["兵庫県","福崎町",33.1,7.08,"28443"],["兵庫県","神河町",10.6,6.93,"28446"],["兵庫県","太子町",53,7.3,"28464"],["兵庫県","佐用町",67,7.23,"28501"],["兵庫県","香美町",31,6.85,"28585"],["福岡県","篠栗町",58.8,7.5,"40342"],["福岡県","志免町",85.3,7.7,"40343"],["福岡県","須恵町",41.3,7.5,"40344"],["福岡県","新宮町",78,7.4,"40345"],["福岡県","粕屋町",48.4,7.6,"40349"],["福岡県","鞍手町",101,7.2,"40402"],["福岡県","筑前町",49,7.6,"40447"],["福岡県","大木町",48,7.6,"40522"],["福岡県","広川町",39,7.6,"40544"],["福岡県","香春町",60,7.7,"40601"],["福岡県","糸田町",32,7.4,"40604"],["福岡県","川崎町",42,7.4,"40605"],["福岡県","福智町",77,7.5,"40610"],["静岡県","南伊豆町",54,7.7,"22304"],["静岡県","松崎町",60.5,7.5,"22305"],["静岡県","西伊豆町",106.4,7.5,"22306"],["静岡県","清水町",47,7.5,"22341"],["静岡県","長泉町",52,7.6,"22342"],["静岡県","小山町",61,7.6,"22344"],["京都府","大山崎町",50,7.21,"26303"],["京都府","久御山町",42.3,7.1,"26322"],["京都府","井手町",52,6.8,"26343"],["京都府","宇治田原町",51,7.4,"26344"],["京都府","精華町",46,6.7,"26366"],["京都府","伊根町",41,7.69,"26463"],["京都府","与謝野町",45,7.09,"26465"],["京都府","南山城村",26,7.12,"26367"],["奈良県","上北山村",25,7.3,"29451"],["茨城県","茨城町",95,7.6,"08302"],["茨城県","大洗町",89,8,"08309"],["茨城県","城里町",63,7.4,"08310"],["茨城県","阿見町",80.6,7.42,"08443"],["茨城県","八千代町",60,7.5,"08521"],["茨城県","境町",63,7.4,"08546"],["茨城県","東海村",50,7.7,"08341"],["茨城県","美浦村",79.8,7.53,"08442"],["栃木県","益子町",50,7.5,"09342"],["栃木県","茂木町",52,7,"09343"],["栃木県","市貝町",56,7.6,"09344"],["栃木県","芳賀町",55,7.4,"09345"],["栃木県","壬生町",58,6.7,"09361"],["栃木県","高根沢町",56,7.4,"09386"],["栃木県","那珂川町",73,7.1,"09411"],["群馬県","神流町",120,8,"10367"],["群馬県","甘楽町",33,6.8,"10384"],["群馬県","東吾妻町",30,8.1,"10429"],["群馬県","玉村町",75,7.7,"10464"],["群馬県","板倉町",75,7.3,"10521"],["群馬県","明和町",62,7.4,"10522"],["群馬県","千代田町",61,7.4,"10523"],["群馬県","大泉町",63,7.8,"10524"],["群馬県","邑楽町",51,7.5,"10525"],["群馬県","榛東村",99,7.9,"10344"],["群馬県","嬬恋村",54,6.9,"10425"],["三重県","木曽岬町",17,7.3,"24303"],["三重県","東員町",76,7,"24324"],["三重県","菰野町",26,7.1,"24341"],["三重県","川越町",18,7.6,"24344"],["三重県","多気町",53,7.2,"24441"],["三重県","明和町",46,7.5,"24442"],["三重県","玉城町",30,7.3,"24461"],["三重県","度会町",14,7.4,"24470"],["三重県","大紀町",20,7.3,"24471"],["三重県","南伊勢町",20,7.2,"24472"],["三重県","紀北町",10,6.8,"24543"],["三重県","御浜町",26,6.6,"24561"],["三重県","紀宝町",14,7.3,"24562"],["岐阜県","岐南町",72,6.7,"21302"],["岐阜県","笠松町",85,7.6,"21303"],["静岡県","島田市",43,7.5,"22209"],["岩手県","北上市",54,7.5,"03206"],["岩手県","花巻市",69,7.2,"03205"],["鹿児島県","薩摩川内市",26,7.4,"46215"],["滋賀県","甲賀市",44,7.34,"25209"],["千葉県","茂原市",91,7.4,"12210"],["兵庫県","高砂市",46,6.8,"28216"],["京都府","長岡京市",47,7.5,"26209"],["静岡県","御殿場市",66,8.1,"22215"],["大分県","中津市",45,7.5,"44203"],["埼玉県","行田市",76.1,8.3,"11206"],["山形県","米沢市",20,7,"06202"],["新潟県","燕市",34,7.2,"15213"],["新潟県","弥彦村",34,7.2,"15342"],["京都府","舞鶴市",34,7.7,"26202"],["北海道","岩見沢市",30.3,7.1,"01210"],["京都府","城陽市",37,7.1,"26207"],["栃木県","日光市",46,6.8,"09206"],["群馬県","みどり市",46,7.2,"10212"],["群馬県","館林市",98,7.3,"10207"],["北海道","美幌町",20.3,6.9,"01543"],["北海道","津別町",17.7,7.4,"01544"],["北海道","斜里町",32.2,7.1,"01545"],["北海道","興部町",17.1,6.9,"01561"],["北海道","雄武町",13.1,7,"01563"],["北海道","大空町",66.2,6.8,"01564"],["北海道","白老町",26,7.2,"01578"],["北海道","安平町",33,7.3,"01585"],["北海道","日高町",153.3,6.7,"01601"],["北海道","平取町",90.3,7.2,"01602"],["北海道","新冠町",65,6.7,"01604"],["北海道","新ひだか町",89.7,7.3,"01610"],["北海道","音更町",23.9,7.2,"01631"],["北海道","士幌町",44.4,7.7,"01632"],["北海道","上士幌町",31.9,7.6,"01633"],["北海道","鹿追町",92,6.7,"01634"],["北海道","新得町",22,7.5,"01635"],["北海道","清水町",12.6,7,"01636"],["北海道","広尾町",13.8,6.6,"01642"],["北海道","幕別町",10.5,7.23,"01643"],["北海道","池田町",7.8,7.2,"01644"],["北海道","本別町",108.2,7.3,"01646"],["北海道","弟子屈町",24,7.5,"01665"],["北海道","別海町",38,7,"01691"],["北海道","中標津町",22.9,7.1,"01692"],["北海道","標津町",26,7.4,"01693"],["北海道","羅臼町",40.8,7,"01694"],["青森県","平内町",27.2,6.6,"02301"],["青森県","鰺ヶ沢町",73,7,"02321"],["青森県","藤崎町",17,6.9,"02361"],["青森県","板柳町",20,6.9,"02381"],["青森県","鶴田町",11.9,6.9,"02384"],["青森県","野辺地町",21.3,7.5,"02401"],["青森県","七戸町",21,7.7,"02402"],["青森県","田子町",25.3,7.5,"02443"],["岩手県","雫石町",51,6.5,"03301"],["岩手県","葛巻町",34,6.9,"03302"],["岩手県","紫波町",58,7.4,"03321"],["岩手県","西和賀町",39,7.1,"03366"],["岩手県","金ケ崎町",20.8,7.4,"03381"],["岩手県","平泉町",130,6.8,"03402"],["岩手県","大槌町",35,7,"03461"],["岩手県","軽米町",43,7.5,"03501"],["岩手県","一戸町",45,7.4,"03524"],["宮城県","大河原町",54,6.8,"04321"],["宮城県","村田町",18,7.1,"04322"],["宮城県","柴田町",18,7.2,"04323"],["宮城県","川崎町",25.5,7.3,"04324"],["宮城県","松島町",20.9,7.2,"04401"],["宮城県","七ヶ浜町",21.1,7.2,"04404"],["宮城県","利府町",26.7,7.3,"04406"],["宮城県","色麻町",20.8,7.8,"04444"],["秋田県","八郎潟町",30,7.1,"05363"],["秋田県","羽後町",49,7.1,"05463"],["山形県","中山町",24,6.9,"06302"],["山形県","大江町",12,7.2,"06324"],["山形県","金山町",19,7.5,"06361"],["山形県","舟形町",24,6.4,"06363"],["山形県","高畠町",54,6.8,"06381"],["山形県","川西町",19,6.9,"06382"],["山形県","小国町",18,6,"06401"],["山形県","白鷹町",34,7.3,"06402"],["山形県","飯豊町",22,6.4,"06403"],["山形県","庄内町",22,7.2,"06428"],["山形県","遊佐町",39,7.2,"06461"],["福島県","桑折町",13,7.2,"07301"],["福島県","国見町",18,7.1,"07303"],["福島県","川俣町",27,7.3,"07308"],["福島県","会津坂下町",22,7.1,"07421"],["福島県","会津美里町",24,7.2,"07447"],["福島県","矢吹町",21,7.9,"07466"],["福島県","棚倉町",49,7.1,"07481"],["福島県","矢祭町",50,6.8,"07482"],["福島県","塙町",60,6.6,"07483"],["福島県","石川町",41,7.2,"07501"],["福島県","古殿町",35,7.1,"07505"],["福島県","三春町",63,7,"07521"],["福島県","小野町",39,7.1,"07522"],["福島県","広野町",18,7.5,"07541"],["福島県","楢葉町",18,7.2,"07542"],["福島県","富岡町",18,7.2,"07543"],["福島県","大熊町",19,7.3,"07545"],["福島県","双葉町",19,7.1,"07546"],["福島県","浪江町",29,7.7,"07547"],["東京都","八丈町",36,7.9,"13401"],["神奈川県","愛川町",54,7.1,"14401"],["新潟県","聖籠町",21,7.5,"15307"],["新潟県","出雲崎町",60,7.2,"15405"],["新潟県","湯沢町",31,6.8,"15461"],["富山県","上市町",40,6.9,"16322"],["富山県","立山町",24,7,"16323"],["石川県","川北町",49,7.1,"17324"],["石川県","津幡町",121,7.9,"17361"],["石川県","内灘町",36.3,7.61,"17365"],["石川県","志賀町",53,7.4,"17384"],["石川県","宝達志水町",62,7.8,"17386"],["石川県","中能登町",76,8,"17407"],["福井県","南越前町",29,7.1,"18404"],["福井県","美浜町",46.8,6.9,"18442"],["福井県","おおい町",43,6.8,"18483"],["福井県","若狭町",45,7.1,"18501"],["山梨県","市川三郷町",115,7.9,"19346"],["山梨県","南部町",75,7.5,"19366"],["山梨県","西桂町",88,7.9,"19423"],["山梨県","富士河口湖町",36,8,"19430"],["長野県","御代田町",160.2,7.2,"20323"],["長野県","立科町",21,7.5,"20324"],["長野県","長和町",30,7.4,"20350"],["長野県","下諏訪町",26,7.2,"20361"],["長野県","富士見町",46,7.9,"20362"],["長野県","池田町",44,7,"20481"],["岐阜県","養老町",60.2,7.65,"21341"],["福島県","須賀川市",48,7.2,"07207"],["秋田県","大仙市",26,7.1,"05212"],["岐阜県","中津川市",17,7.1,"21206"],["北海道","恵庭市",23.3,7.01,"01231"],["埼玉県","鶴ヶ島市",60.9,7.6,"11241"],["埼玉県","坂戸市",60.9,7.6,"11239"],["愛知県","犬山市",34,6.3,"23215"],["兵庫県","たつの市",37.8,6.83,"28229"],["宮城県","登米市",34,7,"04212"],["福岡県","福津市",77,7.4,"40224"],["茨城県","石岡市",57,7.8,"08205"],["福井県","鯖江市",25,7.1,"18207"],["沖縄県","豊見城市",23,7.4,"47212"],["岐阜県","羽島市",42,7.8,"21209"],["熊本県","合志市",80.5,7.3,"43216"],["和歌山県","田辺市",56,7.23,"30206"],["静岡県","伊東市",40,7.2,"22208"],["沖縄県","糸満市",20,7.5,"47210"],["福岡県","柳川市",49,7.6,"40207"],["群馬県","藤岡市",86,7.7,"10209"],["栃木県","下野市",114,7.4,"09216"],["岐阜県","垂井町",35,7,"21361"],["岐阜県","関ケ原町",36,7.1,"21362"],["岐阜県","揖斐川町",47,7.2,"21401"],["岐阜県","大野町",57,6.9,"21403"],["岐阜県","池田町",37,7,"21404"],["岐阜県","坂祝町",10,7.4,"21501"],["岐阜県","富加町",10,7.3,"21502"],["岐阜県","八百津町",13,6.9,"21505"],["滋賀県","日野町",40,7.33,"25383"],["滋賀県","愛荘町",43,7.5,"25425"],["滋賀県","甲良町",75,7.17,"25442"],["滋賀県","多賀町",93,7.2,"25443"],["和歌山県","かつらぎ町",66.5,6.53,"30341"],["和歌山県","湯浅町",35,7.3,"30361"],["和歌山県","有田川町",34,7.1,"30366"],["和歌山県","みなべ町",49.1,6.8,"30391"],["和歌山県","日高川町",20,7,"30392"],["和歌山県","上富田町",31,7.3,"30404"],["和歌山県","串本町",6.9,7.1,"30428"],["鳥取県","岩美町",57,6.9,"31302"],["鳥取県","湯梨浜町",46,7.6,"31370"],["鳥取県","琴浦町",50,6.6,"31371"],["鳥取県","北栄町",72,7,"31372"],["鳥取県","南部町",41.4,6.4,"31389"],["鳥取県","伯耆町",44,6.8,"31390"],["鳥取県","日野町",29.6,6.9,"31402"],["鳥取県","江府町",72.2,7.6,"31403"],["島根県","川本町",16.8,6.9,"32441"],["島根県","吉賀町",22.1,6.5,"32505"],["島根県","隠岐の島町",160,7,"32528"],["岡山県","和気町",43,6.6,"33346"],["岡山県","早島町",52,7.3,"33423"],["岡山県","里庄町",52,7.6,"33445"],["岡山県","矢掛町",93,7.3,"33461"],["岡山県","勝央町",20,7.6,"33622"],["岡山県","奈義町",20,7.4,"33623"],["岡山県","久米南町",38,7.2,"33663"],["岡山県","美咲町",23,7.2,"33666"],["岡山県","吉備中央町",28,7.4,"33681"],["広島県","府中町",19.1,7.4,"34302"],["広島県","海田町",43,7.6,"34304"],["広島県","坂町",19.5,7.4,"34309"],["広島県","安芸太田町",17,7.1,"34368"],["山口県","周防大島町",15,7.3,"35305"],["山口県","上関町",18,7.8,"35341"],["山口県","田布施町",15,7.3,"35343"],["山口県","平生町",15,7.2,"35344"],["徳島県","石井町",39,7.44,"36341"],["徳島県","松茂町",42,7.36,"36401"],["徳島県","北島町",40.7,7.34,"36402"],["徳島県","藍住町",33,7.67,"36403"],["徳島県","上板町",82.5,6.72,"36405"],["徳島県","東みよし町",29.7,7.49,"36489"],["愛媛県","上島町",28,7.6,"38356"],["愛媛県","松前町",72.5,6.8,"38401"],["愛媛県","砥部町",70.3,6.8,"38402"],["愛媛県","内子町",68,7.2,"38422"],["愛媛県","松野町",7,7.31,"38484"],["愛媛県","愛南町",12,6.73,"38506"],["佐賀県","太良町",32,7.6,"41441"],["長崎県","時津町",80,7.4,"42308"],["長崎県","川棚町",36,7.5,"42322"],["長崎県","波佐見町",40,7.2,"42323"],["長崎県","小値賀町",90,7.2,"42383"],["長崎県","佐々町",76,7.9,"42391"],["熊本県","美里町",49,7.4,"43348"],["熊本県","玉東町",85,7.5,"43364"],["熊本県","長洲町",130,7.8,"43368"],["熊本県","南小国町",30.8,7.5,"43423"],["熊本県","嘉島町",62,7.2,"43442"],["熊本県","益城町",57.9,7.1,"43443"],["熊本県","甲佐町",68.3,7.1,"43444"],["熊本県","湯前町",43.5,7.9,"43506"],["熊本県","あさぎり町",96.7,7.9,"43514"],["宮崎県","三股町",30,6.7,"45341"],["宮崎県","国富町",51,6.8,"45382"],["宮崎県","新富町",28,6.7,"45402"],["宮崎県","川南町",27,6.6,"45405"],["宮崎県","都農町",20,6.6,"45406"],["鹿児島県","長島町",66,7.6,"46404"],["鹿児島県","東串良町",60,6.7,"46482"],["鹿児島県","錦江町",53,7.3,"46490"],["鹿児島県","南大隅町",61,7.5,"46491"],["鹿児島県","肝付町",35,6.9,"46492"],["鹿児島県","中種子町",30,7.2,"46501"],["鹿児島県","喜界町",90,7.4,"46529"],["鹿児島県","与論町",221,6.9,"46535"],["沖縄県","本部町",148,7.8,"47308"],["沖縄県","金武町",28,7.6,"47314"],["沖縄県","北谷町",55,7.3,"47326"],["沖縄県","与那原町",21,7.6,"47348"],["沖縄県","南風原町",28,7.6,"47350"],["沖縄県","久米島町",33,7.3,"47361"],["沖縄県","八重瀬町",95,7.6,"47362"],["北海道","西興部村",15.4,7.4,"01562"],["北海道","中札内村",7.7,6.9,"01638"],["北海道","鶴居村",16,7.1,"01667"],["青森県","蓬田村",74.4,8.31,"02304"],["青森県","新郷村",27.5,7.1,"02450"],["岩手県","九戸村",38,6.4,"03506"],["石川県","加賀市",34,7.5,"17206"],["茨城県","常総市",75,7,"08211"],["長野県","千曲市",54,7.4,"20218"],["岐阜県","美濃加茂市",8,7,"21211"],["和歌山県","橋本市",49,7.7,"30203"],["千葉県","東金市",89.8,7.3,"12213"],["和歌山県","紀の川市",77,6.9,"30208"],["福島県","白河市",58,6.9,"07205"],["静岡県","湖西市",43,7.4,"22221"],["山口県","下松市",26.1,7.4,"35207"],["埼玉県","秩父市",54,7.7,"11207"],["宮城県","気仙沼市",46,7,"04205"],["和歌山県","岩出市",60,7.04,"30209"],["滋賀県","湖南市",39,7.7,"25211"],["茨城県","つくばみらい市",77,7.4,"08235"],["沖縄県","宮古島市",118,8,"47214"],["茨城県","那珂市",63,7.4,"08226"],["埼玉県","白岡市",62,7.3,"11246"],["千葉県","銚子市",84.8,7.5,"12202"],["岐阜県","土岐市",16,7.1,"21212"],["福島県","天栄村",21,7.4,"07344"],["福島県","泉崎村",23,7.4,"07464"],["福島県","中島村",22,7.4,"07465"],["福島県","平田村",22,6.9,"07503"],["福島県","葛尾村",36,7.1,"07548"],["埼玉県","東秩父村",45,7.6,"11369"],["東京都","檜原村",52,7.8,"13307"],["東京都","小笠原村",80,6.8,"13421"],["神奈川県","清川村",26,7.7,"14402"],["新潟県","刈羽村",20,7.1,"15504"],["新潟県","関川村",23,6.4,"15581"],["山梨県","忍野村",38,8.1,"19424"],["山梨県","山中湖村",28,8,"19425"],["山梨県","鳴沢村",27,7.7,"19429"],["長野県","青木村",24,6.6,"20349"],["長野県","南箕輪村",28,7.1,"20385"],["長野県","宮田村",23,6.8,"20388"],["長野県","下條村",12,6.9,"20411"],["長野県","喬木村",59,7.1,"20415"],["長野県","豊丘村",96,7.1,"20416"],["長野県","大桑村",7,7.3,"20430"],["長野県","山形村",20,7.4,"20450"],["長野県","筑北村",54,7.3,"20452"],["長野県","松川村",8,6.4,"20482"],["長野県","高山村",43,6.2,"20543"],["鳥取県","日吉津村",40.4,6.9,"31384"],["岡山県","西粟倉村",22,7.1,"33643"],["熊本県","南阿蘇村",75,7.3,"43433"],["沖縄県","国頭村",36,7.2,"47301"],["沖縄県","読谷村",29,7.4,"47324"],["沖縄県","北中城村",53.8,7.4,"47327"],["沖縄県","中城村",30.1,7.5,"47328"],["沖縄県","渡嘉敷村",28,7.4,"47353"],["徳島県","海陽町",15,7.21,"36388"],["愛知県","稲沢市",21,8,"23220"],["愛知県","江南市",82.8,7.1,"23217"],["愛知県","北名古屋市",18,7.2,"23234"],["愛知県","豊山町",18,7.2,"23342"],["愛知県","尾張旭市",21,7.3,"23226"],["北海道","夕張市",22.9,7,"01209"],["北海道","留萌市",25,7.1,"01212"],["北海道","稚内市",20,7,"01214"],["北海道","美唄市",34.7,7.1,"01215"],["北海道","芦別市",36,7.38,"01216"],["北海道","赤平市",42.5,7.34,"01218"],["北海道","紋別市",29.4,7.1,"01219"],["北海道","士別市",22.3,7.18,"01220"],["北海道","根室市",48,6.9,"01223"],["北海道","富良野市",89.7,6.8,"01229"],["北海道","登別市",47,7.4,"01230"],["北海道","伊達市",75,7.8,"01233"],["北海道","北斗市",71,7.5,"01236"],["青森県","黒石市",19,6.9,"02204"],["青森県","五所川原市",17.4,6.58,"02205"],["青森県","つがる市",16.5,7,"02209"],["青森県","三沢市",80.5,7.7,"02207"],["青森県","むつ市",44.1,8.2,"02208"],["青森県","平川市",17,7,"02210"],["岩手県","宮古市",34,7,"03202"],["岩手県","大船渡市",25,7.6,"03203"],["岩手県","遠野市",12,7.5,"03208"],["岩手県","陸前高田市",72,7.1,"03210"],["岩手県","釜石市",65,7.3,"03211"],["岩手県","二戸市",38,7.2,"03213"],["岩手県","八幡平市",93,6.6,"03214"],["宮城県","塩竈市",21.2,7.1,"04203"],["宮城県","白石市",22,7.2,"04206"],["宮城県","角田市",45,7.1,"04208"],["宮城県","岩沼市",37,7.29,"04211"],["秋田県","能代市",28.3,7.1,"05202"],["秋田県","男鹿市",51.2,7.4,"05206"],["秋田県","湯沢市",30,6.9,"05207"],["秋田県","鹿角市",31,7.1,"05209"],["秋田県","潟上市",67,7.2,"05211"],["秋田県","北秋田市",40.2,6.6,"05213"],["山形県","寒河江市",57,6.9,"06206"],["山形県","上山市",12,7.2,"06207"],["山形県","村山市",16,7.2,"06208"],["山形県","長井市",20,6.9,"06209"],["山形県","東根市",79,7.4,"06211"],["福島県","相馬市",29,7.3,"07209"],["福島県","南相馬市",29,7.3,"07212"],["福島県","新地町",29,7.3,"07561"],["福島県","二本松市",32,7.3,"07210"],["福島県","田村市",54,7.5,"07211"],["茨城県","結城市",64,7.7,"08207"],["茨城県","下妻市",53,7.7,"08210"],["茨城県","常陸太田市",57,7.2,"08212"],["茨城県","高萩市",21,7.3,"08214"],["茨城県","潮来市",88,7.2,"08223"],["茨城県","常陸大宮市",53,7,"08225"],["茨城県","稲敷市",79.4,7.65,"08229"],["茨城県","かすみがうら市",70,8,"08230"],["茨城県","桜川市",79,7.4,"08231"],["茨城県","行方市",93,7.5,"08233"],["茨城県","鉾田市",89,7.7,"08234"],["栃木県","矢板市",34,7.4,"09211"],["栃木県","さくら市",49,7.4,"09214"],["栃木県","那須烏山市",79,6.8,"09215"],["群馬県","沼田市",60,7.3,"10206"],["群馬県","富岡市",106,7.9,"10210"],["埼玉県","幸手市",58.4,7.3,"11240"],["千葉県","館山市",91,7.8,"12205"],["千葉県","南房総市",93,7.7,"12234"],["千葉県","鴨川市",92.2,7.5,"12223"],["千葉県","勝浦市",84,7.5,"12218"],["千葉県","いすみ市",38.2,7,"12238"],["千葉県","富里市",82,7.9,"12233"],["千葉県","山武市",94.7,7.3,"12237"],["千葉県","大網白里市",94.2,7.3,"12239"],["神奈川県","三浦市",62,7.8,"14210"],["新潟県","小千谷市",40,7.5,"15208"],["新潟県","加茂市",13,6.8,"15209"],["北海道","帯広市",25.5,6.9,"01207"],["新潟県","上越市",41,7.5,"15222"],["静岡県","沼津市",47,7.5,"22203"],["兵庫県","加古川市",52,7.1,"28210"],["福岡県","筑紫野市",62.4,7.5,"40217"],["埼玉県","桶川市",63,7.4,"11231"],["埼玉県","北本市",63,7.4,"11233"],["高知県","安芸市",37,7.1,"39203"],["高知県","土佐市",62.1,7.1,"39205"],["高知県","須崎市",54.1,7.2,"39206"],["熊本県","大津町",28.5,7.9,"43403"],["熊本県","菊陽町",28.5,7.9,"43404"],["千葉県","柏市",64,7.6,"12217"],["群馬県","太田市",48,7.3,"10205"],["福岡県","行橋市",49,7.4,"40213"],["神奈川県","南足柄市",31,7.8,"14217"],["北海道","ニセコ町",51.9,6.8,"01395"],["北海道","真狩村",18,6.99,"01396"],["北海道","倶知安町",24,6.82,"01400"],["北海道","七飯町",31,7.5,"01337"],["北海道","小平町",32.4,7.2,"01482"],["北海道","礼文町",32.4,7.3,"01517"],["北海道","豊浦町",44.5,6.6,"01571"],["北海道","陸別町",20.8,7,"01648"],["北海道","深川市",30,6.9,"01228"],["富山県","砺波市",25.7,7.41,"16208"],["富山県","舟橋村",89.4,7.6,"16321"],["岐阜県","郡上市",80,7.8,"21219"],["佐賀県","多久市",37,7.9,"41204"],["宮崎県","門川町",24,6.8,"45421"],["沖縄県","竹富町",69,7.6,"47381"],["高知県","黒潮町",31.9,6.9,"39428"],["佐賀県","嬉野市",27,7.6,"41209"],["佐賀県","神埼市",50,7.7,"41210"],["佐賀県","基山町",54,7.5,"41341"],["佐賀県","みやき町",50,7.6,"41346"],["福井県","越前町",42,7.6,"18423"],["佐賀県","有田町",11,7.1,"41401"],["長崎県","長与町",89,7.5,"42307"],["北海道","訓子府町",76,7.9,"01549"],["北海道","置戸町",23,7.5,"01550"],["宮城県","加美町",17.8,7.3,"04445"]];
+// 水を立ち上げる v0.5.1 — 中身。変数3つ(細菌 bac・汚れ dirt=アンモニアと亜硝酸・クセ)。数字は画面に出さない
+// 根拠:UF/IFAS FA031・FA101、Practical Fishkeeping、aquariumscience.org(画面の「しくみ」に出典)。線引きと日数はゲーム用の目安
+const STEP_DAYS=7, MAX_STEPS=10, BAC_MAX=6, BAC_NEED=4, DIRT_MAX=8, DIRT_OK=2;
+function typeOf(hard,ph){ if(ph>=7.8) return 'alk'; if(hard<30) return 'soft'; return 'normal'; }
+function newState(env){ return {t:0,bac:0,dirt:0,acid:0,shell:false,heater:false,bottle:false}; }
+const CARDS=['feed','bottle','change','shell','heater','wait'];
+function usable(s,env,c){
+  if(c==='bottle') return !s.bottle;
+  if(c==='shell') return !s.shell;
+  if(c==='heater') return !!env.winter && !s.heater;
+  return true;
+}
+function step(s0,env,c){
+  const s={...s0};
+  if(c==='feed'){ s.dirt=Math.min(DIRT_MAX,s.dirt+4); }
+  if(c==='bottle'){ s.bottle=true; s.bac=Math.min(BAC_MAX,s.bac+1); }
+  if(c==='change'){ s.dirt=Math.max(0,s.dirt-2); s.acid=Math.max(0,s.acid-1); }
+  if(c==='shell'){ s.shell=true; s.acid=0; }
+  if(c==='heater'){ s.heater=true; }
+  const cold=!!env.winter&&!s.heater, sour=s.acid>=2;
+  let why=null;
+  if(s.dirt>0 && !cold && !sour){
+    if(s.bac<BAC_MAX) s.bac++;
+    if(env.type==='soft' && !s.shell) s.acid++;
+    s.dirt=Math.max(0,s.dirt-Math.floor(s.bac/2));
+  } else {
+    why = s.dirt===0?'food':cold?'cold':'sour';
+    s.dirt=Math.max(0,s.dirt-Math.floor(s.bac/4));
   }
-  function phFactor(ph) { return ph >= 6.8 ? 1 : ph <= 5.8 ? 0 : (ph - 5.8); }
-  function tempFactor(t) { return Math.max(0.2, Math.min(1, 1 - (26 - t) * 0.06)); }
-  function nhLimit(ph) { return ph >= 8.0 ? 0.25 : ph >= 7.6 ? 0.4 : 0.5; } // 魚に危ない総アンモニアの目安
-  function inhibitAt(ph) { return Math.max(0.6, Math.min(5, 5 / Math.pow(10, (ph - 7.0) * 0.7))); } // 残ったアンモニアがこれ以上だと亜硝酸を食べる細菌が育たない
+  s.t++; s.why=why; return s;
+}
+// 魚を迎えられるか。理由は1つだけ
+function fishCheck(s,env){
+  if(env.winter&&!s.heater) return 'cold';
+  if(s.acid>=2) return 'sour';
+  if(s.bac<BAC_NEED) return 'bac';
+  if(s.dirt>(env.type==='alk'?0:DIRT_OK)) return 'dirt';
+  return null;
+}
+if(typeof module!=='undefined') module.exports={STEP_DAYS,MAX_STEPS,BAC_NEED,BAC_MAX,DIRT_MAX,DIRT_OK,typeOf,newState,CARDS,usable,step,fishCheck};
 
-  function newTank(level) {
-    const kh0 = khFromHardness(level.hardness);
-    const s = { turn: 0, day: 0, nh: 0, no2: 0, no3: 0, a: C.seed, b: C.seed, kh0, kh: kh0, shellKh: 0, pool: 0, ph0: level.ph, ph: level.ph,
-      temp: level.temp || 25, temp0: level.temp || 25, heat: 0, used: { dose: 0, small: 0, change: 0, bottle: 0, shell: 0, plant: 0, heater: 0 }, plants: 0, stalled: 0, log: [] };
-    s.heatDays = level.heatDays || 0;
-    s.ph = phOf(s);
-    return s;
-  }
-  function clone(s) { return JSON.parse(JSON.stringify(s)); }
-
-  const ACTIONS = ['dose', 'small', 'change', 'shell', 'plant', 'heater', 'bottle'];
-  function canDo(s, act, level) {
-    const lim = level.limits || {};
-    if (lim[act] != null && s.used[act] >= lim[act]) return false;
-    if (act === 'heater' && s.temp >= 25) return false;
-    return true;
-  }
-  function apply(s, act) {
-    s.used[act]++;
-    if (act === 'dose') s.nh = Math.max(s.nh, C.dose);
-    else if (act === 'small') s.nh = Math.max(s.nh, C.small);
-    else if (act === 'change') {
-      const k = 1 - C.change; s.nh *= k; s.no2 *= k; s.no3 *= k;
-      s.kh = s.kh * k + (s.kh0 + s.shellKh) * C.change;
-    } else if (act === 'bottle') { s.a += C.bottle; s.b += C.bottle; }
-    else if (act === 'shell') { s.shellKh += C.shell; s.pool = (s.pool || 0) + C.shellPool; }
-    else if (act === 'plant') { s.plants++; }
-    else if (act === 'heater') { s.temp = 26; s.heat = s.heatDays || 999; }
-    s.ph = phOf(s);
-  }
-  function day(s, extraNh) {
-    if (extraNh) s.nh += extraNh;
-    if (s.shellKh > 0 && s.pool > 0 && s.ph < C.shellStopPh && s.kh < s.kh0 + s.shellKh) { const g = Math.min(0.4, s.pool, s.kh0 + s.shellKh - s.kh); s.kh += g; s.pool -= g; } // 殻は pH が低いほど溶け、溶けた分だけ減る
-    s.ph = phOf(s);
-    const f = phFactor(s.ph) * tempFactor(s.temp);
-    const pu = Math.min(s.nh, 0.05 * s.plants); s.nh -= pu; s.no3 = Math.max(0, s.no3 - 1.2 * s.plants);
-    const nhIn = s.nh, no2In = s.no2;
-    const ca = Math.min(s.nh, s.a * C.capA * f);
-    s.nh -= ca; s.no2 += ca;
-    const inhib = s.nh > inhibitAt(s.ph) ? 0.15 : 1;
-    if (inhib < 1) s.stalled++;
-    const cb = Math.min(s.no2, s.b * C.capB * f * inhib);
-    s.no2 -= cb; s.no3 += cb * 3.3;
-    s.kh = Math.max(0, s.kh - ca * C.acid);
-    const satA = nhIn > 0.05 ? Math.min(1, nhIn / (s.a * C.capA + 0.3)) : 0;
-    const satB = no2In + ca > 0.05 ? Math.min(1, (no2In + ca) / (s.b * C.capB + 0.3)) : 0;
-    s.a = satA > 0 ? s.a * (1 + C.rA * f * satA) : s.a * C.decay;
-    s.b = satB > 0 ? s.b * (1 + C.rB * f * inhib * satB) : s.b * C.decay;
-    s.a = Math.min(s.a, 4); s.b = Math.min(s.b, 4);
-    s.ph = phOf(s);
-    if (s.heat > 0 && --s.heat === 0) s.temp = s.temp0; // 電気代の上限:決めた日数で切れる
-    s.day++;
-  }
-  function step(s) { for (let i = 0; i < C.turnDays; i++) day(s); s.turn++; return s; }
-  function fishTest(s0) {
-    const s = clone(s0); const days = []; let ok = true; let why = '';
-    // 迎える前の点検:両方の細菌が魚の量を処理でき、アンモニアと亜硝酸が残っていないこと
-    const f0 = tempFactor(s.temp) * phFactor(s.ph);
-    const capA = s.a * C.capA * f0, capB = s.b * C.capB * f0;
-    if (s.nh > 0.1 || s.no2 > 0.1) { ok = false; why = s.nh > 0.1 ? 'nh' : 'no2'; }
-    else if (capA < C.fishLoad) { ok = false; why = s.ph < 6.4 ? 'phcap' : 'capA'; }
-    else if (capB < C.fishLoad) { ok = false; why = s.ph < 6.4 ? 'phcap' : 'capB'; }
-    else if (s.kh < C.minKh) { ok = false; why = 'kh'; } // KH が残っていないと、魚の出すアンモニアを処理するほど pH が落ちる
-    const pre = { capA, capB, ph: s.ph, kh: s.kh, failed: !ok };
-    for (let d = 0; d < C.testDays; d++) {
-      day(s, C.fishLoad);
-      const lim = nhLimit(s.ph);
-      days.push({ nh: s.nh, no2: s.no2, no3: s.no3, ph: s.ph, kh: s.kh, lim });
-      if (ok) {
-        // 原因の重い順に見る:pH が落ちると細菌が止まり、アンモニアも残るので pH を先に
-        if (s.ph < 6.0) { ok = false; why = 'ph'; }
-        else if (s.temp < 22) { ok = false; why = 'temp'; } // 熱帯魚には冷たすぎる
-        else if (s.nh > lim) { ok = false; why = 'nh'; }
-        else if (s.no2 > 0.5) { ok = false; why = 'no2'; }
-      }
-    }
-    // v0.4.2:迎えた後4日の KH の見込みを、迎える前の点検で調べる(★は減らない)。後から失敗にはしない
-    const dl = days[days.length - 1];
-    pre.ph4 = dl.ph; pre.kh4 = s.kh;
-    pre.drift = s.kh < C.minKh; // 迎えた後4日でも KH が minKh 残る見込みであること(KH を軸にした1本の基準。審査9回目の案)
-    if (pre.drift && !pre.failed) { ok = false; why = 'phfall'; pre.failed = true; }
-    return { ok, why, days, end: s, pre };
-  }
-  function stars(level, s, test) {
-    if (!test.ok) return 0;
-    let n = 1;
-    if (test.end.no3 <= (level.no3Goal || 40)) n++;
-    const total = ACTIONS.reduce((t, k) => t + s.used[k], 0);
-    if (total <= level.par) n++;
-    return n;
-  }
-  const api = { phFactor, C, newTank, clone, apply, step, fishTest, stars, canDo, ACTIONS, nhLimit, inhibitAt, khFromHardness, phOf, tempFactor };
-  if (typeof module !== 'undefined') module.exports = api; else root.CYCLE = api;
-})(this);
 </script>
 <script>
-const LEVELS=[{"id":"tokyo","name":"東京都(区部)","pref":"東京都","hardness":34,"ph":7.5,"temp":25,"turns":10,"best":8,"limits":{"bottle":0,"shell":0,"heater":0,"plant":1},"hint":"ふつうの水。定番の手順でも間に合うが、もっと早くできる","par":3},{"id":"sapporo","name":"札幌市","pref":"北海道","hardness":39,"ph":7.3,"temp":17,"turns":10,"best":9,"limits":{"bottle":0,"shell":0,"heater":2,"plant":1},"hint":"冬の水槽は冷たい(17℃)。ヒーターは1台だけで、稚魚の水槽と交代で使う。こちらに回せるのは12日ずつ・2回まで","heatDays":12,"par":5},{"id":"iida","name":"飯田市","pref":"長野県","hardness":6.9,"ph":7.0,"temp":25,"turns":10,"best":8,"limits":{"bottle":0,"shell":3,"heater":0,"plant":1},"hint":"とても軟らかい水。細菌が働くほど pH が落ちる","par":4},{"id":"gyoda","name":"行田市","pref":"埼玉県","hardness":76,"ph":8.3,"temp":25,"turns":10,"best":9,"limits":{"bottle":0,"shell":0,"heater":0,"plant":1},"hint":"pH が高い。アンモニアが魚にも細菌にもきつい","par":4},{"id":"kumamoto","name":"熊本市","pref":"熊本県","hardness":85,"ph":7.0,"temp":25,"turns":7,"best":5,"limits":{"bottle":1,"shell":0,"heater":0,"plant":1,"dose":1},"hint":"魚が3週間後に届く。バクテリア剤が1本。「2まで足す」の瓶は1回分だけ(0.5 は何回でも)","par":6}];
-const WATER=[["愛知県","瀬戸市",17,7.4],["神奈川県","相模原市",57,7.4],["神奈川県","鎌倉市",57,7.4],["神奈川県","厚木市",57,7.4],["神奈川県","逗子市",57,7.4],["神奈川県","伊勢原市",57,7.4],["神奈川県","海老名市",57,7.4],["神奈川県","大和市",57,7.4],["神奈川県","箱根町",57,7.4],["神奈川県","藤沢市",57,7.4],["神奈川県","茅ヶ崎市",57,7.4],["神奈川県","綾瀬市",57,7.4],["千葉県","木更津市",115,7.8],["千葉県","君津市",115,7.8],["千葉県","富津市",115,7.8],["千葉県","袖ケ浦市",115,7.8],["大阪府","能勢町",41.2,7.3],["大阪府","島本町",41.2,7.3],["大阪府","茨木市",41.2,7.3],["大阪府","摂津市",41.2,7.3],["大阪府","交野市",41.2,7.3],["大阪府","寝屋川市",41.2,7.3],["大阪府","四條畷市",41.2,7.3],["大阪府","高石市",41.2,7.3],["大阪府","泉大津市",41.2,7.3],["大阪府","柏原市",41.2,7.3],["大阪府","八尾市",41.2,7.3],["大阪府","岬町",41.2,7.3],["大阪府","千早赤阪村",41.2,7.3],["大阪府","河南町",41.2,7.3],["大阪府","太子町",41.2,7.3],["大阪府","河内長野市",41.2,7.3],["大阪府","藤井寺市",41.2,7.3],["大阪府","忠岡町",41.2,7.3],["大阪府","和泉市",41.2,7.3],["大阪府","岸和田市",41.2,7.3],["大阪府","阪南市",41.2,7.3],["大阪府","田尻町",41.2,7.3],["大阪府","泉南市",41.2,7.3],["大阪府","熊取町",41.2,7.3],["大阪府","貝塚市",41.2,7.3],["茨城県","取手市",70,7.4],["茨城県","龍ケ崎市",70,7.4],["茨城県","牛久市",70,7.4],["茨城県","利根町",70,7.4],["千葉県","千葉市",89,7.7],["千葉県","市原市",89,7.7],["千葉県","船橋市",89,7.7],["千葉県","習志野市",89,7.7],["千葉県","鎌ケ谷市",89,7.7],["千葉県","白井市",89,7.7],["千葉県","成田市",89,7.7],["千葉県","市川市",89,7.7],["千葉県","松戸市",89,7.7],["千葉県","浦安市",89,7.7],["北海道","滝川市",45.7,7.43],["北海道","砂川市",45.7,7.43],["北海道","歌志内市",45.7,7.43],["北海道","奈井江町",45.7,7.43],["埼玉県","上尾市",66,7.1],["埼玉県","久喜市",66,7.1],["埼玉県","和光市",66,7.1],["埼玉県","宮代町",66,7.1],["埼玉県","川口市",66,7.1],["埼玉県","川越市",66,7.1],["埼玉県","所沢市",66,7.1],["埼玉県","新座市",66,7.1],["埼玉県","春日部市",66,7.1],["埼玉県","狭山市",66,7.1],["埼玉県","草加市",66,7.1],["埼玉県","蕨市",66,7.1],["埼玉県","越谷市",66,7.1],["秋田県","横手市",30,7.1],["京都府","八幡市",37,7.38],["愛知県","津島市",16,7.4],["宮城県","富谷市",21.4,7.1],["茨城県","坂東市",62,7.6],["長野県","飯田市",6.9,7],["岡山県","総社市",65,7.3],["新潟県","柏崎市",20,7],["千葉県","四街道市",63.2,8],["群馬県","桐生市",30.4,7.5],["山形県","酒田市",26,7.3],["京都府","福知山市",48,7.2],["福岡県","太宰府市",43.9,7.7],["秋田県","大館市",34,7.1],["愛知県","愛西市",19,7.2],["埼玉県","羽生市",96,7.6],["愛媛県","西条市",40,7.7],["埼玉県","八潮市",61,7.7],["愛知県","知多市",30,7.3],["愛知県","知立市",20,7.2],["徳島県","阿南市",51.7,7.44],["栃木県","大田原市",46,7.9],["千葉県","旭市",78.3,7],["宮城県","大崎市",40.6,7.7],["北海道","千歳市",25.2,6.98],["福岡県","宗像市",82,7.3],["茨城県","神栖市",96,7.4],["栃木県","鹿沼市",33,7.1],["三重県","伊賀市",88,7.5],["京都府","木津川市",50.9,6.82],["山梨県","甲斐市",70,7.2],["三重県","名張市",36.4,7.63],["埼玉県","吉川市",67,7.4],["沖縄県","名護市",94,7.8],["山梨県","笛吹市",57,7.2],["石川県","野々市市",77,6.8],["大阪府","大阪狭山市",43.6,7.6],["青森県","十和田市",47.5,6.93],["東京都","羽村市",54,7.2],["新潟県","村上市",27,6.5],["徳島県","鳴門市",37.5,7.3],["新潟県","三条市",18,7],["埼玉県","飯能市",73,7.7],["埼玉県","本庄市",168,7.5],["愛知県","碧南市",15,7.3],["滋賀県","栗東市",53,6.9],["福岡県","小郡市",42,7.6],["福岡県","大刀洗町",42,7.6],["岐阜県","瑞穂市",41,7.8],["京都府","向日市",45,7.1],["岩手県","滝沢市",44,7.7],["埼玉県","日高市",52.9,7.6],["奈良県","大和高田市",48,7.5],["奈良県","大和郡山市",59,7.5],["奈良県","天理市",52,7.7],["奈良県","桜井市",63,7.5],["奈良県","五條市",49,7.6],["奈良県","御所市",137,7],["奈良県","香芝市",48,7.8],["奈良県","宇陀市",53,7.5],["奈良県","平群町",53,7.5],["奈良県","三郷町",56,7.4],["奈良県","斑鳩町",51,8],["奈良県","安堵町",46,7.6],["奈良県","川西町",47,7.6],["奈良県","三宅町",47,7.6],["奈良県","田原本町",47,7.6],["奈良県","高取町",49,7.5],["奈良県","明日香村",50,7.6],["奈良県","上牧町",46,7.5],["奈良県","王寺町",45,7.6],["奈良県","広陵町",46,7.5],["奈良県","河合町",54,7.3],["奈良県","吉野町",49,7.7],["奈良県","大淀町",49,7.8],["奈良県","下市町",49,7.9],["香川県","東かがわ市",31,7.86],["香川県","さぬき市",42,7.75],["香川県","土庄町",34,7.17],["香川県","宇多津町",28,7.63],["広島県","竹原市",38,7.5],["広島県","三原市",34,7.8],["広島県","府中市",42,7.3],["広島県","三次市",20,6.9],["広島県","庄原市",19,7.4],["広島県","江田島市",23,7.5],["広島県","熊野町",20,7.3],["広島県","北広島町",22,7],["広島県","大崎上島町",23,7.4],["広島県","世羅町",35,7.4],["広島県","神石高原町",16,7.2],["東京都","あきる野市",44.6,7.6],["東京都","三鷹市",71.2,7.7],["東京都","世田谷区",65.4,7.4],["東京都","中央区",62.9,7.5],["東京都","中野区",60.6,7.5],["東京都","八王子市",56.6,7.5],["東京都","北区",71,7.6],["東京都","千代田区",68,7.6],["東京都","台東区",68.4,7.5],["東京都","品川区",62.5,7.3],["東京都","国分寺市",61,7.5],["東京都","国立市",54.6,7.5],["東京都","墨田区",62.6,7.5],["東京都","多摩市",65.4,7.6],["東京都","大田区",60.9,7.4],["東京都","奥多摩町",33.9,7.5],["東京都","小平市",63.7,7.4],["東京都","小金井市",58.3,7.4],["東京都","府中市",55.7,7.4],["東京都","文京区",68.5,7.5],["東京都","新宿区",69.7,7.5],["東京都","日の出町",57.2,7.6],["東京都","日野市",67.7,7.7],["東京都","杉並区",65.9,7.5],["東京都","東久留米市",58.8,7.5],["東京都","東大和市",47.6,7.4],["東京都","東村山市",56,7.5],["東京都","板橋区",59.2,7.6],["東京都","武蔵村山市",47.7,7.5],["東京都","江戸川区",65.7,7.5],["東京都","江東区",63.8,7.6],["東京都","清瀬市",57.1,7.4],["東京都","渋谷区",58.5,7.5],["東京都","港区",64.9,7.6],["東京都","狛江市",55.8,7.5],["東京都","瑞穂町",63.4,7.8],["東京都","町田市",59.8,7.5],["東京都","目黒区",62,7.4],["東京都","福生市",49.7,7.6],["東京都","稲城市",55.5,7.4],["東京都","立川市",53.9,7.5],["東京都","練馬区",65,7.5],["東京都","荒川区",68,7.5],["東京都","葛飾区",60,7.6],["東京都","西東京市",63.5,7.5],["東京都","調布市",69.2,7.5],["東京都","豊島区",67.6,7.5],["東京都","足立区",62,7.5],["東京都","青梅市",45.7,7.5],["愛知県","長久手市",16,7.2],["愛知県","東郷町",16,7.2],["愛知県","日進市",19,7.2],["愛知県","みよし市",19,7.2],["愛知県","豊明市",19,7.2],["福岡県","福岡市東区",52,7.6],["福岡県","福岡市博多区",53,7.5],["福岡県","福岡市中央区",37,7.6],["福岡県","福岡市早良区",36,7.5],["福岡県","福岡市南区",27,7.5],["福岡県","福岡市城南区",41,7.5],["福岡県","福岡市西区",34,7.6],["福岡県","福岡市",42,7.6],["広島県","広島市",19.1,7.4],["愛知県","名古屋市千種区",19,7.03],["愛知県","名古屋市東区",19,7.2],["愛知県","名古屋市北区",19,7.1],["愛知県","名古屋市西区",20,7.2],["愛知県","名古屋市中村区",20,7.16],["愛知県","名古屋市中区",19,7.22],["愛知県","名古屋市昭和区",19,7.24],["愛知県","名古屋市瑞穂区",20,7.26],["愛知県","名古屋市熱田区",20,7.21],["愛知県","名古屋市中川区",20,7.17],["愛知県","名古屋市港区",20,7.18],["愛知県","名古屋市南区",19,7.19],["愛知県","名古屋市守山区",19,6.98],["愛知県","名古屋市緑区",19,6.98],["愛知県","名古屋市名東区",19,6.96],["愛知県","名古屋市天白区",19,7.19],["愛知県","名古屋市",19,7.14],["北海道","札幌市",39,7.3],["北海道","旭川市",23.7,7],["北海道","函館市",17,7.3],["青森県","青森市",72.6,7.33],["岩手県","盛岡市",16.3,7],["秋田県","秋田市",27,7.4],["山形県","山形市",19,7.4],["福島県","福島市",17,7],["福島県","郡山市",32.7,7.35],["福島県","いわき市",38,7.5],["青森県","八戸市",43.3,7.4],["青森県","弘前市",31.5,6.8],["京都府","京都市",42,7.3],["兵庫県","神戸市",45.5,7.8],["愛知県","豊田市",15.8,7.3],["兵庫県","尼崎市",41,7.55],["兵庫県","西宮市",41,7.7],["兵庫県","芦屋市",43.4,7.5],["愛知県","一宮市",59.6,6.9],["埼玉県","朝霞市",71.4,7.3],["埼玉県","三郷市",63.3,7.5],["埼玉県","入間市",70.3,7.1],["埼玉県","戸田市",74,7.3],["埼玉県","深谷市",112.6,7.4],["埼玉県","富士見市",83,7],["埼玉県","ふじみ野市",86.6,7.1],["埼玉県","加須市",54,7.5],["千葉県","佐倉市",89,7.9],["千葉県","野田市",64,7.5],["千葉県","我孫子市",69,7.6],["千葉県","印西市",68,7.6],["神奈川県","秦野市",113,7.8],["神奈川県","座間市",109,6.9],["静岡県","三島市",58,7.3],["静岡県","磐田市",65,7.7],["静岡県","藤枝市",53,7.6],["静岡県","焼津市",58,6.8],["静岡県","富士宮市",44,7.4],["静岡県","掛川市",46,7.8],["栃木県","栃木市",100,7],["栃木県","足利市",53,6.9],["栃木県","佐野市",97,6.8],["栃木県","那須塩原市",45,7.6],["群馬県","伊勢崎市",87,7.7],["石川県","白山市",116,6.8],["石川県","小松市",52.1,7.3],["岐阜県","大垣市",88,8],["岐阜県","各務原市",45,7.6],["岐阜県","多治見市",19,7.3],["愛知県","豊川市",41.8,7.3],["愛知県","西尾市",26,7.3],["愛知県","刈谷市",18.9,7.4],["愛知県","半田市",32,7.4],["愛知県","東海市",16,7.2],["三重県","松阪市",46,7],["三重県","桑名市",75,7],["三重県","伊勢市",40,6.8],["愛知県","春日井市",19,7.3],["愛知県","小牧市",20,7.4],["兵庫県","宝塚市",39,7.4],["兵庫県","伊丹市",55.1,6.98],["兵庫県","川西市",66.7,7.5],["兵庫県","三田市",43,7.2],["滋賀県","彦根市",42,7.6],["滋賀県","長浜市",41,7.4],["滋賀県","米原市",41,7.4],["滋賀県","東近江市",40,7],["大阪府","守口市",44,7.7],["大阪府","松原市",39.6,7.3],["大阪府","大東市",42,7.44],["大阪府","門真市",43,7.3],["大阪府","池田市",65,7.8],["大阪府","羽曳野市",90.9,7.4],["大阪府","富田林市",33.2,7.6],["大阪府","泉佐野市",50,7.46],["奈良県","橿原市",51,7.6],["奈良県","生駒市",54,7.8],["大阪府","東大阪市",43.5,7.4],["大阪府","豊中市",42.6,7.2],["大阪府","枚方市",38.1,7.57],["大阪府","高槻市",42,7.4],["山口県","山口市",32,6.91],["山口県","下関市",37,7.5],["山口県","宇部市",66,7.7],["山口県","周南市",26.2,7.3],["山口県","防府市",30,6.8],["鳥取県","米子市",73.3,7.3],["島根県","出雲市",27.1,7.1],["愛媛県","今治市",44,7.3],["愛媛県","新居浜市",51,6.6],["福岡県","春日市",38.5,7.4],["福岡県","那珂川市",38.5,7.4],["沖縄県","沖縄市",58,7.4],["沖縄県","うるま市",27.3,7.5],["栃木県","宇都宮市",42.2,7.1],["群馬県","前橋市",25,7.4],["群馬県","高崎市",37,7.7],["茨城県","水戸市",56,7.5],["新潟県","新潟市",28,7.6],["神奈川県","横須賀市",62,7.6],["山梨県","甲府市",18,7.23],["長野県","長野市",50,7.4],["兵庫県","明石市",67,7.1],["滋賀県","大津市",37,7.3],["岐阜県","岐阜市",31,6.8],["愛知県","豊橋市",25.9,7.3],["愛知県","岡崎市",24.8,6.9],["三重県","四日市市",60,7],["三重県","津市",33,7.4],["奈良県","奈良市",44.2,7.5],["京都府","宇治市",59,7],["福岡県","久留米市",46,7.6],["佐賀県","佐賀市",26,7.6],["長崎県","長崎市",27.2,7.3],["大分県","大分市",68,7.6],["宮崎県","宮崎市",50,7.4],["鹿児島県","鹿児島市",51,7.3],["高知県","高知市",38,7.5],["広島県","福山市",52.5,7.2],["香川県","高松市",40,7.62],["香川県","三木町",40,7.62],["香川県","綾川町",40,7.62],["鳥取県","鳥取市",29,6.8],["島根県","松江市",31.2,7.2],["茨城県","つくば市",81.1,7.46],["茨城県","ひたちなか市",56,7.3],["茨城県","日立市",44,7.6],["埼玉県","熊谷市",107,7.4],["神奈川県","小田原市",62,7.7],["千葉県","流山市",68,7.7],["千葉県","八千代市",76,8.1],["栃木県","小山市",70,7.4],["茨城県","土浦市",80.5,7.27],["茨城県","古河市",60.4,7.45],["東京都","武蔵野市",89,7.4],["東京都","昭島市",69.5,7.6],["静岡県","静岡市",74,7.8],["静岡県","浜松市",46,7.4],["富山県","富山市",27.1,7.4],["石川県","金沢市",19,7.4],["福井県","福井市",77,7.7],["静岡県","富士市",52,7.4],["新潟県","長岡市",35,7.2],["愛知県","安城市",21,7.1],["三重県","鈴鹿市",54,7.6],["長野県","上田市",47,8.1],["富山県","高岡市",41,7],["大阪府","堺市",42.3,7.3],["和歌山県","和歌山市",54,7.7],["兵庫県","姫路市",48,7],["大阪府","箕面市",45,7.6],["岡山県","倉敷市",50,7.1],["岡山県","岡山市",33.8,7.1],["徳島県","徳島市",45,7.1],["愛媛県","松山市",53,7.8],["広島県","東広島市",25,7.5],["広島県","廿日市市",11,7.3],["広島県","呉市",20.6,7.6],["広島県","尾道市",27,7.5],["熊本県","熊本市",85,7],["沖縄県","那覇市",63,7.3],["北海道","苫小牧市",26,7.2],["北海道","江別市",40.8,7.2],["北海道","釧路市",40,7],["北海道","北見市",26.4,7.28],["北海道","小樽市",25,7.15],["長崎県","佐世保市",37,7.1],["長崎県","諫早市",82,7.8],["佐賀県","唐津市",60,7.8],["福岡県","飯塚市",86,7.4],["大阪府","大阪市",44,7.6],["神奈川県","横浜市",60,7.54],["神奈川県","川崎市",60,7.4],["埼玉県","さいたま市",65,7.3],["宮城県","仙台市",23.7,7.5],["岐阜県","高山市",19,6.5],["沖縄県","浦添市",24,7.3],["岐阜県","可児市",16,7.3],["長野県","松本市",35,7.4],["長野県","塩尻市",26,7.5],["京都府","亀岡市",48.4,6.59],["富山県","射水市",27,7.3],["山口県","岩国市",24.8,7.3],["山形県","鶴岡市",21,7.7],["大阪府","吹田市",43,7.3],["福井県","坂井市",16,7.2],["福井県","越前市",26.1,7.1],["群馬県","渋川市",109,7.5],["山形県","天童市",20,7.2],["宮城県","栗原市",26,7],["山口県","山陽小野田市",64.7,7.6],["北海道","北広島市",22.4,7.06],["福島県","伊達市",14,7.2],["新潟県","南魚沼市",19,7.4],["宮崎県","延岡市",36,6.9],["岩手県","奥州市",20,7.4],["埼玉県","東松山市",72,7.3],["愛媛県","四国中央市",26.2,8],["佐賀県","鳥栖市",52.6,7.39],["茨城県","笠間市",64,7.4],["山梨県","南アルプス市",36,7.6],["宮城県","名取市",33.4,7.4],["熊本県","八代市",49.3,7.5],["長野県","安曇野市",50,7],["静岡県","袋井市",55,6.8],["京都府","京田辺市",48,7.44],["兵庫県","三木市",30,7.3],["秋田県","由利本荘市",10,6.9],["愛知県","清須市",21,7.7],["千葉県","八街市",79.7,7.8],["宮城県","多賀城市",19,7],["香川県","三豊市",30,7.52],["香川県","観音寺市",30,7.42],["香川県","丸亀市",27,7.43],["香川県","坂出市",40,7.82],["香川県","善通寺市",53,7.05],["香川県","琴平町",58,6.78],["香川県","多度津町",22,7.66],["香川県","まんのう町",52,7.47],["香川県","小豆島町",33,7.26],["新潟県","新発田市",14,6.3],["滋賀県","守山市",39,7.7],["岐阜県","関市",35,6.9],["愛媛県","宇和島市",25,7.35],["兵庫県","丹波市",113,7.3],["愛知県","田原市",20,7.5],["北海道","石狩市",18.3,7.2],["大分県","日田市",37.1,7.8],["熊本県","宇城市",89,7.4],["愛知県","あま市",16,7.4],["埼玉県","志木市",74.9,7],["兵庫県","豊岡市",49,7.2],["熊本県","天草市",78.5,7.2],["千葉県","香取市",76,7.7],["茨城県","鹿嶋市",88,7.3],["愛知県","常滑市",34,7.4],["長野県","茅野市",17,7.4],["岡山県","玉野市",55,7.6],["群馬県","安中市",67.8,7.6],["神奈川県","平塚市",64,7.4],["大分県","別府市",38,7.5],["福岡県","大野城市",54.5,7.7],["福岡県","大牟田市",64,7.5],["岩手県","一関市",35,6.9],["福岡県","糸島市",42.4,7.1],["沖縄県","宜野湾市",62,7.2],["長崎県","大村市",36,7.7],["鹿児島県","鹿屋市",48,6.4],["茨城県","筑西市",50,7.4],["岡山県","津山市",19,7.3],["新潟県","十日町市",54,6.46],["新潟県","見附市",29,7.2],["新潟県","糸魚川市",166,7.5],["新潟県","五泉市",33,6.7],["新潟県","阿賀野市",23,7],["新潟県","佐渡市",52,7.1],["新潟県","胎内市",15,6.9],["富山県","魚津市",48,7.2],["富山県","氷見市",21,7],["富山県","滑川市",39.5,7.1],["富山県","黒部市",31.9,7.3],["富山県","小矢部市",23,7.2],["石川県","七尾市",16.7,6.3],["石川県","輪島市",27.3,7.1],["石川県","羽咋市",61.6,7.3],["石川県","かほく市",62.7,7.3],["石川県","能美市",51.8,7.5],["福井県","あわら市",21,7.4],["山梨県","山梨市",58,7.7],["山梨県","韮崎市",27.8,7.41],["山梨県","北杜市",28.8,7.48],["山梨県","甲州市",21,7.2],["山梨県","中央市",72,7.5],["長野県","諏訪市",49,7.2],["長野県","須坂市",67,6.7],["長野県","小諸市",179,6.8],["長野県","駒ヶ根市",10,7.2],["長野県","中野市",64,6.8],["長野県","大町市",13,7],["長野県","飯山市",35,7.2],["長野県","東御市",56,7],["岐阜県","美濃市",46,6.7],["岐阜県","瑞浪市",17,7],["岐阜県","飛騨市",60,7.3],["岐阜県","本巣市",41,7.6],["岐阜県","海津市",37,7.9],["静岡県","熱海市",33,7.8],["静岡県","下田市",45,7.6],["静岡県","裾野市",44,7.5],["静岡県","伊豆市",31.5,7.8],["静岡県","菊川市",45,7.6],["静岡県","伊豆の国市",31,7.8],["静岡県","牧之原市",60,7.3],["愛知県","新城市",30,7.9],["愛知県","高浜市",16,7.2],["愛知県","岩倉市",22,7.3],["三重県","尾鷲市",10,7],["三重県","亀山市",43,6.9],["三重県","熊野市",16,6.5],["三重県","いなべ市",110,7.7],["三重県","志摩市",51,7.7],["滋賀県","高島市",30,7.1],["京都府","綾部市",30,7.45],["京都府","宮津市",10,6.8],["京都府","京丹後市",20,7.1],["兵庫県","相生市",46.1,7.01],["兵庫県","赤穂市",56.9,7.1],["兵庫県","西脇市",42,7.4],["兵庫県","小野市",46,7.5],["兵庫県","加西市",30,7.3],["兵庫県","丹波篠山市",43,7.5],["兵庫県","朝来市",36,6.48],["兵庫県","宍粟市",36,7.24],["奈良県","葛城市",63,7.6],["和歌山県","海南市",54,7.24],["和歌山県","有田市",45.3,6.79],["和歌山県","御坊市",22,7.45],["和歌山県","新宮市",17,7.4],["鳥取県","倉吉市",33,6.6],["島根県","浜田市",42.8,7],["島根県","益田市",48.6,6.5],["島根県","大田市",30.4,7],["島根県","江津市",21.7,7.4],["島根県","雲南市",24.6,7.1],["岡山県","笠岡市",48,7.6],["岡山県","井原市",62.1,7.7],["岡山県","高梁市",82,7.4],["岡山県","新見市",32,7.6],["岡山県","備前市",43,6.9],["岡山県","瀬戸内市",29,7.7],["岡山県","真庭市",35,7.1],["岡山県","美作市",44,7.2],["岡山県","浅口市",46,7.57],["広島県","大竹市",12,7.4],["山口県","萩市",26,7.01],["山口県","光市",35,7.2],["山口県","長門市",30,7.4],["山口県","美祢市",92,7.4],["徳島県","小松島市",44.7,7.18],["徳島県","吉野川市",57.6,6.85],["徳島県","阿波市",72.7,6.54],["徳島県","三好市",30.2,7.4],["愛媛県","大洲市",54.9,7.2],["愛媛県","伊予市",76.8,7.2],["愛媛県","東温市",89.2,7.2],["高知県","土佐清水市",11.4,6.7],["高知県","四万十市",27.6,6.8],["高知県","香美市",59,7.2],["福岡県","田川市",78,7.6],["福岡県","筑後市",132,7.2],["福岡県","大川市",38,7.6],["福岡県","豊前市",32,7.3],["福岡県","中間市",97.5,7.7],["福岡県","嘉麻市",74,7.2],["福岡県","朝倉市",50,7.5],["福岡県","みやま市",69,6.8],["佐賀県","伊万里市",43,7.1],["佐賀県","鹿島市",48,7.5],["佐賀県","小城市",63,7.7],["長崎県","平戸市",26,7.1],["長崎県","松浦市",29.4,7.3],["長崎県","対馬市",18,6.8],["長崎県","五島市",60,7.4],["長崎県","西海市",28,7.3],["長崎県","雲仙市",25,7.3],["熊本県","荒尾市",78.2,7],["熊本県","山鹿市",61.5,6.7],["熊本県","宇土市",50,7.2],["熊本県","阿蘇市",38.1,7.4],["宮崎県","日南市",31,6.7],["宮崎県","小林市",99,6.7],["宮崎県","串間市",50,6.1],["宮崎県","えびの市",57,7.8],["鹿児島県","枕崎市",50,6.9],["鹿児島県","阿久根市",45,7],["鹿児島県","指宿市",45,7],["熊本県","菊池市",39.5,7.4],["鹿児島県","垂水市",12,7.1],["鹿児島県","曽於市",51,6.7],["鹿児島県","いちき串木野市",98,7.4],["鹿児島県","南さつま市",42,6.6],["鹿児島県","志布志市",46,6.3],["沖縄県","石垣市",74,7.4],["沖縄県","南城市",22,7.4],["北海道","当別町",16.9,7],["北海道","福島町",21,7.1],["北海道","木古内町",22,7.1],["北海道","鹿部町",23,7.3],["北海道","八雲町",84,7.7],["北海道","長万部町",53.4,8],["北海道","京極町",22,7.09],["北海道","岩内町",11,6.9],["北海道","余市町",17,7.17],["北海道","南幌町",43.6,8.07],["北海道","上砂川町",33.5,7.22],["北海道","由仁町",51.2,7.3],["北海道","長沼町",43.6,8.07],["北海道","栗山町",26.7,7.4],["北海道","月形町",30,7.1],["北海道","沼田町",23,7.2],["北海道","東神楽町",45,7],["北海道","当麻町",49.7,7.1],["北海道","比布町",32,7.2],["北海道","上川町",15.2,7],["北海道","南富良野町",18,7],["北海道","占冠村",26.9,7.1],["北海道","和寒町",16,7.1],["北海道","下川町",16.3,6.67],["北海道","羽幌町",30.7,7.1],["北海道","遠別町",35.9,7.1],["北海道","天塩町",60.3,7.2],["北海道","中頓別町",36,7.3],["北海道","枝幸町",18,7],["北海道","豊富町",32,7],["北海道","利尻富士町",15.7,7.4],["北海道","幌延町",61.9,7.7],["埼玉県","伊奈町",64.2,7.1],["埼玉県","三芳町",66,7.3],["埼玉県","毛呂山町",73.9,7.3],["埼玉県","越生町",66.5,7.4],["埼玉県","滑川町",62,7.3],["埼玉県","嵐山町",75.9,7.4],["埼玉県","小川町",73.2,7.4],["埼玉県","川島町",72,7.2],["埼玉県","吉見町",59,7.2],["埼玉県","ときがわ町",43,7.8],["埼玉県","横瀬町",56,7.9],["埼玉県","皆野町",56,7.8],["埼玉県","長瀞町",53,7.9],["埼玉県","小鹿野町",95,7.8],["埼玉県","美里町",98.3,7.4],["埼玉県","神川町",89,7.4],["埼玉県","上里町",155,7],["埼玉県","寄居町",69.2,7.4],["埼玉県","杉戸町",63.8,7.4],["埼玉県","松伏町",69.5,7.2],["千葉県","酒々井町",63.9,8],["千葉県","栄町",88.7,7.7],["千葉県","神崎町",96,6.68],["千葉県","多古町",100,7.7],["千葉県","東庄町",75,7.1],["千葉県","九十九里町",94.3,7.3],["千葉県","横芝光町",98.4,7.4],["千葉県","一宮町",91,7.4],["千葉県","睦沢町",92,7.4],["千葉県","白子町",91,7.4],["千葉県","長柄町",113,7.5],["千葉県","長南町",91,7.4],["千葉県","鋸南町",84,7.8],["神奈川県","中井町",90,8],["神奈川県","大井町",70,7.8],["神奈川県","開成町",59.4,7.6],["神奈川県","湯河原町",20,7.5],["愛知県","大治町",20,7.14],["愛知県","蟹江町",19.2,7.4],["愛知県","阿久比町",27,7.3],["愛知県","東浦町",31,7.3],["愛知県","南知多町",35,7.3],["愛知県","美浜町",34,7.4],["愛知県","武豊町",33,7.3],["愛知県","幸田町",19,7.3],["愛知県","東栄町",22,7.6],["大阪府","豊能町",53.1,7.8],["兵庫県","猪名川町",44,7.5],["兵庫県","稲美町",27.8,7.09],["兵庫県","播磨町",35,6.7],["兵庫県","市川町",28.7,6.76],["兵庫県","福崎町",33.1,7.08],["兵庫県","神河町",10.6,6.93],["兵庫県","太子町",53,7.3],["兵庫県","佐用町",67,7.23],["兵庫県","香美町",31,6.85],["福岡県","篠栗町",58.8,7.5],["福岡県","志免町",85.3,7.7],["福岡県","須恵町",41.3,7.5],["福岡県","新宮町",78,7.4],["福岡県","粕屋町",48.4,7.6],["福岡県","鞍手町",101,7.2],["福岡県","筑前町",49,7.6],["福岡県","大木町",48,7.6],["福岡県","広川町",39,7.6],["福岡県","香春町",60,7.7],["福岡県","糸田町",32,7.4],["福岡県","川崎町",42,7.4],["福岡県","福智町",77,7.5],["静岡県","南伊豆町",54,7.7],["静岡県","松崎町",60.5,7.5],["静岡県","西伊豆町",106.4,7.5],["静岡県","清水町",47,7.5],["静岡県","長泉町",52,7.6],["静岡県","小山町",61,7.6],["京都府","大山崎町",50,7.21],["京都府","久御山町",42.3,7.1],["京都府","井手町",52,6.8],["京都府","宇治田原町",51,7.4],["京都府","精華町",46,6.7],["京都府","伊根町",41,7.69],["京都府","与謝野町",45,7.09],["京都府","南山城村",26,7.12],["奈良県","上北山村",25,7.3],["茨城県","茨城町",95,7.6],["茨城県","大洗町",89,8],["茨城県","城里町",63,7.4],["茨城県","阿見町",80.6,7.42],["茨城県","八千代町",60,7.5],["茨城県","境町",63,7.4],["茨城県","東海村",50,7.7],["茨城県","美浦村",79.8,7.53],["栃木県","益子町",50,7.5],["栃木県","茂木町",52,7],["栃木県","市貝町",56,7.6],["栃木県","芳賀町",55,7.4],["栃木県","壬生町",58,6.7],["栃木県","高根沢町",56,7.4],["栃木県","那珂川町",73,7.1],["群馬県","神流町",120,8],["群馬県","甘楽町",33,6.8],["群馬県","東吾妻町",30,8.1],["群馬県","玉村町",75,7.7],["群馬県","板倉町",75,7.3],["群馬県","明和町",62,7.4],["群馬県","千代田町",61,7.4],["群馬県","大泉町",63,7.8],["群馬県","邑楽町",51,7.5],["群馬県","榛東村",99,7.9],["群馬県","嬬恋村",54,6.9],["三重県","木曽岬町",17,7.3],["三重県","東員町",76,7],["三重県","菰野町",26,7.1],["三重県","川越町",18,7.6],["三重県","多気町",53,7.2],["三重県","明和町",46,7.5],["三重県","玉城町",30,7.3],["三重県","度会町",14,7.4],["三重県","大紀町",20,7.3],["三重県","南伊勢町",20,7.2],["三重県","紀北町",10,6.8],["三重県","御浜町",26,6.6],["三重県","紀宝町",14,7.3],["岐阜県","岐南町",72,6.7],["岐阜県","笠松町",85,7.6],["静岡県","島田市",43,7.5],["岩手県","北上市",54,7.5],["岩手県","花巻市",69,7.2],["鹿児島県","薩摩川内市",26,7.4],["滋賀県","甲賀市",44,7.34],["千葉県","茂原市",91,7.4],["兵庫県","高砂市",46,6.8],["京都府","長岡京市",47,7.5],["静岡県","御殿場市",66,8.1],["大分県","中津市",45,7.5],["埼玉県","行田市",76.1,8.3],["山形県","米沢市",20,7],["新潟県","燕市",34,7.2],["新潟県","弥彦村",34,7.2],["京都府","舞鶴市",34,7.7],["北海道","岩見沢市",30.3,7.1],["京都府","城陽市",37,7.1],["栃木県","日光市",46,6.8],["群馬県","みどり市",46,7.2],["群馬県","館林市",98,7.3],["北海道","美幌町",20.3,6.9],["北海道","津別町",17.7,7.4],["北海道","斜里町",32.2,7.1],["北海道","興部町",17.1,6.9],["北海道","雄武町",13.1,7],["北海道","大空町",66.2,6.8],["北海道","白老町",26,7.2],["北海道","安平町",33,7.3],["北海道","日高町",153.3,6.7],["北海道","平取町",90.3,7.2],["北海道","新冠町",65,6.7],["北海道","新ひだか町",89.7,7.3],["北海道","音更町",23.9,7.2],["北海道","士幌町",44.4,7.7],["北海道","上士幌町",31.9,7.6],["北海道","鹿追町",92,6.7],["北海道","新得町",22,7.5],["北海道","清水町",12.6,7],["北海道","広尾町",13.8,6.6],["北海道","幕別町",10.5,7.23],["北海道","池田町",7.8,7.2],["北海道","本別町",108.2,7.3],["北海道","弟子屈町",24,7.5],["北海道","別海町",38,7],["北海道","中標津町",22.9,7.1],["北海道","標津町",26,7.4],["北海道","羅臼町",40.8,7],["青森県","平内町",27.2,6.6],["青森県","鰺ヶ沢町",73,7],["青森県","藤崎町",17,6.9],["青森県","板柳町",20,6.9],["青森県","鶴田町",11.9,6.9],["青森県","野辺地町",21.3,7.5],["青森県","七戸町",21,7.7],["青森県","田子町",25.3,7.5],["岩手県","雫石町",51,6.5],["岩手県","葛巻町",34,6.9],["岩手県","紫波町",58,7.4],["岩手県","西和賀町",39,7.1],["岩手県","金ケ崎町",20.8,7.4],["岩手県","平泉町",130,6.8],["岩手県","大槌町",35,7],["岩手県","軽米町",43,7.5],["岩手県","一戸町",45,7.4],["宮城県","大河原町",54,6.8],["宮城県","村田町",18,7.1],["宮城県","柴田町",18,7.2],["宮城県","川崎町",25.5,7.3],["宮城県","松島町",20.9,7.2],["宮城県","七ヶ浜町",21.1,7.2],["宮城県","利府町",26.7,7.3],["宮城県","色麻町",20.8,7.8],["秋田県","八郎潟町",30,7.1],["秋田県","羽後町",49,7.1],["山形県","中山町",24,6.9],["山形県","大江町",12,7.2],["山形県","金山町",19,7.5],["山形県","舟形町",24,6.4],["山形県","高畠町",54,6.8],["山形県","川西町",19,6.9],["山形県","小国町",18,6],["山形県","白鷹町",34,7.3],["山形県","飯豊町",22,6.4],["山形県","庄内町",22,7.2],["山形県","遊佐町",39,7.2],["福島県","桑折町",13,7.2],["福島県","国見町",18,7.1],["福島県","川俣町",27,7.3],["福島県","会津坂下町",22,7.1],["福島県","会津美里町",24,7.2],["福島県","矢吹町",21,7.9],["福島県","棚倉町",49,7.1],["福島県","矢祭町",50,6.8],["福島県","塙町",60,6.6],["福島県","石川町",41,7.2],["福島県","古殿町",35,7.1],["福島県","三春町",63,7],["福島県","小野町",39,7.1],["福島県","広野町",18,7.5],["福島県","楢葉町",18,7.2],["福島県","富岡町",18,7.2],["福島県","大熊町",19,7.3],["福島県","双葉町",19,7.1],["福島県","浪江町",29,7.7],["東京都","八丈町",36,7.9],["神奈川県","愛川町",54,7.1],["新潟県","聖籠町",21,7.5],["新潟県","出雲崎町",60,7.2],["新潟県","湯沢町",31,6.8],["富山県","上市町",40,6.9],["富山県","立山町",24,7],["石川県","川北町",49,7.1],["石川県","津幡町",121,7.9],["石川県","内灘町",36.3,7.61],["石川県","志賀町",53,7.4],["石川県","宝達志水町",62,7.8],["石川県","中能登町",76,8],["福井県","南越前町",29,7.1],["福井県","美浜町",46.8,6.9],["福井県","おおい町",43,6.8],["福井県","若狭町",45,7.1],["山梨県","市川三郷町",115,7.9],["山梨県","南部町",75,7.5],["山梨県","西桂町",88,7.9],["山梨県","富士河口湖町",36,8],["長野県","御代田町",160.2,7.2],["長野県","立科町",21,7.5],["長野県","長和町",30,7.4],["長野県","下諏訪町",26,7.2],["長野県","富士見町",46,7.9],["長野県","池田町",44,7],["岐阜県","養老町",60.2,7.65],["福島県","須賀川市",48,7.2],["秋田県","大仙市",26,7.1],["岐阜県","中津川市",17,7.1],["北海道","恵庭市",23.3,7.01],["埼玉県","鶴ヶ島市",60.9,7.6],["埼玉県","坂戸市",60.9,7.6],["愛知県","犬山市",34,6.3],["兵庫県","たつの市",37.8,6.83],["宮城県","登米市",34,7],["福岡県","福津市",77,7.4],["茨城県","石岡市",57,7.8],["福井県","鯖江市",25,7.1],["沖縄県","豊見城市",23,7.4],["岐阜県","羽島市",42,7.8],["熊本県","合志市",80.5,7.3],["和歌山県","田辺市",56,7.23],["静岡県","伊東市",40,7.2],["沖縄県","糸満市",20,7.5],["福岡県","柳川市",49,7.6],["群馬県","藤岡市",86,7.7],["栃木県","下野市",114,7.4],["岐阜県","垂井町",35,7],["岐阜県","関ケ原町",36,7.1],["岐阜県","揖斐川町",47,7.2],["岐阜県","大野町",57,6.9],["岐阜県","池田町",37,7],["岐阜県","坂祝町",10,7.4],["岐阜県","富加町",10,7.3],["岐阜県","八百津町",13,6.9],["滋賀県","日野町",40,7.33],["滋賀県","愛荘町",43,7.5],["滋賀県","甲良町",75,7.17],["滋賀県","多賀町",93,7.2],["和歌山県","かつらぎ町",66.5,6.53],["和歌山県","湯浅町",35,7.3],["和歌山県","有田川町",34,7.1],["和歌山県","みなべ町",49.1,6.8],["和歌山県","日高川町",20,7],["和歌山県","上富田町",31,7.3],["和歌山県","串本町",6.9,7.1],["鳥取県","岩美町",57,6.9],["鳥取県","湯梨浜町",46,7.6],["鳥取県","琴浦町",50,6.6],["鳥取県","北栄町",72,7],["鳥取県","南部町",41.4,6.4],["鳥取県","伯耆町",44,6.8],["鳥取県","日野町",29.6,6.9],["鳥取県","江府町",72.2,7.6],["島根県","川本町",16.8,6.9],["島根県","吉賀町",22.1,6.5],["島根県","隠岐の島町",160,7],["岡山県","和気町",43,6.6],["岡山県","早島町",52,7.3],["岡山県","里庄町",52,7.6],["岡山県","矢掛町",93,7.3],["岡山県","勝央町",20,7.6],["岡山県","奈義町",20,7.4],["岡山県","久米南町",38,7.2],["岡山県","美咲町",23,7.2],["岡山県","吉備中央町",28,7.4],["広島県","府中町",19.1,7.4],["広島県","海田町",43,7.6],["広島県","坂町",19.5,7.4],["広島県","安芸太田町",17,7.1],["山口県","周防大島町",15,7.3],["山口県","上関町",18,7.8],["山口県","田布施町",15,7.3],["山口県","平生町",15,7.2],["徳島県","石井町",39,7.44],["徳島県","松茂町",42,7.36],["徳島県","北島町",40.7,7.34],["徳島県","藍住町",33,7.67],["徳島県","上板町",82.5,6.72],["徳島県","東みよし町",29.7,7.49],["愛媛県","上島町",28,7.6],["愛媛県","松前町",72.5,6.8],["愛媛県","砥部町",70.3,6.8],["愛媛県","内子町",68,7.2],["愛媛県","松野町",7,7.31],["愛媛県","愛南町",12,6.73],["佐賀県","太良町",32,7.6],["長崎県","時津町",80,7.4],["長崎県","川棚町",36,7.5],["長崎県","波佐見町",40,7.2],["長崎県","小値賀町",90,7.2],["長崎県","佐々町",76,7.9],["熊本県","美里町",49,7.4],["熊本県","玉東町",85,7.5],["熊本県","長洲町",130,7.8],["熊本県","南小国町",30.8,7.5],["熊本県","嘉島町",62,7.2],["熊本県","益城町",57.9,7.1],["熊本県","甲佐町",68.3,7.1],["熊本県","湯前町",43.5,7.9],["熊本県","あさぎり町",96.7,7.9],["宮崎県","三股町",30,6.7],["宮崎県","国富町",51,6.8],["宮崎県","新富町",28,6.7],["宮崎県","川南町",27,6.6],["宮崎県","都農町",20,6.6],["鹿児島県","長島町",66,7.6],["鹿児島県","東串良町",60,6.7],["鹿児島県","錦江町",53,7.3],["鹿児島県","南大隅町",61,7.5],["鹿児島県","肝付町",35,6.9],["鹿児島県","中種子町",30,7.2],["鹿児島県","喜界町",90,7.4],["鹿児島県","与論町",221,6.9],["沖縄県","本部町",148,7.8],["沖縄県","金武町",28,7.6],["沖縄県","北谷町",55,7.3],["沖縄県","与那原町",21,7.6],["沖縄県","南風原町",28,7.6],["沖縄県","久米島町",33,7.3],["沖縄県","八重瀬町",95,7.6],["北海道","西興部村",15.4,7.4],["北海道","中札内村",7.7,6.9],["北海道","鶴居村",16,7.1],["青森県","蓬田村",74.4,8.31],["青森県","新郷村",27.5,7.1],["岩手県","九戸村",38,6.4],["石川県","加賀市",34,7.5],["茨城県","常総市",75,7],["長野県","千曲市",54,7.4],["岐阜県","美濃加茂市",8,7],["和歌山県","橋本市",49,7.7],["千葉県","東金市",89.8,7.3],["和歌山県","紀の川市",77,6.9],["福島県","白河市",58,6.9],["静岡県","湖西市",43,7.4],["山口県","下松市",26.1,7.4],["埼玉県","秩父市",54,7.7],["宮城県","気仙沼市",46,7],["和歌山県","岩出市",60,7.04],["滋賀県","湖南市",39,7.7],["茨城県","つくばみらい市",77,7.4],["沖縄県","宮古島市",118,8],["茨城県","那珂市",63,7.4],["埼玉県","白岡市",62,7.3],["千葉県","銚子市",84.8,7.5],["岐阜県","土岐市",16,7.1],["福島県","天栄村",21,7.4],["福島県","泉崎村",23,7.4],["福島県","中島村",22,7.4],["福島県","平田村",22,6.9],["福島県","葛尾村",36,7.1],["埼玉県","東秩父村",45,7.6],["東京都","檜原村",52,7.8],["東京都","小笠原村",80,6.8],["神奈川県","清川村",26,7.7],["新潟県","刈羽村",20,7.1],["新潟県","関川村",23,6.4],["山梨県","忍野村",38,8.1],["山梨県","山中湖村",28,8],["山梨県","鳴沢村",27,7.7],["長野県","青木村",24,6.6],["長野県","南箕輪村",28,7.1],["長野県","宮田村",23,6.8],["長野県","下條村",12,6.9],["長野県","喬木村",59,7.1],["長野県","豊丘村",96,7.1],["長野県","大桑村",7,7.3],["長野県","山形村",20,7.4],["長野県","筑北村",54,7.3],["長野県","松川村",8,6.4],["長野県","高山村",43,6.2],["鳥取県","日吉津村",40.4,6.9],["岡山県","西粟倉村",22,7.1],["熊本県","南阿蘇村",75,7.3],["沖縄県","国頭村",36,7.2],["沖縄県","読谷村",29,7.4],["沖縄県","北中城村",53.8,7.4],["沖縄県","中城村",30.1,7.5],["沖縄県","渡嘉敷村",28,7.4],["徳島県","海陽町",15,7.21],["愛知県","稲沢市",21,8],["愛知県","江南市",82.8,7.1],["愛知県","北名古屋市",18,7.2],["愛知県","豊山町",18,7.2],["愛知県","尾張旭市",21,7.3],["北海道","夕張市",22.9,7],["北海道","留萌市",25,7.1],["北海道","稚内市",20,7],["北海道","美唄市",34.7,7.1],["北海道","芦別市",36,7.38],["北海道","赤平市",42.5,7.34],["北海道","紋別市",29.4,7.1],["北海道","士別市",22.3,7.18],["北海道","根室市",48,6.9],["北海道","富良野市",89.7,6.8],["北海道","登別市",47,7.4],["北海道","伊達市",75,7.8],["北海道","北斗市",71,7.5],["青森県","黒石市",19,6.9],["青森県","五所川原市",17.4,6.58],["青森県","つがる市",16.5,7],["青森県","三沢市",80.5,7.7],["青森県","むつ市",44.1,8.2],["青森県","平川市",17,7],["岩手県","宮古市",34,7],["岩手県","大船渡市",25,7.6],["岩手県","遠野市",12,7.5],["岩手県","陸前高田市",72,7.1],["岩手県","釜石市",65,7.3],["岩手県","二戸市",38,7.2],["岩手県","八幡平市",93,6.6],["宮城県","塩竈市",21.2,7.1],["宮城県","白石市",22,7.2],["宮城県","角田市",45,7.1],["宮城県","岩沼市",37,7.29],["秋田県","能代市",28.3,7.1],["秋田県","男鹿市",51.2,7.4],["秋田県","湯沢市",30,6.9],["秋田県","鹿角市",31,7.1],["秋田県","潟上市",67,7.2],["秋田県","北秋田市",40.2,6.6],["山形県","寒河江市",57,6.9],["山形県","上山市",12,7.2],["山形県","村山市",16,7.2],["山形県","長井市",20,6.9],["山形県","東根市",79,7.4],["福島県","相馬市",29,7.3],["福島県","南相馬市",29,7.3],["福島県","新地町",29,7.3],["福島県","二本松市",32,7.3],["福島県","田村市",54,7.5],["茨城県","結城市",64,7.7],["茨城県","下妻市",53,7.7],["茨城県","常陸太田市",57,7.2],["茨城県","高萩市",21,7.3],["茨城県","潮来市",88,7.2],["茨城県","常陸大宮市",53,7],["茨城県","稲敷市",79.4,7.65],["茨城県","かすみがうら市",70,8],["茨城県","桜川市",79,7.4],["茨城県","行方市",93,7.5],["茨城県","鉾田市",89,7.7],["栃木県","矢板市",34,7.4],["栃木県","さくら市",49,7.4],["栃木県","那須烏山市",79,6.8],["群馬県","沼田市",60,7.3],["群馬県","富岡市",106,7.9],["埼玉県","幸手市",58.4,7.3],["千葉県","館山市",91,7.8],["千葉県","南房総市",93,7.7],["千葉県","鴨川市",92.2,7.5],["千葉県","勝浦市",84,7.5],["千葉県","いすみ市",38.2,7],["千葉県","富里市",82,7.9],["千葉県","山武市",94.7,7.3],["千葉県","大網白里市",94.2,7.3],["神奈川県","三浦市",62,7.8],["新潟県","小千谷市",40,7.5],["新潟県","加茂市",13,6.8],["北海道","帯広市",25.5,6.9],["新潟県","上越市",41,7.5],["静岡県","沼津市",47,7.5],["兵庫県","加古川市",52,7.1],["福岡県","筑紫野市",62.4,7.5],["埼玉県","桶川市",63,7.4],["埼玉県","北本市",63,7.4],["高知県","安芸市",37,7.1],["高知県","土佐市",62.1,7.1],["高知県","須崎市",54.1,7.2],["熊本県","大津町",28.5,7.9],["熊本県","菊陽町",28.5,7.9],["千葉県","柏市",64,7.6],["群馬県","太田市",48,7.3],["福岡県","行橋市",49,7.4],["神奈川県","南足柄市",31,7.8],["北海道","ニセコ町",51.9,6.8],["北海道","真狩村",18,6.99],["北海道","倶知安町",24,6.82],["北海道","七飯町",31,7.5],["北海道","小平町",32.4,7.2],["北海道","礼文町",32.4,7.3],["北海道","豊浦町",44.5,6.6],["北海道","陸別町",20.8,7],["北海道","深川市",30,6.9],["富山県","砺波市",25.7,7.41],["富山県","舟橋村",89.4,7.6],["岐阜県","郡上市",80,7.8],["佐賀県","多久市",37,7.9],["宮崎県","門川町",24,6.8],["沖縄県","竹富町",69,7.6],["高知県","黒潮町",31.9,6.9],["佐賀県","嬉野市",27,7.6],["佐賀県","神埼市",50,7.7],["佐賀県","基山町",54,7.5],["佐賀県","みやき町",50,7.6],["福井県","越前町",42,7.6],["佐賀県","有田町",11,7.1],["長崎県","長与町",89,7.5],["北海道","訓子府町",76,7.9],["北海道","置戸町",23,7.5],["宮城県","加美町",17.8,7.3]];
-const CITYBEST={"tokyo":{"turn":8,"plan":[["dose"],[],[],[],["dose","shell"],["dose","change"],["small","change"],["dose","change"]]},"w":{"17/7.4":[8,8],"57/7.4":[8,8],"115/7.8":[8,0],"41.2/7.3":[8,8],"70/7.4":[8,8],"89/7.7":[8,0],"45.7/7.43":[8,8],"66/7.1":[8,8],"30/7.1":[8,8],"37/7.38":[8,8],"16/7.4":[8,8],"21.4/7.1":[8,8],"62/7.6":[8,8],"6.9/7":[8,0],"65/7.3":[8,8],"20/7":[8,8],"63.2/8":[8,0],"30.4/7.5":[8,8],"26/7.3":[8,8],"48/7.2":[8,8],"43.9/7.7":[8,0],"34/7.1":[8,8],"19/7.2":[8,8],"96/7.6":[8,8],"40/7.7":[8,0],"61/7.7":[8,0],"30/7.3":[8,8],"20/7.2":[8,8],"51.7/7.44":[8,8],"46/7.9":[8,0],"78.3/7":[8,8],"40.6/7.7":[8,0],"25.2/6.98":[8,8],"82/7.3":[8,8],"96/7.4":[8,8],"33/7.1":[8,8],"88/7.5":[8,8],"50.9/6.82":[8,8],"70/7.2":[8,8],"36.4/7.63":[8,0],"67/7.4":[8,8],"94/7.8":[8,0],"57/7.2":[8,8],"77/6.8":[8,8],"43.6/7.6":[8,8],"47.5/6.93":[8,8],"54/7.2":[8,8],"27/6.5":[9,0],"37.5/7.3":[8,8],"18/7":[8,8],"73/7.7":[8,0],"168/7.5":[8,8],"15/7.3":[8,8],"53/6.9":[8,8],"42/7.6":[8,8],"41/7.8":[8,0],"45/7.1":[8,8],"44/7.7":[8,0],"52.9/7.6":[8,8],"48/7.5":[8,8],"59/7.5":[8,8],"52/7.7":[8,0],"63/7.5":[8,8],"49/7.6":[8,8],"137/7":[8,8],"48/7.8":[8,0],"53/7.5":[8,8],"56/7.4":[8,8],"51/8":[8,0],"46/7.6":[8,8],"47/7.6":[8,8],"49/7.5":[8,8],"50/7.6":[8,8],"46/7.5":[8,8],"45/7.6":[8,8],"54/7.3":[8,8],"49/7.7":[8,0],"49/7.8":[8,0],"49/7.9":[8,0],"31/7.86":[8,0],"42/7.75":[8,0],"34/7.17":[8,8],"28/7.63":[8,0],"38/7.5":[8,8],"34/7.8":[8,0],"42/7.3":[8,8],"20/6.9":[8,0],"19/7.4":[8,8],"23/7.5":[8,8],"20/7.3":[8,8],"22/7":[8,8],"23/7.4":[8,8],"35/7.4":[8,8],"16/7.2":[8,8],"44.6/7.6":[8,8],"71.2/7.7":[8,0],"65.4/7.4":[8,8],"62.9/7.5":[8,8],"60.6/7.5":[8,8],"56.6/7.5":[8,8],"71/7.6":[8,8],"68/7.6":[8,8],"68.4/7.5":[8,8],"62.5/7.3":[8,8],"61/7.5":[8,8],"54.6/7.5":[8,8],"62.6/7.5":[8,8],"65.4/7.6":[8,8],"60.9/7.4":[8,8],"33.9/7.5":[8,8],"63.7/7.4":[8,8],"58.3/7.4":[8,8],"55.7/7.4":[8,8],"68.5/7.5":[8,8],"69.7/7.5":[8,8],"57.2/7.6":[8,8],"67.7/7.7":[8,0],"65.9/7.5":[8,8],"58.8/7.5":[8,8],"47.6/7.4":[8,8],"56/7.5":[8,8],"59.2/7.6":[8,8],"47.7/7.5":[8,8],"65.7/7.5":[8,8],"63.8/7.6":[8,8],"57.1/7.4":[8,8],"58.5/7.5":[8,8],"64.9/7.6":[8,8],"55.8/7.5":[8,8],"63.4/7.8":[8,0],"59.8/7.5":[8,8],"62/7.4":[8,8],"49.7/7.6":[8,8],"55.5/7.4":[8,8],"53.9/7.5":[8,8],"65/7.5":[8,8],"68/7.5":[8,8],"60/7.6":[8,8],"63.5/7.5":[8,8],"69.2/7.5":[8,8],"67.6/7.5":[8,8],"62/7.5":[8,8],"45.7/7.5":[8,8],"52/7.6":[8,8],"37/7.6":[8,8],"36/7.5":[8,8],"27/7.5":[8,8],"41/7.5":[8,8],"34/7.6":[8,8],"19.1/7.4":[8,8],"19/7.03":[8,8],"19/7.1":[8,8],"20/7.16":[8,8],"19/7.22":[8,8],"19/7.24":[8,8],"20/7.26":[8,8],"20/7.21":[8,8],"20/7.17":[8,8],"20/7.18":[8,8],"19/7.19":[8,8],"19/6.98":[8,8],"19/6.96":[8,8],"19/7.14":[8,8],"39/7.3":[8,8],"23.7/7":[8,8],"17/7.3":[8,8],"72.6/7.33":[8,8],"16.3/7":[8,8],"27/7.4":[8,8],"17/7":[8,8],"32.7/7.35":[8,8],"43.3/7.4":[8,8],"31.5/6.8":[8,8],"45.5/7.8":[8,0],"15.8/7.3":[8,8],"41/7.55":[8,8],"41/7.7":[8,0],"43.4/7.5":[8,8],"59.6/6.9":[8,8],"71.4/7.3":[8,8],"63.3/7.5":[8,8],"70.3/7.1":[8,8],"74/7.3":[8,8],"112.6/7.4":[8,8],"83/7":[8,8],"86.6/7.1":[8,8],"54/7.5":[8,8],"89/7.9":[8,0],"64/7.5":[8,8],"69/7.6":[8,8],"113/7.8":[8,0],"109/6.9":[8,8],"58/7.3":[8,8],"65/7.7":[8,0],"53/7.6":[8,8],"58/6.8":[8,8],"44/7.4":[8,8],"46/7.8":[8,0],"100/7":[8,8],"97/6.8":[8,8],"87/7.7":[8,0],"116/6.8":[8,8],"52.1/7.3":[8,8],"88/8":[8,0],"19/7.3":[8,8],"41.8/7.3":[8,8],"18.9/7.4":[8,8],"32/7.4":[8,8],"46/7":[8,8],"75/7":[8,8],"40/6.8":[8,8],"20/7.4":[8,8],"39/7.4":[8,8],"55.1/6.98":[8,8],"66.7/7.5":[8,8],"43/7.2":[8,8],"41/7.4":[8,8],"40/7":[8,8],"39.6/7.3":[8,8],"42/7.44":[8,8],"43/7.3":[8,8],"65/7.8":[8,0],"90.9/7.4":[8,8],"33.2/7.6":[8,8],"50/7.46":[8,8],"51/7.6":[8,8],"54/7.8":[8,0],"43.5/7.4":[8,8],"42.6/7.2":[8,8],"38.1/7.57":[8,8],"42/7.4":[8,8],"32/6.91":[8,8],"37/7.5":[8,8],"66/7.7":[8,0],"26.2/7.3":[8,8],"30/6.8":[8,8],"73.3/7.3":[8,8],"27.1/7.1":[8,8],"44/7.3":[8,8],"51/6.6":[9,0],"38.5/7.4":[8,8],"58/7.4":[8,8],"27.3/7.5":[8,8],"42.2/7.1":[8,8],"25/7.4":[8,8],"37/7.7":[8,0],"28/7.6":[8,8],"18/7.23":[8,8],"50/7.4":[8,8],"67/7.1":[8,8],"37/7.3":[8,8],"31/6.8":[8,8],"25.9/7.3":[8,8],"24.8/6.9":[8,0],"60/7":[8,8],"33/7.4":[8,8],"44.2/7.5":[8,8],"59/7":[8,8],"26/7.6":[8,8],"27.2/7.3":[8,8],"51/7.3":[8,8],"52.5/7.2":[8,8],"40/7.62":[8,8],"29/6.8":[8,8],"31.2/7.2":[8,8],"81.1/7.46":[8,8],"56/7.3":[8,8],"44/7.6":[8,8],"107/7.4":[8,8],"62/7.7":[8,0],"68/7.7":[8,0],"76/8.1":[9,0],"80.5/7.27":[8,8],"60.4/7.45":[8,8],"89/7.4":[8,8],"69.5/7.6":[8,8],"74/7.8":[8,0],"46/7.4":[8,8],"27.1/7.4":[8,8],"77/7.7":[8,0],"52/7.4":[8,8],"35/7.2":[8,8],"21/7.1":[8,8],"54/7.6":[8,8],"47/8.1":[9,0],"41/7":[8,8],"42.3/7.3":[8,8],"54/7.7":[8,0],"48/7":[8,8],"50/7.1":[8,8],"33.8/7.1":[8,8],"53/7.8":[8,0],"25/7.5":[8,8],"11/7.3":[8,8],"20.6/7.6":[8,8],"85/7":[8,8],"63/7.3":[8,8],"26/7.2":[8,8],"40.8/7.2":[8,8],"26.4/7.28":[8,8],"25/7.15":[8,8],"37/7.1":[8,8],"82/7.8":[8,0],"60/7.8":[8,0],"86/7.4":[8,8],"60/7.54":[8,8],"60/7.4":[8,8],"23.7/7.5":[8,8],"19/6.5":[9,0],"24/7.3":[8,8],"16/7.3":[8,8],"26/7.5":[8,8],"48.4/6.59":[9,0],"27/7.3":[8,8],"24.8/7.3":[8,8],"21/7.7":[8,0],"26.1/7.1":[8,8],"109/7.5":[8,8],"26/7":[8,8],"64.7/7.6":[8,8],"22.4/7.06":[8,8],"14/7.2":[8,8],"36/6.9":[8,8],"72/7.3":[8,8],"26.2/8":[8,0],"52.6/7.39":[8,8],"64/7.4":[8,8],"36/7.6":[8,8],"33.4/7.4":[8,8],"49.3/7.5":[8,8],"50/7":[8,8],"55/6.8":[8,8],"48/7.44":[8,8],"10/6.9":[8,0],"79.7/7.8":[8,0],"19/7":[8,8],"30/7.52":[8,8],"30/7.42":[8,8],"27/7.43":[8,8],"40/7.82":[8,0],"53/7.05":[8,8],"58/6.78":[8,0],"22/7.66":[8,0],"52/7.47":[8,8],"33/7.26":[8,8],"14/6.3":[9,0],"39/7.7":[8,0],"35/6.9":[8,8],"25/7.35":[8,8],"113/7.3":[8,8],"20/7.5":[8,8],"18.3/7.2":[8,8],"37.1/7.8":[8,0],"74.9/7":[8,8],"49/7.2":[8,8],"78.5/7.2":[8,8],"76/7.7":[8,0],"88/7.3":[8,8],"34/7.4":[8,8],"55/7.6":[8,8],"67.8/7.6":[8,8],"54.5/7.7":[8,0],"42.4/7.1":[8,8],"62/7.2":[8,8],"36/7.7":[8,0],"48/6.4":[9,0],"54/6.46":[9,0],"29/7.2":[8,8],"166/7.5":[8,8],"33/6.7":[8,0],"23/7":[8,8],"52/7.1":[8,8],"15/6.9":[8,0],"21/7":[8,8],"39.5/7.1":[8,8],"31.9/7.3":[8,8],"23/7.2":[8,8],"16.7/6.3":[9,0],"27.3/7.1":[8,8],"61.6/7.3":[8,8],"62.7/7.3":[8,8],"51.8/7.5":[8,8],"21/7.4":[8,8],"58/7.7":[8,0],"27.8/7.41":[8,8],"28.8/7.48":[8,8],"21/7.2":[8,8],"72/7.5":[8,8],"67/6.7":[8,0],"179/6.8":[8,8],"10/7.2":[8,8],"64/6.8":[8,8],"13/7":[8,0],"56/7":[8,8],"46/6.7":[8,0],"60/7.3":[8,8],"41/7.6":[8,8],"37/7.9":[8,0],"33/7.8":[8,0],"44/7.5":[8,8],"31.5/7.8":[8,0],"31/7.8":[8,0],"30/7.9":[8,0],"22/7.3":[8,8],"10/7":[8,0],"43/6.9":[8,8],"16/6.5":[9,0],"110/7.7":[8,0],"51/7.7":[8,0],"30/7.45":[8,8],"10/6.8":[8,0],"20/7.1":[8,8],"46.1/7.01":[8,8],"56.9/7.1":[8,8],"43/7.5":[8,8],"36/6.48":[9,0],"36/7.24":[8,8],"63/7.6":[8,8],"54/7.24":[8,8],"45.3/6.79":[8,0],"22/7.45":[8,8],"33/6.6":[9,0],"42.8/7":[8,8],"48.6/6.5":[9,0],"30.4/7":[8,8],"21.7/7.4":[8,8],"24.6/7.1":[8,8],"48/7.6":[8,8],"62.1/7.7":[8,0],"82/7.4":[8,8],"32/7.6":[8,8],"29/7.7":[8,0],"35/7.1":[8,8],"44/7.2":[8,8],"46/7.57":[8,8],"12/7.4":[8,8],"26/7.01":[8,8],"30/7.4":[8,8],"92/7.4":[8,8],"44.7/7.18":[8,8],"57.6/6.85":[8,8],"72.7/6.54":[9,0],"30.2/7.4":[8,8],"54.9/7.2":[8,8],"76.8/7.2":[8,8],"89.2/7.2":[8,8],"11.4/6.7":[8,0],"27.6/6.8":[8,0],"59/7.2":[8,8],"78/7.6":[8,8],"132/7.2":[8,8],"38/7.6":[8,8],"32/7.3":[8,8],"97.5/7.7":[8,0],"74/7.2":[8,8],"50/7.5":[8,8],"69/6.8":[8,8],"43/7.1":[8,8],"63/7.7":[8,0],"26/7.1":[8,8],"29.4/7.3":[8,8],"18/6.8":[8,0],"28/7.3":[8,8],"25/7.3":[8,8],"78.2/7":[8,8],"61.5/6.7":[8,0],"50/7.2":[8,8],"38.1/7.4":[8,8],"31/6.7":[8,0],"99/6.7":[8,0],"50/6.1":[9,0],"57/7.8":[8,0],"50/6.9":[8,8],"45/7":[8,8],"39.5/7.4":[8,8],"12/7.1":[8,8],"51/6.7":[8,0],"98/7.4":[8,8],"42/6.6":[9,0],"46/6.3":[9,0],"74/7.4":[8,8],"22/7.4":[8,8],"16.9/7":[8,8],"22/7.1":[8,8],"23/7.3":[8,8],"84/7.7":[8,0],"53.4/8":[8,0],"22/7.09":[8,8],"11/6.9":[8,0],"17/7.17":[8,8],"43.6/8.07":[9,0],"33.5/7.22":[8,8],"51.2/7.3":[8,8],"26.7/7.4":[8,8],"49.7/7.1":[8,8],"32/7.2":[8,8],"15.2/7":[8,8],"26.9/7.1":[8,8],"16/7.1":[8,8],"16.3/6.67":[8,0],"30.7/7.1":[8,8],"35.9/7.1":[8,8],"60.3/7.2":[8,8],"36/7.3":[8,8],"32/7":[8,8],"15.7/7.4":[8,8],"61.9/7.7":[8,0],"64.2/7.1":[8,8],"66/7.3":[8,8],"73.9/7.3":[8,8],"66.5/7.4":[8,8],"62/7.3":[8,8],"75.9/7.4":[8,8],"73.2/7.4":[8,8],"72/7.2":[8,8],"43/7.8":[8,0],"56/7.9":[8,0],"56/7.8":[8,0],"53/7.9":[8,0],"95/7.8":[8,0],"98.3/7.4":[8,8],"155/7":[8,8],"69.2/7.4":[8,8],"63.8/7.4":[8,8],"69.5/7.2":[8,8],"63.9/8":[8,0],"88.7/7.7":[8,0],"96/6.68":[8,0],"100/7.7":[8,0],"75/7.1":[8,8],"94.3/7.3":[8,8],"98.4/7.4":[8,8],"91/7.4":[8,8],"113/7.5":[8,8],"84/7.8":[8,0],"90/8":[8,0],"70/7.8":[8,0],"59.4/7.6":[8,8],"20/7.14":[8,8],"19.2/7.4":[8,8],"31/7.3":[8,8],"35/7.3":[8,8],"33/7.3":[8,8],"22/7.6":[8,8],"53.1/7.8":[8,0],"27.8/7.09":[8,8],"35/6.7":[8,0],"28.7/6.76":[8,0],"33.1/7.08":[8,8],"10.6/6.93":[8,0],"53/7.3":[8,8],"67/7.23":[8,8],"31/6.85":[8,8],"85.3/7.7":[8,0],"41.3/7.5":[8,8],"78/7.4":[8,8],"48.4/7.6":[8,8],"101/7.2":[8,8],"39/7.6":[8,8],"60/7.7":[8,0],"77/7.5":[8,8],"60.5/7.5":[8,8],"106.4/7.5":[8,8],"47/7.5":[8,8],"61/7.6":[8,8],"50/7.21":[8,8],"42.3/7.1":[8,8],"52/6.8":[8,8],"51/7.4":[8,8],"41/7.69":[8,0],"45/7.09":[8,8],"26/7.12":[8,8],"95/7.6":[8,8],"89/8":[8,0],"63/7.4":[8,8],"80.6/7.42":[8,8],"60/7.5":[8,8],"50/7.7":[8,0],"79.8/7.53":[8,8],"52/7":[8,8],"56/7.6":[8,8],"55/7.4":[8,8],"58/6.7":[8,0],"73/7.1":[8,8],"120/8":[8,0],"33/6.8":[8,8],"30/8.1":[9,0],"75/7.7":[8,0],"75/7.3":[8,8],"61/7.4":[8,8],"63/7.8":[8,0],"51/7.5":[8,8],"99/7.9":[8,0],"54/6.9":[8,8],"76/7":[8,8],"18/7.6":[8,8],"53/7.2":[8,8],"14/7.4":[8,8],"26/6.6":[9,0],"14/7.3":[8,8],"72/6.7":[8,0],"85/7.6":[8,8],"69/7.2":[8,8],"26/7.4":[8,8],"44/7.34":[8,8],"46/6.8":[8,8],"66/8.1":[9,0],"45/7.5":[8,8],"76.1/8.3":[9,0],"34/7.2":[8,8],"34/7.7":[8,0],"30.3/7.1":[8,8],"46/7.2":[8,8],"98/7.3":[8,8],"20.3/6.9":[8,0],"17.7/7.4":[8,8],"32.2/7.1":[8,8],"17.1/6.9":[8,0],"13.1/7":[8,0],"66.2/6.8":[8,8],"153.3/6.7":[8,0],"90.3/7.2":[8,8],"65/6.7":[8,0],"89.7/7.3":[8,8],"23.9/7.2":[8,8],"44.4/7.7":[8,0],"31.9/7.6":[8,8],"92/6.7":[8,0],"22/7.5":[8,8],"12.6/7":[8,0],"13.8/6.6":[9,0],"10.5/7.23":[8,8],"7.8/7.2":[8,8],"108.2/7.3":[8,8],"24/7.5":[8,8],"38/7":[8,8],"22.9/7.1":[8,8],"40.8/7":[8,8],"27.2/6.6":[9,0],"73/7":[8,8],"17/6.9":[8,0],"11.9/6.9":[8,0],"21.3/7.5":[8,8],"25.3/7.5":[8,8],"51/6.5":[9,0],"34/6.9":[8,8],"39/7.1":[8,8],"20.8/7.4":[8,8],"130/6.8":[8,8],"35/7":[8,8],"45/7.4":[8,8],"54/6.8":[8,8],"18/7.1":[8,8],"18/7.2":[8,8],"25.5/7.3":[8,8],"20.9/7.2":[8,8],"21.1/7.2":[8,8],"26.7/7.3":[8,8],"20.8/7.8":[8,0],"49/7.1":[8,8],"24/6.9":[8,0],"12/7.2":[8,8],"19/7.5":[8,8],"24/6.4":[9,0],"19/6.9":[8,0],"18/6":[9,0],"34/7.3":[8,8],"22/6.4":[9,0],"22/7.2":[8,8],"39/7.2":[8,8],"13/7.2":[8,8],"24/7.2":[8,8],"21/7.9":[8,0],"50/6.8":[8,8],"60/6.6":[9,0],"41/7.2":[8,8],"63/7":[8,8],"18/7.5":[8,8],"36/7.9":[8,0],"54/7.1":[8,8],"21/7.5":[8,8],"60/7.2":[8,8],"40/6.9":[8,8],"24/7":[8,8],"121/7.9":[8,0],"36.3/7.61":[8,8],"53/7.4":[8,8],"62/7.8":[8,0],"76/8":[8,0],"29/7.1":[8,8],"46.8/6.9":[8,8],"43/6.8":[8,8],"115/7.9":[8,0],"75/7.5":[8,8],"88/7.9":[8,0],"36/8":[8,0],"160.2/7.2":[8,8],"44/7":[8,8],"60.2/7.65":[8,0],"17/7.1":[8,8],"23.3/7.01":[8,8],"60.9/7.6":[8,8],"34/6.3":[9,0],"37.8/6.83":[8,8],"34/7":[8,8],"77/7.4":[8,8],"25/7.1":[8,8],"42/7.8":[8,0],"80.5/7.3":[8,8],"56/7.23":[8,8],"40/7.2":[8,8],"86/7.7":[8,0],"114/7.4":[8,8],"36/7.1":[8,8],"47/7.2":[8,8],"57/6.9":[8,8],"37/7":[8,8],"10/7.4":[8,8],"10/7.3":[8,8],"13/6.9":[8,0],"40/7.33":[8,8],"75/7.17":[8,8],"93/7.2":[8,8],"66.5/6.53":[9,0],"49.1/6.8":[8,8],"6.9/7.1":[8,0],"50/6.6":[9,0],"72/7":[8,8],"41.4/6.4":[9,0],"44/6.8":[8,8],"29.6/6.9":[8,8],"72.2/7.6":[8,8],"16.8/6.9":[8,0],"22.1/6.5":[9,0],"160/7":[8,8],"43/6.6":[9,0],"52/7.3":[8,8],"93/7.3":[8,8],"20/7.6":[8,8],"38/7.2":[8,8],"28/7.4":[8,8],"43/7.6":[8,8],"19.5/7.4":[8,8],"18/7.8":[8,0],"15/7.2":[8,8],"39/7.44":[8,8],"42/7.36":[8,8],"40.7/7.34":[8,8],"33/7.67":[8,0],"82.5/6.72":[8,0],"29.7/7.49":[8,8],"72.5/6.8":[8,8],"70.3/6.8":[8,8],"68/7.2":[8,8],"7/7.31":[8,8],"12/6.73":[8,0],"80/7.4":[8,8],"90/7.2":[8,8],"76/7.9":[8,0],"49/7.4":[8,8],"85/7.5":[8,8],"130/7.8":[8,0],"30.8/7.5":[8,8],"57.9/7.1":[8,8],"68.3/7.1":[8,8],"43.5/7.9":[8,0],"96.7/7.9":[8,0],"30/6.7":[8,0],"51/6.8":[8,8],"28/6.7":[8,0],"27/6.6":[9,0],"20/6.6":[9,0],"66/7.6":[8,8],"60/6.7":[8,0],"30/7.2":[8,8],"90/7.4":[8,8],"221/6.9":[8,8],"148/7.8":[8,0],"55/7.3":[8,8],"21/7.6":[8,8],"15.4/7.4":[8,8],"7.7/6.9":[8,0],"74.4/8.31":[9,0],"27.5/7.1":[8,8],"38/6.4":[9,0],"34/7.5":[8,8],"54/7.4":[8,8],"8/7":[8,0],"89.8/7.3":[8,8],"77/6.9":[8,8],"58/6.9":[8,8],"43/7.4":[8,8],"26.1/7.4":[8,8],"60/7.04":[8,8],"118/8":[8,0],"84.8/7.5":[8,8],"22/6.9":[8,0],"52/7.8":[8,0],"80/6.8":[8,8],"26/7.7":[8,0],"23/6.4":[9,0],"38/8.1":[9,0],"28/8":[8,0],"27/7.7":[8,0],"24/6.6":[9,0],"28/7.1":[8,8],"23/6.8":[8,0],"12/6.9":[8,0],"59/7.1":[8,8],"96/7.1":[8,8],"7/7.3":[8,8],"8/6.4":[9,0],"43/6.2":[9,0],"40.4/6.9":[8,8],"36/7.2":[8,8],"29/7.4":[8,8],"53.8/7.4":[8,8],"30.1/7.5":[8,8],"15/7.21":[8,8],"21/8":[8,0],"82.8/7.1":[8,8],"21/7.3":[8,8],"22.9/7":[8,8],"34.7/7.1":[8,8],"36/7.38":[8,8],"42.5/7.34":[8,8],"29.4/7.1":[8,8],"22.3/7.18":[8,8],"48/6.9":[8,8],"89.7/6.8":[8,8],"47/7.4":[8,8],"75/7.8":[8,0],"71/7.5":[8,8],"17.4/6.58":[9,0],"16.5/7":[8,8],"80.5/7.7":[8,0],"44.1/8.2":[9,0],"25/7.6":[8,8],"12/7.5":[8,8],"72/7.1":[8,8],"93/6.6":[9,0],"21.2/7.1":[8,8],"37/7.29":[8,8],"28.3/7.1":[8,8],"51.2/7.4":[8,8],"30/6.9":[8,8],"31/7.1":[8,8],"67/7.2":[8,8],"40.2/6.6":[9,0],"79/7.4":[8,8],"29/7.3":[8,8],"64/7.7":[8,0],"53/7.7":[8,0],"88/7.2":[8,8],"53/7":[8,8],"79.4/7.65":[8,0],"70/8":[8,0],"93/7.5":[8,8],"79/6.8":[8,8],"106/7.9":[8,0],"58.4/7.3":[8,8],"91/7.8":[8,0],"93/7.7":[8,0],"92.2/7.5":[8,8],"84/7.5":[8,8],"38.2/7":[8,8],"82/7.9":[8,0],"94.7/7.3":[8,8],"94.2/7.3":[8,8],"40/7.5":[8,8],"13/6.8":[8,0],"25.5/6.9":[8,0],"62.4/7.5":[8,8],"62.1/7.1":[8,8],"54.1/7.2":[8,8],"28.5/7.9":[8,0],"64/7.6":[8,8],"48/7.3":[8,8],"51.9/6.8":[8,8],"18/6.99":[8,8],"24/6.82":[8,0],"31/7.5":[8,8],"32.4/7.2":[8,8],"32.4/7.3":[8,8],"44.5/6.6":[9,0],"20.8/7":[8,8],"25.7/7.41":[8,8],"89.4/7.6":[8,8],"80/7.8":[8,0],"24/6.8":[8,0],"31.9/6.9":[8,8],"27/7.6":[8,8],"11/7.1":[8,8],"89/7.5":[8,8],"17.8/7.3":[8,8]}};
-const CITYMIN={"17/7.4":[4,4],"115/7.8":[6,22],"70/7.4":[3,2],"45.7/7.43":[3,2],"30/7.1":[4,6],"16/7.4":[4,4],"62/7.6":[2,1],"65/7.3":[3,2],"63.2/8":[8,2],"26/7.3":[4,4],"43.9/7.7":[4,11],"19/7.2":[4,3],"40/7.7":[4,11],"30/7.3":[4,4],"51.7/7.44":[3,2],"78.3/7":[3,2],"25.2/6.98":[4,3],"96/7.4":[3,2],"88/7.5":[3,2],"70/7.2":[3,2],"67/7.4":[3,2],"57/7.2":[3,2],"43.6/7.6":[2,1],"54/7.2":[3,2],"37.5/7.3":[3,2],"73/7.7":[4,11],"15/7.3":[4,4],"42/7.6":[2,1],"45/7.1":[3,2],"52.9/7.6":[2,1],"59/7.5":[3,2],"63/7.5":[3,2],"137/7":[3,2],"53/7.5":[3,2],"51/8":[8,2],"47/7.6":[2,1],"50/7.6":[2,1],"45/7.6":[2,1],"49/7.7":[4,11],"49/7.9":[6,2],"42/7.75":[4,2],"28/7.63":[4,6],"34/7.8":[6,22],"20/6.9":[4,2],"23/7.5":[4,4],"22/7":[4,3],"35/7.4":[3,2],"44.6/7.6":[2,1],"65.4/7.4":[3,2],"60.6/7.5":[3,2],"71/7.6":[2,1],"68.4/7.5":[3,2],"61/7.5":[3,2],"62.6/7.5":[3,2],"60.9/7.4":[3,2],"63.7/7.4":[3,2],"55.7/7.4":[3,2],"69.7/7.5":[3,2],"67.7/7.7":[4,11],"58.8/7.5":[3,2],"56/7.5":[3,2],"47.7/7.5":[3,2],"63.8/7.6":[2,1],"58.5/7.5":[3,2],"55.8/7.5":[3,2],"59.8/7.5":[3,2],"49.7/7.6":[2,1],"53.9/7.5":[3,2],"68/7.5":[3,2],"63.5/7.5":[3,2],"67.6/7.5":[3,2],"45.7/7.5":[3,2],"37/7.6":[2,1],"27/7.5":[4,4],"34/7.6":[2,1],"19/7.03":[4,3],"20/7.16":[4,4],"19/7.24":[4,3],"20/7.21":[4,3],"20/7.18":[4,3],"19/6.98":[4,2],"19/7.14":[4,2],"23.7/7":[4,3],"72.6/7.33":[3,2],"27/7.4":[4,4],"32.7/7.35":[3,2],"31.5/6.8":[4,4],"15.8/7.3":[4,3],"41/7.7":[4,11],"59.6/6.9":[3,2],"63.3/7.5":[3,2],"74/7.3":[3,2],"83/7":[3,2],"54/7.5":[3,2],"64/7.5":[3,2],"113/7.8":[6,22],"58/7.3":[3,2],"53/7.6":[2,1],"44/7.4":[3,2],"100/7":[3,2],"87/7.7":[4,11],"52.1/7.3":[3,2],"19/7.3":[4,4],"18.9/7.4":[4,4],"46/7":[3,2],"40/6.8":[3,2],"39/7.4":[3,2],"66.7/7.5":[3,2],"41/7.4":[3,2],"39.6/7.3":[3,2],"43/7.3":[3,2],"90.9/7.4":[3,2],"50/7.46":[3,2],"54/7.8":[6,22],"42.6/7.2":[3,2],"42/7.4":[3,2],"37/7.5":[3,2],"26.2/7.3":[4,4],"73.3/7.3":[3,2],"44/7.3":[3,2],"38.5/7.4":[3,2],"27.3/7.5":[4,4],"25/7.4":[4,4],"28/7.6":[3,2],"50/7.4":[3,2],"37/7.3":[3,2],"25.9/7.3":[4,4],"60/7":[3,2],"44.2/7.5":[3,2],"26/7.6":[3,2],"51/7.3":[3,2],"40/7.62":[2,1],"31.2/7.2":[3,2],"56/7.3":[3,2],"107/7.4":[3,2],"68/7.7":[4,11],"80.5/7.27":[3,2],"89/7.4":[3,2],"74/7.8":[6,22],"27.1/7.4":[4,4],"52/7.4":[3,2],"21/7.1":[4,3],"47/8.1":[4,40],"42.3/7.3":[3,2],"48/7":[3,2],"33.8/7.1":[3,2],"25/7.5":[4,4],"20.6/7.6":[5,23],"63/7.3":[3,2],"40.8/7.2":[3,2],"25/7.15":[4,4],"82/7.8":[6,22],"86/7.4":[3,2],"60/7.4":[3,2],"19/6.5":[3,10],"16/7.3":[4,3],"48.4/6.59":[3,12],"24.8/7.3":[4,4],"26.1/7.1":[4,5],"26/7":[4,3],"22.4/7.06":[4,3],"36/6.9":[3,2],"26.2/8":[8,2],"64/7.4":[3,2],"33.4/7.4":[3,2],"50/7":[3,2],"48/7.44":[3,2],"79.7/7.8":[6,22],"30/7.52":[4,4],"27/7.43":[4,4],"53/7.05":[3,2],"22/7.66":[4,6],"33/7.26":[3,2],"39/7.7":[4,11],"25/7.35":[4,4],"20/7.5":[4,4],"37.1/7.8":[6,22],"49/7.2":[3,2],"76/7.7":[4,11],"34/7.4":[3,2],"67.8/7.6":[2,1],"42.4/7.1":[3,2],"36/7.7":[4,11],"54/6.46":[3,9],"166/7.5":[3,2],"23/7":[4,3],"15/6.9":[4,2],"39.5/7.1":[3,2],"23/7.2":[4,4],"27.3/7.1":[4,6],"62.7/7.3":[3,2],"21/7.4":[4,4],"27.8/7.41":[4,4],"21/7.2":[4,3],"67/6.7":[4,2],"10/7.2":[4,4],"13/7":[4,4],"46/6.7":[4,2],"41/7.6":[2,1],"33/7.8":[6,22],"31.5/7.8":[6,22],"30/7.9":[7,26],"10/7":[4,2],"16/6.5":[3,10],"51/7.7":[4,11],"10/6.8":[4,4],"46.1/7.01":[3,2],"43/7.5":[3,2],"36/7.24":[3,2],"54/7.24":[3,2],"22/7.45":[4,4],"42.8/7":[3,2],"30.4/7":[3,2],"24.6/7.1":[4,5],"62.1/7.7":[4,11],"32/7.6":[2,1],"35/7.1":[3,2],"46/7.57":[3,2],"26/7.01":[4,3],"92/7.4":[3,2],"57.6/6.85":[3,2],"30.2/7.4":[3,2],"76.8/7.2":[3,2],"11.4/6.7":[4,2],"59/7.2":[3,2],"132/7.2":[3,2],"32/7.3":[3,2],"74/7.2":[3,2],"69/6.8":[3,2],"63/7.7":[4,11],"29.4/7.3":[4,4],"28/7.3":[4,4],"78.2/7":[3,2],"50/7.2":[3,2],"31/6.7":[4,2],"50/6.1":[4,16],"50/6.9":[3,2],"39.5/7.4":[3,2],"51/6.7":[4,2],"42/6.6":[3,16],"74/7.4":[3,2],"16.9/7":[4,2],"23/7.3":[4,4],"53.4/8":[8,2],"11/6.9":[4,2],"43.6/8.07":[4,38],"51.2/7.3":[3,2],"49.7/7.1":[3,2],"15.2/7":[4,2],"16/7.1":[4,3],"30.7/7.1":[3,2],"60.3/7.2":[3,2],"32/7":[3,2],"61.9/7.7":[4,11],"66/7.3":[3,2],"66.5/7.4":[3,2],"75.9/7.4":[3,2],"72/7.2":[3,2],"56/7.9":[6,2],"53/7.9":[6,2],"98.3/7.4":[3,2],"69.2/7.4":[3,2],"69.5/7.2":[3,2],"88.7/7.7":[4,11],"100/7.7":[4,11],"94.3/7.3":[3,2],"91/7.4":[3,2],"84/7.8":[6,22],"70/7.8":[6,22],"20/7.14":[4,3],"31/7.3":[3,2],"33/7.3":[3,2],"53.1/7.8":[6,22],"35/6.7":[4,2],"33.1/7.08":[3,2],"53/7.3":[3,2],"31/6.85":[4,8],"41.3/7.5":[3,2],"48.4/7.6":[2,1],"39/7.6":[2,1],"77/7.5":[3,2],"106.4/7.5":[3,2],"61/7.6":[2,1],"42.3/7.1":[3,2],"51/7.4":[3,2],"45/7.09":[3,2],"95/7.6":[2,1],"63/7.4":[3,2],"60/7.5":[3,2],"79.8/7.53":[3,2],"56/7.6":[2,1],"58/6.7":[4,2],"120/8":[8,2],"30/8.1":[5,48],"75/7.3":[3,2],"63/7.8":[6,22],"99/7.9":[6,2],"76/7":[3,2],"53/7.2":[3,2],"26/6.6":[3,12],"72/6.7":[4,2],"69/7.2":[3,2],"44/7.34":[3,2],"66/8.1":[4,40],"76.1/8.3":[4,6],"34/7.7":[4,11],"46/7.2":[3,2],"20.3/6.9":[4,2],"32.2/7.1":[3,2],"13.1/7":[4,4],"153.3/6.7":[4,2],"65/6.7":[4,2],"23.9/7.2":[4,4],"31.9/7.6":[2,1],"22/7.5":[4,4],"13.8/6.6":[3,12],"7.8/7.2":[4,2],"24/7.5":[4,4],"22.9/7.1":[4,4],"27.2/6.6":[3,13],"17/6.9":[4,2],"21.3/7.5":[4,4],"51/6.5":[3,10],"39/7.1":[3,2],"130/6.8":[3,2],"45/7.4":[3,2],"18/7.1":[4,3],"25.5/7.3":[4,4],"21.1/7.2":[4,3],"20.8/7.8":[6,9],"24/6.9":[4,4],"19/7.5":[4,4],"19/6.9":[4,2],"34/7.3":[3,2],"22/7.2":[4,4],"13/7.2":[4,2],"21/7.9":[7,2],"60/6.6":[3,16],"63/7":[3,2],"36/7.9":[6,2],"21/7.5":[4,4],"40/6.9":[3,2],"121/7.9":[6,2],"53/7.4":[3,2],"76/8":[8,2],"46.8/6.9":[3,2],"115/7.9":[6,2],"88/7.9":[6,2],"160.2/7.2":[3,2],"60.2/7.65":[3,3],"23.3/7.01":[4,3],"34/6.3":[3,6],"34/7":[3,2],"25/7.1":[4,5],"80.5/7.3":[3,2],"40/7.2":[3,2],"114/7.4":[3,2],"47/7.2":[3,2],"37/7":[3,2],"10/7.3":[4,2],"40/7.33":[3,2],"93/7.2":[3,2],"49.1/6.8":[3,2],"50/6.6":[3,16],"41.4/6.4":[3,6],"29.6/6.9":[4,4],"16.8/6.9":[4,2],"160/7":[3,2],"52/7.3":[3,2],"20/7.6":[5,19],"28/7.4":[4,4],"19.5/7.4":[4,4],"15/7.2":[4,2],"42/7.36":[3,2],"33/7.67":[3,3],"29.7/7.49":[4,4],"70.3/6.8":[3,2],"7/7.31":[6,14],"80/7.4":[3,2],"76/7.9":[6,2],"85/7.5":[3,2],"30.8/7.5":[3,2],"68.3/7.1":[3,2],"96.7/7.9":[6,2],"51/6.8":[3,2],"27/6.6":[3,13],"66/7.6":[2,1],"30/7.2":[4,4],"221/6.9":[3,2],"55/7.3":[3,2],"15.4/7.4":[4,4],"74.4/8.31":[4,6],"38/6.4":[3,6],"54/7.4":[3,2],"89.8/7.3":[3,2],"58/6.9":[3,2],"26.1/7.4":[4,4],"118/8":[8,2],"22/6.9":[4,4],"80/6.8":[3,2],"23/6.4":[3,6],"28/8":[0,0],"24/6.6":[3,12],"23/6.8":[4,2],"59/7.1":[3,2],"7/7.3":[4,2],"43/6.2":[3,4],"36/7.2":[3,2],"53.8/7.4":[3,2],"15/7.21":[4,2],"82.8/7.1":[3,2],"22.9/7":[4,3],"36/7.38":[3,2],"29.4/7.1":[4,6],"48/6.9":[3,2],"47/7.4":[3,2],"71/7.5":[3,2],"16.5/7":[4,2],"44.1/8.2":[4,10],"12/7.5":[6,14],"93/6.6":[3,16],"37/7.29":[3,2],"51.2/7.4":[3,2],"31/7.1":[3,2],"40.2/6.6":[3,16],"29/7.3":[4,4],"53/7.7":[4,11],"53/7":[3,2],"70/8":[8,2],"79/6.8":[3,2],"58.4/7.3":[3,2],"93/7.7":[4,11],"84/7.5":[3,2],"82/7.9":[6,2],"94.2/7.3":[3,2],"13/6.8":[4,4],"62.4/7.5":[3,2],"54.1/7.2":[3,2],"64/7.6":[2,1],"51.9/6.8":[3,2],"24/6.82":[4,2],"32.4/7.2":[3,2],"44.5/6.6":[3,16],"25.7/7.41":[4,4],"80/7.8":[6,22],"31.9/6.9":[3,2],"11/7.1":[4,2],"17.8/7.3":[4,4],"57/7.4":[3,2],"41.2/7.3":[3,2],"89/7.7":[4,11],"66/7.1":[3,2],"37/7.38":[3,2],"21.4/7.1":[4,3],"6.9/7":[4,2],"20/7":[4,4],"30.4/7.5":[3,2],"48/7.2":[3,2],"34/7.1":[3,2],"96/7.6":[2,1],"61/7.7":[4,11],"20/7.2":[4,3],"46/7.9":[6,2],"40.6/7.7":[4,11],"82/7.3":[3,2],"33/7.1":[3,2],"50.9/6.82":[3,2],"36.4/7.63":[3,3],"94/7.8":[6,22],"77/6.8":[3,2],"47.5/6.93":[3,2],"27/6.5":[3,10],"18/7":[4,2],"168/7.5":[3,2],"53/6.9":[3,2],"41/7.8":[6,22],"44/7.7":[4,11],"48/7.5":[3,2],"52/7.7":[4,11],"49/7.6":[2,1],"48/7.8":[6,22],"56/7.4":[3,2],"46/7.6":[2,1],"49/7.5":[3,2],"46/7.5":[3,2],"54/7.3":[3,2],"49/7.8":[6,22],"31/7.86":[6,7],"34/7.17":[3,2],"38/7.5":[3,2],"42/7.3":[3,2],"19/7.4":[4,4],"20/7.3":[4,4],"23/7.4":[4,4],"16/7.2":[4,2],"71.2/7.7":[4,11],"62.9/7.5":[3,2],"56.6/7.5":[3,2],"68/7.6":[2,1],"62.5/7.3":[3,2],"54.6/7.5":[3,2],"65.4/7.6":[2,1],"33.9/7.5":[3,2],"58.3/7.4":[3,2],"68.5/7.5":[3,2],"57.2/7.6":[2,1],"65.9/7.5":[3,2],"47.6/7.4":[3,2],"59.2/7.6":[2,1],"65.7/7.5":[3,2],"57.1/7.4":[3,2],"64.9/7.6":[2,1],"63.4/7.8":[6,22],"62/7.4":[3,2],"55.5/7.4":[3,2],"65/7.5":[3,2],"60/7.6":[2,1],"69.2/7.5":[3,2],"62/7.5":[3,2],"52/7.6":[2,1],"36/7.5":[3,2],"41/7.5":[3,2],"19.1/7.4":[4,4],"19/7.1":[4,3],"19/7.22":[4,3],"20/7.26":[4,4],"20/7.17":[4,4],"19/7.19":[4,4],"19/6.96":[4,2],"39/7.3":[3,2],"17/7.3":[4,3],"16.3/7":[4,2],"17/7":[4,2],"43.3/7.4":[3,2],"45.5/7.8":[6,22],"41/7.55":[3,2],"43.4/7.5":[3,2],"71.4/7.3":[3,2],"70.3/7.1":[3,2],"112.6/7.4":[3,2],"86.6/7.1":[3,2],"89/7.9":[6,2],"69/7.6":[2,1],"109/6.9":[3,2],"65/7.7":[4,11],"58/6.8":[3,2],"46/7.8":[6,22],"97/6.8":[3,2],"116/6.8":[3,2],"88/8":[8,2],"41.8/7.3":[3,2],"32/7.4":[3,2],"75/7":[3,2],"20/7.4":[4,4],"55.1/6.98":[3,2],"43/7.2":[3,2],"40/7":[3,2],"42/7.44":[3,2],"65/7.8":[6,22],"33.2/7.6":[2,1],"51/7.6":[2,1],"43.5/7.4":[3,2],"38.1/7.57":[3,2],"32/6.91":[3,2],"66/7.7":[4,11],"30/6.8":[4,3],"27.1/7.1":[4,5],"51/6.6":[3,16],"58/7.4":[3,2],"42.2/7.1":[3,2],"37/7.7":[4,11],"18/7.23":[4,3],"67/7.1":[3,2],"31/6.8":[4,3],"24.8/6.9":[4,4],"33/7.4":[3,2],"59/7":[3,2],"27.2/7.3":[4,4],"52.5/7.2":[3,2],"29/6.8":[4,2],"81.1/7.46":[3,2],"44/7.6":[2,1],"62/7.7":[4,11],"76/8.1":[4,40],"60.4/7.45":[3,2],"69.5/7.6":[2,1],"46/7.4":[3,2],"77/7.7":[4,11],"35/7.2":[3,2],"54/7.6":[2,1],"41/7":[3,2],"54/7.7":[4,11],"50/7.1":[3,2],"53/7.8":[6,22],"11/7.3":[4,2],"85/7":[3,2],"26/7.2":[4,4],"26.4/7.28":[4,4],"37/7.1":[3,2],"60/7.8":[6,22],"60/7.54":[3,2],"23.7/7.5":[4,4],"24/7.3":[4,4],"26/7.5":[4,4],"27/7.3":[4,4],"21/7.7":[6,60],"109/7.5":[3,2],"64.7/7.6":[2,1],"14/7.2":[4,2],"72/7.3":[3,2],"52.6/7.39":[3,2],"36/7.6":[2,1],"49.3/7.5":[3,2],"55/6.8":[3,2],"10/6.9":[4,2],"19/7":[4,2],"30/7.42":[4,4],"40/7.82":[6,14],"58/6.78":[4,2],"52/7.47":[3,2],"14/6.3":[3,6],"35/6.9":[3,2],"113/7.3":[3,2],"18.3/7.2":[4,4],"74.9/7":[3,2],"78.5/7.2":[3,2],"88/7.3":[3,2],"55/7.6":[2,1],"54.5/7.7":[4,11],"62/7.2":[3,2],"48/6.4":[3,6],"29/7.2":[4,4],"33/6.7":[4,2],"52/7.1":[3,2],"21/7":[4,3],"31.9/7.3":[3,2],"16.7/6.3":[3,6],"61.6/7.3":[3,2],"51.8/7.5":[3,2],"58/7.7":[4,11],"28.8/7.48":[4,4],"72/7.5":[3,2],"179/6.8":[3,2],"64/6.8":[3,2],"56/7":[3,2],"60/7.3":[3,2],"37/7.9":[6,2],"44/7.5":[3,2],"31/7.8":[6,21],"22/7.3":[4,4],"43/6.9":[3,2],"110/7.7":[4,11],"30/7.45":[4,4],"20/7.1":[4,3],"56.9/7.1":[3,2],"36/6.48":[3,9],"63/7.6":[2,1],"45.3/6.79":[4,2],"33/6.6":[3,16],"48.6/6.5":[3,10],"21.7/7.4":[4,4],"48/7.6":[2,1],"82/7.4":[3,2],"29/7.7":[5,24],"44/7.2":[3,2],"12/7.4":[6,19],"30/7.4":[4,4],"44.7/7.18":[3,2],"72.7/6.54":[3,12],"54.9/7.2":[3,2],"89.2/7.2":[3,2],"27.6/6.8":[4,2],"78/7.6":[2,1],"38/7.6":[2,1],"97.5/7.7":[4,11],"50/7.5":[3,2],"43/7.1":[3,2],"26/7.1":[4,5],"18/6.8":[4,2],"25/7.3":[4,4],"61.5/6.7":[4,2],"38.1/7.4":[3,2],"99/6.7":[4,2],"57/7.8":[6,22],"45/7":[3,2],"12/7.1":[4,2],"98/7.4":[3,2],"46/6.3":[3,6],"22/7.4":[4,4],"22/7.1":[4,3],"84/7.7":[4,11],"22/7.09":[4,3],"17/7.17":[4,2],"33.5/7.22":[3,2],"26.7/7.4":[4,4],"32/7.2":[3,2],"26.9/7.1":[4,5],"16.3/6.67":[4,2],"35.9/7.1":[3,2],"36/7.3":[3,2],"15.7/7.4":[4,4],"64.2/7.1":[3,2],"73.9/7.3":[3,2],"62/7.3":[3,2],"73.2/7.4":[3,2],"43/7.8":[6,22],"56/7.8":[6,22],"95/7.8":[6,22],"155/7":[3,2],"63.8/7.4":[3,2],"63.9/8":[8,2],"96/6.68":[4,2],"75/7.1":[3,2],"98.4/7.4":[3,2],"113/7.5":[3,2],"90/8":[8,2],"59.4/7.6":[2,1],"19.2/7.4":[4,4],"35/7.3":[3,2],"22/7.6":[3,2],"27.8/7.09":[4,6],"28.7/6.76":[4,2],"10.6/6.93":[4,2],"67/7.23":[3,2],"85.3/7.7":[4,11],"78/7.4":[3,2],"101/7.2":[3,2],"60/7.7":[4,11],"60.5/7.5":[3,2],"47/7.5":[3,2],"50/7.21":[3,2],"52/6.8":[3,2],"41/7.69":[4,21],"26/7.12":[4,4],"89/8":[8,2],"80.6/7.42":[3,2],"50/7.7":[4,11],"52/7":[3,2],"55/7.4":[3,2],"73/7.1":[3,2],"33/6.8":[3,2],"75/7.7":[4,11],"61/7.4":[3,2],"51/7.5":[3,2],"54/6.9":[3,2],"18/7.6":[3,4],"14/7.4":[6,16],"14/7.3":[4,3],"85/7.6":[2,1],"26/7.4":[4,4],"46/6.8":[3,2],"45/7.5":[3,2],"34/7.2":[3,2],"30.3/7.1":[3,2],"98/7.3":[3,2],"17.7/7.4":[4,4],"17.1/6.9":[4,2],"66.2/6.8":[3,2],"90.3/7.2":[3,2],"89.7/7.3":[3,2],"44.4/7.7":[4,11],"92/6.7":[4,2],"12.6/7":[4,4],"10.5/7.23":[4,2],"108.2/7.3":[3,2],"38/7":[3,2],"40.8/7":[3,2],"73/7":[3,2],"11.9/6.9":[4,2],"25.3/7.5":[4,4],"34/6.9":[3,2],"20.8/7.4":[4,4],"35/7":[3,2],"54/6.8":[3,2],"18/7.2":[4,4],"20.9/7.2":[4,3],"26.7/7.3":[4,4],"49/7.1":[3,2],"12/7.2":[4,2],"24/6.4":[3,6],"18/6":[4,6],"22/6.4":[3,6],"39/7.2":[3,2],"24/7.2":[4,4],"50/6.8":[3,2],"41/7.2":[3,2],"18/7.5":[4,4],"54/7.1":[3,2],"60/7.2":[3,2],"24/7":[4,3],"36.3/7.61":[2,1],"62/7.8":[6,22],"29/7.1":[4,6],"43/6.8":[3,2],"75/7.5":[3,2],"36/8":[8,2],"44/7":[3,2],"17/7.1":[4,3],"60.9/7.6":[2,1],"37.8/6.83":[3,2],"77/7.4":[3,2],"42/7.8":[6,22],"56/7.23":[3,2],"86/7.7":[4,11],"36/7.1":[3,2],"57/6.9":[3,2],"10/7.4":[6,16],"13/6.9":[4,2],"75/7.17":[3,2],"66.5/6.53":[3,10],"6.9/7.1":[4,2],"72/7":[3,2],"44/6.8":[3,2],"72.2/7.6":[2,1],"22.1/6.5":[3,10],"43/6.6":[3,16],"93/7.3":[3,2],"38/7.2":[3,2],"43/7.6":[2,1],"18/7.8":[6,9],"39/7.44":[3,2],"40.7/7.34":[3,2],"82.5/6.72":[4,2],"72.5/6.8":[3,2],"68/7.2":[3,2],"12/6.73":[4,2],"90/7.2":[3,2],"49/7.4":[3,2],"130/7.8":[6,22],"57.9/7.1":[3,2],"43.5/7.9":[6,2],"30/6.7":[4,2],"28/6.7":[4,2],"20/6.6":[3,12],"60/6.7":[4,2],"90/7.4":[3,2],"148/7.8":[6,22],"21/7.6":[5,25],"7.7/6.9":[4,4],"27.5/7.1":[4,6],"34/7.5":[3,2],"8/7":[4,2],"77/6.9":[3,2],"43/7.4":[3,2],"60/7.04":[3,2],"84.8/7.5":[3,2],"52/7.8":[6,22],"26/7.7":[5,52],"38/8.1":[4,40],"27/7.7":[5,32],"28/7.1":[4,6],"12/6.9":[4,2],"96/7.1":[3,2],"8/6.4":[3,6],"40.4/6.9":[3,2],"29/7.4":[4,4],"30.1/7.5":[4,4],"21/8":[8,13],"21/7.3":[4,4],"34.7/7.1":[3,2],"42.5/7.34":[3,2],"22.3/7.18":[4,3],"89.7/6.8":[3,2],"75/7.8":[6,22],"17.4/6.58":[3,12],"80.5/7.7":[4,11],"25/7.6":[3,2],"72/7.1":[3,2],"21.2/7.1":[4,3],"28.3/7.1":[4,6],"30/6.9":[4,5],"67/7.2":[3,2],"79/7.4":[3,2],"64/7.7":[4,11],"88/7.2":[3,2],"79.4/7.65":[3,3],"93/7.5":[3,2],"106/7.9":[6,2],"91/7.8":[6,22],"92.2/7.5":[3,2],"38.2/7":[3,2],"94.7/7.3":[3,2],"40/7.5":[3,2],"25.5/6.9":[4,4],"62.1/7.1":[3,2],"28.5/7.9":[7,13],"48/7.3":[3,2],"18/6.99":[4,2],"31/7.5":[3,2],"32.4/7.3":[3,2],"20.8/7":[4,3],"89.4/7.6":[2,1],"24/6.8":[4,2],"27/7.6":[3,2],"89/7.5":[3,2]}; // 水ごとの「詰め」=★3 の手番で迎えられる最少の手数と、その手数の手順の数(tools/allmin.js で総当たり) // 水ごとの ★3 の手番と、東京の区部の最短手順をその水で打った手番(tools/allbest.js で事前に計算。0=期限内に通らない)
-const CITYKEY={"dsp":"17/7.4,30/7.1,16/7.4,26/7.3,19/7.2,30/7.3,25.2/6.98,15/7.3,28/7.63,20/6.9,23/7.5,22/7,27/7.5,19/7.03,20/7.16,19/7.24,20/7.21,20/7.18,19/6.98,19/7.14,23.7/7,27/7.4,31.5/6.8,15.8/7.3,19/7.3,18.9/7.4,26.2/7.3,27.3/7.5,25/7.4,25.9/7.3,27.1/7.4,21/7.1,25/7.5,25/7.15,16/7.3,24.8/7.3,26.1/7.1,26/7,22.4/7.06,30/7.52,27/7.43,22/7.66,25/7.35,20/7.5,23/7,15/6.9,23/7.2,27.3/7.1,21/7.4,27.8/7.41,21/7.2,67/6.7,10/7.2,13/7,46/6.7,10/7,10/6.8,22/7.45,24.6/7.1,26/7.01,11.4/6.7,29.4/7.3,28/7.3,31/6.7,51/6.7,16.9/7,23/7.3,11/6.9,15.2/7,16/7.1,20/7.14,35/6.7,31/6.85,58/6.7,72/6.7,20.3/6.9,13.1/7,153.3/6.7,65/6.7,23.9/7.2,22/7.5,7.8/7.2,24/7.5,22.9/7.1,17/6.9,21.3/7.5,18/7.1,25.5/7.3,21.1/7.2,24/6.9,19/7.5,19/6.9,22/7.2,13/7.2,21/7.5,23.3/7.01,25/7.1,10/7.3,29.6/6.9,16.8/6.9,28/7.4,19.5/7.4,15/7.2,29.7/7.49,30/7.2,15.4/7.4,26.1/7.4,22/6.9,23/6.8,7/7.3,15/7.21,22.9/7,29.4/7.1,16.5/7,29/7.3,13/6.8,24/6.82,25.7/7.41,11/7.1,17.8/7.3,21.4/7.1,6.9/7,20/7,20/7.2,18/7,19/7.4,20/7.3,23/7.4,16/7.2,19.1/7.4,19/7.1,19/7.22,20/7.26,20/7.17,19/7.19,19/6.96,17/7.3,16.3/7,17/7,20/7.4,30/6.8,27.1/7.1,18/7.23,31/6.8,24.8/6.9,27.2/7.3,29/6.8,11/7.3,26/7.2,26.4/7.28,23.7/7.5,24/7.3,26/7.5,27/7.3,14/7.2,10/6.9,19/7,30/7.42,58/6.78,18.3/7.2,29/7.2,33/6.7,21/7,28.8/7.48,22/7.3,30/7.45,20/7.1,45.3/6.79,21.7/7.4,30/7.4,27.6/6.8,26/7.1,18/6.8,25/7.3,61.5/6.7,99/6.7,12/7.1,22/7.4,22/7.1,22/7.09,17/7.17,26.7/7.4,26.9/7.1,16.3/6.67,15.7/7.4,96/6.68,19.2/7.4,27.8/7.09,28.7/6.76,10.6/6.93,26/7.12,14/7.3,26/7.4,17.7/7.4,17.1/6.9,92/6.7,12.6/7,10.5/7.23,11.9/6.9,25.3/7.5,20.8/7.4,18/7.2,20.9/7.2,26.7/7.3,12/7.2,24/7.2,18/7.5,24/7,29/7.1,17/7.1,13/6.9,6.9/7.1,82.5/6.72,12/6.73,30/6.7,28/6.7,60/6.7,7.7/6.9,27.5/7.1,8/7,28/7.1,12/6.9,29/7.4,30.1/7.5,21/7.3,22.3/7.18,21.2/7.1,28.3/7.1,30/6.9,25.5/6.9,18/6.99,20.8/7,24/6.8","dc":"115/7.8,34/7.8,113/7.8,54/7.8,74/7.8,82/7.8,79.7/7.8,37.1/7.8,33/7.8,31.5/7.8,84/7.8,70/7.8,53.1/7.8,30/8.1,63/7.8,80/7.8,94/7.8,41/7.8,48/7.8,49/7.8,31/7.86,63.4/7.8,45.5/7.8,46/7.8,65/7.8,53/7.8,60/7.8,40/7.82,31/7.8,57/7.8,43/7.8,56/7.8,95/7.8,62/7.8,42/7.8,130/7.8,148/7.8,52/7.8,75/7.8,91/7.8","dp":"70/7.4,45.7/7.43,65/7.3,51.7/7.44,78.3/7,96/7.4,88/7.5,70/7.2,67/7.4,57/7.2,54/7.2,37.5/7.3,45/7.1,59/7.5,63/7.5,137/7,53/7.5,35/7.4,65.4/7.4,60.6/7.5,68.4/7.5,61/7.5,62.6/7.5,60.9/7.4,63.7/7.4,55.7/7.4,69.7/7.5,58.8/7.5,56/7.5,47.7/7.5,58.5/7.5,55.8/7.5,59.8/7.5,53.9/7.5,68/7.5,63.5/7.5,67.6/7.5,45.7/7.5,72.6/7.33,32.7/7.35,59.6/6.9,63.3/7.5,74/7.3,83/7,54/7.5,64/7.5,58/7.3,44/7.4,100/7,52.1/7.3,46/7,40/6.8,39/7.4,66.7/7.5,41/7.4,39.6/7.3,43/7.3,90.9/7.4,50/7.46,42.6/7.2,42/7.4,37/7.5,73.3/7.3,44/7.3,38.5/7.4,50/7.4,37/7.3,60/7,44.2/7.5,51/7.3,31.2/7.2,56/7.3,107/7.4,80.5/7.27,89/7.4,52/7.4,42.3/7.3,48/7,33.8/7.1,63/7.3,40.8/7.2,86/7.4,60/7.4,36/6.9,64/7.4,33.4/7.4,50/7,48/7.44,53/7.05,33/7.26,49/7.2,34/7.4,42.4/7.1,166/7.5,39.5/7.1,62.7/7.3,46.1/7.01,43/7.5,36/7.24,54/7.24,42.8/7,30.4/7,35/7.1,46/7.57,92/7.4,57.6/6.85,30.2/7.4,76.8/7.2,59/7.2,132/7.2,32/7.3,74/7.2,69/6.8,78.2/7,50/7.2,50/6.9,39.5/7.4,74/7.4,51.2/7.3,49.7/7.1,30.7/7.1,60.3/7.2,32/7,66/7.3,66.5/7.4,75.9/7.4,72/7.2,98.3/7.4,69.2/7.4,69.5/7.2,94.3/7.3,91/7.4,31/7.3,33/7.3,33.1/7.08,53/7.3,41.3/7.5,77/7.5,106.4/7.5,42.3/7.1,51/7.4,45/7.09,63/7.4,60/7.5,79.8/7.53,75/7.3,76/7,53/7.2,69/7.2,44/7.34,46/7.2,32.2/7.1,39/7.1,130/6.8,45/7.4,34/7.3,63/7,40/6.9,53/7.4,46.8/6.9,160.2/7.2,60.2/7.65,34/7,80.5/7.3,40/7.2,114/7.4,47/7.2,37/7,40/7.33,93/7.2,49.1/6.8,160/7,52/7.3,42/7.36,33/7.67,70.3/6.8,80/7.4,85/7.5,30.8/7.5,68.3/7.1,51/6.8,221/6.9,55/7.3,54/7.4,89.8/7.3,58/6.9,80/6.8,59/7.1,36/7.2,53.8/7.4,82.8/7.1,36/7.38,48/6.9,47/7.4,71/7.5,37/7.29,51.2/7.4,31/7.1,53/7,79/6.8,58.4/7.3,84/7.5,94.2/7.3,62.4/7.5,54.1/7.2,51.9/6.8,32.4/7.2,31.9/6.9,57/7.4,41.2/7.3,66/7.1,37/7.38,30.4/7.5,48/7.2,34/7.1,82/7.3,33/7.1,50.9/6.82,36.4/7.63,77/6.8,47.5/6.93,168/7.5,53/6.9,48/7.5,56/7.4,49/7.5,46/7.5,54/7.3,34/7.17,38/7.5,42/7.3,62.9/7.5,56.6/7.5,62.5/7.3,54.6/7.5,33.9/7.5,58.3/7.4,68.5/7.5,65.9/7.5,47.6/7.4,65.7/7.5,57.1/7.4,62/7.4,55.5/7.4,65/7.5,69.2/7.5,62/7.5,36/7.5,41/7.5,39/7.3,43.3/7.4,41/7.55,43.4/7.5,71.4/7.3,70.3/7.1,112.6/7.4,86.6/7.1,109/6.9,58/6.8,97/6.8,116/6.8,41.8/7.3,32/7.4,75/7,55.1/6.98,43/7.2,40/7,42/7.44,43.5/7.4,38.1/7.57,32/6.91,58/7.4,42.2/7.1,67/7.1,33/7.4,59/7,52.5/7.2,81.1/7.46,60.4/7.45,46/7.4,35/7.2,41/7,50/7.1,85/7,37/7.1,60/7.54,109/7.5,72/7.3,52.6/7.39,49.3/7.5,55/6.8,52/7.47,35/6.9,113/7.3,74.9/7,78.5/7.2,88/7.3,62/7.2,52/7.1,31.9/7.3,61.6/7.3,51.8/7.5,72/7.5,179/6.8,64/6.8,56/7,60/7.3,44/7.5,43/6.9,56.9/7.1,82/7.4,44/7.2,44.7/7.18,54.9/7.2,89.2/7.2,50/7.5,43/7.1,38.1/7.4,45/7,98/7.4,33.5/7.22,32/7.2,35.9/7.1,36/7.3,64.2/7.1,73.9/7.3,62/7.3,73.2/7.4,155/7,63.8/7.4,75/7.1,98.4/7.4,113/7.5,35/7.3,67/7.23,78/7.4,101/7.2,60.5/7.5,47/7.5,50/7.21,52/6.8,80.6/7.42,52/7,55/7.4,73/7.1,33/6.8,61/7.4,51/7.5,54/6.9,46/6.8,45/7.5,34/7.2,30.3/7.1,98/7.3,66.2/6.8,90.3/7.2,89.7/7.3,108.2/7.3,38/7,40.8/7,73/7,34/6.9,35/7,54/6.8,49/7.1,39/7.2,50/6.8,41/7.2,54/7.1,60/7.2,43/6.8,75/7.5,44/7,37.8/6.83,77/7.4,56/7.23,36/7.1,57/6.9,75/7.17,72/7,44/6.8,93/7.3,38/7.2,39/7.44,40.7/7.34,72.5/6.8,68/7.2,90/7.2,49/7.4,57.9/7.1,90/7.4,34/7.5,77/6.9,43/7.4,60/7.04,84.8/7.5,96/7.1,40.4/6.9,34.7/7.1,42.5/7.34,89.7/6.8,72/7.1,67/7.2,79/7.4,88/7.2,79.4/7.65,93/7.5,92.2/7.5,38.2/7,94.7/7.3,40/7.5,62.1/7.1,48/7.3,31/7.5,32.4/7.3,89/7.5","d":"62/7.6,43.6/7.6,42/7.6,52.9/7.6,47/7.6,50/7.6,45/7.6,44.6/7.6,71/7.6,63.8/7.6,49.7/7.6,37/7.6,34/7.6,53/7.6,40/7.62,67.8/7.6,41/7.6,32/7.6,48.4/7.6,39/7.6,61/7.6,95/7.6,56/7.6,31.9/7.6,66/7.6,64/7.6,96/7.6,49/7.6,46/7.6,68/7.6,65.4/7.6,57.2/7.6,59.2/7.6,64.9/7.6,60/7.6,52/7.6,69/7.6,33.2/7.6,51/7.6,44/7.6,69.5/7.6,54/7.6,64.7/7.6,36/7.6,55/7.6,63/7.6,48/7.6,78/7.6,38/7.6,59.4/7.6,85/7.6,36.3/7.61,60.9/7.6,72.2/7.6,43/7.6,89.4/7.6","dmc":"63.2/8,51/8,42/7.75,30/7.9,53.4/8,120/8,76/8,118/8,70/8,88/8,63.9/8,90/8,89/8,36/8","dm":"43.9/7.7,40/7.7,73/7.7,49/7.7,67.7/7.7,41/7.7,87/7.7,68/7.7,47/8.1,39/7.7,76/7.7,36/7.7,51/7.7,62.1/7.7,63/7.7,43.6/8.07,61.9/7.7,88.7/7.7,100/7.7,66/8.1,76.1/8.3,34/7.7,74.4/8.31,44.1/8.2,53/7.7,93/7.7,89/7.7,61/7.7,40.6/7.7,44/7.7,52/7.7,71.2/7.7,65/7.7,66/7.7,37/7.7,62/7.7,76/8.1,77/7.7,54/7.7,54.5/7.7,58/7.7,110/7.7,97.5/7.7,84/7.7,85.3/7.7,60/7.7,41/7.69,50/7.7,75/7.7,44.4/7.7,86/7.7,38/8.1,80.5/7.7,64/7.7","dcp":"49/7.9,56/7.9,53/7.9,99/7.9,36/7.9,121/7.9,115/7.9,88/7.9,76/7.9,96.7/7.9,82/7.9,46/7.9,89/7.9,37/7.9,43.5/7.9,106/7.9","ds":"28/7.6,26/7.6,19/6.5,48.4/6.59,54/6.46,16/6.5,50/6.1,42/6.6,26/6.6,13.8/6.6,27.2/6.6,51/6.5,60/6.6,34/6.3,50/6.6,41.4/6.4,27/6.6,38/6.4,23/6.4,24/6.6,43/6.2,93/6.6,40.2/6.6,44.5/6.6,27/6.5,51/6.6,14/6.3,48/6.4,16.7/6.3,36/6.48,33/6.6,48.6/6.5,72.7/6.54,46/6.3,22/7.6,18/7.6,24/6.4,18/6,22/6.4,66.5/6.53,22.1/6.5,43/6.6,20/6.6,26/7.7,8/6.4,17.4/6.58,25/7.6,27/7.6","dcs":"20.6/7.6,20.8/7.8,20/7.6,7/7.31,12/7.5,21/7.7,12/7.4,14/7.4,10/7.4,18/7.8,21/7.6,28.5/7.9","dmcsp":"26.2/8","dmcs":"21/7.9,21/8","dms":"29/7.7,27/7.7"}; // 水ごとの「詰めの型」=★3 の日数・最少の手数で迎える手順のすべてに必ず入る手(d=2まで足す m=0.5まで足す c=換水 s=牡蠣殻 p=水草。tools/keys.js で総当たり)
 (function(){
-'use strict';
-const E=window.CYCLE;
 const $=id=>document.getElementById(id);
-const ACT={
-  dose:{n:'アンモニアを 2 まで足す',d:'定番の量。細菌の餌'},
-  small:{n:'アンモニアを 0.5 まで足す',d:'控えめの量'},
-  change:{n:'水を4割換える',d:'すべて薄める・KH を水道水に戻す'},
-  shell:{n:'牡蠣殻を入れる',d:'KH と pH を支える。pH 7.4 未満で溶け、溶ける量に限りあり'},
-  heater:{n:'ヒーターを入れる',d:'水温を26℃に'},
-  plant:{n:'水草を植える',d:'アンモニアを毎日少し吸う(残った分の片づけと、魚が来てからの量を少し減らす)・硝酸塩も吸う'},
-  bottle:{n:'バクテリア剤',d:'2種の細菌を少し足す'},
+const SCANNER="../../suishitsu/";
+let FROM="";
+const TYPES={
+  normal:{name:"くせの少ない水",cls:"",quirk:"立ち上げで困りにくい水。少しなら汚れが残っていても、魚は耐えられます。"},
+  soft:{name:"とてもやわらかい水",cls:"soft",quirk:"硬度がとても低い水。細菌が働くほど pH が下がりやすい。"},
+  alk:{name:"アルカリ寄りの水",cls:"alk",quirk:"pH が高い水。少しの汚れ(アンモニア)でも魚に毒になる。"},
 };
-const CUSTOM={turns:12,best:8,temp:25,limits:{bottle:0,shell:2,heater:0,plant:1}};
-let best={};try{best=JSON.parse(localStorage.getItem('cycle.best2')||'{}')}catch(e){}
-function saveBest(){try{localStorage.setItem('cycle.best2',JSON.stringify(best))}catch(e){}}
-const TD=E.C.turnDays;
-const P1=v=>Number(v).toFixed(1);
-function starsFor(Lv,turn,ok){if(!ok)return 0;return turn<=Lv.best?3:turn<=Lv.best+1?2:1}
-function totalUsed(s){return E.ACTIONS.reduce((t,k)=>t+s.used[k],0)}
-function tsumeStr(Lv){return Lv.par?`${Lv.best*TD}日を${Lv.par}手で`:''}
-function stStr(n){return '★'.repeat(n)+'☆'.repeat(3-n)}
-
-// ---- メニュー
-function menu(){
-  $('menu').classList.remove('hidden');$('game').classList.add('hidden');
-  const box=$('levels');box.innerHTML='';
-  LEVELS.forEach((Lv,i)=>{
-    const b=document.createElement('button');b.className='lv';
-    const r=best[Lv.id];
-    b.innerHTML=`<div class="n">${i+1}. ${Lv.name}</div><div class="s">総硬度 ${Lv.hardness} mg/L ・ pH ${P1(Lv.ph)} ・ ${Lv.temp}℃ ・ 期限 ${Lv.turns*TD}日</div><div class="s">${Lv.hint}</div><div class="st">${stStr(r?r.st:0)}${r?` <span class="s">${r.days}日</span>`:''}${r&&r.tsume?' <span class="tsume">詰めた</span>':''}</div><div class="s">詰め:${tsumeStr(Lv)}</div>`;
-    b.onclick=()=>start(Lv);box.appendChild(b);
-  });
+// 都道府県のタイル地図(列・行、北海道だけ2×2)
+const TILE={"北海道":[11,0,2,2],"青森県":[11,2],"秋田県":[10,3],"岩手県":[11,3],"山形県":[10,4],"宮城県":[11,4],"石川県":[8,5],"富山県":[9,5],"新潟県":[10,5],"福島県":[11,5],"島根県":[3,6],"鳥取県":[4,6],"福井県":[7,6],"岐阜県":[8,6],"長野県":[9,6],"群馬県":[10,6],"栃木県":[11,6],"佐賀県":[0,7],"福岡県":[1,7],"山口県":[2,7],"広島県":[3,7],"岡山県":[4,7],"兵庫県":[5,7],"京都府":[6,7],"滋賀県":[7,7],"愛知県":[8,7],"山梨県":[9,7],"埼玉県":[10,7],"茨城県":[11,7],"長崎県":[0,8],"熊本県":[1,8],"大分県":[2,8],"大阪府":[6,8],"奈良県":[7,8],"三重県":[8,8],"静岡県":[9,8],"東京都":[10,8],"千葉県":[11,8],"鹿児島県":[1,9],"宮崎県":[2,9],"愛媛県":[3,9],"香川県":[4,9],"徳島県":[5,9],"和歌山県":[7,9],"神奈川県":[10,9],"高知県":[4,10],"沖縄県":[0,11]};
+function mapSvg(pref,pick){
+  const u=10; let r="";
+  for(const [p,t] of Object.entries(TILE)){ const w=(t[2]||1)*u, h=(t[3]||1)*u;
+    r+=`<rect x="${t[0]*u+.6}" y="${t[1]*u+.6}" width="${w-1.2}" height="${h-1.2}" rx="1.6" class="${p===pref?"on":""}" data-p="${p}"><title>${p}</title></rect>`; }
+  const t=TILE[pref]; if(t) r+=`<circle class="pin" cx="${t[0]*u+(t[2]||1)*u/2}" cy="${t[1]*u+(t[3]||1)*u/2}" r="6"/>`;
+  return `<svg class="jmap${pick?" pick":""}" viewBox="-4 -4 138 128" role="img" aria-label="日本地図。${pref}">${r}</svg>`;
 }
-const PO='北海道 青森県 岩手県 宮城県 秋田県 山形県 福島県 茨城県 栃木県 群馬県 埼玉県 千葉県 東京都 神奈川県 新潟県 富山県 石川県 福井県 山梨県 長野県 岐阜県 静岡県 愛知県 三重県 滋賀県 京都府 大阪府 兵庫県 奈良県 和歌山県 鳥取県 島根県 岡山県 広島県 山口県 徳島県 香川県 愛媛県 高知県 福岡県 佐賀県 長崎県 熊本県 大分県 宮崎県 鹿児島県 沖縄県'.split(' ');
-const prefs=[...new Set(WATER.map(w=>w[0]))].sort((a,b)=>PO.indexOf(a)-PO.indexOf(b));
-$('pref').innerHTML=prefs.map(p=>`<option>${p}</option>`).join('');
-function fillCity(){const p=$('pref').value;$('city').innerHTML=WATER.filter(w=>w[0]===p).map(w=>`<option value="${w[1]}">${w[1]}(総硬度 ${w[2]} mg/L・pH ${P1(w[3])})</option>`).join('')}
-$('pref').onchange=fillCity;fillCity();
-function cityBase(w){return Object.assign({id:'city:'+w[0]+w[1],name:w[0]+' '+w[1],hardness:w[2],ph:w[3],hint:'',city:1},JSON.parse(JSON.stringify(CUSTOM)))}
-const KEYOF={};Object.entries(CITYKEY).forEach(([t,v])=>v.split(',').forEach(k=>KEYOF[k]=t));
-const KN={d:'2まで足す',m:'0.5まで足す',c:'水を換える',s:'牡蠣殻',p:'水草'};
-function keyName(t){const o=[...t].filter(c=>c!=='d').map(c=>({m:'刻み',c:'換水',s:'殻',p:'水草'})[c]);return o.length?o.join('+')+'型':'2だけ型'}
-function keyCount(t){return CITYKEY[t]?CITYKEY[t].split(',').length:0}
-function keyPick(t,seed){const ws=WATER.filter(w=>KEYOF[w[2]+'/'+w[3]]===t&&w[0]+' '+w[1]!==seed);if(!ws.length)return null;let x=0;for(const ch of seed+t)x=(x*31+ch.charCodeAt(0))>>>0;return ws[x%ws.length]}
-function keyOthers(L){if(!L._others)L._others=KTYPES.filter(x=>x!==L.key).sort((a,b)=>keyCount(a)-keyCount(b)).map(x=>({x,w:keyPick(x,L.name)})).filter(o=>o.w).slice(0,3);return L._others}
-const KTYPES=Object.keys(CITYKEY).sort((a,b)=>keyCount(b)-keyCount(a));
-let TOKYO=null;
-$('ktally').innerHTML='全国の水の<b>詰めの型</b>=最少の手順に必ず入る手の組み合わせ(その街で詰めると明かされる)。どの型にも「2まで足す」が入り、型の名前はそのほかの手(水草/殻=牡蠣殻/刻み=0.5まで足す/換水=水を4割換える):'+KTYPES.map(t=>`${keyName(t)} ${keyCount(t)}種`).join('・'); // 東京都(区部)の水での最短手順(街の比べ用。最初に1回だけ探す)
-// 詰めの手数を全国の水と比べる(同じ日数でも、水によって要る手の数が違う)
-function cityPar(Lv){const vals=Object.entries(CITYMIN).filter(([k,v])=>v[0]&&CITYBEST.w[k]&&CITYBEST.w[k][0]===Lv.best).map(([k,v])=>v[0]);if(!vals.length)return'';const fewer=vals.filter(v=>v<Lv.par).length,same=vals.filter(v=>v===Lv.par).length;const tk=CITYMIN['34/7.5'];
-  return `全国の水のうち★3が同じ${Lv.best*TD}日の${vals.length}種で、詰めが${Lv.par}手の水は${same}種${fewer?`(もっと少ない手で済む水は${fewer}種${tk&&Lv.best===8?`。東京の区部の水は${tk[0]}手`:''})`:'(いちばん少ない手で済む水)'}。`}
-function tokyoPlan(){if(TOKYO)return TOKYO;const t=LEVELS.find(x=>x.id==='tokyo');const Lv=cityBase(['東京都','(区部)',t.hardness,t.ph]);const tp=[['dose'],[],['plant'],[],[],[],['dose'],[]];const n=runPlan(Lv,tp);const r=n?{turn:n,plan:tp}:(CITYBEST.tokyo&&CITYBEST.tokyo.plan?CITYBEST.tokyo:cityBest(Lv,true));TOKYO={hardness:t.hardness,ph:t.ph,plan:r.plan,days:r.turn*TD,acts:r.plan.flat().length};return TOKYO} // 比べる手順=東京の区部の水の「詰め」の手順
-function runPlan(Lv,p){const s=E.newTank(Lv);for(let d=0;d<Lv.turns;d++){for(const a of (p[d]||[]))if(a&&E.canDo(s,a,Lv))E.apply(s,a);E.step(s);if(E.fishTest(s).ok)return d+1}return 0}
-function cityLevel(w){const Lv=cityBase(w);const pre=CITYBEST.w[w[2]+'/'+w[3]];Lv.best=pre?Math.min(pre[0],Lv.turns-1):cityBest(Lv);{const m=CITYMIN[w[2]+'/'+w[3]];if(m&&m[0]&&pre&&pre[0]<=Lv.turns-1){Lv.par=m[0];Lv.key=KEYOF[w[2]+'/'+w[3]]||''}}{const t=tokyoPlan();if(Math.abs(w[2]-t.hardness)<0.01&&Math.abs(w[3]-t.ph)<0.01)return Lv;const n=runPlan(Lv,t.plan);Lv.tplan=t.plan;const head=`東京の区部の水(硬度${t.hardness}・pH${t.ph})の詰めの手順(${t.days}日・${t.acts}手)を、この水でそのまま打つと`;const sv=n?starsFor(Lv,n,true):0;Lv.quirk=sv===3?'素直な水':sv?'クセのある水':'手ごわい水';Lv.cmp=n?`${head} ${n*TD}日で★${sv}(この街の★3は${Lv.best*TD}日)`:`${head}期限内に魚を迎えられない`}return Lv}
-// その街の水での最短(★3 の日数)を、決まった乱数で探す(同じ街なら毎回同じ)
-function cityBest(Lv,wantPlan){let x=0;for(const ch of Lv.id)x=(x*31+ch.charCodeAt(0))>>>0;const rnd=()=>{x=(x*1664525+1013904223)>>>0;return x/4294967296};const r=n=>Math.floor(rnd()*n);
-  const O=['','dose','small','change','shell','plant'];const T=Lv.turns;
-  const run=p=>{const s=E.newTank(Lv);for(let d=0;d<T;d++){for(const a of p[d])if(a&&E.canDo(s,a,Lv))E.apply(s,a);E.step(s);if(E.fishTest(s).ok)return d+1}return 99};
-  const seeds=[Array.from({length:T},()=>['small']),Array.from({length:T},(_,i)=>i==0?['small','shell']:['small']),Array.from({length:T},()=>['dose'])];
-  let b=null,be=99;for(const p of seeds){const e=run(p);if(e<be){be=e;b=p}}
-  for(let i=0;i<1500;i++){const p=b&&rnd()<.8?b.map(t=>t.slice()):Array.from({length:T},()=>[O[r(6)],O[r(6)]].filter(Boolean));const k=1+r(3);for(let j=0;j<k;j++)p[r(T)]=[O[r(6)],O[r(6)]].filter(Boolean);const e=run(p);if(e<=be){be=e;b=p}}
-  return wantPlan?{turn:Math.min(be,T-1),plan:b}:Math.min(be,T-1)}
-$('goCity').onclick=()=>{const p=$('pref').value,c=$('city').value;const w=WATER.find(x=>x[0]===p&&x[1]===c);start(cityLevel(w))};
-
-// ---- ゲーム
-let L,S,hist,today,over=false,fails=0,pend=false;
-function ev(n,p){try{window.gtag&&window.gtag("event",n,p)}catch(e){}}
-let FROM="menu";
-function start(level){
-  L=level;ev("cycle_start",{level:level.city?"city":level.id,place:level.city?level.name:"",from:FROM});FROM="menu";S=E.newTank(L);hist=[];today=[];over=false;fails=(best.fails&&best.fails[L.id])||0;
-  $('menu').classList.add('hidden');$('game').classList.remove('hidden');
-  $('place').textContent=L.name+' の水道水'+(L.quirk?' ― '+L.quirk:'');$('mplace').innerHTML=`<b>${L.name} の水道水</b>${L.quirk?' ― '+L.quirk:''}(総硬度 ${L.hardness}・pH ${P1(L.ph)})${L.par?` ・ 詰め ${tsumeStr(L)}`:''}${L.city&&L.cmp?'<br>'+L.cmp+'。':''}`;
-  $('tapinfo').textContent=`総硬度 ${L.hardness} mg/L(KH の目安 ${S.kh0.toFixed(1)} dKH)・pH ${P1(L.ph)}・水温 ${L.temp}℃。${L.turns*TD}日目までに魚を迎える。★3 は ${L.best*TD}日以内。${L.par?`詰めは ${tsumeStr(L)}(${L.best*TD}日以内に、全部で${L.par}手だけで迎える)。`:''}${L.city&&L.par?cityPar(L):''}${L.cmp?'\n'+L.cmp+'。':''}`;
-  const tp=$('tplan');tp.hidden=!L.tplan;tp.open=false;if(L.tplan)$('tplanBody').innerHTML=L.tplan.map((c,i)=>`${(i+1)*TD}日目まで:${c.length?c.map(a=>ACT[a].n).join('+'):'何もしない'}`).join('<br>')+`<br>(この街の水と同じ決まり:牡蠣殻2つ・水草1つまで、ヒーターとバクテリア剤なし)`;
-  render();
-  if(!best.seenHelp){best.seenHelp=1;saveBest();help();}
-}
-function used(k){return S.used[k]+today.filter(x=>x===k).length}
-function avail(k){const lim=L.limits[k];return lim==null?Infinity:lim-used(k)}
-function preview(){const s=E.clone(S);today.forEach(a=>E.apply(s,a));E.step(s);return s}
-function fmt(v,d){return v<0.005?'0':v.toFixed(d==null?2:d)}
-const TUBE=[
-  {k:'nh',n:'アンモニア',col:v=>mix('#e9d64a','#3f8f5a',Math.min(1,v/4))},
-  {k:'no2',n:'亜硝酸',col:v=>mix('#bfe0ea','#7b3f8f',Math.min(1,v/3))},
-  {k:'no3',n:'硝酸塩',col:v=>mix('#f0e07a','#c0392b',Math.min(1,v/60)),d:0},
-  {k:'ph',n:'pH',col:v=>v<6.6?mix('#e2c33c','#8fb94a',(v-5.8)/0.8):mix('#8fb94a','#4a6fb0',Math.min(1,(v-6.6)/1.6))},
+const W=(p,c)=>{ const f=WATER.find(x=>x[0]===p&&x[1]===c); if(f||!c) return f; const pc=(c.match(/^(.+?市).+区$/)||[])[1]; return pc?WATER.find(x=>x[0]===p&&x[1]===pc):undefined; };
+const STAGES=[
+  {id:"naha",pref:"沖縄県",city:"那覇市",cards:["feed","change","wait"],intro:"はじめての立ち上げ。水道水はカルキ抜きをしてから入れました。エサを入れると、そこから出るアンモニアを食べて細菌が育ちます。細菌が増えて汚れが減ったら、魚を迎えましょう。"},
+  {id:"nagoya",pref:"愛知県",city:"名古屋市",cards:["feed","change","shell","wait"]},
+  {id:"gyoda",pref:"埼玉県",city:"行田市",cards:["feed","change","wait"]},
+  {id:"sapporo",pref:"北海道",city:"札幌市",winter:true,cards:["feed","change","heater","wait"],quirkOverride:"冬の札幌。水が冷たいと細菌の増え方が遅く、熱帯魚にも冷たすぎる。"},
+  {id:"chiyoda",pref:"東京都",city:"千代田区",cards:["feed","bottle","change","shell","wait"],intro:"バクテリア剤が使えます。いちばん早い手順を探しましょう。"},
 ];
-function mix(a,b,t){t=Math.max(0,Math.min(1,t));const p=x=>[1,3,5].map(i=>parseInt(x.substr(i,2),16));const A=p(a),B=p(b);return'#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
-function render(){
-  const d=$('days');d.innerHTML='';
-  for(let i=1;i<=L.turns;i++){const e=document.createElement('i');e.textContent=i*TD;if(i<=S.turn)e.className='done';if(i===S.turn+1)e.className='now';if(i===L.best)e.classList.add('fish');e.title=i===L.best?'★3 の期限':'';d.appendChild(e)}
-  const lim=E.nhLimit(S.ph);
-  $('goal').innerHTML=`いま <b>${S.day}日目</b> ・ 期限 ${L.turns*TD}日目 ・ ★3 は <b>${L.best*TD}日以内</b>${L.par?` ・ 詰め ${tsumeStr(L)}(いま ${totalUsed(S)+today.length}手)`:''}`;
-  $('tubes').innerHTML=TUBE.map(t=>{const v=S[t.k];const al=(t.k==='nh'&&v>E.inhibitAt(S.ph))||(t.k==='no2'&&v>0.5&&S.turn>0)||(t.k==='ph'&&v<6.8);
-    const limTxt=t.k==='nh'?`${E.inhibitAt(S.ph).toFixed(1)}を超えて残ると<br>亜硝酸の細菌が止まる`:t.k==='no2'?'魚の目安 0.5以下':t.k==='no3'?'換水で下がる':'6.8より下で細菌が鈍る';
-    return `<div class="tube${al?' alert':''}"><div class="glass"><div class="liq" style="background:${t.col(v)}"></div></div>${t.n}<b>${t.k==='ph'?v.toFixed(2):fmt(v,t.d)}${t.k==='ph'?'':'<span class="u"> mg/L</span>'}</b><span class="lim">${limTxt}</span></div>`}).join('');
-  const p=preview();
-  const arrow=(a,b,inv)=>{const df=b-a;if(Math.abs(df)<0.01)return'→';const up=df>0;return `<span class="${(up!==!!inv)?'up':'down'}">${up?'↑':'↓'}</span>`};
-  const fac=E.tempFactor(S.temp)*E.phFactor(S.ph);const cap=x=>(x*E.C.capA*fac).toFixed(2);
-  const need=E.C.fishLoad;
-  const okA=S.a*E.C.capA*fac>=need, okB=S.b*E.C.capB*fac>=need;
-  $('next').innerHTML=over?'':`<b>この手で3日たつと</b>:アンモニア ${fmt(p.nh)} ${arrow(S.nh,p.nh)} ・ 亜硝酸 ${fmt(p.no2)} ${arrow(S.no2,p.no2)} ・ 硝酸塩 ${fmt(p.no3,0)} ・ pH ${p.ph.toFixed(2)} ${arrow(S.ph,p.ph,true)}<br>
-  細菌が1日に処理できる量(魚が来ると毎日 ${need} 必要):<br>アンモニア→亜硝酸 <b class="${okA?'okc':''}">${cap(S.a)}</b>(3日後 ${cap(p.a)})・亜硝酸→硝酸塩 <b class="${okB?'okc':''}">${cap(S.b)}</b>(3日後 ${cap(p.b)})<br><span class="tap">水温 ${S.temp}℃${S.heat>0&&S.heat<900?`(ヒーター残り${S.heat}日)`:''}・KH <b class="${S.kh>=E.C.minKh?'okc':''}">${S.kh.toFixed(2)}</b> dKH(魚を迎えるには ${E.C.minKh} 以上)${S.shellKh>0?`(殻の残り ${Math.max(0,S.pool).toFixed(1)}${S.ph>=E.C.shellStopPh?'・pH が高く溶けていない':''})`:''}。両方が ${need} を超え、アンモニアと亜硝酸が残っておらず、KH が ${E.C.minKh} 以上(魚を迎えた4日後の見込みも)なら魚を迎えられる。${(()=>{const q=E.fishTest(S).pre;return q.drift&&S.kh>=E.C.minKh&&S.nh<=0.1&&S.no2<=0.1?`<b class="bad">いま迎えると4日後の KH は ${q.kh4.toFixed(2)} の見込み(足りない)</b>`:''})()}</span>`;
-  $('acts').innerHTML='';
-  Object.keys(ACT).forEach(k=>{if(L.limits[k]===0)return;const a=ACT[k],n=avail(k);
-    const b=document.createElement('button');b.className='act';b.disabled=over||today.length>=2||today.includes(k)||n<=0||!E.canDo(S,k,L)||S.turn>=L.turns;
-    b.innerHTML=`${a.n}${n!==Infinity?` <small>のこり ${n}</small>`:''}<small>${k==='heater'&&L.heatDays?`26℃で${L.heatDays}日(稚魚の水槽と交代)`:a.d}</small>`;
-    b.onclick=()=>{today.push(k);render()};$('acts').appendChild(b)});
-  [0,1].forEach(i=>{const e=$('s'+i);e.textContent=today[i]?ACT[today[i]].n:'―';e.className='slot'+(today[i]?' f':'')});
-  $('adv').disabled=over||S.turn>=L.turns;
-  $('fish').disabled=over||S.turn<1||today.length>0;
-  $('fish').title=today.length?'手を打ったら、まず3日進める':'';
-  $('undo').disabled=!hist.length;
-  $('log').innerHTML=S.log.slice().reverse().map(x=>`<div>${x}</div>`).join('');
-  draw(p);
-}
-$('adv').onclick=()=>{
-  hist.push({S:E.clone(S),today:today.slice()});
-  today.forEach(a=>E.apply(S,a));const done=today.map(a=>ACT[a].n).join('・')||'何もしない';
-  const hOn=S.heat>0&&S.heat<900;E.step(S);if(hOn&&S.heat===0)S.log.push(`${S.day}日目:ヒーターが切れた(${S.temp}℃へ)`);S.log.push(`${S.day}日目まで:${done} → アンモニア ${fmt(S.nh)}・亜硝酸 ${fmt(S.no2)}・pH ${S.ph.toFixed(2)}`);
-  today=[];render();
-  if(S.turn>=L.turns){over=true;pend=true;render();setTimeout(()=>{pend=false;finish(true)},300)}
+const CITY_CARDS=["feed","bottle","change","shell","wait"];
+const CARD={
+  feed:{n:"エサを少し入れる",d:"傷んでアンモニアが出る。細菌の食べ物"},
+  bottle:{n:"バクテリア剤",d:"市販の細菌を足す(1回だけ)"},
+  change:{n:"水を換える",d:"汚れが減り、下がった pH も少し戻る"},
+  shell:{n:"サンゴ砂を入れる",d:"店で買える。pH を下がりにくくする(1回だけ)"},
+  heater:{n:"ヒーター",d:"水をあたためる"},
+  wait:{n:"何もしない",d:"そのまま1週間待つ"},
 };
-$('fish').onclick=()=>{if(over)return;const t=E.fishTest(S);if(t.pre&&t.pre.failed){gate(t);return}finish()};
-$('undo').onclick=()=>{if(pend)return;const h=hist.pop();if(!h)return;S=h.S;today=h.today;over=false;render()};
-$('clear').onclick=()=>{today=[];render()};
-$('back').onclick=menu;
+const ICON={
+  feed:'<svg viewBox="0 0 34 34" aria-hidden="true"><path d="M9 6h16l-2 6H11z" fill="currentColor" opacity=".25"/><path d="M9 6h16l-2 6H11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="13" cy="20" r="2" fill="currentColor"/><circle cx="19" cy="24" r="2" fill="currentColor"/><circle cx="15" cy="29" r="2" fill="currentColor"/><circle cx="22" cy="18" r="1.6" fill="currentColor"/></svg>',
+  bottle:'<svg viewBox="0 0 34 34" aria-hidden="true"><rect x="12" y="4" width="10" height="5" rx="1" fill="currentColor"/><path d="M11 9h12v20a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="20" r="1.8" fill="currentColor"/><circle cx="19" cy="24" r="1.8" fill="currentColor"/><circle cx="18" cy="16" r="1.4" fill="currentColor"/></svg>',
+  change:'<svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 12h17l-4-4M28 22H11l4 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  shell:'<svg viewBox="0 0 34 34" aria-hidden="true"><path d="M5 26c4-4 20-4 24 0z" fill="currentColor" opacity=".25" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 18v-5m-3 2h6M20 20v-7m-3 3 3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="11" cy="24" r="1.2" fill="currentColor"/><circle cx="17" cy="23" r="1.2" fill="currentColor"/><circle cx="23" cy="24" r="1.2" fill="currentColor"/></svg>',
+  heater:'<svg viewBox="0 0 34 34" aria-hidden="true"><rect x="13" y="4" width="8" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="23" r="3" fill="currentColor"/><path d="M17 9v11" stroke="currentColor" stroke-width="2"/><path d="M25 10c2 2 2 4 0 6M28 8c3 3 3 7 0 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  wait:'<svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M17 10v7l5 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+};
+const FISHWHY={
+  cold:"水が冷たくて、魚が弱ってしまった。熱帯魚にはあたたかい水が要ります。",
+  sour:"pH が下がりすぎていて、魚が弱ってしまった。",
+  bac:"細菌がまだ少なく、魚のフンから出るアンモニアを分解しきれなかった。",
+  dirt:"汚れ(アンモニアなど)が多く残っていて、魚が弱ってしまった。",
+  dirtalk:"アルカリ寄りの水では、少しの汚れでも毒になる。汚れが消えきってから迎えましょう。",
+};
+let store={}; try{ store=JSON.parse(localStorage.getItem("cycle5")||"{}"); }catch(e){ store={}; }
+const save=()=>{ try{ localStorage.setItem("cycle5",JSON.stringify(store)); }catch(e){} };
+const track=(ev,p)=>{ try{ if(typeof window.gtag==="function") window.gtag("event",ev,p); }catch(e){} };
+const place=w=>w[0]+" "+w[1];
+const gh=w=>(w[2]/17.85).toFixed(1);
+const ghWord=w=>{ const g=w[2]/17.85; return g<4?"軟水":g<8?"やや軟水":g<12?"中硬水":g<20?"硬水":"超硬水"; };
+function scannerUrl(w,where){ const u=SCANNER+(w&&w[4]?"a/"+w[4]+"/":""); return u; }
+document.addEventListener("click",e=>{ const a=e.target.closest&&e.target.closest("a[data-scan]"); if(a) track("cycle_scanner_click",{where:a.dataset.scan,city:G&&G.w?G.w[1]:""}); });
 
-function finish(auto){
-  if(over&&!auto)return;over=true;render();
-  const t=E.fishTest(S);const noFish=!t.ok&&t.pre&&t.pre.failed;if(!t.ok&&!noFish)fails++;best.fails=best.fails||{};best.fails[L.id]=t.ok?0:fails;saveBest();const st0=starsFor(L,S.turn,t.ok);const st=t.ok?Math.max(1,st0-fails):0;const nAct=totalUsed(S);const tsume=t.ok&&!!L.par&&S.turn<=L.best&&nAct<=L.par&&!fails;
-  ev('cycle_finish',{level:L.city?'city':L.id,place:L.city?L.name:'',ok:t.ok?1:0,stars:st,days:S.day,acts:nAct,tsume:tsume?1:0});
-  const prev=best[L.id];if(tsume&&prev&&!prev.tsume){prev.tsume=1;saveBest()}
-  if(t.ok&&(!prev||S.turn*TD<prev.days||(S.turn*TD===prev.days&&st>prev.st))){best[L.id]={st,days:S.turn*TD,tsume:tsume||!!(prev&&prev.tsume)};saveBest()}
-  const pr=t.pre||{};if(pr.failed&&S.turn>=L.turns)t.why='late';const why0={late:`期限の${L.turns*TD}日目までに準備が整わなかった。足りなかったもの:${lateMiss(pr)}。魚は来ていないので、迎え直しには数えない`,capA:`迎える前の点検で不合格:アンモニアを食べる細菌が1日に処理できる量が ${(pr.capA||0).toFixed(2)}。魚は毎日 ${E.C.fishLoad} 出すので、今は0でも数日で溜まる`,capB:`迎える前の点検で不合格:亜硝酸を食べる細菌が1日に処理できる量が ${(pr.capB||0).toFixed(2)}。魚は毎日 ${E.C.fishLoad} 分を出すので、今は0でも数日で溜まる`,phcap:`迎える前の点検で不合格:pH ${(pr.ph||0).toFixed(2)} では細菌が鈍く(6.8 未満で鈍り、5.8 で止まる)、処理できる量が ${Math.min(pr.capA||0,pr.capB||0).toFixed(2)}。魚が毎日出す ${E.C.fishLoad} に足りない`};
-  const why=why0[t.why]||{nh:'アンモニアが残った。アンモニアを食べる細菌がまだ足りない',no2:'亜硝酸が溜まった。亜硝酸を食べる細菌が育ちきっていない(アンモニアが残りすぎると育たない)',ph:'pH が 6.0 を下回った。軟らかい水は細菌が働くほど酸っぱくなり、細菌も鈍る',temp:'水が冷たくなった。熱帯魚には22℃以上が要る(ヒーターを稚魚の水槽に戻すと冷える)'}[t.why];
-  const rows=t.days.map((r,i)=>`<tr><td>魚 ${i+1}日目</td><td class="${r.nh>r.lim?'bad':''}">${fmt(r.nh)}</td><td class="${r.no2>0.5?'bad':''}">${fmt(r.no2)}</td><td>${fmt(r.no3,0)}</td><td class="${r.ph<6.0?'bad':''}">${r.ph.toFixed(2)}</td><td class="${r.kh<E.C.minKh?'bad':''}">${r.kh.toFixed(2)}</td></tr>`).join('');
-  $('mbody').innerHTML=`<div class="head"><b style="font-size:18px">${t.ok?S.day+'日で立ち上がった':noFish?'期限までに魚を迎えられなかった':'魚を迎えたが……'}</b><span style="color:var(--warn);font-size:20px;letter-spacing:3px">${stStr(st)}</span></div>
-  ${pr.failed?'':`<table><tr><th></th><th>アンモニア</th><th>亜硝酸</th><th>硝酸塩</th><th>pH</th><th>KH</th></tr>${rows}</table>${t.ok&&t.days.length>1&&t.days[t.days.length-1].ph<t.days[0].ph-0.05?`<p class="tap" style="font-size:12px">pH は少しずつ下がっているが、4日目も KH ${t.days[t.days.length-1].kh.toFixed(2)} dKH(${E.C.minKh} 以上)が残っているので、まだ受け止められる。この先は週に一度の換水で KH を水道水の値に戻すのが実際の世話。</p>`:''}`}
-  ${t.ok&&L.par?`<p style="font-size:14px">${tsume?'<b class="tsume">詰めた</b> ':''}使った手 <b>${nAct}手</b>(詰め=${tsumeStr(L)})${!tsume&&S.turn<=L.best&&!fails?'。日数は★3。あと'+(nAct-L.par)+'手減らせる':''}</p>`:''}
-  ${t.ok&&L.key?keyHtml(L,tsume):''}
-  ${t.ok?`<p style="font-size:13px">★3 は ${L.best*TD}日以内、★2 は ${(L.best+1)*TD}日以内。${fails?`<br><b>迎え直し ${fails}回</b>で ★−${Math.min(fails,st0-1)}(魚を迎えて失敗した回数は、1手戻しても・はじめからでも、この面を一度クリアするまで残る)`:''}</p>`:`<p class="bad" style="font-weight:400">${why}</p>`}
-  <div class="row"><button class="main" id="mRetry">はじめから</button><button class="ghost" id="mUndo">${t.ok&&!tsume?'1手戻して詰める':'1手戻す'}</button><button class="ghost" id="mMenu">面を選ぶ</button></div>`;
-  $('modal').classList.add('show');
-  $('mRetry').onclick=()=>{$('modal').classList.remove('show');start(L)};
-  $('mUndo').onclick=()=>{$('modal').classList.remove('show');$('undo').onclick()};
-  $('mMenu').onclick=()=>{$('modal').classList.remove('show');menu()};
-  if(L.key)bindKey(L);
-}
-function keyHtml(L,tsume){const t=L.key,n=[...t].filter(c=>c!=='d').length;
-  if(!tsume)return `<p style="font-size:13px">詰めの手がかり:この水の最少の手順には「2まで足す」のほかに、<b>${n?n+'種類の手':'必ず要る手は無い'}</b>${n?'が必ず入る':''}。何の手かは、詰めると分かる。</p>`;
-  const others=keyOthers(L);
-  return `<p style="font-size:13px"><b>この水の詰めの型:${keyName(t)}</b>(最少の手順に必ず入る手:${[...t].map(c=>KN[c]).join('・')})。全国の水のうち同じ型は${keyCount(t)}種。</p>`+(others.length?`<div class="tap">ほかの型の街で詰める(少ない型から):</div><div class="row">${others.map((o,i)=>`<button class="ghost" data-k="${i}" style="min-height:40px;padding:6px 10px;font-size:13px">${o.w[0]} ${o.w[1]}(${keyName(o.x)}・全国${keyCount(o.x)}種)</button>`).join('')}</div>`:'')}
-function bindKey(L){const others=keyOthers(L);document.querySelectorAll('#mbody [data-k]').forEach(b=>b.onclick=()=>{const w=others[+b.dataset.k].w;$('modal').classList.remove('show');try{const q=new URLSearchParams(location.search);q.set('pref',w[0]);q.set('city',w[1]);q.delete('src');history.replaceState(null,'','?'+q.toString())}catch(e){}$('pref').value=w[0];fillCity();$('city').value=w[1];start(cityLevel(w))})}
-// 迎える前の点検で止まったとき:魚はまだ来ていない(★も減らない)。何が足りないかを数字で
-function lateMiss(pr){const n=E.C.fishLoad,k=E.C.minKh,m=[];
-  if(S.nh>0.1)m.push(`アンモニアが ${fmt(S.nh)} 残っている`);if(S.no2>0.1)m.push(`亜硝酸が ${fmt(S.no2)} 残っている`);
-  if((pr.capA||0)<n)m.push(`アンモニアの細菌 ${(pr.capA||0).toFixed(2)}/日(必要 ${n})`);if((pr.capB||0)<n)m.push(`亜硝酸の細菌 ${(pr.capB||0).toFixed(2)}/日(必要 ${n})`);
-  if((pr.kh||0)<k)m.push(`KH ${(pr.kh||0).toFixed(2)} dKH(必要 ${k})`);else if(pr.drift)m.push(`4日後の KH の見込み ${(pr.kh4||0).toFixed(2)} dKH(必要 ${k})`);
-  return m.join('・')||'点検の条件'}
-// KH が足りないときに勧める手:この面で使えるものだけ
-function khAdvice(){const a=[];
-  if(avail('shell')>0)a.push('牡蠣殻を足す(殻は pH 7.4 未満で溶ける)');
-  if(S.shellKh>0&&Math.max(0,S.pool)>0.05)a.push(S.ph<E.C.shellStopPh?'入れた殻が溶けるのを待つ':'入れた殻は pH が高くて溶けていない');
-  if(L.limits.change!==0&&S.kh0+S.shellKh>S.kh+0.05)a.push(`水を4割換える(KH が水道水の ${(S.kh0).toFixed(2)}${S.shellKh>0?'と殻の分':''} に近づく)`);
-  return a.length?'次の一手:'+a.join('、または')+'。':'この面では KH を足す手が無い。1手戻して、アンモニアを足す回数を減らす。'}
-function gate(t){const pr=t.pre,need=E.C.fishLoad;const row=(n,v,ok,lim)=>`<tr><td>${n}</td><td class="${ok?'okc':'bad'}">${v}</td><td>${lim}</td></tr>`;
-  $('mbody').innerHTML=`<b style="font-size:17px">まだ魚を迎えられない</b><p style="font-size:13px">迎える前の点検で止めた。魚はまだ来ていないので、★は減らない。</p>
-  <table><tr><th>点検</th><th>いま</th><th>必要</th></tr>${row('アンモニア',fmt(S.nh),S.nh<=0.1,'0.1 以下')}${row('亜硝酸',fmt(S.no2),S.no2<=0.1,'0.1 以下')}${row('アンモニア→亜硝酸の細菌',pr.capA.toFixed(2)+'/日',pr.capA>=need,need+'/日 以上')}${row('亜硝酸→硝酸塩の細菌',pr.capB.toFixed(2)+'/日',pr.capB>=need,need+'/日 以上')}${row('KH(酸を受け止める力)',pr.kh.toFixed(2)+' dKH',pr.kh>=E.C.minKh,E.C.minKh+' dKH 以上')}${row('魚を迎えた4日後の KH(見込み)',(pr.kh4==null?pr.kh:pr.kh4).toFixed(2)+' dKH',!pr.drift,E.C.minKh+' dKH 以上')}</table>
-  <p style="font-size:13px">${pr.drift&&pr.kh>=E.C.minKh?`KH はいま ${pr.kh.toFixed(2)} あるが、魚が来ると細菌が毎日アンモニアを処理するたびに KH が減り、4日後には ${(pr.kh4||0).toFixed(2)} まで減る見込み(そのとき pH ${(pr.ph4||0).toFixed(2)})。KH が尽きかけると pH が下がり続け、細菌が鈍る。${khAdvice()}<br>`:''}${pr.kh<E.C.minKh?`KH が ${pr.kh.toFixed(2)} しかない。魚の出すアンモニアを細菌が処理するたびに KH が減り、尽きると pH が一気に落ちる。${khAdvice()}<br>`:''}${S.nh>0.1||S.no2>0.1?`${S.nh>0.1?'アンモニア':'亜硝酸'}がまだ残っている(0.1 以下が必要)。細菌が食べきるのを3日待つか、水を4割換えて薄める(細菌は換水では減らない)。<br>`:''}${pr.ph<6.4?`pH ${pr.ph.toFixed(2)} では細菌が鈍い(6.8 未満で鈍り、5.8 で止まる)。`:''}魚は毎日 ${need} のアンモニアを出す。細菌がそれを処理しきれないと、数日で溜まる。${(pr.capA<need||pr.capB<need)&&S.nh<=0.1?'<br>餌(アンモニア)が無い日は、細菌が少しずつ減る(1日に約3%)。待つ間も少し足して餌を絶やさないのが、実際の立ち上げと同じ考え方。':''}</p>
-  <div class="row"><button class="main" id="mOk">続ける</button></div>`;
-  $('modal').classList.add('show');$('mOk').onclick=()=>$('modal').classList.remove('show');}
-function help(){
-  $('mbody').innerHTML=`<b style="font-size:17px">遊び方</b>
-  <p>1手で3日進む。1手に2つまで手を打てる。試験管が水の中身(単位 mg/L)、その下に<b>3日後の見込み</b>が出るので、押す前に結果が分かる。</p>
-  <p>細菌は2種類。アンモニアを亜硝酸に変える細菌と、亜硝酸を硝酸塩に変える細菌。どちらも<b>餌があると増え、無いと減る</b>。アンモニアが残りすぎると、2つ目の細菌は育たない。</p>
-  <p>準備ができたと思ったら「魚を迎える」。迎える前に、両方の細菌が魚の出す量(毎日 0.9)を処理できるか・KH が 0.8 dKH 以上残っているか(いまと、魚を迎えた4日後の見込みの両方)の点検があり(足りなければ止めるだけで★は減らない)、通ればそのあと4日間、アンモニアと亜硝酸が目安を超えず、pH が 6.0 以上・水温が 22℃ 以上なら成功。<b>早いほど★が増える</b>。失敗しても1手戻せるが、<b>クリアするまでに迎え直した回数だけ★が減る</b>。</p>
-  <p>★3 を取れたら次は<b>詰め</b>:★3 の日数のまま、使う手(1つ1手)をどこまで減らせるか。面ごとに最少の手数を総当たりで求めてあり、そこまで減らすと「詰めた」の印が付く。同じ日数でも、水によって要る手の数が違う。</p>
-  <div class="row"><button class="main" id="mOk">始める</button></div>`;
-  $('modal').classList.add('show');$('mOk').onclick=()=>$('modal').classList.remove('show');
+function solve(env,cards){
+  let fr=[{s:newState(env),p:[]}];
+  for(let d=0;d<=MAX_STEPS;d++){
+    const hit=fr.find(f=>!fishCheck(f.s,env)); if(hit) return {steps:d,path:hit.p};
+    const nx=[], seen=new Set();
+    for(const f of fr) for(const c of cards){ if(!usable(f.s,env,c)) continue; const s=step(f.s,env,c);
+      const k=[s.bac,s.dirt,s.acid,s.shell,s.heater,s.bottle].join(); if(seen.has(k)) continue; seen.add(k); nx.push({s,p:[...f.p,c]}); }
+    fr=nx;
+  }
+  return {steps:null,path:[]};
 }
 
-// ---- 水槽の絵(コードで描く)
-const cv=$('tank'),g=cv.getContext('2d');
-function draw(p){
-  const W=cv.width,H=cv.height;g.clearRect(0,0,W,H);
-  // 台
-  g.fillStyle='#3a474d';g.fillRect(20,H-22,W-40,12);
-  // ガラス
-  const x0=36,y0=26,x1=W-36,y1=H-24;
-  const murk=Math.min(1,(S.nh+S.no2)/5);
-  g.fillStyle=mix('#d7ecef','#b9c79a',murk);g.fillRect(x0,y0+14,x1-x0,y1-y0-14);
-  // 水面のゆれ
-  g.strokeStyle='#8fb0b6';g.lineWidth=1.5;g.beginPath();
-  for(let x=x0;x<=x1;x+=6){const y=y0+14+Math.sin(x/18+S.day)*1.6;x===x0?g.moveTo(x,y):g.lineTo(x,y)}g.stroke();
-  // 底砂
-  g.fillStyle=S.shellKh>0?'#d9d2c3':'#a99f8c';g.beginPath();g.moveTo(x0,y1);g.lineTo(x0,y1-22);
-  for(let x=x0;x<=x1;x+=20)g.lineTo(x,y1-22-Math.sin(x*1.3)*3-(x-x0)/(x1-x0)*8);g.lineTo(x1,y1);g.fill();
-  if(S.shellKh>0){g.fillStyle='#efe9dc';for(let i=0;i<14*S.used.shell;i++){const sx=x0+20+((i*53)%(x1-x0-60)),sy=y1-12-((i*17)%10);g.beginPath();g.ellipse(sx,sy,5,3,i,0,7);g.fill()}}
-  // 水草
-  for(let k=0;k<S.plants;k++){const bx=x1-70-k*40;g.strokeStyle='#4d7a4e';g.lineWidth=3;
-    for(let j=0;j<5;j++){g.beginPath();g.moveTo(bx+j*6,y1-24);g.quadraticCurveTo(bx+j*6-10+j*4,y1-80,bx+j*6+(j%2?8:-6),y1-110-j*8);g.stroke()}}
-  // スポンジフィルター(細菌の量を点で)
-  const fx=x0+18,fy=y0+60,fw=54,fh=110;
-  g.fillStyle='#c9a76a';g.fillRect(fx,fy,fw,fh);g.fillStyle='#55636a';g.fillRect(fx+fw/2-4,y0+10,8,fy-y0-10);
-  const h=x=>{const v=Math.sin(x)*43758.5453;return v-Math.floor(v)};const dots=(n,col,seed)=>{g.fillStyle=col;for(let i=0;i<n;i++){const r=h(i*12.9898+seed*78.233),q=h(i*39.3468+seed*11.135);g.fillRect(fx+3+r*(fw-7),fy+3+q*(fh-7),4,4)}};
-  dots(Math.min(220,Math.round(10+S.a*80)),'#7a4a1c',1);dots(Math.min(220,Math.round(10+S.b*80)),'#2f5d6e',2);
-  // 泡
-  g.fillStyle='rgba(255,255,255,.8)';for(let i=0;i<6;i++){g.beginPath();g.arc(fx+fw/2+Math.sin(i+S.day)*3,y0+20+i*12,2+i%2,0,7);g.fill()}
-  // 枠
-  g.strokeStyle='#5d7178';g.lineWidth=3;g.strokeRect(x0,y0,x1-x0,y1-y0);
-  // 凡例
-  g.font='12px system-ui,sans-serif';g.fillStyle='#7a4a1c';g.fillText('■ アンモニアを食べる細菌',x0+84,y0+34);g.fillStyle='#2f5d6e';g.fillText('■ 亜硝酸を食べる細菌',x0+84,y0+50);
-  // 魚(到着の日)
-  if(over){g.fillStyle='#c4572f';for(let i=0;i<5;i++){const cx=x0+150+i*40,cy=y0+90+(i%2)*30;g.beginPath();g.ellipse(cx,cy,12,6,0,0,7);g.fill();g.beginPath();g.moveTo(cx-10,cy);g.lineTo(cx-19,cy-6);g.lineTo(cx-19,cy+6);g.fill()}}
+let G=null;
+function starsHtml(n){ return '<span class="stars" aria-label="星'+n+'つ">'+'★'.repeat(n)+'<span class="off">'+'★'.repeat(3-n)+'</span></span>'; }
+function typeBadge(t,winter){ return `<span class="type ${winter?"winter":TYPES[t].cls}">${winter?"冬の水":TYPES[t].name}</span>`; }
+function renderMenu(){
+  const ul=$("stages"); ul.innerHTML="";
+  STAGES.forEach((st,i)=>{ const w=W(st.pref,st.city); const t=typeOf(w[2],w[3]);
+    const li=document.createElement("li"); const b=document.createElement("button"); b.type="button"; b.className="stage"; b.id="stage-"+st.id;
+    b.innerHTML=`${mapSvg(st.pref)}<span><span class="sub">${i+1}. ${st.pref}</span><br><span class="nm">${st.city}${st.winter?"(冬)":""}</span><br>${typeBadge(t,st.winter)}</span>${starsHtml(store[st.id]||0)}`;
+    b.addEventListener("click",()=>start({stage:st})); li.append(b); ul.append(li); });
 }
-menu();
-// 水質スキャナからのリンク:?pref=都道府県&city=市区町村 でその街から始める
-try{const q=new URLSearchParams(location.search);const qp=q.get('pref'),qc=q.get('city')||'',pc=(qc.match(/^(.+?市)(.+区)$/)||[])[1];const w=WATER.find(x=>x[0]===qp&&x[1]===qc)||(pc&&WATER.find(x=>x[0]===qp&&x[1]===pc));if(w)FROM=q.get('src')||'link';if(w){$('pref').value=w[0];fillCity();$('city').value=w[1];start(cityLevel(w))}}catch(e){}
-window.__cycle={get S(){return S},start,LEVELS,cityLevel,WATER};
+function fillPrefs(sel){
+  const prefs=[...new Set(WATER.map(x=>x[0]))]; const sp=$("sel-pref"); sp.innerHTML=prefs.map(p=>`<option>${p}</option>`).join("");
+  sp.value=sel&&prefs.includes(sel)?sel:"愛知県"; fillCities();
+}
+function fillCities(){ const p=$("sel-pref").value; $("sel-city").innerHTML=WATER.filter(x=>x[0]===p).map(x=>`<option>${x[1]}</option>`).join(""); drawPick(); }
+function drawPick(){
+  const p=$("sel-pref").value; const box=$("pick-map"); box.innerHTML=mapSvg(p,true);
+  box.querySelectorAll("rect").forEach(r=>{ const pp=r.dataset.p; if(!WATER.some(x=>x[0]===pp)){ r.style.opacity=.35; return; }
+    r.addEventListener("click",()=>{ $("sel-pref").value=pp; fillCities(); }); });
+}
+$("sel-pref").addEventListener("change",fillCities);
+$("btn-city").addEventListener("click",()=>{ const w=W($("sel-pref").value,$("sel-city").value); if(w) start({water:w}); });
+
+function start(o){
+  const w=o.stage?W(o.stage.pref,o.stage.city):o.water; const type=typeOf(w[2],w[3]);
+  const env={type,winter:!!(o.stage&&o.stage.winter)};
+  const cards=o.stage?o.stage.cards:CITY_CARDS;
+  const best=solve(env,cards);
+  G={o,w,env,cards,best,s:newState(env),hist:[],path:[],fails:0,done:false,msg:o.stage&&o.stage.intro||"エサを少し入れて細菌を育てましょう。1手ごとに1週間たちます。",mood:""};
+  $("p-map").innerHTML=mapSvg(w[0]);
+  $("p-name").textContent=place(w)+(env.winter?"(冬)":"");
+  $("p-quirk").innerHTML=`${typeBadge(type,env.winter)} ${o.stage&&o.stage.quirkOverride||TYPES[type].quirk} <a href="${scannerUrl(w,"play")}" target="_blank" rel="noopener" data-scan="play">この街の水道水を見る↗</a>`;
+  $("p-limit").textContent=`期限 ${MAX_STEPS*STEP_DAYS} 日`;
+  $("menu").hidden=true; $("play").hidden=false; window.scrollTo(0,0);
+  track("cycle_start",{city:w[1],pref:w[0],type,stage:o.stage?o.stage.id:"city",from:FROM});
+  render();
+  if(!store.guide){ store.guide=1; save(); showGuide(); }
+}
+function toMenu(){ $("play").hidden=true; $("menu").hidden=false; renderMenu(); }
+$("btn-menu").addEventListener("click",toMenu);
+
+function gauges(s){
+  const env=G.env, g=[];
+  const dots=Array.from({length:BAC_MAX},(_,i)=>(i===BAC_NEED?'<span class="need" title="ここから魚を迎えられる"></span>':'')+`<i class="${i<s.bac?"on":""}"></i>`).join("");
+  g.push(`<div class="g"><span class="lbl">細菌</span><span class="dots" aria-label="細菌 ${s.bac}/${BAC_MAX}">${dots}</span><span class="word">${s.bac>=BAC_NEED?"魚を迎えられる":"まだ少ない"}</span></div>`);
+  const alk=env.type==="alk", ok=alk?s.dirt===0:s.dirt<=DIRT_OK;
+  const dw=s.dirt===0?"消えた":alk?"少しでも魚に毒":s.dirt<=DIRT_OK?"少し(魚は耐えられる)":s.dirt<=5?"多い":"とても多い";
+  g.push(`<div class="g"><span class="lbl">汚れ</span><span class="meter"><span style="width:${Math.max(4,s.dirt/DIRT_MAX*100)}%;background:${ok?"var(--good)":s.dirt>5?"var(--bad)":"var(--warn)"}"></span></span><span class="word">${dw}</span></div>`);
+  if(env.type==="soft"){ const a=s.shell?0:s.acid; g.push(`<div class="g"><span class="lbl">pH</span><span class="meter"><span style="width:${a>=2?100:a?55:12}%;background:${a>=2?"var(--bad)":a?"var(--warn)":"var(--good)"}"></span></span><span class="word">${s.shell?"サンゴ砂で安定":a>=2?"下がりすぎ":a?"下がってきた":"ちょうどよい"}</span></div>`); }
+  if(env.winter){ g.push(`<div class="g"><span class="lbl">水温</span><span class="meter"><span style="width:${s.heater?100:30}%;background:${s.heater?"var(--good)":"#5b7fb5"}"></span></span><span class="word">${s.heater?"あたたかい":"冷たい"}</span></div>`); }
+  return g.join("");
+}
+function render(){
+  const s=G.s;
+  $("p-day").textContent=s.t*STEP_DAYS;
+  $("gauges").innerHTML=gauges(s);
+  const m=$("p-msg"); m.textContent=G.msg; m.className="msg "+G.mood;
+  const cs=$("cards"); cs.innerHTML="";
+  for(const c of G.cards){ const b=document.createElement("button"); b.type="button"; b.className="card"; b.id="card-"+c;
+    b.innerHTML=ICON[c]+`<b>${CARD[c].n}</b><small>${CARD[c].d}</small>`;
+    b.disabled=G.done||!usable(s,G.env,c)||s.t>=MAX_STEPS; b.addEventListener("click",()=>act(c)); cs.append(b); }
+  $("btn-undo").disabled=!G.hist.length||G.done;
+  $("btn-fish").disabled=G.done;
+  $("p-fails").textContent=G.fails?`魚を迎えて失敗 ${G.fails}回(★が${G.fails}つ減ります)`:"";
+  draw();
+}
+function act(c){
+  const before=G.s; G.hist.push({s:before,path:G.path.slice(),msg:G.msg,mood:G.mood});
+  const s=step(before,G.env,c); G.s=s; G.path.push(c);
+  const parts=[]; let mood="";
+  if(c==="bottle"){ parts.push("バクテリア剤で細菌が増えた。"); mood="good"; }
+  if(c==="heater") parts.push("ヒーターで水があたたまった。");
+  if(c==="shell") parts.push(G.env.type==="soft"?"サンゴ砂を入れた。これで pH が下がりにくくなる。":"サンゴ砂を入れた(この水では、あまり変わらない)。");
+  if(c==="change") parts.push("水を換えて、汚れが減った。");
+  if(!s.why){ parts.push(s.bac>=BAC_NEED&&before.bac<BAC_NEED?"細菌が、魚を迎えられるところまで育った。":"アンモニアを食べて、細菌が増えた。"); mood="good"; }
+  if(s.why==="food") parts.push("食べ物(アンモニア)がないので、細菌は増えなかった。");
+  if(s.why==="cold"){ parts.push("水が冷たくて、細菌が増えない。"); mood="bad"; }
+  if(s.why==="sour"){ parts.push("pH が下がりすぎて、細菌が働かなくなった。"); mood="bad"; }
+  if(!s.why && G.env.type==="soft" && !s.shell && s.acid===1 && before.acid===0) parts.push("pH が少し下がってきた。");
+  if(s.t>=MAX_STEPS && fishCheck(s,G.env)) parts.push("期限の日です。魚を迎えましょう。");
+  G.msg=parts.join(" ")||"1週間たった。"; G.mood=mood; render();
+}
+$("btn-undo").addEventListener("click",()=>{ const h=G.hist.pop(); if(!h) return; G.s=h.s; G.path=h.path; G.msg="1手戻した。"; G.mood=""; render(); });
+$("btn-fish").addEventListener("click",()=>{
+  const why=fishCheck(G.s,G.env);
+  if(why){
+    G.fails++;
+    const txt=FISHWHY[why]+(why==="dirt"&&G.env.type==="alk"?" "+FISHWHY.dirtalk:"");
+    if(G.s.t>=MAX_STEPS){ G.done=true; finish(false,txt); return; }
+    showPanel(`<h3 id="ov-h">魚を袋に戻した</h3><p style="margin:0">${txt}</p><p class="sub" style="margin:0">すぐ袋に戻したので魚は無事です。続けて水を整えましょう(★が1つ減ります)。</p><div class="acts"><button class="primary" id="ov-ok" type="button">続ける</button></div>`);
+    $("ov-ok").addEventListener("click",hidePanel); G.msg=txt; G.mood="bad"; render(); return;
+  }
+  G.done=true; finish(true);
+});
+function stepsHtml(path){ if(!path.length) return '<li>何もせずに迎える</li>'; return path.map(c=>`<li>${ICON[c]}${CARD[c].n}</li>`).join(""); }
+function finish(ok,txt){
+  const days=G.s.t*STEP_DAYS, bestDays=G.best.steps*STEP_DAYS;
+  let stars=0;
+  if(ok){ stars=days<=bestDays?3:days<=bestDays+STEP_DAYS?2:1; stars=Math.max(1,stars-G.fails); }
+  const st=G.o.stage; if(st&&ok){ store[st.id]=Math.max(store[st.id]||0,stars); save(); }
+  track("cycle_finish",{ok,stars,days,acts:G.path.length,fails:G.fails,type:G.env.type,stage:st?st.id:"city"});
+  const w=G.w, idx=st?STAGES.indexOf(st):-1, next=idx>=0&&idx<STAGES.length-1?STAGES[idx+1]:null;
+  const others=["normal","soft","alk"].filter(t=>t!==G.env.type).map(t=>{ const c=WATER.filter(x=>typeOf(x[2],x[3])===t); return c[(w[1].length*7+days)%c.length]; });
+  const same=WATER.filter(x=>typeOf(x[2],x[3])===G.env.type).length;
+  showPanel(`<h3 id="ov-h">${ok?"魚を迎えられた":"期限に間に合わなかった"}</h3>
+    ${ok?`<div class="big">${"★".repeat(stars)}<span style="color:var(--rule)">${"★".repeat(3-stars)}</span></div><p style="margin:0">${days}日で魚を迎えました。${days<=bestDays?"いちばん早い日数です。":`いちばん早いと${bestDays}日でした。`}${G.fails?`(迎えて失敗 ${G.fails}回)`:""}</p>`:`<p style="margin:0">${txt||""}</p>`}
+    <div><p class="sub" style="margin:0 0 4px">あなたの手順</p><ul class="steps">${stepsHtml(G.path)}</ul></div>
+    ${!ok||days>bestDays?`<div><p class="sub" style="margin:0 0 4px">いちばん早い手順の一例(${bestDays}日)</p><ul class="steps">${stepsHtml(G.best.path)}</ul></div>`:""}
+    <div class="facts"><span>${place(w)} の水道水(水道事業者の公表値)</span><span>GH <span class="num">${gh(w)}°dH</span>(硬度 ${w[2]} mg/L・${ghWord(w)}) ・ pH <span class="num">${w[3]}</span>${G.env.winter?"(冬の水温を想定)":""}</span><span class="sub">ゲームでは pH の動きやすさで分けて「${TYPES[G.env.type].name}」の型(全国で ${same} か所)。硬度 30 mg/L 未満を「とてもやわらかい」、pH 7.8 以上を「アルカリ寄り」としています。</span></div>
+    <a class="scan" href="${scannerUrl(w,"result")}" target="_blank" rel="noopener" data-scan="result"><b>${w[1]}の水道水を、水質スキャナでくわしく見る ↗</b><span>出典の検査結果、残留塩素(カルキ抜きの目安)、アクアリウムで使うときの注意、近くの街の水まで。</span></a>
+    <div><p class="sub" style="margin:0 0 4px">ちがう型の街も試す</p><div class="acts">${others.map((x,i)=>`<button class="plain" type="button" data-o="${i}">${place(x)}<span class="sub">(${TYPES[typeOf(x[2],x[3])].name})</span></button>`).join("")}</div></div>
+    <div class="acts"><button class="plain" id="ov-retry" type="button">もう一度</button>${next?`<button class="primary" id="ov-next" type="button">次の面へ</button>`:`<button class="primary" id="ov-menu" type="button">面を選ぶ</button>`}</div>`);
+  $("panel").querySelectorAll("[data-o]").forEach(b=>b.addEventListener("click",()=>{ hidePanel(); start({water:others[+b.dataset.o]}); }));
+  $("ov-retry").addEventListener("click",()=>{ hidePanel(); start(G.o); });
+  if(next) $("ov-next").addEventListener("click",()=>{ hidePanel(); start({stage:next}); });
+  else $("ov-menu").addEventListener("click",()=>{ hidePanel(); toMenu(); });
+  render();
+}
+function showPanel(h){ const p=$("panel"); p.classList.remove("guide"); p.innerHTML=h; $("ov").hidden=false; const f=p.querySelector("button"); if(f) f.focus(); }
+function showGuide(){ const p=$("panel"); p.innerHTML=""; p.append($("guide-tpl").content.cloneNode(true)); p.classList.add("guide"); $("ov").hidden=false; p.scrollTop=0; $("ov-ok").addEventListener("click",hidePanel); $("ov-ok").focus({preventScroll:true}); }
+function hidePanel(){ $("ov").hidden=true; }
+$("btn-guide").addEventListener("click",showGuide); $("btn-guide2").addEventListener("click",showGuide);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("ov").hidden&&$("ov-ok")) hidePanel(); });
+
+/* 水槽の絵 */
+const cv=$("tank"), cx=cv.getContext("2d");
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const bubbles=Array.from({length:14},()=>({x:0.82+Math.random()*0.05,y:Math.random(),v:0.15+Math.random()*0.2}));
+let fishT=0, last=0;
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function mix(a,b,t){ const pa=a.match(/\w\w/g).map(h=>parseInt(h,16)), pb=b.match(/\w\w/g).map(h=>parseInt(h,16)); return "rgb("+pa.map((v,i)=>Math.round(v+(pb[i]-v)*t)).join(",")+")"; }
+function draw(){
+  if(!G) return; const s=G.s, W2=cv.width, H=cv.height;
+  cx.clearRect(0,0,W2,H);
+  const dark=css("--bg").startsWith("#1");
+  cx.fillStyle=dark?"#0d1514":"#dfe7e3"; cx.fillRect(0,0,W2,H);
+  const x0=40,y0=40,x1=W2-40,y1=H-30, wl=y0+26;
+  let base="7fc4bd"; if(G.env.winter&&!s.heater) base="8fb5d6";
+  const t=Math.min(1,s.dirt/DIRT_MAX*0.95);
+  let top=mix(base,"c9c095",t), bot=mix("3d8f88","8c8351",t);
+  if(G.env.type==="soft"&&!s.shell&&s.acid>0){ top=mix(base,"d8c36a",0.25*s.acid+t*0.4); }
+  const gr=cx.createLinearGradient(0,wl,0,y1); gr.addColorStop(0,top); gr.addColorStop(1,bot);
+  cx.fillStyle=gr; cx.fillRect(x0,wl,x1-x0,y1-wl);
+  cx.fillStyle=dark?"#6b6250":"#a99c80"; cx.beginPath(); cx.moveTo(x0,y1-38);
+  for(let i=0;i<=20;i++){ cx.lineTo(x0+(x1-x0)*i/20, y1-38-Math.sin(i*1.7)*4-(i%3)*2); }
+  cx.lineTo(x1,y1); cx.lineTo(x0,y1); cx.fill();
+  cx.fillStyle=dark?"#857a62":"#c4b799"; for(let i=0;i<70;i++){ const gx=x0+((i*53)%(x1-x0)), gy=y1-30+((i*17)%26); cx.beginPath(); cx.arc(gx,gy,3+(i%3),0,7); cx.fill(); }
+  const fx=x1-90, fy=y1-140;
+  cx.fillStyle=dark?"#38463f":"#4f6157"; cx.fillRect(fx+26,wl-20,8,fy-wl+30);
+  cx.fillStyle=dark?"#5b6b55":"#7e9474"; roundRect(fx,fy,60,100,10); cx.fill();
+  const n=s.bac*7; cx.fillStyle=dark?"#c7e8a8":"#f4f8d9";
+  for(let i=0;i<n;i++){ const px=i%2?fx+6+((i*13)%48):x0+20+((i*37)%(x1-x0-160)); const py=i%2?fy+8+((i*29)%84):y1-40+((i*11)%16); cx.globalAlpha=.85; cx.beginPath(); cx.arc(px,py,2.4,0,7); cx.fill(); }
+  cx.globalAlpha=1;
+  if(s.shell){ cx.fillStyle="#f1ece2"; for(let i=0;i<26;i++){ cx.beginPath(); cx.arc(x0+90+((i*23)%70),y1-36+((i*7)%10),2.6+(i%2),0,7); cx.fill(); } }
+  if(s.heater){ cx.fillStyle="#d9dcd6"; roundRect(x0+16,wl+20,14,110,7); cx.fill(); cx.fillStyle="#e07a4f"; cx.beginPath(); cx.arc(x0+23,wl+118,4,0,7); cx.fill(); }
+  cx.fillStyle="rgba(255,255,255,.7)";
+  for(const b of bubbles){ const bx=fx+30+(b.x-.84)*120, by=fy-(b.y*(fy-wl)); cx.beginPath(); cx.arc(bx,by,2.6,0,7); cx.fill(); }
+  if(G.done&&!fishCheck(s,G.env)){ for(let k=0;k<3;k++){ const ph=fishT*0.0008+k*2.1; const fxp=x0+60+((Math.sin(ph)+1)/2)*(x1-x0-220), fyp=wl+50+k*45+Math.sin(ph*2)*8, dir=Math.cos(ph)>0?1:-1; fish(fxp,fyp,dir,k); } }
+  cx.strokeStyle=dark?"#9fb5b0":"#5f7571"; cx.lineWidth=4; cx.strokeRect(x0,y0,x1-x0,y1-y0);
+  cx.fillStyle=dark?"#9fb5b0":"#5f7571"; cx.fillRect(x0-6,y0-6,x1-x0+12,8);
+  cx.strokeStyle="rgba(255,255,255,.35)"; cx.lineWidth=2; cx.beginPath(); cx.moveTo(x0,wl); cx.lineTo(x1,wl); cx.stroke();
+}
+function fish(x,y,d,k){ cx.save(); cx.translate(x,y); cx.scale(d,1); cx.fillStyle=["#e2563b","#f0a640","#4d7fd0"][k];
+  cx.beginPath(); cx.ellipse(0,0,18,8,0,0,7); cx.fill(); cx.beginPath(); cx.moveTo(-14,0); cx.lineTo(-28,-9); cx.lineTo(-28,9); cx.fill();
+  cx.fillStyle="#111"; cx.beginPath(); cx.arc(10,-2,1.8,0,7); cx.fill(); cx.restore(); }
+function roundRect(x,y,w,h,r){ cx.beginPath(); cx.moveTo(x+r,y); cx.arcTo(x+w,y,x+w,y+h,r); cx.arcTo(x+w,y+h,x,y+h,r); cx.arcTo(x,y+h,x,y,r); cx.arcTo(x,y,x+w,y,r); cx.closePath(); }
+function loop(ts){ const dt=ts-last; last=ts; fishT+=dt||0; if(!reduce&&G&&!$("play").hidden){ for(const b of bubbles){ b.y+=b.v*(dt||16)/1000; if(b.y>1) b.y=0; } draw(); } requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>draw());
+
+$("menu-scan").href=scannerUrl(null,"menu");
+const q=new URLSearchParams(location.search);
+FROM=q.get("src")||(q.get("pref")?"link":"");
+fillPrefs(q.get("pref"));
+renderMenu();
+const qw=W(q.get("pref"),q.get("city"));
+if(qw){ $("sel-city").value=qw[1]; start({water:qw}); }
 })();
 </script>
+
 </body>
 </html>
