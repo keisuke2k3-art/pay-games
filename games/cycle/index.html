@@ -336,7 +336,7 @@ const CARD={
   feed:{n:"エサを少し入れる",d:"傷んでアンモニアが出る。細菌の食べ物"},
   bottle:{n:"バクテリア剤",d:"市販の細菌を足す(1回だけ)"},
   change:{n:"水を換える",d:"汚れが減り、下がった pH も少し戻る"},
-  shell:{n:"サンゴ砂を入れる",d:"店で買える。pH を下がりにくくする(1回だけ)"},
+  shell:{n:"サンゴ砂を入れる",d:"店で買える。pH を下がりにくくする。硬度も少し上がる(1回だけ)"},
   heater:{n:"ヒーター",d:"水をあたためる"},
   wait:{n:"何もしない",d:"そのまま1週間待つ"},
 };
@@ -349,10 +349,10 @@ const ICON={
   wait:'<svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M17 10v7l5 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
 };
 const FISHWHY={
-  cold:"水が冷たくて、魚が弱ってしまった。熱帯魚にはあたたかい水が要ります。",
-  sour:"pH が下がりすぎていて、魚が弱ってしまった。",
+  cold:"水が冷たくて、このままでは魚が弱ってしまう。熱帯魚にはあたたかい水が要ります。",
+  sour:"pH が下がりすぎていて、このままでは魚が弱ってしまう。",
   bac:"細菌がまだ少なく、魚のフンから出るアンモニアを分解しきれなかった。",
-  dirt:"汚れ(アンモニアなど)が多く残っていて、魚が弱ってしまった。",
+  dirt:"汚れ(アンモニアなど)が多く残っていて、このままでは魚が弱ってしまう。",
   dirtalk:"アルカリ寄りの水では、少しの汚れでも毒になる。汚れが消えきってから迎えましょう。",
 };
 let store={}; try{ store=JSON.parse(localStorage.getItem("cycle5")||"{}"); }catch(e){ store={}; }
@@ -387,10 +387,10 @@ function renderMenu(){
     b.addEventListener("click",()=>start({stage:st})); li.append(b); ul.append(li); });
 }
 function fillPrefs(sel){
-  const prefs=[...new Set(WATER.map(x=>x[0]))]; const sp=$("sel-pref"); sp.innerHTML=prefs.map(p=>`<option>${p}</option>`).join("");
+  const prefs=[...new Set(WATER.slice().sort((a,b)=>String(a[4]).localeCompare(String(b[4]))).map(x=>x[0]))]; const sp=$("sel-pref"); sp.innerHTML=prefs.map(p=>`<option>${p}</option>`).join("");
   sp.value=sel&&prefs.includes(sel)?sel:"愛知県"; fillCities();
 }
-function fillCities(){ const p=$("sel-pref").value; $("sel-city").innerHTML=WATER.filter(x=>x[0]===p).map(x=>`<option>${x[1]}</option>`).join(""); drawPick(); }
+function fillCities(){ const p=$("sel-pref").value; $("sel-city").innerHTML=WATER.filter(x=>x[0]===p).sort((a,b)=>String(a[4]).localeCompare(String(b[4]))).map(x=>`<option>${x[1]}</option>`).join(""); drawPick(); }
 function drawPick(){
   const p=$("sel-pref").value; const box=$("pick-map"); box.innerHTML=mapSvg(p,true);
   box.querySelectorAll("rect").forEach(r=>{ const pp=r.dataset.p; if(!WATER.some(x=>x[0]===pp)){ r.style.opacity=.35; return; }
@@ -422,7 +422,7 @@ function gauges(s){
   const dots=Array.from({length:BAC_MAX},(_,i)=>(i===BAC_NEED?'<span class="need" title="ここから魚を迎えられる"></span>':'')+`<i class="${i<s.bac?"on":""}"></i>`).join("");
   g.push(`<div class="g"><span class="lbl">細菌</span><span class="dots" aria-label="細菌 ${s.bac}/${BAC_MAX}">${dots}</span><span class="word">${s.bac>=BAC_NEED?"魚を迎えられる":"まだ少ない"}</span></div>`);
   const alk=env.type==="alk", ok=alk?s.dirt===0:s.dirt<=DIRT_OK;
-  const dw=s.dirt===0?"消えた":alk?"少しでも魚に毒":s.dirt<=DIRT_OK?"少し(魚は耐えられる)":s.dirt<=5?"多い":"とても多い";
+  const dw=s.dirt===0?(G.path.length?"消えた":"まだない"):alk?"少しでも魚に毒":s.dirt<=DIRT_OK?"少し(魚は耐えられる)":s.dirt<=5?"多い":"とても多い";
   g.push(`<div class="g"><span class="lbl">汚れ</span><span class="meter"><span style="width:${Math.max(4,s.dirt/DIRT_MAX*100)}%;background:${ok?"var(--good)":s.dirt>5?"var(--bad)":"var(--warn)"}"></span></span><span class="word">${dw}</span></div>`);
   if(env.type==="soft"){ const a=s.shell?0:s.acid; g.push(`<div class="g"><span class="lbl">pH</span><span class="meter"><span style="width:${a>=2?100:a?55:12}%;background:${a>=2?"var(--bad)":a?"var(--warn)":"var(--good)"}"></span></span><span class="word">${s.shell?"サンゴ砂で安定":a>=2?"下がりすぎ":a?"下がってきた":"ちょうどよい"}</span></div>`); }
   if(env.winter){ g.push(`<div class="g"><span class="lbl">水温</span><span class="meter"><span style="width:${s.heater?100:30}%;background:${s.heater?"var(--good)":"#5b7fb5"}"></span></span><span class="word">${s.heater?"あたたかい":"冷たい"}</span></div>`); }
@@ -439,19 +439,19 @@ function render(){
     b.disabled=G.done||!usable(s,G.env,c)||s.t>=MAX_STEPS; b.addEventListener("click",()=>act(c)); cs.append(b); }
   $("btn-undo").disabled=!G.hist.length||G.done;
   $("btn-fish").disabled=G.done;
-  $("p-fails").textContent=G.fails?`魚を迎えて失敗 ${G.fails}回(★が${G.fails}つ減ります)`:"";
+  $("p-fails").textContent=G.fails?`魚を迎えて失敗 ${G.fails}回(★が${Math.min(G.fails,3)}つ減ります)`:"";
   draw();
 }
 function act(c){
   const before=G.s; G.hist.push({s:before,path:G.path.slice(),msg:G.msg,mood:G.mood});
   const s=step(before,G.env,c); G.s=s; G.path.push(c);
   const parts=[]; let mood="";
-  if(c==="bottle"){ parts.push("バクテリア剤で細菌が増えた。"); mood="good"; }
+  if(c==="bottle"){ parts.push(s.why==="food"?"バクテリア剤で細菌を入れた。":"バクテリア剤で細菌が増えた。"); mood="good"; }
   if(c==="heater") parts.push("ヒーターで水があたたまった。");
   if(c==="shell") parts.push(G.env.type==="soft"?"サンゴ砂を入れた。これで pH が下がりにくくなる。":"サンゴ砂を入れた(この水では、あまり変わらない)。");
   if(c==="change") parts.push("水を換えて、汚れが減った。");
   if(!s.why){ parts.push(s.bac>=BAC_NEED&&before.bac<BAC_NEED?"細菌が、魚を迎えられるところまで育った。":"アンモニアを食べて、細菌が増えた。"); mood="good"; }
-  if(s.why==="food") parts.push("食べ物(アンモニア)がないので、細菌は増えなかった。");
+  if(s.why==="food") parts.push(c==="bottle"?"ただ、食べ物(アンモニア)がないので、それ以上は増えなかった。":"食べ物(アンモニア)がないので、細菌は増えなかった。");
   if(s.why==="cold"){ parts.push("水が冷たくて、細菌が増えない。"); mood="bad"; }
   if(s.why==="sour"){ parts.push("pH が下がりすぎて、細菌が働かなくなった。"); mood="bad"; }
   if(!s.why && G.env.type==="soft" && !s.shell && s.acid===1 && before.acid===0) parts.push("pH が少し下がってきた。");
@@ -484,7 +484,7 @@ function finish(ok,txt){
     ${ok?`<div class="big">${"★".repeat(stars)}<span style="color:var(--rule)">${"★".repeat(3-stars)}</span></div><p style="margin:0">${days}日で魚を迎えました。${days<=bestDays?"いちばん早い日数です。":`いちばん早いと${bestDays}日でした。`}${G.fails?`(迎えて失敗 ${G.fails}回)`:""}</p>`:`<p style="margin:0">${txt||""}</p>`}
     <div><p class="sub" style="margin:0 0 4px">あなたの手順</p><ul class="steps">${stepsHtml(G.path)}</ul></div>
     ${!ok||days>bestDays?`<div><p class="sub" style="margin:0 0 4px">いちばん早い手順の一例(${bestDays}日)</p><ul class="steps">${stepsHtml(G.best.path)}</ul></div>`:""}
-    <div class="facts"><span>${place(w)} の水道水(水道事業者の公表値)</span><span>GH <span class="num">${gh(w)}°dH</span>(硬度 ${w[2]} mg/L・${ghWord(w)}) ・ pH <span class="num">${w[3]}</span>${G.env.winter?"(冬の水温を想定)":""}</span><span class="sub">ゲームでは pH の動きやすさで分けて「${TYPES[G.env.type].name}」の型(全国で ${same} か所)。硬度 30 mg/L 未満を「とてもやわらかい」、pH 7.8 以上を「アルカリ寄り」としています。</span></div>
+    <div class="facts"><span>${place(w)} の水道水(水道事業者の公表値)</span><span>GH <span class="num">${gh(w)}°dH</span>(硬度 ${w[2]} mg/L・${ghWord(w)}) ・ pH <span class="num">${w[3]}</span>${G.env.winter?"(冬の寒い部屋を想定。熱帯魚にはどの街でもヒーターが要ります)":""}</span><span class="sub">ゲームでは pH の動きやすさで分けて「${TYPES[G.env.type].name}」の型(全国で ${same} か所)。硬度 30 mg/L 未満を「とてもやわらかい」、pH 7.8 以上を「アルカリ寄り」としています。</span></div>
     <a class="scan" href="${scannerUrl(w,"result")}" target="_blank" rel="noopener" data-scan="result"><b>${w[1]}の水道水を、水質スキャナでくわしく見る ↗</b><span>出典の検査結果、残留塩素(カルキ抜きの目安)、アクアリウムで使うときの注意、近くの街の水まで。</span></a>
     <div><p class="sub" style="margin:0 0 4px">ちがう型の街も試す</p><div class="acts">${others.map((x,i)=>`<button class="plain" type="button" data-o="${i}">${place(x)}<span class="sub">(${TYPES[typeOf(x[2],x[3])].name})</span></button>`).join("")}</div></div>
     <div class="acts"><button class="plain" id="ov-retry" type="button">もう一度</button>${next?`<button class="primary" id="ov-next" type="button">次の面へ</button>`:`<button class="primary" id="ov-menu" type="button">面を選ぶ</button>`}</div>`);
